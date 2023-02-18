@@ -21,10 +21,6 @@ The software system was designed to respond to a set of requirements specified b
 
 Deliverable 1 individual efforts: 
 
-Team member 
-
-Tasks assigned 
-
 ### Total number of hours 
 | Name | Hours |
 | --- | --- |
