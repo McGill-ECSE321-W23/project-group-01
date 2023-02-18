@@ -1,6 +1,9 @@
 package ca.mcgill.ecse321.PLMS.model;
 
+import jakarta.persistence.*;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account
 {
 
@@ -12,6 +15,8 @@ public abstract class Account
   private String email;
   private String password;
   private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
   //------------------------

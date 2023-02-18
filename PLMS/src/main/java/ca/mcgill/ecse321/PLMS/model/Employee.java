@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.PLMS.model;
 
+import jakarta.persistence.*;
 
+@Entity
 public class Employee extends Account
 {
 

@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.PLMS.model;
 
+import jakarta.persistence.*;
 
+@Entity
 public abstract class Pass
 {
 
@@ -11,10 +13,13 @@ public abstract class Pass
   //Pass Attributes
   private int fee;
   private String spotNumber;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private String licensePlate;
 
   //Pass Associations
+  @ManyToOne
   private Floor floor;
 
   //------------------------

@@ -4,8 +4,9 @@ package ca.mcgill.ecse321.PLMS.model;
 
 import java.sql.Date;
 import java.sql.Time;
+import jakarta.persistence.*;
 
-
+@Entity
 public class ServiceAppointment
 {
 
@@ -17,11 +18,16 @@ public class ServiceAppointment
   private Date date;
   private Time startTime;
   private Time endTime;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
   //ServiceAppointment Associations
+  @ManyToOne
   private Employee employee;
+  @ManyToOne
   private MonthlyCustomer customer;
+  @ManyToOne
   private Service service;
 
   //------------------------

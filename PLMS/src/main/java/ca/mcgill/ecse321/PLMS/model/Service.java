@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.PLMS.model;
 
+import jakarta.persistence.*;
 
+@Entity
 public class Service
 {
 
@@ -12,6 +14,8 @@ public class Service
   private String description;
   private int cost;
   private double lengthInHours;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
   //------------------------

@@ -4,8 +4,9 @@ package ca.mcgill.ecse321.PLMS.model;
 
 import java.sql.Date;
 import java.sql.Time;
+import jakarta.persistence.*;
 
-
+@Entity
 public class GuestPass extends Pass
 {
 

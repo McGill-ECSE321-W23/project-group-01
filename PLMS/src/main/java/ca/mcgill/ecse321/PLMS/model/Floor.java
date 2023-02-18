@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.PLMS.model;
 
+import jakarta.persistence.*;
 
+@Entity
 public class Floor
 {
 
@@ -9,6 +11,7 @@ public class Floor
   //------------------------
 
   //Floor Attributes
+  @Id
   private int floorNumber;
   private int largeSpotCapacity;
   private int smallSpotCapacity;

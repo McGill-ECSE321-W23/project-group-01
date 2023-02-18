@@ -2,8 +2,9 @@ package ca.mcgill.ecse321.PLMS.model;
 
 
 import java.sql.Date;
+import jakarta.persistence.*;
 
-
+@Entity
 public class MonthlyPass extends Pass
 {
 
@@ -16,6 +17,7 @@ public class MonthlyPass extends Pass
   private Date endDate;
 
   //MonthlyPass Associations
+  @ManyToOne
   private MonthlyCustomer customer;
 
   //------------------------
