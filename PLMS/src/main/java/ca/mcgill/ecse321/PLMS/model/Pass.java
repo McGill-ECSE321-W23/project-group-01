@@ -26,11 +26,10 @@ public abstract class Pass
   // CONSTRUCTOR
   //------------------------
 
-  public Pass(int aFee, String aSpotNumber, int aId, String aLicensePlate)
+  public Pass(int aFee, String aSpotNumber, String aLicensePlate)
   {
     fee = aFee;
     spotNumber = aSpotNumber;
-    id = aId;
     licensePlate = aLicensePlate;
   }
 

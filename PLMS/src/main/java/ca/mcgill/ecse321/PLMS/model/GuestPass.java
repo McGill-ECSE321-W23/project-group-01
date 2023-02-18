@@ -24,9 +24,9 @@ public class GuestPass extends Pass
   // CONSTRUCTOR
   //------------------------
 
-  public GuestPass(int aFee, String aSpotNumber, int aId, String aLicensePlate, Date aDate, Time aStartTime, Time aEndTime, boolean aIsLarge)
+  public GuestPass(int aFee, String aSpotNumber, String aLicensePlate, Date aDate, Time aStartTime, Time aEndTime, boolean aIsLarge)
   {
-    super(aFee, aSpotNumber, aId, aLicensePlate);
+    super(aFee, aSpotNumber, aLicensePlate);
     date = aDate;
     startTime = aStartTime;
     endTime = aEndTime;

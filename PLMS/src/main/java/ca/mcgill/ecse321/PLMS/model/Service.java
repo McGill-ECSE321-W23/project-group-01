@@ -22,12 +22,11 @@ public class Service
   // CONSTRUCTOR
   //------------------------
 
-  public Service(String aDescription, int aCost, double aLengthInHours, int aId)
+  public Service(String aDescription, int aCost, double aLengthInHours)
   {
     description = aDescription;
     cost = aCost;
     lengthInHours = aLengthInHours;
-    id = aId;
   }
 
   //------------------------

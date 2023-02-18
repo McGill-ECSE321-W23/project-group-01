@@ -14,9 +14,9 @@ public class MonthlyCustomer extends Account
   // CONSTRUCTOR
   //------------------------
 
-  public MonthlyCustomer(String aEmail, String aPassword, String aName, int aId)
+  public MonthlyCustomer(String aEmail, String aPassword, String aName)
   {
-    super(aEmail, aPassword, aName, aId);
+    super(aEmail, aPassword, aName);
   }
 
   //------------------------

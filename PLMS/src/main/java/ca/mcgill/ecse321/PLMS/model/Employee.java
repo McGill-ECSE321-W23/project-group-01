@@ -18,9 +18,9 @@ public class Employee extends Account
   // CONSTRUCTOR
   //------------------------
 
-  public Employee(String aEmail, String aPassword, String aName, int aId, String aJobDescription, int aHourlyWage)
+  public Employee(String aEmail, String aPassword, String aName, String aJobDescription, int aHourlyWage)
   {
-    super(aEmail, aPassword, aName, aId);
+    super(aEmail, aPassword, aName);
     jobDescription = aJobDescription;
     hourlyWage = aHourlyWage;
   }

@@ -34,12 +34,11 @@ public class ServiceAppointment
   // CONSTRUCTOR
   //------------------------
 
-  public ServiceAppointment(Date aDate, Time aStartTime, Time aEndTime, int aId, Service aService)
+  public ServiceAppointment(Date aDate, Time aStartTime, Time aEndTime, Service aService)
   {
     date = aDate;
     startTime = aStartTime;
     endTime = aEndTime;
-    id = aId;
     if (!setService(aService))
     {
       throw new RuntimeException("Unable to create ServiceAppointment due to null Service");

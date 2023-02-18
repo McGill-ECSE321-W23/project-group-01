@@ -35,12 +35,11 @@ public abstract class Account
    * @param aName
    * @param aId
    */
-  public Account(String aEmail, String aPassword, String aName, int aId)
+  public Account(String aEmail, String aPassword, String aName)
   {
     email = aEmail;
     password = aPassword;
     name = aName;
-    id = aId;
   }
 
   //------------------------

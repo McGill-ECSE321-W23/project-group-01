@@ -27,14 +27,13 @@ public class ParkingLot
   // CONSTRUCTOR
   //------------------------
 
-  public ParkingLot(Time aOpeningTime, Time aClosingTime, double aLargeSpotFee, double aSmallSpotFee, double aMonthlyFlatFee, int aId)
+  public ParkingLot(Time aOpeningTime, Time aClosingTime, double aLargeSpotFee, double aSmallSpotFee, double aMonthlyFlatFee)
   {
     openingTime = aOpeningTime;
     closingTime = aClosingTime;
     largeSpotFee = aLargeSpotFee;
     smallSpotFee = aSmallSpotFee;
     monthlyFlatFee = aMonthlyFlatFee;
-    id = aId;
   }
 
   //------------------------
