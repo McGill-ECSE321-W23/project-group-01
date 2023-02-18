@@ -106,8 +106,6 @@ public class Floor
     return largeSpotCounter;
   }
 
-  public void delete()
-  {}
 
 
   public String toString()

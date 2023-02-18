@@ -55,11 +55,6 @@ public class Employee extends Account
     return hourlyWage;
   }
 
-  public void delete()
-  {
-    super.delete();
-  }
-
 
   public String toString()
   {

@@ -87,9 +87,6 @@ public abstract class Account
     return id;
   }
 
-  public void delete()
-  {}
-
 
   public String toString()
   {

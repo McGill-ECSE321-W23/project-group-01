@@ -23,9 +23,6 @@ public class MonthlyCustomer extends Account
   // INTERFACE
   //------------------------
 
-  public void delete()
-  {
-    super.delete();
-  }
+
 
 }

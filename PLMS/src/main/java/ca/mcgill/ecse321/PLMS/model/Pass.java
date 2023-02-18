@@ -109,11 +109,7 @@ public abstract class Pass
     return wasSet;
   }
 
-  public void delete()
-  {
-    floor = null;
-  }
-
+  
 
   public String toString()
   {

@@ -86,9 +86,6 @@ public class Service
     return id;
   }
 
-  public void delete()
-  {}
-
 
   public String toString()
   {

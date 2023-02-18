@@ -94,10 +94,6 @@ public class GuestPass extends Pass
     return isLarge;
   }
 
-  public void delete()
-  {
-    super.delete();
-  }
 
 
   public String toString()

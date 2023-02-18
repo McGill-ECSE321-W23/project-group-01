@@ -19,13 +19,6 @@ public class Owner extends Account
     super(aEmail, aPassword, aName, aId);
   }
 
-  //------------------------
-  // INTERFACE
-  //------------------------
 
-  public void delete()
-  {
-    super.delete();
-  }
 
 }

@@ -119,9 +119,6 @@ public class ParkingLot
     return id;
   }
 
-  public void delete()
-  {}
-
 
   public String toString()
   {

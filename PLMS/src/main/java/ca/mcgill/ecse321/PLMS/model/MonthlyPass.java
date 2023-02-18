@@ -80,11 +80,7 @@ public class MonthlyPass extends Pass
     return wasSet;
   }
 
-  public void delete()
-  {
-    customer = null;
-    super.delete();
-  }
+
 
 
   public String toString()

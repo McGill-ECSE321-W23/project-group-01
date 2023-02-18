@@ -42,7 +42,7 @@ public class ServiceAppointment
     id = aId;
     if (!setService(aService))
     {
-      throw new RuntimeException("Unable to create ServiceAppointment due to aService. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create ServiceAppointment due to null Service");
     }
   }
 
@@ -156,12 +156,6 @@ public class ServiceAppointment
     return wasSet;
   }
 
-  public void delete()
-  {
-    employee = null;
-    customer = null;
-    service = null;
-  }
 
 
   public String toString()
