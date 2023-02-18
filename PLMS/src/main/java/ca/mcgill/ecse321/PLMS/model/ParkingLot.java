@@ -1,12 +1,10 @@
 package ca.mcgill.ecse321.PLMS.model;
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
+
 
 
 import java.sql.Time;
 
-// line 90 "model.ump"
-// line 184 "model.ump"
+
 public class ParkingLot
 {
 

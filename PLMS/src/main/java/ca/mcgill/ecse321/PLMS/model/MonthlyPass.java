@@ -1,12 +1,9 @@
 package ca.mcgill.ecse321.PLMS.model;
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
 
 import java.sql.Date;
 
-// line 74 "model.ump"
-// line 179 "model.ump"
+
 public class MonthlyPass extends Pass
 {
 
