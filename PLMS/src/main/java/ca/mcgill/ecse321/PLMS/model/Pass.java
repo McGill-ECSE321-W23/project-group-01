@@ -11,7 +11,7 @@ public abstract class Pass
   //------------------------
 
   //Pass Attributes
-  private int fee;
+  private double fee;
   private String spotNumber;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,7 +26,7 @@ public abstract class Pass
   // CONSTRUCTOR
   //------------------------
 
-  public Pass(int aFee, String aSpotNumber, String aLicensePlate)
+  public Pass(double aFee, String aSpotNumber, String aLicensePlate)
   {
     fee = aFee;
     spotNumber = aSpotNumber;
@@ -69,7 +69,7 @@ public abstract class Pass
     return wasSet;
   }
 
-  public int getFee()
+  public double getFee()
   {
     return fee;
   }

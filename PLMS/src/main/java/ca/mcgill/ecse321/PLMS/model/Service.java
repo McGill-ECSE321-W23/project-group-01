@@ -11,20 +11,19 @@ public class Service
   //------------------------
 
   //Service Attributes
-  private String description;
-  private int cost;
-  private double lengthInHours;
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private int id;
+  private String serviceName;
+  private double cost;
+  private double lengthInHours;
+
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Service(String aDescription, int aCost, double aLengthInHours)
+  public Service(String aServiceName, double aCost, double aLengthInHours)
   {
-    description = aDescription;
+    serviceName = aServiceName;
     cost = aCost;
     lengthInHours = aLengthInHours;
   }
@@ -33,15 +32,15 @@ public class Service
   // INTERFACE
   //------------------------
 
-  public boolean setDescription(String aDescription)
+  public boolean setServiceName(String aServiceName)
   {
     boolean wasSet = false;
-    description = aDescription;
+    serviceName = aServiceName;
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setCost(int aCost)
+  public boolean setCost(double aCost)
   {
     boolean wasSet = false;
     cost = aCost;
@@ -57,20 +56,14 @@ public class Service
     return wasSet;
   }
 
-  public boolean setId(int aId)
+
+
+  public String getServiceName()
   {
-    boolean wasSet = false;
-    id = aId;
-    wasSet = true;
-    return wasSet;
+    return serviceName;
   }
 
-  public String getDescription()
-  {
-    return description;
-  }
-
-  public int getCost()
+  public double getCost()
   {
     return cost;
   }
@@ -80,18 +73,13 @@ public class Service
     return lengthInHours;
   }
 
-  public int getId()
-  {
-    return id;
-  }
 
 
   public String toString()
   {
     return super.toString() + "["+
-            "description" + ":" + getDescription()+ "," +
+            "description" + ":" + getServiceName()+ "," +
             "cost" + ":" + getCost()+ "," +
-            "lengthInHours" + ":" + getLengthInHours()+ "," +
-            "id" + ":" + getId()+ "]";
+            "lengthInHours" + ":" + getLengthInHours()+ "," +"]";
   }
 }

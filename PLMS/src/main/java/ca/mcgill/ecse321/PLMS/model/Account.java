@@ -19,21 +19,17 @@ public abstract class Account
   //------------------------
 
   //Account Attributes
-  private String email;
+  @Id
+  private String email; // each account will be identified by a unique email address
   private String password;
   private String name;
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private int id;
 
   /**
    * Constructor of the Account abstract class
    * 
-   * @param aEmail
-   * @param aPassword
-   * @param aName
-   * @param aId
+   * @param aEmail - user's email
+   * @param aPassword - user's password
+   * @param aName - user's name
    */
   public Account(String aEmail, String aPassword, String aName)
   {
@@ -70,13 +66,7 @@ public abstract class Account
     return wasSet;
   }
 
-  public boolean setId(int aId)
-  {
-    boolean wasSet = false;
-    id = aId;
-    wasSet = true;
-    return wasSet;
-  }
+
 
   public String getEmail()
   {
@@ -93,10 +83,6 @@ public abstract class Account
     return name;
   }
 
-  public int getId()
-  {
-    return id;
-  }
 
 
   public String toString()
@@ -104,7 +90,6 @@ public abstract class Account
     return super.toString() + "["+
             "email" + ":" + getEmail()+ "," +
             "password" + ":" + getPassword()+ "," +
-            "name" + ":" + getName()+ "," +
-            "id" + ":" + getId()+ "]";
+            "name" + ":" + getName()+ "]";
   }
 }

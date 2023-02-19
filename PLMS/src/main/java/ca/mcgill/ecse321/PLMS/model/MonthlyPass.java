@@ -24,7 +24,7 @@ public class MonthlyPass extends Pass
   // CONSTRUCTOR
   //------------------------
 
-  public MonthlyPass(int aFee, String aSpotNumber, String aLicensePlate, Date aStartDate, Date aEndDate)
+  public MonthlyPass(double aFee, String aSpotNumber, String aLicensePlate, Date aStartDate, Date aEndDate)
   {
     super(aFee, aSpotNumber, aLicensePlate);
     startDate = aStartDate;
