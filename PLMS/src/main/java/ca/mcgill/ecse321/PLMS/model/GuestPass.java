@@ -36,10 +36,11 @@ public class GuestPass extends Pass
    * @param aStartTime - start time of pass
    * @param aEndTime - end time of pass
    * @param aIsLarge - specifies whether the spot is large or small
+   * @param aConfirmationCode - confirm code of the pass
    */
-  public GuestPass(double aFee, String aSpotNumber, String aLicensePlate, Date aDate, Time aStartTime, Time aEndTime, boolean aIsLarge)
+  public GuestPass(double aFee, String aSpotNumber, String aLicensePlate, Date aDate, Time aStartTime, Time aEndTime, boolean aIsLarge, String aConfirmationCode)
   {
-    super(aFee, aSpotNumber, aLicensePlate);
+    super(aFee, aSpotNumber, aLicensePlate, aConfirmationCode);
     date = aDate;
     startTime = aStartTime;
     endTime = aEndTime;

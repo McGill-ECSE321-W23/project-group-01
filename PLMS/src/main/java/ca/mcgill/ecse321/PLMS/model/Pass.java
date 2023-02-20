@@ -17,6 +17,7 @@ public abstract class Pass
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private String licensePlate;
+  private String confirmationCode;
 
   //Pass Associations
   @ManyToOne
@@ -26,11 +27,12 @@ public abstract class Pass
   // CONSTRUCTOR
   //------------------------
 
-  public Pass(double aFee, String aSpotNumber, String aLicensePlate)
+  public Pass(double aFee, String aSpotNumber, String aLicensePlate, String aConfirmationCode)
   {
     fee = aFee;
     spotNumber = aSpotNumber;
     licensePlate = aLicensePlate;
+    confirmationCode = aConfirmationCode;
   }
 
   //------------------------
@@ -41,6 +43,14 @@ public abstract class Pass
   {
     boolean wasSet = false;
     fee = aFee;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setConfirmationCode(String aConfirmationCode)
+  {
+    boolean wasSet = false;
+    confirmationCode = aConfirmationCode;
     wasSet = true;
     return wasSet;
   }
@@ -77,6 +87,10 @@ public abstract class Pass
   public String getSpotNumber()
   {
     return spotNumber;
+  }
+
+  public String getConfirmationCode(){
+    return confirmationCode;
   }
 
   public int getId()
