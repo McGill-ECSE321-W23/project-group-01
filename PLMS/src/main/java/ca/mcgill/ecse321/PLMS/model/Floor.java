@@ -25,6 +25,10 @@ public class Floor
   private int smallSpotCounter;
   private int largeSpotCounter;
 
+  // association to parking lot
+  @ManyToOne
+  private ParkingLot parkingLot;
+
  
   /**
    * Constructor of the floor class
@@ -32,12 +36,16 @@ public class Floor
    * @param aLargeSpotCapacity - how many large spots are on this floor
    * @param aSmallSpotCapacity - how small spots are on this floor
    */
-  public Floor(int aFloorNumber, int aLargeSpotCapacity, int aSmallSpotCapacity)
+  public Floor(int aFloorNumber, int aLargeSpotCapacity, int aSmallSpotCapacity, ParkingLot aParkingLot)
   {
     floorNumber = aFloorNumber;
     largeSpotCapacity = aLargeSpotCapacity;
     smallSpotCapacity = aSmallSpotCapacity;
     // initialize counters to 0 as no passes are associated with the floor upon creation
+    if (!setParkingLot(aParkingLot))
+    {
+      throw new RuntimeException("Unable to create Floor due to null ParkingLot");
+    }
     smallSpotCounter = 0;
     largeSpotCounter = 0;
   }
@@ -115,6 +123,21 @@ public class Floor
   public int getLargeSpotCounter()
   {
     return largeSpotCounter;
+  }
+
+  public boolean setParkingLot(ParkingLot aNewParkingLot)
+  {
+    boolean wasSet = false;
+    if (aNewParkingLot != null)
+    {
+      parkingLot = aNewParkingLot;
+      wasSet = true;
+    }
+    return wasSet;
+  }
+
+  public ParkingLot getParkingLot(){
+    return parkingLot;
   }
 
 
