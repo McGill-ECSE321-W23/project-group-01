@@ -67,7 +67,10 @@ public class Employee extends Account
     return hourlyWage;
   }
 
-
+ /**
+ * toString() helper method
+ * Helpful for debugging
+ */
   public String toString()
   {
     return super.toString() + "["+

@@ -66,8 +66,6 @@ public abstract class Account
     return wasSet;
   }
 
-
-
   public String getEmail()
   {
     return email;
@@ -83,8 +81,10 @@ public abstract class Account
     return name;
   }
 
-
-
+/**
+ * toString() helper method
+ * Helpful for debugging
+ */
   public String toString()
   {
     return super.toString() + "["+
