@@ -27,25 +27,6 @@ public class GuestPass extends Pass
   private Time endTime;
   private boolean isLarge;
 
-  /**
-   * Constructor for the guest pass class
-   * @param aFee - guest pass fee (based on lot fees specified by owner)
-   * @param aSpotNumber - spot number associated with this pass
-   * @param aLicensePlate - license plate of the car using the pass
-   * @param aDate - date on which pass is created
-   * @param aStartTime - start time of pass
-   * @param aEndTime - end time of pass
-   * @param aIsLarge - specifies whether the spot is large or small
-   * @param aConfirmationCode - confirm code of the pass
-   */
-  public GuestPass(double aFee, String aSpotNumber, String aLicensePlate, Date aDate, Time aStartTime, Time aEndTime, boolean aIsLarge, String aConfirmationCode)
-  {
-    super(aFee, aSpotNumber, aLicensePlate, aConfirmationCode);
-    date = aDate;
-    startTime = aStartTime;
-    endTime = aEndTime;
-    isLarge = aIsLarge;
-  }
 
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS

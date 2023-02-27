@@ -37,23 +37,6 @@ public class ServiceAppointment
   @ManyToOne
   private Service service;
 
-  /**
-   * Constructor of the service appointment class
-   * @param aDate - Date on which the service is performed
-   * @param aStartTime - Start time of the service
-   * @param aEndTime - End time of the service
-   * @param aService - type of service performed
-   */
-  public ServiceAppointment(Date aDate, Time aStartTime, Time aEndTime, Service aService)
-  {
-    date = aDate;
-    startTime = aStartTime;
-    endTime = aEndTime;
-    if (!setService(aService))
-    {
-      throw new RuntimeException("Unable to create ServiceAppointment due to null Service");
-    }
-  }
 
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS

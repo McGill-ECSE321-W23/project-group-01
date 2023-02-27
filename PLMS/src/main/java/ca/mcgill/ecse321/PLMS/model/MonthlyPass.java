@@ -27,22 +27,6 @@ public class MonthlyPass extends Pass
   @ManyToOne
   private MonthlyCustomer customer;
 
-  /**
-   * Constructor of monthly pass class invokes super class constructor
-   * @param aFee - fee of the monthly pass
-   * @param aSpotNumber - spot ID number
-   * @param aLicensePlate - License plate related to the pass
-   * @param aStartDate - start date of the pass subscription
-   * @param aEndDate - end date of the pass subscription
-   * @param aConfirmationCode - confirmation code related to payment
-   */
-  public MonthlyPass(double aFee, String aSpotNumber, String aLicensePlate, Date aStartDate, Date aEndDate, String aConfirmationCode)
-  {
-    super(aFee, aSpotNumber, aLicensePlate, aConfirmationCode);
-    startDate = aStartDate;
-    endDate = aEndDate;
-  }
-
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------

@@ -22,20 +22,6 @@ public class Employee extends Account
   private double hourlyWage;
 
   
-  /**
-   * Constructor for an employee account.
-   * @param aEmail - employee's email
-   * @param aPassword - password
-   * @param aName - employee's name
-   * @param aJobTitle - employee's job title
-   * @param aHourlyWage - employee's hourly wage
-   */
-  public Employee(String aEmail, String aPassword, String aName, String aJobTitle, double aHourlyWage)
-  {
-    super(aEmail, aPassword, aName);
-    jobTitle = aJobTitle;
-    hourlyWage = aHourlyWage;
-  }
 
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS

@@ -23,19 +23,6 @@ public class Service
   private double cost;
   private double lengthInHours;
 
-  /**
-   * Constructor of the service class
-   * @param aServiceName - title/brief description of the service
-   * @param aCost - cost per hour of the service in question
-   * @param aLengthInHours - duration required to perform the service
-   */
-  public Service(String aServiceName, double aCost, double aLengthInHours)
-  {
-    serviceName = aServiceName;
-    cost = aCost;
-    lengthInHours = aLengthInHours;
-  }
-
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------

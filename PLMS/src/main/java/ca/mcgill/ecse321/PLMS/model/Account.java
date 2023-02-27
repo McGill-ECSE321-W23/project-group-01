@@ -23,21 +23,6 @@ public abstract class Account
   private String email; // each account will be identified by a unique email address
   private String password;
   private String name;
-
-  /**
-   * Constructor of the Account abstract class
-   * 
-   * @param aEmail - user's email
-   * @param aPassword - user's password
-   * @param aName - user's name
-   */
-  public Account(String aEmail, String aPassword, String aName)
-  {
-    email = aEmail;
-    password = aPassword;
-    name = aName;
-  }
-
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------

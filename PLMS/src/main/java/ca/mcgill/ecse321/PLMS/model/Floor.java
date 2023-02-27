@@ -30,25 +30,7 @@ public class Floor
   private ParkingLot parkingLot;
 
  
-  /**
-   * Constructor of the floor class
-   * @param aFloorNumber - Floor number (also the ID of the floor)
-   * @param aLargeSpotCapacity - how many large spots are on this floor
-   * @param aSmallSpotCapacity - how small spots are on this floor
-   */
-  public Floor(int aFloorNumber, int aLargeSpotCapacity, int aSmallSpotCapacity, ParkingLot aParkingLot)
-  {
-    floorNumber = aFloorNumber;
-    largeSpotCapacity = aLargeSpotCapacity;
-    smallSpotCapacity = aSmallSpotCapacity;
-    // initialize counters to 0 as no passes are associated with the floor upon creation
-    if (!setParkingLot(aParkingLot))
-    {
-      throw new RuntimeException("Unable to create Floor due to null ParkingLot");
-    }
-    smallSpotCounter = 0;
-    largeSpotCounter = 0;
-  }
+
 
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
