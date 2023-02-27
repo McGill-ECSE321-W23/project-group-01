@@ -18,7 +18,8 @@ public class EmployeeRepositoryTest {
 
     @Test
     public void persistAndLoadEmployee1(){
-        Employee samer = new Employee("bllo", "bla","samer", "prez", 21);
+        Employee samer = new Employee();
+        samer.setEmail("bllo");
         repo.save(samer);
         assertEquals(repo.findEmployeeByEmail("bllo").getEmail(), "bllo");
     }
