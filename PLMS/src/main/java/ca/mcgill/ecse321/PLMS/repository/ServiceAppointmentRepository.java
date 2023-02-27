@@ -4,6 +4,6 @@ import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
 
 public interface ServiceAppointmentRepository extends CrudRepository<ServiceAppointment, Integer>{
 
-    ServiceAppointment findServiceAppointmentById(int id);
+    ServiceAppointment findServiceAppointmentById(Integer id);
     
 }
