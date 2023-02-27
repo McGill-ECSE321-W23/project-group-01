@@ -37,13 +37,6 @@ public abstract class Pass
    * @param aLicensePlate - License plate associated to the pass
    * @param aConfirmationCode - Confirmation number related to payment procedure
    */
-  public Pass(double aFee, String aSpotNumber, String aLicensePlate, String aConfirmationCode)
-  {
-    fee = aFee;
-    spotNumber = aSpotNumber;
-    licensePlate = aLicensePlate;
-    confirmationCode = aConfirmationCode;
-  }
 
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS

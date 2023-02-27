@@ -23,9 +23,5 @@ public class MonthlyCustomer extends Account
    * @param aPassword - password of the monthly customer
    * @param aName - name of the monthly customer
    */
-  public MonthlyCustomer(String aEmail, String aPassword, String aName)
-  {
-    super(aEmail, aPassword, aName);
-  }
 
 }

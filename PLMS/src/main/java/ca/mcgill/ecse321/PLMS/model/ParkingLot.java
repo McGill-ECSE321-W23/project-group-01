@@ -35,22 +35,6 @@ public class ParkingLot
   // CONSTRUCTOR
   //------------------------
 
-  /**
-   * Constructor of the parking lot class
-   * @param aOpeningTime - Opening hours all week of the parking lot
-   * @param aClosingTime - Closing hour all week of the parking lot
-   * @param aLargeSpotFee - Fee for large spots
-   * @param aSmallSpotFee - Fee for small spots
-   * @param aMonthlyFlatFee - Fee for monthly payment
-   */
-  public ParkingLot(Time aOpeningTime, Time aClosingTime, double aLargeSpotFee, double aSmallSpotFee, double aMonthlyFlatFee)
-  {
-    openingTime = aOpeningTime;
-    closingTime = aClosingTime;
-    largeSpotFee = aLargeSpotFee;
-    smallSpotFee = aSmallSpotFee;
-    monthlyFlatFee = aMonthlyFlatFee;
-  }
 
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS

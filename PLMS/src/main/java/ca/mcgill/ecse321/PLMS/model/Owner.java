@@ -17,16 +17,6 @@ public class Owner extends Account
   // MEMBER VARIABLES (all belong to the super class account)
   //------------------------
 
-  /**
-   * Constructor of owner class invokes super class constructor
-   * @param aEmail - email of the owner
-   * @param aPassword - password of the owner
-   * @param aName - name of the owner
-   */
-  public Owner(String aEmail, String aPassword, String aName)
-  {
-    super(aEmail, aPassword, aName);
-  }
 
 
 
