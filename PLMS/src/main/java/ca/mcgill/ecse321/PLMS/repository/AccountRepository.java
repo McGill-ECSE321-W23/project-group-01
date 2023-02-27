@@ -9,18 +9,8 @@ public interface AccountRepository extends CrudRepository<Account, String>{
 	 * @param email
 	 * @return Account found
 	 */
-    Account findAccountByEmail(String email);
+    public Account findAccountByEmail(String email);
 
-    /**
-	 * @return all accounts
-	 */
-    List<Account> findAll();
-
-    /**
-	 * Delete the account with the given email
-	 * @param email
-	 */
-    void deleteAccountByEmail(String email);
 
     
 }

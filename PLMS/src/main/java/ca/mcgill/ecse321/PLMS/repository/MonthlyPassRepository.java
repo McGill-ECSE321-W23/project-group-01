@@ -4,6 +4,6 @@ import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
 
 public interface MonthlyPassRepository extends CrudRepository<MonthlyPass, Integer>{
 
-    MonthlyPass findMonthlyPassById(Integer id);
+    public MonthlyPass findMonthlyPassById(Integer id);
     
 }

@@ -4,6 +4,6 @@ import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 
 public interface MonthlyCustomerRepository extends CrudRepository<MonthlyCustomer, String>{
 
-    MonthlyCustomer findMonthlyCustomerByEmail(String email);
+    public MonthlyCustomer findMonthlyCustomerByEmail(String email);
     
 }

@@ -4,6 +4,6 @@ import ca.mcgill.ecse321.PLMS.model.Employee;
 
 public interface EmployeeRepository extends CrudRepository<Employee, String>{
 
-    Employee findEmployeeByEmail(String email);
+    public Employee findEmployeeByEmail(String email);
     
 }

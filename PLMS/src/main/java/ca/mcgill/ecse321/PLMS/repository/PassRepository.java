@@ -9,17 +9,5 @@ public interface PassRepository extends CrudRepository<Pass, Integer>{
 	 * @param id
 	 * @return Pass found
 	 */
-    Pass findPassById(Integer id);
-
-    /**
-	 * @return all passes
-	 */
-    List<Pass> findAll();
-
-    /**
-	 * Delete the pass with the given id
-	 * @param id
-	 */
-    void deletePassById(Integer id);
-
+    public Pass findPassById(Integer id);
 }

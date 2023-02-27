@@ -4,6 +4,6 @@ import ca.mcgill.ecse321.PLMS.model.Owner;
 
 public interface OwnerRepository extends CrudRepository<Owner, String>{
 
-    Owner findOwnerByEmail(String Email);
+    public Owner findOwnerByEmail(String Email);
     
 }

@@ -4,6 +4,6 @@ import ca.mcgill.ecse321.PLMS.model.Service;
 
 public interface ServiceRepository extends CrudRepository<Service, String>{
 
-    Service findServiceByServiceName(String serviceName);
+    public Service findServiceByServiceName(String serviceName);
     
 }
