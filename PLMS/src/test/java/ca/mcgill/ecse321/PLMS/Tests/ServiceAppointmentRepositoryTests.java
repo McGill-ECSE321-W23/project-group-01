@@ -44,7 +44,7 @@ public class ServiceAppointmentRepositoryTests {
     }
 
     @Test
-    public void testPersistAndLoadGuestPass(){
+    public void testPersistAndLoadServiceAppointment(){
         //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
         //normal parameters
         Date date = Date.valueOf("2023-02-21");

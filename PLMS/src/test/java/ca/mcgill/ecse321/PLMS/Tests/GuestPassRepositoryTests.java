@@ -21,7 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class GuestPassRepositoryTests {
-
     @Autowired
     private GuestPassRepository guestPassRepository;
     @Autowired
@@ -72,6 +71,7 @@ public class GuestPassRepositoryTests {
         parkingLot.setSmallSpotFee(smallSpotFee);
         parkingLot.setMonthlyFlatFee(monthlyFlatFee);
         //Save parking lot
+        parkingLot = parkingLotRepository.save(parkingLot);
         parkingLot = parkingLotRepository.findParkingLotById(parkingLot.getId());
         int parkingLotId = parkingLot.getId();
         //---------------//
@@ -84,7 +84,7 @@ public class GuestPassRepositoryTests {
         mainFloor.setSmallSpotCapacity(smallSpotCapacity);
         mainFloor.setParkingLot(parkingLot);
         //Save floor
-        mainFloor = floorRepository.findFloorById(mainFloor.getId());
+        mainFloor = floorRepository.save(mainFloor);
         int floorId = mainFloor.getId();
         //---------------------------//
 
@@ -103,9 +103,7 @@ public class GuestPassRepositoryTests {
         guestPass.setFloor(mainFloor);
 
         //=-=-=-=-=-=- Save guest pass -=-=-=-=-=-=//
-        guestPass = guestPassRepository.save(guestPass);
-        mainFloor = floorRepository.save(mainFloor);
-
+        guestPassRepository.save(guestPass);
         int id = guestPass.getId();
 
         //=-=-=-=-=-=- Read guest pass -=-=-=-=-=-=//

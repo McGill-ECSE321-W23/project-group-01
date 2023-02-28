@@ -31,13 +31,6 @@ public abstract class Pass
   @ManyToOne
   private Floor floor;
 
-  /**
-   * Constructor of the pass abstract class
-   * @param aFee - fee of the pass
-   * @param aSpotNumber - spot ID number
-   * @param aLicensePlate - License plate associated to the pass
-   * @param aConfirmationCode - Confirmation number related to payment procedure
-   */
 
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
@@ -67,13 +60,6 @@ public abstract class Pass
     return wasSet;
   }
 
-  public boolean setId(int aId)
-  {
-    boolean wasSet = false;
-    id = aId;
-    wasSet = true;
-    return wasSet;
-  }
 
   public boolean setLicensePlate(String aLicensePlate)
   {

@@ -24,7 +24,7 @@ public class MonthlyCustomerRepositoryTests {
     }
 
     @Test
-    public void testPersistAndLoadGuestPass(){
+    public void testPersistAndLoadMonthlyCustomer(){
         //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
         String email = "example@email.com";
         String password = "PassWord123!";
