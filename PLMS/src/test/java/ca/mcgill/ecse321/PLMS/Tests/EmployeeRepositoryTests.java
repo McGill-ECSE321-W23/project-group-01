@@ -49,7 +49,7 @@ public class EmployeeRepositoryTests {
         assertEquals(email, jeff.getEmail());
         assertEquals(password, jeff.getPassword());
         assertEquals(name, jeff.getName());
-        assertEquals(jobDescription, jeff.getJobDescription());
+        assertEquals(jobDescription, jeff.getJobTitle());
         assertEquals(hourlyWage, jeff.getHourlyWage());
     }
 }

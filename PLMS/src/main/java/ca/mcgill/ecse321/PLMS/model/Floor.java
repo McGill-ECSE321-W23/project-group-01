@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.PLMS.model;
 
 import jakarta.persistence.*;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 
 /**
  * Class that is part of the domain model of the Parking Lot Management System (PLMS)
@@ -19,6 +20,8 @@ public class Floor
 
   //Floor Attributes
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int id;
   private int floorNumber; // each floor is uniquely identified by its floor number
   private int largeSpotCapacity;
   private int smallSpotCapacity;
@@ -76,9 +79,8 @@ public class Floor
     return wasSet;
   }
 
-  /**
-   * also the floor ID
-   */
+  public int getId() { return id; }
+
   public int getFloorNumber()
   {
     return floorNumber;

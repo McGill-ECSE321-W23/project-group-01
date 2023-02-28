@@ -42,7 +42,7 @@ public abstract class Pass
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------
 
-  public boolean setFee(int aFee)
+  public boolean setFee(double aFee)
   {
     boolean wasSet = false;
     fee = aFee;

@@ -84,12 +84,12 @@ public class ServiceAppointmentRepositoryTests {
         double serviceLengthInHours = 0.5;
         Service service = new Service();
         //Set all parameters
-        service.setDescription(serviceDesciption);
+        service.setServiceName(serviceDesciption);
         service.setCost(seviceCost);
         service.setLengthInHours(serviceLengthInHours);
         //Save service
         service = serviceRepository.save(service);
-        int serviceId = service.getId();
+        String serviceId = service.getServiceName();
         //--------------------------------//
 
         ServiceAppointment serviceAppointment = new ServiceAppointment();
@@ -117,6 +117,6 @@ public class ServiceAppointmentRepositoryTests {
 
         assertEquals(employeeEmail, serviceAppointment.getEmployee().getEmail());
         assertEquals(mCustomerEmail, serviceAppointment.getCustomer().getEmail());
-        assertEquals(serviceId, serviceAppointment.getService().getId());
+        assertEquals(serviceId, serviceAppointment.getService().getServiceName());
     }
 }
