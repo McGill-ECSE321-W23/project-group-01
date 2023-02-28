@@ -26,7 +26,7 @@ public class MonthlyCustomerRepositoryTests {
     @Test
     public void testPersistAndLoadMonthlyCustomer(){
         //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
-        String email = "example@email.com";
+        String email = "example@email.com"; //BLOO
         String password = "PassWord123!";
         String name = "Kirby";
         
