@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.sql.Time;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,11 +18,13 @@ import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 
 @SpringBootTest
 public class FloorRepositoryTests {
+
     @Autowired
     private FloorRepository floorRepository;
     @Autowired
     private ParkingLotRepository parkingLotRepository;
 
+    @BeforeEach
     @AfterEach
     public void clearDataBase(){
         floorRepository.deleteAll();
@@ -59,8 +62,8 @@ public class FloorRepositoryTests {
         
         //Set all the attributes
         mainFloor.setFloorNumber(floorNumber);
-        mainFloor.setLargeSpotCounter(largeSpotCapacity);
-        mainFloor.setSmallSpotCounter(smallSpotCapacity);
+        mainFloor.setLargeSpotCapacity(largeSpotCapacity);
+        mainFloor.setSmallSpotCapacity(smallSpotCapacity);
 
         mainFloor.setParkingLot(parkingLot);
 

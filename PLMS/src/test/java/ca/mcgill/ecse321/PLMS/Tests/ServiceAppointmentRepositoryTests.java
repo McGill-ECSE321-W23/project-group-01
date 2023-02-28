@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +19,9 @@ import ca.mcgill.ecse321.PLMS.repository.EmployeeRepository;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
 import ca.mcgill.ecse321.PLMS.repository.ServiceAppointmentRepository;
 import ca.mcgill.ecse321.PLMS.repository.ServiceRepository;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 public class ServiceAppointmentRepositoryTests {
     @Autowired
     private ServiceAppointmentRepository serviceAppointmentRepository;
@@ -30,6 +33,7 @@ public class ServiceAppointmentRepositoryTests {
     @Autowired
     private ServiceRepository serviceRepository;
 
+    @BeforeEach
     @AfterEach
     public void clearDataBase(){
         serviceAppointmentRepository.deleteAll();

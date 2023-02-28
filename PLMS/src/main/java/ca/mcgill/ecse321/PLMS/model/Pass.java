@@ -20,6 +20,7 @@ public abstract class Pass
   //Pass Attributes
   private double fee;
   private String spotNumber;
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;

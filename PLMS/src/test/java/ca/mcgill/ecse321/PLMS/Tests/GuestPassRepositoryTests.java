@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,8 +17,11 @@ import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
 import ca.mcgill.ecse321.PLMS.repository.GuestPassRepository;
 import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 public class GuestPassRepositoryTests {
+
     @Autowired
     private GuestPassRepository guestPassRepository;
     @Autowired
@@ -25,6 +29,7 @@ public class GuestPassRepositoryTests {
     @Autowired
     private ParkingLotRepository parkingLotRepository;
 
+    @BeforeEach
     @AfterEach
     public void clearDataBase(){
         guestPassRepository.deleteAll();
@@ -67,7 +72,7 @@ public class GuestPassRepositoryTests {
         parkingLot.setSmallSpotFee(smallSpotFee);
         parkingLot.setMonthlyFlatFee(monthlyFlatFee);
         //Save parking lot
-        parkingLot = parkingLotRepository.save(parkingLot);
+        parkingLot = parkingLotRepository.findParkingLotById(parkingLot.getId());
         int parkingLotId = parkingLot.getId();
         //---------------//
         
@@ -75,11 +80,11 @@ public class GuestPassRepositoryTests {
         Floor mainFloor = new Floor();
         //Set all the attributes
         mainFloor.setFloorNumber(floorNumber);
-        mainFloor.setLargeSpotCounter(largeSpotCapacity);
-        mainFloor.setSmallSpotCounter(smallSpotCapacity);
+        mainFloor.setLargeSpotCapacity(largeSpotCapacity);
+        mainFloor.setSmallSpotCapacity(smallSpotCapacity);
         mainFloor.setParkingLot(parkingLot);
         //Save floor
-        mainFloor = floorRepository.save(mainFloor);
+        mainFloor = floorRepository.findFloorById(mainFloor.getId());
         int floorId = mainFloor.getId();
         //---------------------------//
 
@@ -99,6 +104,8 @@ public class GuestPassRepositoryTests {
 
         //=-=-=-=-=-=- Save guest pass -=-=-=-=-=-=//
         guestPass = guestPassRepository.save(guestPass);
+        mainFloor = floorRepository.save(mainFloor);
+
         int id = guestPass.getId();
 
         //=-=-=-=-=-=- Read guest pass -=-=-=-=-=-=//
