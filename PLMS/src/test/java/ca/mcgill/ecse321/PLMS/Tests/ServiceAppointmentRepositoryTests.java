@@ -92,7 +92,6 @@ public class ServiceAppointmentRepositoryTests {
         int serviceId = service.getId();
         //--------------------------------//
 
-
         ServiceAppointment serviceAppointment = new ServiceAppointment();
         
         //Set all parameters

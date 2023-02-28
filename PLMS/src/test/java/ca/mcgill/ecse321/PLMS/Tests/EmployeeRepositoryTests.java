@@ -23,7 +23,7 @@ public class EmployeeRepositoryTests {
 
     @Test
     public void testPersistAndLoadEmployee(){
-        //Create object
+        //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
         String email = "jeff.jeff@jeff.com";
         String password = "PasswordSuperSecured12345";
         String name = "Jeff";
@@ -37,14 +37,14 @@ public class EmployeeRepositoryTests {
         jeff.setJobDescription(jobDescription);
         jeff.setHourlyWage(hourlyWage);
 
-        //Save object
+        //=-=-=-=-=-=- Save employee -=-=-=-=-=-=//
         jeff = employeeRepository.save(jeff);
         String emailOfJeff = jeff.getEmail();
 
-        //Read object from database
+        //=-=-=-=-=-=- Read employee -=-=-=-=-=-=//
         jeff = employeeRepository.findEmployeeByEmail(emailOfJeff);
 
-        //Asserts to check correct attributes
+        //=-=-=-=-=-=- Asserts -=-=-=-=-=-=//
         assertNotNull(jeff);
         assertEquals(email, jeff.getEmail());
         assertEquals(password, jeff.getPassword());
