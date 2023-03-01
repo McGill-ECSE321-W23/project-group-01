@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
-import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepositoryTests;
+import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 import org.springframework.boot.test.context.SpringBootTest;
 
 public class ParkingLotRepositoryTests {
@@ -45,7 +45,7 @@ public class ParkingLotRepositoryTests {
         parkingLot.setMonthlyFlatFee(monthlyFlatFee);
 
         //Save service
-        parkingLot = parkingLotRepository.save(service);
+        parkingLot = parkingLotRepository.save(parkingLot);
         int parkingLotId = parkingLot.getId();
         //--------------------------------//
 
@@ -55,10 +55,10 @@ public class ParkingLotRepositoryTests {
 
         //=-=-=-=-=-=- Asserts -=-=-=-=-=-=//
         assertNotNull(parkingLot);
-        assertEquals(openingTime, parkingLot.getOpeningTime);
-        assertEquals(closingTime, parkingLot.getClosingTime);
-        assertEquals(smallSpotFee, parkingLot.getSmallSpotFee);
-        assertEquals(largeSpotFee, parkingLot.getLargeSpotFee);
-        assertEquals(monthlyFlatFee,parkingLot.getMonthlyFlatFee);
+        assertEquals(openingTime, parkingLot.getOpeningTime());
+        assertEquals(closingTime, parkingLot.getClosingTime());
+        assertEquals(smallSpotFee, parkingLot.getSmallSpotFee());
+        assertEquals(largeSpotFee, parkingLot.getLargeSpotFee());
+        assertEquals(monthlyFlatFee,parkingLot.getMonthlyFlatFee());
     } 
 }
