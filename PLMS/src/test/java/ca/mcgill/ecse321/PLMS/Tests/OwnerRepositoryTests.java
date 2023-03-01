@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.mcgill.ecse321.PLMS.model.Owner;
-import ca.mcgill.ecse321.PLMS.repository.Owner;
+import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
 
 @SpringBootTest
 public class OwnerRepositoryTests {
