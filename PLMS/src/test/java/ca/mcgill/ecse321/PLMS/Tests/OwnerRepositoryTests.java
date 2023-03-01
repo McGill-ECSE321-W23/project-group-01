@@ -24,7 +24,7 @@ public class OwnerRepositoryTests {
     }
 
     @Test
-    public void testPersistAndLoadEmployee(){
+    public void testPersistAndLoadOwner(){
         //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
         String email = "teta.saniya@teta.com";
         String password = "PasswordSoSuperSecured12345";
