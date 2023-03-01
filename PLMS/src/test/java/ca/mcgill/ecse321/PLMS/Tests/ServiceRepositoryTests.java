@@ -1,4 +1,3 @@
-
 package ca.mcgill.ecse321.PLMS.Tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,14 +10,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import ca.mcgill.ecse321.PLMS.model.Employee;
-import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.Service;
-import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
-import ca.mcgill.ecse321.PLMS.repository.EmployeeRepository;
-import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
-import ca.mcgill.ecse321.PLMS.repository.ServiceAppointmentRepository;
 import ca.mcgill.ecse321.PLMS.repository.ServiceRepository;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -39,14 +31,14 @@ public class ServiceRepositoryTests {
 
         //Normal parameters
         String serviceName = "30 min Car Wash";
-        int seviceCost = 30;
+        int serviceCost = 30;
         double serviceLengthInHours = 0.5;
         Service service = new Service();
         //--------------------------------//
 
         //Set all parameters
         service.setServiceName(serviceName);
-        service.setCost(seviceCost);
+        service.setCost(serviceCost);
         service.setLengthInHours(serviceLengthInHours);
 
         //Save service
@@ -56,12 +48,12 @@ public class ServiceRepositoryTests {
 
 
         //=-=-=-=-=-=- Read service appointement -=-=-=-=-=-=//
-        service = serviceRepository.findServiceById(serviceId);
+        service = serviceRepository.findServiceByServiceName(serviceId);
 
         //=-=-=-=-=-=- Asserts -=-=-=-=-=-=//
         assertNotNull(service);
         assertEquals(serviceName, service.getServiceName());
-        assertEquals(serviceCost, service.getServiceCost());
-        assertEquals(serviceLengthInHours, service.getServiceLengthInHours());
+        assertEquals(serviceCost, service.getCost());
+        assertEquals(serviceLengthInHours, service.getLengthInHours());
     }
 }
