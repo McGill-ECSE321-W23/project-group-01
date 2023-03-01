@@ -14,6 +14,7 @@ import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 public class ParkingLotRepositoryTests {
     @Autowired
     private ParkingLotRepository parkingLotRepository;
@@ -25,7 +26,7 @@ public class ParkingLotRepositoryTests {
     }
 
     @Test
-    public void testPersistAndLoadService(){
+    public void testPersistAndLoadParkingLot(){
         //=-=-=-=-=-=- Create Service object -=-=-=-=-=-=//
 
         //Normal parameters
