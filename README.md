@@ -8,9 +8,9 @@ Most Importantly, the system was designed to be adaptable and scalable to accomm
 
 The software system was designed to respond to a set of requirements specified by the client through a description which was translated into a set of 15 system requirements (10 functional and 5 functional) which can be seen through the GitHub issues. 
 
-## Group 1: 
+## Group 1 Members and Sprint Contributions 
 
-| Teammates |	Program | GitHub |
+| Team Member |	Program | GitHub |
 | --- | --- | --- |
 | Evan Boyd | Software Engineering  | <a href="https://github.com/evanboyd31" target="_blank">evanboyd31</a> |
 | Samer Abdulkarim | Computer Engineering | <a href="https://github.com/samerrak" target="_blank">samerrak</a> |
@@ -19,12 +19,11 @@ The software system was designed to respond to a set of requirements specified b
 | Karim Al Sabbagh | Mechanical Engineering (Software Engineering Minor)  |  <a href="https://github.com/karimosabbagh" target="_blank">karimosabbagh</a>  |
 | Karl Bridi	| Software Engineering | <a href="https://github.com/Kalamar136" target="_blank">Kalamar136</a>   |
 
-Deliverable 1 individual efforts: 
+### Deliverable 1 individual efforts: 
 
-### Total number of hours 
-| Name | Contributions | Hours |
+| Name | Contributions | Total Hours |
 | --- | --- | --- |
-| Evan Boyd | Domain model design & documentation, Requirements Specification, FRS-10 Use Case Diagram, Persistence Layer  |    |
+| Evan Boyd | Domain model design & documentation, requirements specification, FRS-10 use case diagram, persistence layer  |    |
 | Samer Abdulkarim |   |   |
 | Emilien Taisne |   |   |
 | Walid Aissa |   |    |
