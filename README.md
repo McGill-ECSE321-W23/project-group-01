@@ -8,7 +8,7 @@ Most Importantly, the system was designed to be adaptable and scalable to accomm
 
 The software system was designed to respond to a set of requirements specified by the client through a description which was translated into a set of 15 system requirements (10 functional and 5 functional) which can be seen through the GitHub issues. 
 
-## Group 1 Members and Sprint Contributions 
+## Group 1 Members and roles
 
 | Team Member |	Program | GitHub |
 | --- | --- | --- |
@@ -19,7 +19,7 @@ The software system was designed to respond to a set of requirements specified b
 | Karim Al Sabbagh | Mechanical Engineering (Software Engineering Minor)  |  <a href="https://github.com/karimosabbagh" target="_blank">karimosabbagh</a>  |
 | Karl Bridi	| Software Engineering | <a href="https://github.com/Kalamar136" target="_blank">Kalamar136</a>   |
 
-### Deliverable 1 individual efforts: 
+### Sprint 1 individual efforts: 
 
 | Name | Contributions | Total Hours |
 | --- | --- | --- |
@@ -28,7 +28,7 @@ The software system was designed to respond to a set of requirements specified b
 | Emilien Taisne |   |   |
 | Walid Aissa |   |    |
 | Karim Al Sabbagh |   |   |
-| Karl Bridi |   |    |
+| Karl Bridi | Domain model design & documentation, requirements specifications, FRS-1 use case diagram |    |
 
  
 
