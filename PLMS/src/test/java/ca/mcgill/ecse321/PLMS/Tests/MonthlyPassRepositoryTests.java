@@ -64,6 +64,6 @@ public class MonthlyPassRepositoryTests {
         assertNotNull(monthlyPass);
         assertEquals(startDate, monthlyPass.getStartDate());
         assertEquals(endDate, monthlyPass.getEndDate());
-        assertEquals(email, monthlyCustomer.getEmail());
+        assertEquals(emailInDatabase, monthlyPass.getCustomer().getEmail());
     }
 }

@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.PLMS.model;
 
 import jakarta.persistence.*;
-import org.springframework.boot.autoconfigure.web.WebProperties;
 
 /**
  * Class that is part of the domain model of the Parking Lot Management System (PLMS)
