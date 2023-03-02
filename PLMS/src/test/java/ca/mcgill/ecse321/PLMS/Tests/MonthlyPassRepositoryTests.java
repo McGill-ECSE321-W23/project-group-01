@@ -3,6 +3,8 @@ package ca.mcgill.ecse321.PLMS.Tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.sql.Date;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,8 +62,8 @@ public class MonthlyPassRepositoryTests {
 
         //=-=-=-=-=-=- Asserts -=-=-=-=-=-=//
         assertNotNull(monthlyPass);
-        assertEquals(startDate, monthlyCustomer.getStartDate());
-        assertEquals(endDate, monthlyCustomer.getEndDate());
+        assertEquals(startDate, monthlyPass.getStartDate());
+        assertEquals(endDate, monthlyPass.getEndDate());
         assertEquals(email, monthlyCustomer.getEmail());
     }
 }
