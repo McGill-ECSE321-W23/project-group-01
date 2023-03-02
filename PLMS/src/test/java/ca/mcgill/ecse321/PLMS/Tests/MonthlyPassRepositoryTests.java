@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
+import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
+import ca.mcgill.ecse321.PLMS.repository.MonthlyPassRepository;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
@@ -27,7 +29,7 @@ public class MonthlyPassRepositoryTests {
     }    
 
     @Test
-    public void testPersistAndLoadMonthlyCustomer(){
+    public void testPersistAndLoadMonthlyPass(){
         //=-=-=-=-=-=- Create MonthlyPass -=-=-=-=-=-=//
         Date startDate = Date.valueOf("2023-02-21");
         Date endDate = Date.valueOf("2023-04-21");
