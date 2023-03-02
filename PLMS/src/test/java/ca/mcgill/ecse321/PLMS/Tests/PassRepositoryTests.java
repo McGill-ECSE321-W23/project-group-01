@@ -12,11 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ca.mcgill.ecse321.PLMS.model.Floor;
-import ca.mcgill.ecse321.PLMS.model.GuestPass;
-import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.model.Pass;
 import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
-import ca.mcgill.ecse321.PLMS.repository.GuestPassRepository;
 import ca.mcgill.ecse321.PLMS.repository.PassRepository;
 
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,14 +21,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class PassRepositoryTests {
     @Autowired
-    private GuestPassRepository guestPassRepository;
+    private PassRepository passRepository;
     @Autowired
     private FloorRepository floorRepository;
 
     @BeforeEach
     @AfterEach
     public void clearDataBase(){
-        guestPassRepository.deleteAll();
+        passRepository.deleteAll();
 
         floorRepository.deleteAll();
     }
@@ -50,7 +47,6 @@ public class PassRepositoryTests {
         int largeSpotCapacity = 15;
         int smallSpotCapacity = 60;
         Floor mainFloor = new Floor();
-        ParkingLot parkingLot = new ParkingLot();
 
         //Set all the attributes
         mainFloor.setFloorNumber(floorNumber);
@@ -64,30 +60,30 @@ public class PassRepositoryTests {
         //---------------------------//
 
         //Create Pass
-        GuestPass guestPass = new GuestPass();
+        Pass pass = new Pass();
 
         //Set all parameters
-        guestPass.setFee(fee);
-        guestPass.setSpotNumber(spotNumber);
-        guestPass.setLicensePlate(licensePlate);
-        guestPass.setConfirmationCode(confirmationCode);
+        pass.setFee(fee);
+        pass.setSpotNumber(spotNumber);
+        pass.setLicensePlate(licensePlate);
+        pass.setConfirmationCode(confirmationCode);
 
-        guestPass.setFloor(mainFloor);
+        pass.setFloor(mainFloor);
 
         //=-=-=-=-=-=- Save guest pass -=-=-=-=-=-=//
-        guestPassRepository.save(guestPass);
-        int id = guestPass.getId();
+        passRepository.save(guestPass);
+        int id = pass.getId();
     
         //=-=-=-=-=-=- Read guest pass -=-=-=-=-=-=//
-        guestPass = guestPassRepository.findGuestPassById(id);
+        pass = passRepository.findPassById(id);
 
         //=-=-=-=-=-=- Asserts -=-=-=-=-=-=//
-        assertNotNull(guestPass);
-        assertEquals(fee, guestPass.getFee());
-        assertEquals(spotNumber, guestPass.getSpotNumber());
-        assertEquals(licensePlate, guestPass.getLicensePlate());
-        assertEquals(confirmationCode, guestPass.getConfirmationCode());
+        assertNotNull(pass);
+        assertEquals(fee, pass.getFee());
+        assertEquals(spotNumber, pass.getSpotNumber());
+        assertEquals(licensePlate, pass.getLicensePlate());
+        assertEquals(confirmationCode, pass.getConfirmationCode());
 
-        assertEquals(floorId, guestPass.getFloor().getId());
+        assertEquals(floorId, pass.getFloor().getId());
     }
 }
