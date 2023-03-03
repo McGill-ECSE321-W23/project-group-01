@@ -12,6 +12,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ca.mcgill.ecse321.PLMS.model.*;
 import ca.mcgill.ecse321.PLMS.repository.*;
 
+/**
+ * Testing suite for the persistence of the Employee class in the PLMS software system
+ * Tests ensure that attributes, references and the instance itself can be read and written
+ * in the persistence database
+ */
 @SpringBootTest
 public class EmployeeRepositoryTests {
     @Autowired

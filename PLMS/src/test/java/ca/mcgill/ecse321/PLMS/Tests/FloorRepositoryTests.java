@@ -16,6 +16,11 @@ import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
 import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 
+/**
+ * Testing suite for the persistence of the Floor class in the PLMS software system
+ * Tests ensure that attributes, references and the instance itself can be read and written
+ * in the persistence database
+ */
 @SpringBootTest
 public class FloorRepositoryTests {
 

@@ -21,6 +21,11 @@ import ca.mcgill.ecse321.PLMS.repository.PassRepository;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
+/**
+ * Testing suite for the persistence of the Pass class in the PLMS software system
+ * Tests ensure that attributes, references and the instance itself can be read and written
+ * in the persistence database
+ */
 @SpringBootTest
 public class PassRepositoryTests {
     @Autowired
@@ -170,11 +175,11 @@ public class PassRepositoryTests {
         
         pass.setFloor(mainFloor);
 
-        //=-=-=-=-=-=- Save guest pass -=-=-=-=-=-=//
+        //=-=-=-=-=-=- Save monthly pass -=-=-=-=-=-=//
         passRepository.save(pass);
         int id = pass.getId();
     
-        //=-=-=-=-=-=- Read guest pass -=-=-=-=-=-=//
+        //=-=-=-=-=-=- Read monthly pass -=-=-=-=-=-=//
         pass = (MonthlyPass) passRepository.findPassById(id);
 
         //=-=-=-=-=-=- Asserts -=-=-=-=-=-=//

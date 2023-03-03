@@ -10,6 +10,11 @@ import ca.mcgill.ecse321.PLMS.model.Service;
 import ca.mcgill.ecse321.PLMS.repository.ServiceRepository;
 import org.springframework.boot.test.context.SpringBootTest;
 
+/**
+ * Testing suite for the persistence of the Service class in the PLMS software system
+ * Tests ensure that attributes, references and the instance itself can be read and written
+ * in the persistence database
+ */
 @SpringBootTest
 public class ServiceRepositoryTests {
     @Autowired
