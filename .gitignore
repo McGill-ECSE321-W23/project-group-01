@@ -1,7 +1,7 @@
 HELP.md
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
+PLMS/.gradle
+PLMS/build/
+!PLMS/gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
@@ -27,11 +27,11 @@ out/
 !**/src/test/**/out/
 
 ### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+/PLMS/nbproject/private/
+/PLMS/nbbuild/
+/PLMS/dist/
+/PLMS/nbdist/
+/PLMS/.nb-gradle/
 
 ### VS Code ###
 .vscode/
