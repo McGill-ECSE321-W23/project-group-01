@@ -57,8 +57,6 @@ public class AccountRepositoryTests {
         String eEmail = "hello123@hi.com";
         String ePassword = "weeeee";
         String eName = "Samer";
-        String eTitle = "Car wash";
-        double hourlyWage = 8.5;
 
         Account employee = new Employee();
         //Set all parameters

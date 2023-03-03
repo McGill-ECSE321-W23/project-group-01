@@ -4,6 +4,11 @@ import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 
 public interface ParkingLotRepository extends CrudRepository<ParkingLot, Integer>{
 
-    public ParkingLot findParkingLotById(Integer id);
+    /**
+     * Finds the parking lot based on the ID of the parking lot
+     * @param id - id of the lot
+     * @return ParkingLot with id id
+     */
+    public ParkingLot findParkingLotById(int id);
     
 }

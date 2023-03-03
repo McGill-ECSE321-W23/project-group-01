@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.PLMS.Tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.sql.Date;
 import java.sql.Time;
 
 import org.junit.jupiter.api.AfterEach;
@@ -126,8 +125,6 @@ public class PassRepositoryTests {
         //Normal parameters
         Time openingTime = Time.valueOf("6:00:00");
         Time closingTime = Time.valueOf("22:00:00");
-        Date startDate = Date.valueOf("2023-03-01");
-        Date endDate = Date.valueOf("2023-09-01");
         double smallSpotFee = 3.5;
         double largeSpotFee = 4.5;
         double monthlyFlatFee = 150;

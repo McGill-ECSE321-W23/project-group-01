@@ -4,7 +4,7 @@ import ca.mcgill.ecse321.PLMS.model.Account;
 
 public interface AccountRepository extends CrudRepository<Account, String>{
 
-     /**
+  /**
 	 * Find an account by email
 	 * @param email
 	 * @return Account found
