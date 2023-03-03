@@ -63,7 +63,7 @@ public class ServiceAppointmentRepositoryTests {
         employeeJeff.setEmail(employeeEmail);
         employeeJeff.setPassword(employeePassword);
         employeeJeff.setName(employeeName);
-        employeeJeff.setJobDescription(employeeJobDescription);
+        employeeJeff.setJobTitle(employeeJobDescription);
         employeeJeff.setHourlyWage(employeeHourlyWage);
         //Save employee
         employeeRepository.save(employeeJeff);
