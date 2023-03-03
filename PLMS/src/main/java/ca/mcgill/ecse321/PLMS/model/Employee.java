@@ -27,7 +27,7 @@ public class Employee extends Account
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------
 
-  public boolean setJobDescription(String aJobTitle)
+  public boolean setJobTitle(String aJobTitle)
   {
     boolean wasSet = false;
     jobTitle = aJobTitle;
@@ -35,7 +35,7 @@ public class Employee extends Account
     return wasSet;
   }
 
-  public boolean setHourlyWage(int aHourlyWage)
+  public boolean setHourlyWage(double aHourlyWage)
   {
     boolean wasSet = false;
     hourlyWage = aHourlyWage;

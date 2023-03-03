@@ -36,7 +36,7 @@ public class EmployeeRepositoryTests {
         jeff.setEmail(email);
         jeff.setPassword(password);
         jeff.setName(name);
-        jeff.setJobDescription(jobDescription);
+        jeff.setJobTitle(jobDescription);
         jeff.setHourlyWage(hourlyWage);
 
         //=-=-=-=-=-=- Save employee -=-=-=-=-=-=//
