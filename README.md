@@ -21,14 +21,14 @@ The software system was designed to respond to a set of requirements specified b
 
 ### Sprint 1 individual efforts: 
 
-| Name | Contributions | Total Hours |
-| --- | --- | --- |
-| Evan Boyd | Domain model design & documentation, requirements specification, FRS-8 use case diagram, persistence layer  |    |
-| Samer Abdulkarim | Domain model design, requirements specification, FRS-3 use case diagram, repository class creation  |   |
-| Emilien Taisne |   |   |
-| Walid Aissa | Domain model design, requirements specification, FRS-10 use case diagram, repository classes creation |    |
-| Karim Al Sabbagh |   |   |
-| Karl Bridi | Domain model design & documentation, requirements specifications, FRS-1 use case diagram |    |
+| Name | Contributions | Total Hours | Individual efforts - Sprint 1 |
+| --- | --- | --- | --- |
+| Evan Boyd | Domain model design & documentation, requirements specification, FRS-8 use case diagram, persistence layer  |    |    |
+| Samer Abdulkarim | Domain model design, requirements specification, FRS-3 use case diagram, repository class creation  |   |   |
+| Emilien Taisne |   |   |   |
+| Walid Aissa | Domain model design, requirements specification, FRS-10 use case diagram, repository classes creation |    |   |
+| Karim Al Sabbagh |   |   |   |
+| Karl Bridi | Domain model design & documentation, requirements specifications, FRS-1 use case diagram |    |   |
 
  
 
