@@ -8,7 +8,7 @@ Most Importantly, the system was designed to be adaptable and scalable to accomm
 
 The software system was designed to respond to a set of requirements specified by the client through a description which was translated into a set of 15 system requirements (10 functional and 5 functional) which can be seen through the GitHub issues. 
 
-## Group 1 Members and roles
+## Overview Table
 
 | Team Member |	Team Roles | GitHub |
 | --- | --- | --- |
