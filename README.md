@@ -13,7 +13,7 @@ The software system was designed to respond to a set of requirements specified b
 | Team Member |	Programs | GitHub |
 | --- | --- | --- |
 | Evan Boyd | Software Engineering  | <a href="https://github.com/evanboyd31" target="_blank">evanboyd31</a> |
-| Samer Abdulkarim | Software Engineering | <a href="https://github.com/samerrak" target="_blank">samerrak</a> |
+| Samer Abdulkarim | Computer Engineering | <a href="https://github.com/samerrak" target="_blank">samerrak</a> |
 | Emilien Taisne	| Software Engineering  | <a href="https://github.com/Emilien-T" target="_blank">Emilien-T</a> |
 | Walid Aissa	| Computer Engineering  | <a href="https://github.com/WalidAissa" target="_blank">WalidAissa</a> |
 | Karim Al Sabbagh | Mechanical Engineering (minor in Software Engineering)  |  <a href="https://github.com/karimosabbagh" target="_blank">karimosabbagh</a>  |
