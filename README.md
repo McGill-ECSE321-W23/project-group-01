@@ -25,7 +25,7 @@ The software system was designed to respond to a set of requirements specified b
 | --- | --- | --- |
 | Evan Boyd | Domain model design & documentation, requirements specification, FRS-8 use case diagram, persistence layer  |    |
 | Samer Abdulkarim | Domain model design, requirements specification, FRS-3 use case diagram, repository class creation  |   |
-| Emilien Taisne | Domain model design, FRS-7 use case diagram, creating of the test classes, documentation  |   |
+| Emilien Taisne |   |   |
 | Walid Aissa | Domain model design, requirements specification, FRS-10 use case diagram, repository classes creation |    |
 | Karim Al Sabbagh |   |   |
 | Karl Bridi | Domain model design & documentation, requirements specifications, FRS-1 use case diagram |    |

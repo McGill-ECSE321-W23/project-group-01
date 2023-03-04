@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### application.properties is local (password is different for each) ###
-application.properties
+### application.properties
