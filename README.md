@@ -10,14 +10,14 @@ The software system was designed to respond to a set of requirements specified b
 
 ## Group 1 Members and roles
 
-| Team Member |	Program | GitHub |
+| Team Member |	Team Roles | GitHub |
 | --- | --- | --- |
-| Evan Boyd | Software Engineering  | <a href="https://github.com/evanboyd31" target="_blank">evanboyd31</a> |
-| Samer Abdulkarim | Computer Engineering | <a href="https://github.com/samerrak" target="_blank">samerrak</a> |
-| Emilien Taisne	| Software Engineering  | <a href="https://github.com/Emilien-T" target="_blank">Emilien-T</a> |
-| Walid Aissa	| Computer Engineering  | <a href="https://github.com/WalidAissa" target="_blank">WalidAissa</a> |
-| Karim Al Sabbagh | Mechanical Engineering (Software Engineering Minor)  |  <a href="https://github.com/karimosabbagh" target="_blank">karimosabbagh</a>  |
-| Karl Bridi	| Software Engineering | <a href="https://github.com/Kalamar136" target="_blank">Kalamar136</a>   |
+| Evan Boyd | Software Developer  | <a href="https://github.com/evanboyd31" target="_blank">evanboyd31</a> |
+| Samer Abdulkarim | Project Manager, Software Developer | <a href="https://github.com/samerrak" target="_blank">samerrak</a> |
+| Emilien Taisne	| Documentation Manager, Software Developer  | <a href="https://github.com/Emilien-T" target="_blank">Emilien-T</a> |
+| Walid Aissa	| Software Developer  | <a href="https://github.com/WalidAissa" target="_blank">WalidAissa</a> |
+| Karim Al Sabbagh | Testing Lead, Software Developer  |  <a href="https://github.com/karimosabbagh" target="_blank">karimosabbagh</a>  |
+| Karl Bridi	| Software Developer | <a href="https://github.com/Kalamar136" target="_blank">Kalamar136</a>   |
 
 ### Sprint 1 individual efforts: 
 
