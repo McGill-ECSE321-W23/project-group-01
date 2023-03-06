@@ -24,7 +24,7 @@ The software system was designed to respond to a set of requirements specified b
 | Team Member |	Team Roles | Individual efforts - Sprint 1 (in hours) |
 | --- | --- | --- | 
 | Evan Boyd | Software Developer  |  25  |
-| Samer Abdulkarim | Project Manager, Software Developer |    |
+| Samer Abdulkarim | Project Manager, Software Developer |  16 |
 | Emilien Taisne	| Documentation Manager, Software Developer  |    |
 | Walid Aissa	| Software Developer  |    |
 | Karim Al Sabbagh | Testing Lead, Software Developer  |    |
