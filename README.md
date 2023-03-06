@@ -28,7 +28,7 @@ The software system was designed to respond to a set of requirements specified b
 | Emilien Taisne	| Documentation Manager, Software Developer  |    |
 | Walid Aissa	| Software Developer  |    |
 | Karim Al Sabbagh | Testing Lead, Software Developer  |    |
-| Karl Bridi	| Software Developer |    |
+| Karl Bridi	| Software Developer | 16 |
 
 ### Sprint 1 individual efforts: 
 
@@ -39,7 +39,7 @@ The software system was designed to respond to a set of requirements specified b
 | Emilien Taisne | Domain model design & documentation, requirements specification, FRS-7 use case diagram, tests for the repository classes |   |
 | Walid Aissa | Domain model design, requirements specification, FRS-10 use case diagram, repository classes creation |    |
 | Karim Al Sabbagh |   |   |
-| Karl Bridi | Domain model design & documentation, requirements specifications, FRS-1 use case diagram |    |
+| Karl Bridi | Domain model design & documentation, requirements specifications, FRS-1 use case diagram | 16 |
 
  
 
