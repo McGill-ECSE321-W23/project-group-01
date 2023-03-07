@@ -26,7 +26,7 @@ The software system was designed to respond to a set of requirements specified b
 | Evan Boyd | Software Developer  |  25  |
 | Samer Abdulkarim | Project Manager, Software Developer |  14 |
 | Emilien Taisne	| Documentation Manager, Software Developer  |    |
-| Walid Aissa	| Software Developer  |    |
+| Walid Aissa	| Software Developer  | 12  |
 | Karim Al Sabbagh | Testing Lead, Software Developer  |    |
 | Karl Bridi	| Software Developer | 16 |
 
@@ -38,7 +38,7 @@ The software system was designed to respond to a set of requirements specified b
 | Samer Abdulkarim | Domain model design, requirements specification, FRS-3 use case diagram, repository class creation, reviewing pull requests  | 14 |
 | Emilien Taisne | Domain model design & documentation, requirements specification, FRS-7 use case diagram, tests for the repository classes |   |
 | Walid Aissa | Domain model design, requirements specification, FRS-10 use case diagram, repository classes creation |    |
-| Karim Al Sabbagh |   |   |
+| Karim Al Sabbagh | Domain model design, requirements specification, FRS-6 use case diagrame, tests for the repository classes  | 12  |
 | Karl Bridi | Domain model design & documentation, requirements specifications, FRS-1 use case diagram | 16 |
 
  
