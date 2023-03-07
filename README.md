@@ -26,8 +26,8 @@ The software system was designed to respond to a set of requirements specified b
 | Evan Boyd | Software Developer  |  25  |
 | Samer Abdulkarim | Project Manager, Software Developer |  14 |
 | Emilien Taisne	| Documentation Manager, Software Developer  |    |
-| Walid Aissa	| Software Developer  | 12  |
-| Karim Al Sabbagh | Testing Lead, Software Developer  |    |
+| Walid Aissa	| Software Developer  |  |
+| Karim Al Sabbagh | Testing Lead, Software Developer  | 12  |
 | Karl Bridi	| Software Developer | 16 |
 
 ### Sprint 1 individual efforts: 
