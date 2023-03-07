@@ -24,7 +24,7 @@ The software system was designed to respond to a set of requirements specified b
 | Team Member |	Team Roles | Individual efforts - Sprint 1 (in hours) |
 | --- | --- | --- | 
 | Evan Boyd | Software Developer  |  20  |
-| Samer Abdulkarim | Project Manager, Software Developer |  14 |
+| Samer Abdulkarim | Project Manager, Software Developer |  16 |
 | Emilien Taisne	| Documentation Manager, Software Developer  | 16 |
 | Walid Aissa	| Software Developer  | 16 |
 | Karim Al Sabbagh | Testing Lead, Software Developer  | 16  |
@@ -35,7 +35,7 @@ The software system was designed to respond to a set of requirements specified b
 | Name | Contributions | Total Hours | 
 | --- | --- | --- |
 | Evan Boyd | Domain model design & documentation, requirements specification, FRS-8 use case diagram, persistence layer  | 20 |
-| Samer Abdulkarim | Domain model design, requirements specification, FRS-3 use case diagram, repository class creation, reviewing pull requests  | 14 |
+| Samer Abdulkarim | Domain model design, requirements specification, FRS-3 use case diagram, repository class creation, reviewing pull requests  | 16 |
 | Emilien Taisne | Domain model design & documentation, requirements specification, FRS-7 use case diagram, tests for the repository classes | 16 |
 | Walid Aissa | Domain model design, requirements specification, FRS-10 use case diagram, repository classes creation |  16  |
 | Karim Al Sabbagh | Domain model design, requirements specification, FRS-6 use case diagrame, tests for the repository classes  | 16  |
