@@ -25,7 +25,7 @@ The software system was designed to respond to a set of requirements specified b
 | --- | --- | --- | 
 | Evan Boyd | Software Developer  |  20  |
 | Samer Abdulkarim | Project Manager, Software Developer |  14 |
-| Emilien Taisne	| Documentation Manager, Software Developer  |    |
+| Emilien Taisne	| Documentation Manager, Software Developer  | 16 |
 | Walid Aissa	| Software Developer  | 16 |
 | Karim Al Sabbagh | Testing Lead, Software Developer  | 16  |
 | Karl Bridi	| Software Developer | 16 |
