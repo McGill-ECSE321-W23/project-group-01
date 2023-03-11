@@ -15,24 +15,24 @@ import ca.mcgill.ecse321.PLMS.model.Floor;
 
 @RestController
 public class FloorController {
-  @Autowired
-  private FloorService floorService;
+  // @Autowired
+  // private FloorService floorService;
 
-  /**
-   * Gets all floors.
-   * 
-   * @return All floors.
-   */
-  @GetMapping("/floor")
-  public Iterable<FloorDto> getAllFloors(){
-    return StreamSupport.stream(floorService.getAllFloors().spliterator(), false).map(f -> new FloorDto(f)).collect(Collectors.toList());
-  }
+  // /**
+  //  * Gets all floors.
+  //  * 
+  //  * @return All floors.
+  //  */
+  // @GetMapping("/floor")
+  // public Iterable<FloorDto> getAllFloors(){
+  //   return StreamSupport.stream(floorService.getAllFloors().spliterator(), false).map(f -> new FloorDto(f)).collect(Collectors.toList());
+  // }
 
-  @GetMapping("/floor/{id}")
-  public ResponseEntity<FloorDto> getFloorById(@PathVariable int id){
-    Floor floor = floorService.getFloorById(id);
-    FloorDto responseBody = new FloorDto(floor);
-    return new ResponseEntity<FloorDto>(responseBody, HttpStatus.OK);
-  }
+  // @GetMapping("/floor/{id}")
+  // public ResponseEntity<FloorDto> getFloorById(@PathVariable int id){
+  //   Floor floor = floorService.getFloorById(id);
+  //   FloorDto responseBody = new FloorDto(floor);
+  //   return new ResponseEntity<FloorDto>(responseBody, HttpStatus.OK);
+  // }
 
 }
