@@ -11,6 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.mcgill.ecse321.PLMS.model.Owner;
 
+/**
+ * Testing suite for the persistence of the Owner class in the PLMS software system
+ * Tests ensure that attributes, references and the instance itself can be read and written
+ * in the persistence database
+ */
 @SpringBootTest
 public class OwnerRepositoryTests {
     @Autowired

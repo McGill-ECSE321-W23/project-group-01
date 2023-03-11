@@ -51,8 +51,6 @@ public class Service
     return wasSet;
   }
 
-
-
   public String getServiceName()
   {
     return serviceName;

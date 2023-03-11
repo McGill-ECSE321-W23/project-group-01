@@ -13,6 +13,11 @@ import ca.mcgill.ecse321.PLMS.model.Employee;
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.Owner;
 
+/**
+ * Testing suite for the persistence of the Account class in the PLMS software system
+ * Tests ensure that attributes, references and the instance itself can be read and written
+ * in the persistence database
+ */
 @SpringBootTest
 public class AccountRepositoryTests {
     @Autowired
@@ -56,8 +61,6 @@ public class AccountRepositoryTests {
         String eEmail = "hello123@hi.com";
         String ePassword = "weeeee";
         String eName = "Samer";
-        String eTitle = "Car wash";
-        double hourlyWage = 8.5;
 
         Account employee = new Employee();
         //Set all parameters

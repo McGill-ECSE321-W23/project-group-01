@@ -16,6 +16,11 @@ import ca.mcgill.ecse321.PLMS.model.GuestPass;
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import org.springframework.boot.test.context.SpringBootTest;
 
+/**
+ * Testing suite for the persistence of the GuestPass class in the PLMS software system
+ * Tests ensure that attributes, references and the instance itself can be read and written
+ * in the persistence database
+ */
 @SpringBootTest
 public class GuestPassRepositoryTests {
     @Autowired

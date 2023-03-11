@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.PLMS.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.sql.Date;
 import java.sql.Time;
 
 import org.junit.jupiter.api.AfterEach;
@@ -19,6 +18,11 @@ import ca.mcgill.ecse321.PLMS.model.Pass;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
+/**
+ * Testing suite for the persistence of the Pass class in the PLMS software system
+ * Tests ensure that attributes, references and the instance itself can be read and written
+ * in the persistence database
+ */
 @SpringBootTest
 public class PassRepositoryTests {
     @Autowired
@@ -123,8 +127,6 @@ public class PassRepositoryTests {
         //Normal parameters
         Time openingTime = Time.valueOf("6:00:00");
         Time closingTime = Time.valueOf("22:00:00");
-        Date startDate = Date.valueOf("2023-03-01");
-        Date endDate = Date.valueOf("2023-09-01");
         double smallSpotFee = 3.5;
         double largeSpotFee = 4.5;
         double monthlyFlatFee = 150;
@@ -170,11 +172,11 @@ public class PassRepositoryTests {
         
         pass.setFloor(mainFloor);
 
-        //=-=-=-=-=-=- Save guest pass -=-=-=-=-=-=//
+        //=-=-=-=-=-=- Save monthly pass -=-=-=-=-=-=//
         passRepository.save(pass);
         int id = pass.getId();
     
-        //=-=-=-=-=-=- Read guest pass -=-=-=-=-=-=//
+        //=-=-=-=-=-=- Read monthly pass -=-=-=-=-=-=//
         pass = (MonthlyPass) passRepository.findPassById(id);
 
         //=-=-=-=-=-=- Asserts -=-=-=-=-=-=//

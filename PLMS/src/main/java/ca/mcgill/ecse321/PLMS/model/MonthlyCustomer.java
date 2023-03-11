@@ -16,12 +16,5 @@ public class MonthlyCustomer extends Account
   //------------------------
   // MEMBER VARIABLES (all belong to the super class account)
   //------------------------
-  
-  /**
-   * Constructor of monthly customer class invokes super class constructor
-   * @param aEmail - email of the monthly customer (the ID for the database as well)
-   * @param aPassword - password of the monthly customer
-   * @param aName - name of the monthly customer
-   */
 
 }
