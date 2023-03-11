@@ -13,6 +13,6 @@ public interface FloorRepository extends CrudRepository<Floor, Integer>{
      * @param id
      * @return floor with id id
      */
-    public Floor findFloorById(int id);
+    public Floor findFloorByFloorNumber(int floorNumber);
     
 }
