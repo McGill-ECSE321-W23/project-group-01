@@ -1,4 +1,4 @@
-package ca.mcgill.ecse321.PLMS.Tests;
+package ca.mcgill.ecse321.PLMS.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.mcgill.ecse321.PLMS.model.*;
-import ca.mcgill.ecse321.PLMS.repository.*;
 
 @SpringBootTest
 public class EmployeeRepositoryTests {

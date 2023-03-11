@@ -1,4 +1,4 @@
-package ca.mcgill.ecse321.PLMS.Tests;
+package ca.mcgill.ecse321.PLMS.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -13,8 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.mcgill.ecse321.PLMS.model.Floor;
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
-import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
-import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 
 @SpringBootTest
 public class FloorRepositoryTests {

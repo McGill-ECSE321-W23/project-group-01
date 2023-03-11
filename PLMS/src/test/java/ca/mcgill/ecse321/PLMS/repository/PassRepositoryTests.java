@@ -1,4 +1,4 @@
-package ca.mcgill.ecse321.PLMS.Tests;
+package ca.mcgill.ecse321.PLMS.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,9 +16,6 @@ import ca.mcgill.ecse321.PLMS.model.GuestPass;
 import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.model.Pass;
-import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
-import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
-import ca.mcgill.ecse321.PLMS.repository.PassRepository;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
