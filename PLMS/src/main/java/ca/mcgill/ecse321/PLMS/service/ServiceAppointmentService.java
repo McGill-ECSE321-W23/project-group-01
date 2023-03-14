@@ -4,8 +4,10 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
 import ca.mcgill.ecse321.PLMS.repository.ServiceAppointmentRepository;
 import jakarta.transaction.Transactional;
@@ -85,5 +87,21 @@ public class ServiceAppointmentService {
     }
     // return the list
     return appointmentsForCustomer;
+  }
+
+  // 7: We are deleting appointment's by their ID
+  @Transactional
+  public void deleteServiceAppointmentById(int id){
+    // first get the service appointment by id
+    // ensure the appointment exists; throw error saying it doesn't exist if its not there as we want the user to be notified of this case
+    // once ensured its not null, delete the appointmentment from DB
+    ServiceAppointment serviceAppointmentToDelete = serviceAppointmentRepo.findServiceAppointmentById(id);
+    if (serviceAppointmentToDelete == null){
+      // null means service appointment doesn't exist, throw PLMS error
+      throw new PLMSException(HttpStatus.NOT_FOUND, "Service appointment with ID " + id + " does not exist.");
+    }
+    
+    // the appointment exists, so delete it
+    serviceAppointmentRepo.deleteById(id);
   }
 }
