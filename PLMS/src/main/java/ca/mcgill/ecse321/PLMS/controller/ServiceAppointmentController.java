@@ -58,7 +58,8 @@ public class ServiceAppointmentController {
       /**
        * Gets all service appointment with in a date
        * 
-       * @param date The date at which you want the 
+       * @param date The date at which you want the find all the ServiceAppointments form: YYYY-MM-DD
+       * @return The service appointments at the specified date.
        */
       @GetMapping("/ServiceAppointment/date/{date}")
       public ResponseEntity<ServiceAppointmentResponseDto> getServiceAppointmentByDate(@PathVariable Date date) {
@@ -66,5 +67,37 @@ public class ServiceAppointmentController {
         ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
         return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.OK);
       }
+
+      /**
+       * Gets all service appointment related to a certain employee
+       * 
+       * @param email The email of the employee you want to check for
+       * @return The service appointments related to the employee
+       */
+      @GetMapping("/ServiceAppointment/employee/{email}")
+      public ResponseEntity<ServiceAppointmentResponseDto> getServiceAppointmentByEmployee(@PathVariable String email) {
+        ServiceAppointment serviceAppointment = serviceAppointmentService.getServiceAppointmentByEmployee(email);
+        ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
+        return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.OK);
+      }
+
+      /**
+       * Gets all service appointment related to a certain employee
+       * 
+       * @param email The email of the employee you want to check for
+       * @return The service appointments related to the employee
+       */
+      @GetMapping("/ServiceAppointment/customer/{email}")
+      public ResponseEntity<ServiceAppointmentResponseDto> getServiceAppointmentByCustomer(@PathVariable String email) {
+        ServiceAppointment serviceAppointment = serviceAppointmentService.getServiceAppointmentByCustomer(email);
+        ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
+        return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.OK);
+      }
+
+      /**
+       * Creates a new service appointment with the desired service, date, start time and end time
+       * 
+       * @param 
+       */
       
 }
