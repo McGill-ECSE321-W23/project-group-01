@@ -35,6 +35,14 @@ public class ServiceAppointmentService {
     return serviceAppointmentRepo.findAll();
   }
 
+  public ServiceAppointment findServiceAppointmentById(int id){
+    ServiceAppointment appointment = serviceAppointmentRepo.findServiceAppointmentById(id);
+    if (appointment == null){
+      throw new PLMSException(HttpStatus.NOT_FOUND, "Service appointment with ID " + id + " does not exist.");
+    }
+    return appointment;
+  }
+
   // 3
   @Transactional
   public Iterable<ServiceAppointment> getAllServiceAppointmentsByDate(Date date){
@@ -48,6 +56,9 @@ public class ServiceAppointmentService {
         // date matches, add it
         appointmentsOnDate.add(appt);
       }
+    }
+    if (appointmentsOnDate.isEmpty()){
+      throw new PLMSException(HttpStatus.NOT_FOUND, "There are no appointments on date " + date);
     }
     // return the list
     return appointmentsOnDate;
@@ -67,6 +78,11 @@ public class ServiceAppointmentService {
         }
       }
     }
+
+    if (appointmentsForEmployee.isEmpty()){
+      // null means service appointment doesn't exist, throw PLMS error
+      throw new PLMSException(HttpStatus.NOT_FOUND, "There are no service appointments for employee " + employeeEmail);
+    }
     // return the list
     return appointmentsForEmployee;
   }
@@ -84,6 +100,11 @@ public class ServiceAppointmentService {
           appointmentsForCustomer.add(appt);
         }
       }
+    }
+
+    if (appointmentsForCustomer.isEmpty()){
+      // null means service appointment doesn't exist, throw PLMS error
+      throw new PLMSException(HttpStatus.NOT_FOUND, "There are no service appointments for customer " + monthlyCustomerEmail);
     }
     // return the list
     return appointmentsForCustomer;

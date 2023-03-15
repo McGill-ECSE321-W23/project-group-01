@@ -37,7 +37,7 @@ public class ServiceAppointmentController {
       */
       @GetMapping("/ServiceAppointment")
       public Iterable<ServiceAppointmentResponseDto> getAllServiceAppointment(){
-        return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointment().spliterator(), false)
+        return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointments().spliterator(), false)
         .map(s -> new ServiceAppointmentResponseDto(s))
         .collect(Collectors.toList());
       }
@@ -50,7 +50,7 @@ public class ServiceAppointmentController {
        */
       @GetMapping("/ServiceAppointment/{id}")
       public ResponseEntity<ServiceAppointmentResponseDto> getServiceAppointmentById(@PathVariable int id) {
-        ServiceAppointment serviceAppointment = serviceAppointmentService.getServiceAppointmentById(id);
+        ServiceAppointment serviceAppointment = serviceAppointmentService.findServiceAppointmentById(id);
         ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
         return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.OK);
       }
@@ -62,10 +62,10 @@ public class ServiceAppointmentController {
        * @return The service appointments at the specified date.
        */
       @GetMapping("/ServiceAppointment/date/{date}")
-      public ResponseEntity<ServiceAppointmentResponseDto> getServiceAppointmentByDate(@PathVariable Date date) {
-        ServiceAppointment serviceAppointment = serviceAppointmentService.getServiceAppointmentByDate(date);
-        ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
-        return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.OK);
+      public Iterable<ServiceAppointmentResponseDto> getServiceAppointmentByDate(@PathVariable Date date) {
+        return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointmentsByDate(date).spliterator(), false)
+        .map(s -> new ServiceAppointmentResponseDto(s))
+        .collect(Collectors.toList());
       }
 
       /**
@@ -75,23 +75,23 @@ public class ServiceAppointmentController {
        * @return The service appointments related to the employee
        */
       @GetMapping("/ServiceAppointment/employee/{email}")
-      public ResponseEntity<ServiceAppointmentResponseDto> getServiceAppointmentByEmployee(@PathVariable String email) {
-        ServiceAppointment serviceAppointment = serviceAppointmentService.getServiceAppointmentByEmployee(email);
-        ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
-        return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.OK);
+      public Iterable<ServiceAppointmentResponseDto> getServiceAppointmentByEmployee(@PathVariable String email) {
+        return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointmentsByEmployee(email).spliterator(), false)
+        .map(s -> new ServiceAppointmentResponseDto(s))
+        .collect(Collectors.toList());
       }
 
       /**
-       * Gets all service appointment related to a certain employee
+       * Gets all service appointment related to a certain customer
        * 
        * @param email The email of the employee you want to check for
        * @return The service appointments related to the employee
        */
       @GetMapping("/ServiceAppointment/customer/{email}")
-      public ResponseEntity<ServiceAppointmentResponseDto> getServiceAppointmentByCustomer(@PathVariable String email) {
-        ServiceAppointment serviceAppointment = serviceAppointmentService.getServiceAppointmentByCustomer(email);
-        ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
-        return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.OK);
+      public Iterable<ServiceAppointmentResponseDto> getServiceAppointmentByCustomer(@PathVariable String email) {
+        return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointmentsByMonthlyCustomer(email).spliterator(), false)
+        .map(s -> new ServiceAppointmentResponseDto(s))
+        .collect(Collectors.toList());
       }
 
       /**
