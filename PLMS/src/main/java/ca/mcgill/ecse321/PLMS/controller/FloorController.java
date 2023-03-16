@@ -74,7 +74,7 @@ public class FloorController {
   /**
    * Deletes a floor
    */
-  @DeleteMapping("/floor/{id}")
+  @DeleteMapping("/floor/{floorNumber}")
   public void deleteFloor(@PathVariable int floorNumber){
     floorService.deleteFloor(floorNumber);
   }
