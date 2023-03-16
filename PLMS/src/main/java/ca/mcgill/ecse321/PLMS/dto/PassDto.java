@@ -34,13 +34,23 @@ public class PassDto {
    * @param pass - pass to turn into a transfer object
    */
 
-    public Pass(Pass pass){
+    public PassDto(Pass pass){
         this.id = pass.getId();
         this.fee = pass.getFee();
         this.spotNumber = pass.getSpotNumber();
         this.confirmationCode = pass.getConfirmationCode();
         this.licensePlate = pass.getLicensePlate();
         this.floor = pass.getFloor();
+    }
+
+    public Pass toModel(){
+        Pass pass = new Pass();
+        pass.setFee(this.fee);
+        pass.setSpotNumber(this.spotNumber);
+        pass.setConfirmationCode(this.confirmationCode);
+        pass.setLicensePlate(this.licensePlate);
+        pass.setFloor(this.floor);
+        return pass;
     }
 
     public Double getFee(){
