@@ -4,7 +4,7 @@ import ca.mcgill.ecse321.PLMS.model.Floor;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-public class FloorDto {
+public class FloorRequestDto {
   @NotNull(message = "Cannot have an empty floor number.")
   @Min(value = 0, message = "The floor number must be a non negative number.")
   private int floorNumber;
@@ -26,18 +26,9 @@ public class FloorDto {
   private int largeSpotCounter;
 
   /**
-   * Constructor for creating a floor transfer object by using the fields of 
-   * a floor object.
-   * @param floor - floor to turn into a transfer object
+   * Method to construct a floor object from a floor request dto object
+   * @return floor object with all corresponding attributes
    */
-  public FloorDto(Floor floor){
-    this.floorNumber = floor.getFloorNumber();
-    this.smallSpotCapacity = floor.getSmallSpotCapacity();
-    this.largeSpotCapacity = floor.getLargeSpotCapacity();
-    this.smallSpotCounter = floor.getSmallSpotCounter();
-    this.largeSpotCounter = floor.getLargeSpotCounter();
-  }
-
   public Floor toModel(){
     Floor floor = new Floor();
     floor.setFloorNumber(this.floorNumber);
@@ -48,40 +39,20 @@ public class FloorDto {
     return floor;
   }
 
-  public int getFloorNumber(){
-    return this.floorNumber;
-  }
-
   public void setFloorNumber(int floorNumber){
     this.floorNumber = floorNumber;
-  }
-
-  public int getSmallCapacity(){
-    return this.floorNumber;
   }
 
   public void setSmallSpotCapacity(int smallSpotCapacity){
     this.smallSpotCapacity = smallSpotCapacity;
   }
 
-  public int getLargeSpotCapacity(){
-    return this.floorNumber;
-  }
-
   public void setLargeSpotCapacity(int largeSpotCapacity){
     this.largeSpotCapacity = largeSpotCapacity;
   }
 
-  public int getSmallSpotCounter(){
-    return this.floorNumber;
-  }
-
   public void setSmallSpotCounter(int smallSpotCounter){
     this.smallSpotCounter = smallSpotCounter;
-  }
-
-  public int getLargeSpotCounter(){
-    return this.floorNumber;
   }
 
   public void setLargeSpotCounter(int largeSpotCounter){
