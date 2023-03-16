@@ -24,25 +24,25 @@ public class FloorResponseDto {
   }
 
   // getters
-  
+
   public int getFloorNumber(){
     return this.floorNumber;
   }
 
   public int getSmallCapacity(){
-    return this.floorNumber;
+    return this.smallSpotCapacity;
   }
 
   public int getLargeSpotCapacity(){
-    return this.floorNumber;
+    return this.largeSpotCapacity;
   }
 
   public int getSmallSpotCounter(){
-    return this.floorNumber;
+    return this.smallSpotCounter;
   }
 
   public int getLargeSpotCounter(){
-    return this.floorNumber;
+    return this.largeSpotCounter;
   }
 
 
