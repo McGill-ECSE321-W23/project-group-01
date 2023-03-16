@@ -17,6 +17,7 @@ import ca.mcgill.ecse321.PLMS.dto.ServiceAppointmentRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.ServiceAppointmentResponseDto;
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
 import ca.mcgill.ecse321.PLMS.service.ServiceAppointmentService;
+import ca.mcgill.ecse321.PLMS.service.ServiceService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -111,7 +112,7 @@ public class ServiceAppointmentController {
        */
       @PostMapping("/serviceAppointment")
       public ResponseEntity<ServiceAppointmentResponseDto> createServiceAppointment(@Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
-        ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(serviceService.getServiceByName(serviceAppointmentRequestDto.getServiceName()));
+        ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(serviceService.getServiceByServiceName(serviceAppointmentRequestDto.getServiceName()));
         serviceAppointment = serviceAppointmentService.createServiceAppointment(serviceAppointment);
         ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
         return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.CREATED);
