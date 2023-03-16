@@ -9,17 +9,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.mcgill.ecse321.PLMS.dto.ServiceAppointmentRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.ServiceAppointmentResponseDto;
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
 import ca.mcgill.ecse321.PLMS.service.ServiceAppointmentService;
+import jakarta.validation.Valid;
 
 @RestController
 public class ServiceAppointmentController {
     
     @Autowired
     private ServiceAppointmentService serviceAppointmentService;
+    @Autowired
+    private ServiceService serviceService;
 
     /**
      *  GET/POST/DELETE Service Appointment by ID
@@ -35,8 +41,8 @@ public class ServiceAppointmentController {
       * 
       * @return All service appointments
       */
-      @GetMapping("/ServiceAppointment")
-      public Iterable<ServiceAppointmentResponseDto> getAllServiceAppointment(){
+      @GetMapping("/serviceAppointment")
+      public Iterable<ServiceAppointmentResponseDto> getAllServiceAppointments(){
         return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointments().spliterator(), false)
         .map(s -> new ServiceAppointmentResponseDto(s))
         .collect(Collectors.toList());
@@ -48,7 +54,7 @@ public class ServiceAppointmentController {
        * @param id The id of the service appointement to look up.
        * @return The service appointement with the given id.
        */
-      @GetMapping("/ServiceAppointment/{id}")
+      @GetMapping("/serviceAppointment/{id}")
       public ResponseEntity<ServiceAppointmentResponseDto> getServiceAppointmentById(@PathVariable int id) {
         ServiceAppointment serviceAppointment = serviceAppointmentService.findServiceAppointmentById(id);
         ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
@@ -61,8 +67,8 @@ public class ServiceAppointmentController {
        * @param date The date at which you want the find all the ServiceAppointments form: YYYY-MM-DD
        * @return The service appointments at the specified date.
        */
-      @GetMapping("/ServiceAppointment/date/{date}")
-      public Iterable<ServiceAppointmentResponseDto> getServiceAppointmentByDate(@PathVariable Date date) {
+      @GetMapping("/serviceAppointment/date/{date}")
+      public Iterable<ServiceAppointmentResponseDto> getAllServiceAppointmentsByDate(@PathVariable Date date) {
         return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointmentsByDate(date).spliterator(), false)
         .map(s -> new ServiceAppointmentResponseDto(s))
         .collect(Collectors.toList());
@@ -74,7 +80,7 @@ public class ServiceAppointmentController {
        * @param email The email of the employee you want to check for
        * @return The service appointments related to the employee
        */
-      @GetMapping("/ServiceAppointment/employee/{email}")
+      @GetMapping("/serviceAppointment/employee/{email}")
       public Iterable<ServiceAppointmentResponseDto> getServiceAppointmentByEmployee(@PathVariable String email) {
         return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointmentsByEmployee(email).spliterator(), false)
         .map(s -> new ServiceAppointmentResponseDto(s))
@@ -87,7 +93,7 @@ public class ServiceAppointmentController {
        * @param email The email of the employee you want to check for
        * @return The service appointments related to the employee
        */
-      @GetMapping("/ServiceAppointment/customer/{email}")
+      @GetMapping("/serviceAppointment/customer/{email}")
       public Iterable<ServiceAppointmentResponseDto> getServiceAppointmentByCustomer(@PathVariable String email) {
         return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointmentsByMonthlyCustomer(email).spliterator(), false)
         .map(s -> new ServiceAppointmentResponseDto(s))
@@ -97,7 +103,18 @@ public class ServiceAppointmentController {
       /**
        * Creates a new service appointment with the desired service, date, start time and end time
        * 
-       * @param 
+       * @param serviceName The service name of the service given during the appointment
+       * @param date The date at which the service is going to be given
+       * @param startTime The time at which the appointment is going to start at
+       * @param endTime The time at which the appointment is going to end at
+       * @return The service appointment object created
        */
+      @PostMapping("/serviceAppointment")
+      public ResponseEntity<ServiceAppointmentResponseDto> createServiceAppointment(@Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
+        ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(serviceService.getServiceByName(serviceAppointmentRequestDto.getServiceName()));
+        serviceAppointment = serviceAppointmentService.createServiceAppointment(serviceAppointment);
+        ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
+        return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.CREATED);
+      }
       
 }
