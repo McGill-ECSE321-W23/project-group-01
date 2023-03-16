@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.mcgill.ecse321.PLMS.dto.FloorDto;
+import ca.mcgill.ecse321.PLMS.dto.FloorRequestDto;
+import ca.mcgill.ecse321.PLMS.dto.FloorResponseDto;
 import ca.mcgill.ecse321.PLMS.model.Floor;
+import ca.mcgill.ecse321.PLMS.service.FloorService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -29,8 +31,8 @@ public class FloorController {
    * @return All floors.
    */
   @GetMapping("/floor")
-  public Iterable<FloorDto> getAllFloors(){
-    return StreamSupport.stream(floorService.getAllFloors().spliterator(), false).map(f -> new FloorDto(f)).collect(Collectors.toList());
+  public Iterable<FloorResponseDto> getAllFloors(){
+    return StreamSupport.stream(floorService.getAllFloors().spliterator(), false).map(f -> new FloorResponseDto(f)).collect(Collectors.toList());
   }
 
   /**
@@ -39,10 +41,10 @@ public class FloorController {
    * @return floor with floorNumber
    */
   @GetMapping("/floor/{floorNumber}")
-  public ResponseEntity<FloorDto> getFloorByFloorNumber(@PathVariable int floorNumber){
-    Floor floor = floorService.getFloorById(floorNumber);
-    FloorDto responseBody = new FloorDto(floor);
-    return new ResponseEntity<FloorDto>(responseBody, HttpStatus.OK);
+  public ResponseEntity<FloorResponseDto> getFloorByFloorNumber(@PathVariable int floorNumber){
+    Floor floor = floorService.getFloorByFloorNumber(floorNumber);
+    FloorResponseDto responseBody = new FloorResponseDto(floor);
+    return new ResponseEntity<FloorResponseDto>(responseBody, HttpStatus.OK);
   }
 
   /**
@@ -51,11 +53,11 @@ public class FloorController {
    * @return floorDto of the created floor
    */
   @PostMapping("/floor")
-  public ResponseEntity<FloorDto> createFloor(@Valid @RequestBody FloorDto floorDto){
+  public ResponseEntity<FloorResponseDto> createFloor(@Valid @RequestBody FloorRequestDto floorDto){
     Floor floor = floorDto.toModel();
     floor = floorService.createFloor(floor);
-    FloorDto responseBody = new FloorDto(floor);
-    return new ResponseEntity<FloorDto>(responseBody, HttpStatus.CREATED);
+    FloorResponseDto responseBody = new FloorResponseDto(floor);
+    return new ResponseEntity<FloorResponseDto>(responseBody, HttpStatus.CREATED);
   }
 
   /**
@@ -64,11 +66,11 @@ public class FloorController {
    * @return floor with updated values
    */
   @PutMapping("/floor/{floorNumber}")
-  public ResponseEntity<FloorDto> updateFloorInfo(@PathVariable int floorNumber, @RequestBody FloorDto floorDto){
+  public ResponseEntity<FloorResponseDto> updateFloorInfo(@PathVariable int floorNumber, @RequestBody FloorRequestDto floorDto){
     Floor floor = floorDto.toModel();
     floor = floorService.updateFloor(floor);
-    FloorDto responseBody = new FloorDto(floor);
-    return new ResponseEntity<FloorDto>(responseBody, HttpStatus.CREATED);
+    FloorResponseDto responseBody = new FloorResponseDto(floor);
+    return new ResponseEntity<FloorResponseDto>(responseBody, HttpStatus.CREATED);
   }
 
   /**
@@ -76,7 +78,7 @@ public class FloorController {
    */
   @DeleteMapping("/floor/{floorNumber}")
   public void deleteFloor(@PathVariable int floorNumber){
-    floorService.deleteFloor(floorNumber);
+    floorService.deleteFloorByFloorNumber(floorNumber);
   }
 
 }
