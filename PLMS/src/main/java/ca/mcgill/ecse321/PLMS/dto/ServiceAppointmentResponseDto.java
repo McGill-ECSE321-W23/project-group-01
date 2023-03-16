@@ -23,8 +23,8 @@ public class ServiceAppointmentResponseDto {
         this.startTime = s.getStartTime();
         this.endTime = s.getEndTime();
 
-        this.customerEmail = s.getCustomer().getEmail();
-        this.employeeEmail = s.getEmployee().getEmail();
+        if (s.getCustomer() != null) this.customerEmail = s.getCustomer().getEmail();
+        if (s.getEmployee() != null) this.employeeEmail = s.getEmployee().getEmail();
         this.serviceName = s.getService().getServiceName();
     }
 
