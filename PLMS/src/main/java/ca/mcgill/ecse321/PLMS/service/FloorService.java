@@ -41,6 +41,10 @@ public class FloorService {
     @Transactional
     public Floor createFloor(Floor floor){
         //checks on the new object are made in the DTO
+        //check if the floor already exists
+        if (floorRepository.findFloorByFloorNumber(floor.getFloorNumber()) != null){
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "Floor with floor number: " + floor.getFloorNumber() + " already exists.");
+        }
         //create object
         floor = floorRepository.save(floor);
         //returned created object
