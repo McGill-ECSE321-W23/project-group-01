@@ -6,14 +6,13 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.PLMS.repository.ServiceRepository;
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
-import ca.mcgill.ecse321.PLMS.model.Service
+import ca.mcgill.ecse321.PLMS.model.Service;
 
-@Service
+@org.springframework.stereotype.Service
 public class ServiceService {
 
     /*
@@ -59,7 +58,7 @@ public class ServiceService {
         }
         else {
             serviceName = serviceName.trim();
-            if (serviceNAme.length() == 0) {
+            if (serviceName.length() == 0) {
 				errorMessage.add("Service name cannot be empty.");
 			}
             Service serviceWithSameName = serviceRepository.findServiceByServiceName(serviceName);
@@ -78,14 +77,14 @@ public class ServiceService {
         
 
         if (errorMessage.size() > 0) {
-			throw new PLMSException(String.join(" ", errorMessage));
+			throw new PLMSException(HttpStatus.NOT_ACCEPTABLE, String.join(" ", errorMessage));
 		}
 
         serviceName = serviceName.trim();
 
-        service.setName(serviceName);
+        service.setServiceName(serviceName);
         service.setCost(cost);
-        service.lengthInHours(lengthInHours);
+        service.setLengthInHours(lengthInHours);
         serviceRepository.save(service);
         return service;
     }
@@ -128,7 +127,7 @@ public class ServiceService {
             throw new PLMSException(HttpStatus.NOT_FOUND, "Service with name " + serviceName + " does not exists.");
         }
 
-        serviceRepository.deleteByServiceName(serviceName);
+        serviceRepository.deleteById(serviceName);
     }
 
     /**
@@ -137,8 +136,8 @@ public class ServiceService {
 	 * @return List of all services
 	 */
     @Transactional
-    public List<Service> getAllServices(){
-        return toList(serviceRepository.findAll());
+    public Iterable<Service> getAllServices(){
+        return serviceRepository.findAll();
     }
 
 
@@ -166,17 +165,17 @@ public class ServiceService {
             throw new PLMSException(HttpStatus.NOT_FOUND, "Service with name " + serviceName + " does not exists.");
         }
 
-        if(cost == null || cost < 0){
+        if(newCost == null || newCost < 0){
             errorMessage.add("Cost needs to be a number greater or equal to 0");
         }
 
-        if(lengthInHours == null || lengthInHours < 0){
+        if(newLengthInHours == null || newLengthInHours < 0){
             errorMessage.add("Length in hours needs to be a number greater or equal to 0");
         }
         
 
         if (errorMessage.size() > 0) {
-			throw new PLMSException(String.join(" ", errorMessage));
+			throw new PLMSException(HttpStatus.BAD_REQUEST, String.join(" ", errorMessage));
 		}
 
         serviceToUpdate.setCost(newCost);
