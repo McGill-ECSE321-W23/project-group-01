@@ -35,7 +35,7 @@ public abstract class Account
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------
-
+  
   public boolean setEmail(String aEmail)
   {
     boolean wasSet = false;

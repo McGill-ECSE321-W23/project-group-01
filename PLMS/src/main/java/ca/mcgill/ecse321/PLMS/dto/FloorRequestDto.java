@@ -59,4 +59,26 @@ public class FloorRequestDto {
     this.largeSpotCounter = largeSpotCounter;
   }
 
+  // NEED TO ADD GETTERS TO REQUEST DTOs!
+  public int getFloorNumber(){
+    return this.floorNumber;
+  }
+  
+  public int getSmallSpotCapacity(){
+    return this.smallSpotCapacity;
+  }
+
+  public int getLargeSpotCapacity(){
+    return this.largeSpotCapacity;
+  }
+
+  public int getSmallSpotCounter(){
+    return this.smallSpotCounter;
+  }
+
+  public int getLargeSpotCounter(){
+    return this.largeSpotCounter;
+  }
+
+
 }
