@@ -21,7 +21,12 @@ public class Employee extends Account
   private String jobTitle;
   private double hourlyWage;
 
-  
+  public Employee() {}
+  public Employee(String email, String password, String name, String jobTitle, double hourlyWage) {
+    super(email, password, name);
+    this.jobTitle = jobTitle;
+    this.hourlyWage = hourlyWage;
+  }
 
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
