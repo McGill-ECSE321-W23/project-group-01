@@ -3,10 +3,10 @@ package ca.mcgill.ecse321.PLMS.dto;
 import ca.mcgill.ecse321.PLMS.model.Employee;
 
 public class EmployeeResponseDto {
+
     private String email;
     private String password;
     private String name;
-
     private String jobTitle;
     private double hourlyWage;
 

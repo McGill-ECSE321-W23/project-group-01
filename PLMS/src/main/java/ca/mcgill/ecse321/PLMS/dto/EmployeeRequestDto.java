@@ -7,11 +7,8 @@ public class EmployeeRequestDto {
     private String email;
     private String password;
     private String name;
-
     private String jobTitle;
     private double hourlyWage;
-
-
 
     public void setEmail(String aEmail)
     { this.email = aEmail; }
