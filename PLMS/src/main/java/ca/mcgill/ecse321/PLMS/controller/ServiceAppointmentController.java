@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -118,4 +119,20 @@ public class ServiceAppointmentController {
         return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.CREATED);
       }
       
+      /**
+       * Creates a new service appointment with the desired service, date, start time and end time
+       * 
+       * @param serviceName The service name of the service given during the appointment
+       * @param date The date at which the service is going to be given
+       * @param startTime The time at which the appointment is going to start at
+       * @param endTime The time at which the appointment is going to end at
+       * @return The service appointment object created
+       */
+      @PutMapping("/serviceAppointment/{id}")
+      public ResponseEntity<ServiceAppointmentResponseDto> updateFloorInfo(@PathVariable int id, @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
+        ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(serviceService.getServiceByServiceName(serviceAppointmentRequestDto.getServiceName()));
+        serviceAppointment = serviceAppointmentService.upadteServiceAppointment(serviceAppointment);
+        ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
+        return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.CREATED);
+      }
 }

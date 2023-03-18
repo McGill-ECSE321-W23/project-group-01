@@ -17,6 +17,8 @@ public class ServiceAppointmentResponseDto {
     private String employeeEmail;
     private String serviceName;
 
+    ServiceAppointmentResponseDto() {}
+
     public ServiceAppointmentResponseDto(ServiceAppointment s){
         this.id = s.getId();
         this.date = s.getDate();
@@ -28,6 +30,7 @@ public class ServiceAppointmentResponseDto {
         this.serviceName = s.getService().getServiceName();
     }
 
+    //=-=-=-=-=- Getters -=-=-=-=-=//
     public int getId() {
         return id;
     }
@@ -55,4 +58,35 @@ public class ServiceAppointmentResponseDto {
     public String getServiceName() {
         return serviceName;
     }
+    //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=//
+
+    //=-=-=-=-=- Setters -=-=-=-=-=//
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setStartTime(Time startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(Time endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public void setEmployeeEmail(String employeeEmail) {
+        this.employeeEmail = employeeEmail;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+    //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=//
 }
