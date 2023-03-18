@@ -46,7 +46,7 @@ public class OwnerController {
      * @return the dto response of the new owner
      */
 
-    @PostMapping("/owner")
+    @PostMapping("/owner/create")
     public ResponseEntity<OwnerResponseDto> createOwner(@Valid @RequestBody OwnerRequestDto ownerRequest)
     {
         Owner owner = ownerRequest.toModel(); // 1. You pass in a request, validates the constraints, creates an owner if they pass
@@ -54,45 +54,41 @@ public class OwnerController {
         return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(owner), HttpStatus.OK); //3. You mask the model by returning a Response
     }
 
-    // @PutMapping(value = {"/owner/{email}"})
-    // public ResponseEntity<OwnerResponseDto> updateOwnerEmail(@PathVariable String email, @RequestParam String n_email)
-    // {
-    //     Owner o = ownerService.getOwnerByEmail(email);
-    //     OwnerRequestDto ownerRequest = new OwnerRequestDto();
-    //     ownerRequest.setPassword(o.getName());
-    //     ownerRequest.setName(o.getPassword());
-    //     ownerRequest.setEmail(n_email);
+    @PutMapping("/owner/update")
+    public ResponseEntity<OwnerResponseDto> updateOwner(@Valid @RequestBody OwnerRequestDto ownerRequest) {
 
-    //     Owner o_updated = ownerRequest.toModel();
-    //     o_updated = ownerService.updateOwnerAccount(o_updated);
-    //     return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(o_updated), HttpStatus.OK);
+        Owner owner = ownerRequest.toModel();
+        owner = ownerService.updateOwnerAccount(owner);
+        return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(owner), HttpStatus.OK);
+    }
 
-    // }
+     @PutMapping(value = {"/owner/{email}/{password}"})
+     public ResponseEntity<OwnerResponseDto> updateOwnerPassword(@PathVariable String email, @PathVariable String password)
+     {
+         Owner o = ownerService.getOwnerByEmail(email);
+         OwnerRequestDto ownerRequest = new OwnerRequestDto();
+         ownerRequest.setPassword(password);
+         ownerRequest.setName(o.getName()); //Asked TA no need for validation
+         ownerRequest.setEmail(email);
+         @Valid OwnerRequestDto s = ownerRequest;
 
-    // @PutMapping(value = {"/owner/{email}"})
-    // public ResponseEntity<OwnerResponseDto> updateOwnerPassword(@PathVariable String email, @RequestParam String password)
-    // {
-    //     Owner o = ownerService.getOwnerByEmail(email);
-    //     OwnerRequestDto ownerRequest = new OwnerRequestDto();
-    //     ownerRequest.setPassword(password);
-    //     ownerRequest.setName(o.getName()); //Asked TA no need for validation
-    //     ownerRequest.setEmail(email);
+         Owner o_updated = ownerRequest.toModel();
+         o_updated = ownerService.updateOwnerAccount(o_updated);
+         return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(o_updated), HttpStatus.OK);
 
-    //     Owner o_updated = ownerRequest.toModel();
-    //     o_updated = ownerService.updateOwnerAccount(o_updated);
-    //     return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(o_updated), HttpStatus.OK);
+    }
 
-    // }
 
-    @PutMapping(value = {"/owner/{email}"})
-    public ResponseEntity<OwnerResponseDto> updateOwnerName(@PathVariable String email, @RequestParam String name)
+
+    @PutMapping(value = {"/owner/{email}/change/{name}"})
+    public ResponseEntity<OwnerResponseDto> updateOwnerName(@PathVariable String email, @PathVariable String name)
     {
         Owner o = ownerService.getOwnerByEmail(email);
         OwnerRequestDto ownerRequest = new OwnerRequestDto();
         ownerRequest.setPassword(o.getPassword());
         ownerRequest.setName(name); //Asked TA no need for validation
         ownerRequest.setEmail(email);
-
+        @Valid OwnerRequestDto s = ownerRequest;
         Owner o_updated = ownerRequest.toModel();
         o_updated = ownerService.updateOwnerAccount(o_updated);
         return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(o_updated), HttpStatus.OK);

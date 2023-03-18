@@ -20,6 +20,10 @@ public class OwnerRequestDto {
     @NotBlank(message = "Name cannot be blank.")
     private String name;
 
+
+    public String getEmail()
+    { return email; }
+
     public void setEmail(String aEmail)
     { this.email = aEmail; }
 

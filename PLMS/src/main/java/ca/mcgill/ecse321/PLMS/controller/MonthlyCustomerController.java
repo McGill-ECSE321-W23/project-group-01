@@ -15,16 +15,16 @@ import java.util.stream.StreamSupport;
 
 public class MonthlyCustomerController {
     @Autowired
-    private MonthlyCustomerService MonthlyCustomerService;
+    private MonthlyCustomerService monthlyCustomerService;
 
     /**
      * Returns a list of all MonthlyCustomers
      * @return all MonthlyCustomers
      */
 
-    @GetMapping("/MonthlyCustomers")
+    @GetMapping("/monthly/all")
     public Iterable<MonthlyCustomerResponseDto> getAllMonthlyCustomers() {
-        return StreamSupport.stream(MonthlyCustomerService.getAllMonthlyCustomers().spliterator(), false).map(MonthlyCustomerResponseDto::new).collect(Collectors.toList());
+        return StreamSupport.stream(monthlyCustomerService.getAllMonthlyCustomers().spliterator(), false).map(MonthlyCustomerResponseDto::new).collect(Collectors.toList());
     }
 
     /**
@@ -33,9 +33,9 @@ public class MonthlyCustomerController {
      * @return the MonthlyCustomer with Email, Password, Name
      */
 
-    @GetMapping(value = {"/MonthlyCustomer", "/MonthlyCustomer/"})
+    @GetMapping(value = {"/monthly", "/monthly/"})
     public ResponseEntity<MonthlyCustomerResponseDto> getMonthlyCustomerByEmail(@RequestParam String email) {
-        return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(MonthlyCustomerService.getMonthlyCustomerByEmail(email)), HttpStatus.ACCEPTED);
+        return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(monthlyCustomerService.getMonthlyCustomerByEmail(email)), HttpStatus.ACCEPTED);
     }
 
     /**
@@ -44,55 +44,49 @@ public class MonthlyCustomerController {
      * @return the dto response of the new MonthlyCustomer
      */
 
-    @PostMapping("/MonthlyCustomer")
+    @PostMapping("/monthly/create")
     public ResponseEntity<MonthlyCustomerResponseDto> createMonthlyCustomer(@Valid @RequestBody MonthlyCustomerRequestDto MonthlyCustomerRequest)
     {
         MonthlyCustomer MonthlyCustomer = MonthlyCustomerRequest.toModel(); // 1. You pass in a request, validates the constraints, creates an MonthlyCustomer if they pass
-        MonthlyCustomer =  MonthlyCustomerService.createMonthlyCustomerAccount(MonthlyCustomer); // 2. You use the service class to check if it exists and save it
+        MonthlyCustomer =  monthlyCustomerService.createMonthlyCustomerAccount(MonthlyCustomer); // 2. You use the service class to check if it exists and save it
         return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(MonthlyCustomer), HttpStatus.OK); //3. You mask the model by returning a Response
     }
 
-    @PutMapping(value = {"/MonthlyCustomer/{email}"})
-    public ResponseEntity<MonthlyCustomerResponseDto> updateMonthlyCustomerEmail(@PathVariable String email, @RequestParam String n_email)
+    @PutMapping("/monthly/update")
+    public ResponseEntity<MonthlyCustomerResponseDto> updateMonthlyCustomer(@Valid @RequestBody MonthlyCustomerRequestDto monthlyCustomerRequest)
     {
-        MonthlyCustomer o = MonthlyCustomerService.getMonthlyCustomerByEmail(email);
-        MonthlyCustomerRequestDto MonthlyCustomerRequest = new MonthlyCustomerRequestDto();
-        MonthlyCustomerRequest.setPassword(o.getName());
-        MonthlyCustomerRequest.setName(o.getPassword());
-        MonthlyCustomerRequest.setEmail(n_email);
-
-        MonthlyCustomer o_updated = MonthlyCustomerRequest.toModel();
-        o_updated = MonthlyCustomerService.updateMonthlyCustomer(o_updated);
-        return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(o_updated), HttpStatus.OK);
+        MonthlyCustomer monthlyCustomer = monthlyCustomerRequest.toModel();
+        monthlyCustomer = monthlyCustomerService.updateMonthlyCustomer(monthlyCustomer);
+        return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(monthlyCustomer), HttpStatus.OK);
 
     }
 
-    @PutMapping(value = {"/MonthlyCustomer/{email}"})
-    public ResponseEntity<MonthlyCustomerResponseDto> updateMonthlyCustomerPassword(@PathVariable String email, @RequestParam String password)
+    @PutMapping(value = {"/monthly/{email}/{password}"})
+    public ResponseEntity<MonthlyCustomerResponseDto> updateMonthlyCustomerPassword(@PathVariable String email, @PathVariable String password)
     {
-        MonthlyCustomer o = MonthlyCustomerService.getMonthlyCustomerByEmail(email);
+        MonthlyCustomer o = monthlyCustomerService.getMonthlyCustomerByEmail(email);
         MonthlyCustomerRequestDto MonthlyCustomerRequest = new MonthlyCustomerRequestDto();
-        MonthlyCustomerRequest.setPassword(o.getName());
-        MonthlyCustomerRequest.setName(password); //Asked TA no need for validation
+        MonthlyCustomerRequest.setPassword(password);
+        MonthlyCustomerRequest.setName(o.getName()); //Asked TA no need for validation
         MonthlyCustomerRequest.setEmail(email);
-
+        @Valid MonthlyCustomer s = o;
         MonthlyCustomer o_updated = MonthlyCustomerRequest.toModel();
-        o_updated = MonthlyCustomerService.updateMonthlyCustomer(o_updated);
+        o_updated = monthlyCustomerService.updateMonthlyCustomer(o_updated);
         return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(o_updated), HttpStatus.OK);
 
     }
 
-    @PutMapping(value = {"/MonthlyCustomer/{email}"})
-    public ResponseEntity<MonthlyCustomerResponseDto> updateMonthlyCustomerName(@PathVariable String email, @RequestParam String name)
+    @PutMapping(value = {"/monthly/{email}/change/{name}"})
+    public ResponseEntity<MonthlyCustomerResponseDto> updateMonthlyCustomerName(@PathVariable String email, @PathVariable String name)
     {
-        MonthlyCustomer o = MonthlyCustomerService.getMonthlyCustomerByEmail(email);
+        MonthlyCustomer o = monthlyCustomerService.getMonthlyCustomerByEmail(email);
         MonthlyCustomerRequestDto MonthlyCustomerRequest = new MonthlyCustomerRequestDto();
         MonthlyCustomerRequest.setPassword(o.getPassword());
         MonthlyCustomerRequest.setName(name); //Asked TA no need for validation
         MonthlyCustomerRequest.setEmail(email);
-
+        @Valid MonthlyCustomer s = o;
         MonthlyCustomer o_updated = MonthlyCustomerRequest.toModel();
-        o_updated = MonthlyCustomerService.updateMonthlyCustomer(o_updated);
+        o_updated = monthlyCustomerService.updateMonthlyCustomer(o_updated);
         return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(o_updated), HttpStatus.OK);
 
     }

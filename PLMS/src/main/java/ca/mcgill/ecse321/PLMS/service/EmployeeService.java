@@ -28,7 +28,8 @@ public class EmployeeService {
     @Transactional
     public Employee updateEmployee(Employee employee)
     {
-        return employeeRepository.save(getEmployeeByEmail(employee.getEmail()));
+        getEmployeeByEmail(employee.getEmail());
+        return employeeRepository.save(employee);
     }
 
     @Transactional

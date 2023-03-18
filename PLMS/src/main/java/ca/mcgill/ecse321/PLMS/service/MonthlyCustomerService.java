@@ -29,7 +29,8 @@ public class MonthlyCustomerService {
     @Transactional
     public MonthlyCustomer updateMonthlyCustomer(MonthlyCustomer monthlyCustomer)
     {
-        return monthlyCustomerRepository.save(getMonthlyCustomerByEmail(monthlyCustomer.getEmail()));
+        getMonthlyCustomerByEmail(monthlyCustomer.getEmail());
+        return monthlyCustomerRepository.save(monthlyCustomer);
     }
 
     @Transactional
