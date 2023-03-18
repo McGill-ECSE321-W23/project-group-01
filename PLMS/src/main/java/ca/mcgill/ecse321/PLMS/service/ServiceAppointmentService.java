@@ -161,6 +161,7 @@ public class ServiceAppointmentService {
     LocalTime localEndTime = findEndTime(serviceAppointment.getStartTime().toLocalTime(), serviceAppointment);
     serviceAppointment.setEndTime(Time.valueOf(localEndTime));
     updatedAppointment.setDate(serviceAppointment.getDate());
+    updatedAppointment.setId(id);
     // don't do parking lot check yet
     // don't do employee assignment yet
 
