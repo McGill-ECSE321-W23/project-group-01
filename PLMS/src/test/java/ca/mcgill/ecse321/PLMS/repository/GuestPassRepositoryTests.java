@@ -87,7 +87,7 @@ public class GuestPassRepositoryTests {
         mainFloor.setParkingLot(parkingLot);
         //Save floor
         mainFloor = floorRepository.save(mainFloor);
-        int floorId = mainFloor.getId();
+        int floorId = mainFloor.getFloorNumber();
         //---------------------------//
 
         GuestPass guestPass = new GuestPass();
@@ -122,7 +122,7 @@ public class GuestPassRepositoryTests {
         assertEquals(isLarge, guestPass.getIsLarge());
         assertEquals(confirmationCode, guestPass.getConfirmationCode());
 
-        assertEquals(floorId, guestPass.getFloor().getId());
+        assertEquals(floorId, guestPass.getFloor().getFloorNumber());
 
         assertEquals(parkingLotId, guestPass.getFloor().getParkingLot().getId());
     }

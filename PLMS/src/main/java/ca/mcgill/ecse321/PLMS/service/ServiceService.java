@@ -1,3 +1,5 @@
+package ca.mcgill.ecse321.PLMS.service;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
