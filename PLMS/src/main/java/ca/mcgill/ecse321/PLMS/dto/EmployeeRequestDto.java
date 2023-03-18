@@ -26,8 +26,7 @@ public class EmployeeRequestDto {
     @Pattern(regexp = "^[a-zA-Z\s]+$", message = "Job title can only have letters")
     private String jobTitle;
 
-    @Min(1)
-    @Max(1000000)
+    @Positive
     private double hourlyWage;
 
     public void setEmail(String aEmail)
