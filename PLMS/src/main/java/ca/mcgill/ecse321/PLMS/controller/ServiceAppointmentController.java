@@ -20,6 +20,7 @@ import ca.mcgill.ecse321.PLMS.dto.ServiceAppointmentResponseDto;
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
 import ca.mcgill.ecse321.PLMS.service.AccountService;
+import ca.mcgill.ecse321.PLMS.service.MonthlyCustomerService;
 import ca.mcgill.ecse321.PLMS.service.ServiceAppointmentService;
 import ca.mcgill.ecse321.PLMS.service.ServiceService;
 import jakarta.validation.Valid;
@@ -117,11 +118,14 @@ public class ServiceAppointmentController {
        */
       @PostMapping("/serviceAppointment")
       public ResponseEntity<ServiceAppointmentResponseDto> createServiceAppointment(@Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
+        //Converting 
         Service service = serviceService.getServiceByServiceName(serviceAppointmentRequestDto.getServiceName());
-        MonthlyCustomer monthlyCustomer = 
-        ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(service, );
+        MonthlyCustomer monthlyCustomer = monthlyCustomerService.getMonthlyCustomerByEmail(serviceAppointmentRequestDto.getUserEmail());
+        
+        ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(service, monthlyCustomer);
         serviceAppointment = serviceAppointmentService.createServiceAppointment(serviceAppointment);
         ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
+        
         return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.CREATED);
       }
       
