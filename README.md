@@ -45,9 +45,9 @@ The software system was designed to respond to a set of requirements specified b
 
 | Name | Contributions | Total Hours | 
 | --- | --- | --- |
-| Evan Boyd |  |  |
+| Evan Boyd | Floor and ServiceAppointment controller, DTO, and service classes. Unit and integration tests for Floor and ServiceAppointment classes. |  |
 | Samer Abdulkarim |  |  |
-| Emilien Taisne |  |  |
+| Emilien Taisne | Floor and ServiceAppointment controller, DTO, and service classes. Unit and integration tests for Floor and ServiceAppointment classes. |  |
 | Walid Aissa |  |   |
 | Karim Al Sabbagh |   |  |
 | Karl Bridi |  |  |
