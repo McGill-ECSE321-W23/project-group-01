@@ -41,6 +41,17 @@ The software system was designed to respond to a set of requirements specified b
 | Karim Al Sabbagh | Domain model design, requirements specification, FRS-6 use case diagrame, tests for the repository classes  | 16  |
 | Karl Bridi | Domain model design & documentation, requirements specifications, FRS-1 use case diagram | 16 |
 
+### Sprint 2 individual efforts: 
+
+| Name | Contributions | Total Hours | 
+| --- | --- | --- |
+| Evan Boyd |  |  |
+| Samer Abdulkarim |  |  |
+| Emilien Taisne |  |  |
+| Walid Aissa |  |   |
+| Karim Al Sabbagh |   |  |
+| Karl Bridi |  |  |
+
  
 
  

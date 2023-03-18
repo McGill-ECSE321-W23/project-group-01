@@ -13,6 +13,11 @@ import jakarta.persistence.*;
 public class Owner extends Account
 {
 
+    public Owner(String email, String password, String name) {
+        super(email, password, name);
+    }
+
+    public Owner() {}
   //------------------------
   // MEMBER VARIABLES (all belong to the super class account)
   //------------------------
