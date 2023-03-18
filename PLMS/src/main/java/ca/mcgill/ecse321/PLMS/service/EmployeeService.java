@@ -25,6 +25,11 @@ public class EmployeeService {
         return employee;
     }
 
+    @Transactional Employee updateEmployee(Employee)
+    {
+        Employee employee = employeeRepository.find
+    }
+
     @Transactional
     public Employee createEmployeeAccount(Employee employee) {
         // Create the account
