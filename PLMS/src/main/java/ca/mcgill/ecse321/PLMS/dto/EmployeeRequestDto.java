@@ -2,8 +2,6 @@ package ca.mcgill.ecse321.PLMS.dto;
 
 import ca.mcgill.ecse321.PLMS.model.Employee;
 import jakarta.validation.constraints.*;
-import org.hibernate.validator.constraints.Range;
-import org.springframework.boot.context.properties.bind.Name;
 
 public class EmployeeRequestDto {
 
