@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.PLMS.service;
 
 import java.sql.Date;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,28 @@ public class ServiceAppointmentService {
   @Autowired
   ServiceAppointmentRepository serviceAppointmentRepo;
 
+  // 1
+  @Transactional
+  public ServiceAppointment createServiceAppointment(ServiceAppointment serviceAppointment){
+    // first calculate the end time of the service appointment by using the length of the appointment
+    LocalTime localStartTime = serviceAppointment.getStartTime().toLocalTime();
+    LocalTime localEndTime = localStartTime.plusHours((long)Math.floor(serviceAppointment.getService().getLengthInHours()));
+    localEndTime.plusMinutes((long)(serviceAppointment.getService().getLengthInHours() - Math.floor(serviceAppointment.getService().getLengthInHours())));
+
+    // don't do parking lot check yet
+    // don't do employee assignment yet
+
+    ServiceAppointment appointment = serviceAppointmentRepo.save(serviceAppointment);
+    return appointment;
+  }
+
   // 2
   @Transactional
   public Iterable<ServiceAppointment> getAllServiceAppointments(){
     return serviceAppointmentRepo.findAll();
   }
 
+  @Transactional
   public ServiceAppointment findServiceAppointmentById(int id){
     ServiceAppointment appointment = serviceAppointmentRepo.findServiceAppointmentById(id);
     if (appointment == null){
