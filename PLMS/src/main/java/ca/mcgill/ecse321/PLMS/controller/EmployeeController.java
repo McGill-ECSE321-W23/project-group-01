@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+
+@RestController
 public class EmployeeController {
 
     @Autowired
@@ -55,7 +57,7 @@ public class EmployeeController {
 
 
 
-    @PutMapping(value = {"/employee/update/{email}"})
+    @PutMapping(value = {"/employee/update"})
     public ResponseEntity<EmployeeResponseDto> updateEmployee(@Valid @RequestBody EmployeeRequestDto employeeRequest)
     {
        Employee employee = employeeRequest.toModel();

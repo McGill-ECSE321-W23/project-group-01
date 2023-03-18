@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+@RestController
 public class MonthlyCustomerController {
     @Autowired
     private MonthlyCustomerService monthlyCustomerService;
