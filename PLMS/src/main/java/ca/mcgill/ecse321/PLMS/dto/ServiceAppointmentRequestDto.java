@@ -18,9 +18,6 @@ public class ServiceAppointmentRequestDto {
     @NotNull(message = "Cannot have an empty start time.")
     private Time starTime;
 
-    @NotNull(message = "Cannot have an empty end time.")
-    private Time endTime;
-
     @NotNull(message = "Cannot have an empty service name.")
     private String serviceName;
     //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=//
@@ -34,7 +31,6 @@ public class ServiceAppointmentRequestDto {
 		ServiceAppointment s = new ServiceAppointment();
 		s.setDate(date);
 		s.setStartTime(starTime);
-        s.setEndTime(endTime);
 		s.setService(service);
 		
 		return s;
@@ -43,10 +39,6 @@ public class ServiceAppointmentRequestDto {
     //=-=-=-=-=- Setters -=-=-=-=-=//
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public void setEndTime(Time endTime) {
-        this.endTime = endTime;
     }
 
     public void setServiceName(String serviceName) {
@@ -61,10 +53,6 @@ public class ServiceAppointmentRequestDto {
     //=-=-=-=-=- Getters -=-=-=-=-=//
     public Date getDate() {
         return date;
-    }
-
-    public Time getEndTime() {
-        return endTime;
     }
 
     public Time getStarTime() {
