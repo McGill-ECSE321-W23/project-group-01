@@ -3,6 +3,9 @@ package ca.mcgill.ecse321.PLMS.dto;
 import java.sql.Date;
 import java.sql.Time;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.Service;
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -14,12 +17,15 @@ public class ServiceAppointmentRequestDto {
     @NotNull(message = "Cannot have an empty date.")
     @FutureOrPresent(message = "Date must be in the future.")
     private Date date;
-
+    
+    //Format
     @NotNull(message = "Cannot have an empty start time.")
-    private Time starTime;
+    private Time startTime;
 
     @NotNull(message = "Cannot have an empty service name.")
     private String serviceName;
+
+    private String userEmail;
     //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=//
 
     /**
@@ -27,11 +33,12 @@ public class ServiceAppointmentRequestDto {
      * 
      * @return serviceAppointment object with all corresponding attributes
      */
-	public ServiceAppointment toModel(Service service) {
+	public ServiceAppointment toModel(Service service, MonthlyCustomer monthlyCustomer) {
 		ServiceAppointment s = new ServiceAppointment();
 		s.setDate(date);
-		s.setStartTime(starTime);
+		s.setStartTime(startTime);
 		s.setService(service);
+        s.setCustomer(monthlyCustomer);
 		
 		return s;
 	}
@@ -45,8 +52,12 @@ public class ServiceAppointmentRequestDto {
         this.serviceName = serviceName;
     }
 
-    public void setStarTime(Time starTime) {
-        this.starTime = starTime;
+    public void setStartTime(Time starTime) {
+        this.startTime = starTime;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
     //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=//
 
@@ -55,12 +66,16 @@ public class ServiceAppointmentRequestDto {
         return date;
     }
 
-    public Time getStarTime() {
-        return starTime;
+    public Time getStartTime() {
+        return startTime;
     }
 	
     public String getServiceName() {
         return serviceName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
     }
     //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=//
 }

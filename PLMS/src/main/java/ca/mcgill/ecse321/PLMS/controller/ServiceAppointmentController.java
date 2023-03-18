@@ -7,6 +7,7 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.PLMS.dto.ServiceAppointmentRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.ServiceAppointmentResponseDto;
+import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
+import ca.mcgill.ecse321.PLMS.service.AccountService;
 import ca.mcgill.ecse321.PLMS.service.ServiceAppointmentService;
 import ca.mcgill.ecse321.PLMS.service.ServiceService;
 import jakarta.validation.Valid;
@@ -28,6 +31,8 @@ public class ServiceAppointmentController {
     private ServiceAppointmentService serviceAppointmentService;
     @Autowired
     private ServiceService serviceService;
+    @Autowired
+    private MonthlyCustomerService monthlyCustomerService;
 
     /**
      *  GET/POST/DELETE Service Appointment by ID
@@ -108,12 +113,13 @@ public class ServiceAppointmentController {
        * @param serviceName The service name of the service given during the appointment
        * @param date The date at which the service is going to be given
        * @param startTime The time at which the appointment is going to start at
-       * @param endTime The time at which the appointment is going to end at
        * @return The service appointment object created
        */
       @PostMapping("/serviceAppointment")
       public ResponseEntity<ServiceAppointmentResponseDto> createServiceAppointment(@Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
-        ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(serviceService.getServiceByServiceName(serviceAppointmentRequestDto.getServiceName()));
+        Service service = serviceService.getServiceByServiceName(serviceAppointmentRequestDto.getServiceName());
+        MonthlyCustomer monthlyCustomer = 
+        ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(service, );
         serviceAppointment = serviceAppointmentService.createServiceAppointment(serviceAppointment);
         ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
         return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.CREATED);
@@ -125,14 +131,23 @@ public class ServiceAppointmentController {
        * @param serviceName The service name of the service given during the appointment
        * @param date The date at which the service is going to be given
        * @param startTime The time at which the appointment is going to start at
-       * @param endTime The time at which the appointment is going to end at
        * @return The service appointment object created
        */
-      @PutMapping("/serviceAppointment/{id}")
-      public ResponseEntity<ServiceAppointmentResponseDto> updateFloorInfo(@PathVariable int id, @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
-        ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(serviceService.getServiceByServiceName(serviceAppointmentRequestDto.getServiceName()));
-        serviceAppointment = serviceAppointmentService.upadteServiceAppointment(serviceAppointment);
-        ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
-        return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.CREATED);
-      }
+      // @PutMapping("/serviceAppointment/{id}")
+      // public ResponseEntity<ServiceAppointmentResponseDto> updateFloorInfo(@PathVariable int id, @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
+      //   ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(serviceService.getServiceByServiceName(serviceAppointmentRequestDto.getServiceName()));
+      //   serviceAppointment = serviceAppointmentService.updateServiceAppointment(serviceAppointment);
+      //   ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
+      //   return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.CREATED);
+      // }
+      
+      /**
+       * Delete a service appointment
+       * 
+       * 
+       */
+        @DeleteMapping("/serviceAppointment/{id}")
+        public void deleteServiceAppointment(@PathVariable int id){
+          serviceAppointmentService.deleteServiceAppointmentById(id);
+        }
 }
