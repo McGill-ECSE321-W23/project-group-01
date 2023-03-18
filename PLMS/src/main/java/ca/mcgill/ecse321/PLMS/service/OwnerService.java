@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
-import ca.mcgill.ecse321.PLMS.model.Employee;
-import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
 
@@ -34,10 +32,22 @@ public class OwnerService {
     }
 
     @Transactional
+    public Owner updateOwnerAccount(Owner owner)
+    {
+        getOwnerByEmail(owner.getEmail());
+        return ownerRepository.save(owner);
+
+    }
+
+    @Transactional
 	public Owner createOwnerAccount(Owner owner) {
         // Register the owner account into database
-		return ownerRepository.save(owner);
-	}
+        if (ownerRepository.findOwnerByEmail(owner.getEmail()) == null)
+		    return ownerRepository.save(owner);
+        else
+            throw new PLMSException(HttpStatus.CONFLICT, "Account with this email already exists");
+
+    }
 
 
 }
