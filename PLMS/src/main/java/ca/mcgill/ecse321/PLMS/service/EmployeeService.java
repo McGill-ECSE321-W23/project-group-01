@@ -25,15 +25,23 @@ public class EmployeeService {
         return employee;
     }
 
-    @Transactional Employee updateEmployee(Employee employee)
+    @Transactional
+    public Employee updateEmployee(Employee employee)
     {
-        getEmployeeByEmail(employee.getEmail());
-        return employeeRepository.save(employee);
+        return employeeRepository.save(getEmployeeByEmail(employee.getEmail()));
     }
 
     @Transactional
     public Employee createEmployeeAccount(Employee employee) {
-        // Create the account
-        return employeeRepository.save(employee);
+
+        if (employeeRepository.findEmployeeByEmail(employee.getEmail()) == null)
+            return employeeRepository.save(employee);
+        else
+            throw new PLMSException(HttpStatus.CONFLICT, "Account with this email already exists");
+    }
+
+    @Transactional
+    public void deleteEmployeeAccount(Employee employee) {
+        employeeRepository.delete(getEmployeeByEmail(employee.getEmail()));
     }
 }

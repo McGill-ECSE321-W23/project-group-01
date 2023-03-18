@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
-import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,10 +25,19 @@ public class MonthlyCustomerService {
     }
 
     @Transactional
+    public MonthlyCustomer updateMonthlyCustomer(MonthlyCustomer monthlyCustomer)
+    {
+        return monthlyCustomerRepository.save(getMonthlyCustomerByEmail(monthlyCustomer.getEmail()));
+    }
+
+    @Transactional
     public MonthlyCustomer createMonthlyCustomerAccount(MonthlyCustomer monthlyCustomer) {
         // Create the account
+        if (monthlyCustomerRepository.findMonthlyCustomerByEmail(monthlyCustomer.getEmail()) == null)
+            return monthlyCustomerRepository.save(monthlyCustomer);
+        else
+            throw new PLMSException(HttpStatus.CONFLICT, "Account with this email already exists");
 
-        return monthlyCustomerRepository.save(monthlyCustomer);
     }
 
 

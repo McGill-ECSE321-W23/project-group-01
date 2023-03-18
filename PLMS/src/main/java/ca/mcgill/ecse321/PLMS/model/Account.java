@@ -20,7 +20,6 @@ public abstract class Account
 
   //Account Attributes
   @Id
-  @Column(unique = true)
   private String email; // each account will be identified by a unique email address
   private String password;
   private String name;

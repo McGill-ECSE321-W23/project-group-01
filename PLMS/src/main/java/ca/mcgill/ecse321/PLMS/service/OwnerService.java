@@ -34,10 +34,21 @@ public class OwnerService {
     }
 
     @Transactional
+    public Owner updateOwnerAccount(Owner owner)
+    {
+       return ownerRepository.save(getOwnerByEmail(owner.getEmail()));
+
+    }
+
+    @Transactional
 	public Owner createOwnerAccount(Owner owner) {
         // Register the owner account into database
-		return ownerRepository.save(owner);
-	}
+        if (ownerRepository.findOwnerByEmail(owner.getEmail()) == null)
+		    return ownerRepository.save(owner);
+        else
+            throw new PLMSException(HttpStatus.CONFLICT, "Account with this email already exists");
+
+    }
 
 
 }
