@@ -36,7 +36,7 @@ public class GuestPass extends Pass
   {
     boolean wasSet = false; //first push
     date = aDate;
-    wasSet = true;
+    wasSet = true; //
     return wasSet;
   }
 

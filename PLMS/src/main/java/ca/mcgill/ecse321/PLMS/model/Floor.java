@@ -19,9 +19,7 @@ public class Floor
 
   //Floor Attributes
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private int id;
-  private int floorNumber; // each floor is uniquely identified by its floor number
+  private Integer floorNumber; // each floor is uniquely identified by its floor number
   private int largeSpotCapacity;
   private int smallSpotCapacity;
   private int smallSpotCounter;
@@ -77,8 +75,6 @@ public class Floor
     wasSet = true;
     return wasSet;
   }
-
-  public int getId() { return id; }
 
   public int getFloorNumber()
   {

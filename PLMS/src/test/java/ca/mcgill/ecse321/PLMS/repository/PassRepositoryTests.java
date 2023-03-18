@@ -84,7 +84,7 @@ public class PassRepositoryTests {
 
         //Save floor
         mainFloor = floorRepository.save(mainFloor);
-        int floorId = mainFloor.getId();
+        int floorId = mainFloor.getFloorNumber();
         //---------------------------//
 
         //Create Pass
@@ -112,7 +112,7 @@ public class PassRepositoryTests {
         assertEquals(licensePlate, pass.getLicensePlate());
         assertEquals(confirmationCode, pass.getConfirmationCode());
 
-        assertEquals(floorId, pass.getFloor().getId());
+        assertEquals(floorId, pass.getFloor().getFloorNumber());
     }
 
     @Test
@@ -158,7 +158,7 @@ public class PassRepositoryTests {
 
         //Save floor
         mainFloor = floorRepository.save(mainFloor);
-        int floorId = mainFloor.getId();
+        int floorId = mainFloor.getFloorNumber();
         //---------------------------//
 
         //Create Pass
@@ -186,7 +186,7 @@ public class PassRepositoryTests {
         assertEquals(licensePlate, pass.getLicensePlate());
         assertEquals(confirmationCode, pass.getConfirmationCode());
 
-        assertEquals(floorId, pass.getFloor().getId());
+        assertEquals(floorId, pass.getFloor().getFloorNumber());
     }
 }
 
