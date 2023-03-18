@@ -101,7 +101,7 @@ public class EmployeeController {
     }
 
     @PutMapping(value = {"/employee/update/job/{email}"})
-    public ResponseEntity<EmployeeResponseDto> updateEmployeeJobTitle(@PathVariable String email, @RequestBody String jobTitle)
+    public ResponseEntity<EmployeeResponseDto> updateEmployeeJobTitle(@PathVariable String email, @RequestParam String jobTitle)
     {
         Employee o = employeeService.getEmployeeByEmail(email);
         EmployeeRequestDto EmployeeRequest = new EmployeeRequestDto();
