@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
-import ca.mcgill.ecse321.PLMS.model.Employee;
-import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
 
