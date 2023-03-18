@@ -2,8 +2,7 @@ package ca.mcgill.ecse321.PLMS.dto;
 
 import java.sql.Date;
 import java.sql.Time;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDate;
 
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.Service;
@@ -16,9 +15,8 @@ public class ServiceAppointmentRequestDto {
     //=-=-=-=-=- jakarta validation of variables -=-=-=-=-=//
     @NotNull(message = "Cannot have an empty date.")
     @FutureOrPresent(message = "Date must be in the future.")
-    private Date date;
+    private LocalDate date;
     
-    //Format
     @NotNull(message = "Cannot have an empty start time.")
     private Time startTime;
 
@@ -35,7 +33,7 @@ public class ServiceAppointmentRequestDto {
      */
 	public ServiceAppointment toModel(Service service, MonthlyCustomer monthlyCustomer) {
 		ServiceAppointment s = new ServiceAppointment();
-		s.setDate(date);
+		s.setDate(Date.valueOf(date));
 		s.setStartTime(startTime);
 		s.setService(service);
         s.setCustomer(monthlyCustomer);
@@ -44,7 +42,7 @@ public class ServiceAppointmentRequestDto {
 	}
 
     //=-=-=-=-=- Setters -=-=-=-=-=//
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -62,7 +60,7 @@ public class ServiceAppointmentRequestDto {
     //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=//
 
     //=-=-=-=-=- Getters -=-=-=-=-=//
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 

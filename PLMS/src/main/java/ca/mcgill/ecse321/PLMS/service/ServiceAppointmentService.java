@@ -159,13 +159,13 @@ public class ServiceAppointmentService {
 
     updatedAppointment.setStartTime(serviceAppointment.getStartTime());
     LocalTime localEndTime = findEndTime(serviceAppointment.getStartTime().toLocalTime(), serviceAppointment);
-    serviceAppointment.setEndTime(Time.valueOf(localEndTime));
+    updatedAppointment.setEndTime(Time.valueOf(localEndTime));
     updatedAppointment.setDate(serviceAppointment.getDate());
     updatedAppointment.setId(id);
     // don't do parking lot check yet
     // don't do employee assignment yet
 
-    ServiceAppointment appointment = serviceAppointmentRepo.save(serviceAppointment);
+    ServiceAppointment appointment = serviceAppointmentRepo.save(updatedAppointment);
     return appointment;
   }
 }

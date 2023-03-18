@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse321.PLMS.dto.ServiceAppointmentRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.ServiceAppointmentResponseDto;
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
+import ca.mcgill.ecse321.PLMS.model.Service;
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
 import ca.mcgill.ecse321.PLMS.service.AccountService;
 import ca.mcgill.ecse321.PLMS.service.MonthlyCustomerService;
@@ -120,7 +121,9 @@ public class ServiceAppointmentController {
       public ResponseEntity<ServiceAppointmentResponseDto> createServiceAppointment(@Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
         //Converting 
         Service service = serviceService.getServiceByServiceName(serviceAppointmentRequestDto.getServiceName());
-        MonthlyCustomer monthlyCustomer = monthlyCustomerService.getMonthlyCustomerByEmail(serviceAppointmentRequestDto.getUserEmail());
+        
+        MonthlyCustomer monthlyCustomer = null;
+        if(serviceAppointmentRequestDto.getUserEmail() != null) monthlyCustomer = monthlyCustomerService.getMonthlyCustomerByEmail(serviceAppointmentRequestDto.getUserEmail());
         
         ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(service, monthlyCustomer);
         serviceAppointment = serviceAppointmentService.createServiceAppointment(serviceAppointment);
@@ -137,13 +140,19 @@ public class ServiceAppointmentController {
        * @param startTime The time at which the appointment is going to start at
        * @return The service appointment object created
        */
-      // @PutMapping("/serviceAppointment/{id}")
-      // public ResponseEntity<ServiceAppointmentResponseDto> updateFloorInfo(@PathVariable int id, @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
-      //   ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(serviceService.getServiceByServiceName(serviceAppointmentRequestDto.getServiceName()));
-      //   serviceAppointment = serviceAppointmentService.updateServiceAppointment(serviceAppointment);
-      //   ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
-      //   return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.CREATED);
-      // }
+      @PutMapping("/serviceAppointment/{id}")
+      public ResponseEntity<ServiceAppointmentResponseDto> udpateServiceAppointment(@PathVariable int id, @Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
+        //Converting 
+        Service service = serviceService.getServiceByServiceName(serviceAppointmentRequestDto.getServiceName());
+        
+        MonthlyCustomer monthlyCustomer = null;
+        if(serviceAppointmentRequestDto.getUserEmail() != null) monthlyCustomer = monthlyCustomerService.getMonthlyCustomerByEmail(serviceAppointmentRequestDto.getUserEmail());
+
+        ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(service, monthlyCustomer);
+        serviceAppointment = serviceAppointmentService.updateServiceAppointment(serviceAppointment, id);
+        ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
+        return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.CREATED);
+      }
       
       /**
        * Delete a service appointment
