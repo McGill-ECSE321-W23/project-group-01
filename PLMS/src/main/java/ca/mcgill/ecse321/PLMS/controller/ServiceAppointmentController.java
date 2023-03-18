@@ -20,7 +20,6 @@ import ca.mcgill.ecse321.PLMS.dto.ServiceAppointmentResponseDto;
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.Service;
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
-import ca.mcgill.ecse321.PLMS.service.AccountService;
 import ca.mcgill.ecse321.PLMS.service.MonthlyCustomerService;
 import ca.mcgill.ecse321.PLMS.service.ServiceAppointmentService;
 import ca.mcgill.ecse321.PLMS.service.ServiceService;
