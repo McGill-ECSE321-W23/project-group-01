@@ -66,7 +66,7 @@ public class FloorController {
    * @return floor with updated values
    */
   @PutMapping("/floor/{floorNumber}")
-  public ResponseEntity<FloorResponseDto> updateFloorInfo(@PathVariable int floorNumber, @RequestBody FloorRequestDto floorDto){
+  public ResponseEntity<FloorResponseDto> updateFloorInfo(@PathVariable int floorNumber, @RequestBody @Valid FloorRequestDto floorDto){
     Floor floor = floorDto.toModel();
     floor = floorService.updateFloor(floor);
     FloorResponseDto responseBody = new FloorResponseDto(floor);
