@@ -41,7 +41,7 @@ public class EmployeeService {
     }
 
     @Transactional
-    public void deleteEmployeeAccount(Employee employee) {
-        employeeRepository.delete(getEmployeeByEmail(employee.getEmail()));
+    public void deleteEmployeeAccount(String email) {
+        employeeRepository.delete(getEmployeeByEmail(email));
     }
 }
