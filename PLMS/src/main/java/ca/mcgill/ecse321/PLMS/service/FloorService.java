@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.PLMS.service;
 
+import java.io.Console;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -56,7 +58,8 @@ public class FloorService {
      */
     @Transactional
     public Floor updateFloor(Floor floor){
-        //!!!! THIS METHOD IS NOT IMPLEMENTED YET !!!!!
+        //check if the floor exists (the floor has to exist to edit it)
+        getFloorByFloorNumber(floor.getFloorNumber());
         floor = floorRepository.save(floor);
         return floor;
     }

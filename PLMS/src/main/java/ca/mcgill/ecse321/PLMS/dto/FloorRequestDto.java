@@ -7,23 +7,23 @@ import jakarta.validation.constraints.NotNull;
 public class FloorRequestDto {
   @NotNull(message = "Cannot have an empty floor number.")
   @Min(value = 0, message = "The floor number must be a non negative number.")
-  private int floorNumber;
+  private Integer floorNumber;
 
   @NotNull(message = "Cannot have an empty number of small spots on a floor.")
   @Min(value = 0, message = "Cannot be a negative number of small parking spots on a floor.")
-  private int smallSpotCapacity;
+  private Integer smallSpotCapacity;
 
   @NotNull(message = "Cannot have an empty number of large spots on a floor.")
   @Min(value = 0, message = "Cannot be a negative number of large parking spots on a floor.")
-  private int largeSpotCapacity;
+  private Integer largeSpotCapacity;
 
   @NotNull(message = "Cannot have an empty number of small spots occupied.")
   @Min(value = 0, message = "Cannot be a negative number of small parking spots occupied on a floor.")
-  private int smallSpotCounter;
+  private Integer smallSpotCounter;
 
   @NotNull(message = "Cannot have an empty number of large spots occupied.")
   @Min(value = 0, message = "Cannot be a negative number of large parking spots occupied on a floor.")
-  private int largeSpotCounter;
+  private Integer largeSpotCounter;
 
   /**
    * Method to construct a floor object from a floor request dto object
@@ -59,26 +59,6 @@ public class FloorRequestDto {
     this.largeSpotCounter = largeSpotCounter;
   }
 
-  // NEED TO ADD GETTERS TO REQUEST DTOs!
-  public int getFloorNumber(){
-    return this.floorNumber;
-  }
   
-  public int getSmallSpotCapacity(){
-    return this.smallSpotCapacity;
-  }
-
-  public int getLargeSpotCapacity(){
-    return this.largeSpotCapacity;
-  }
-
-  public int getSmallSpotCounter(){
-    return this.smallSpotCounter;
-  }
-
-  public int getLargeSpotCounter(){
-    return this.largeSpotCounter;
-  }
-
 
 }
