@@ -36,7 +36,8 @@ public class OwnerService {
     @Transactional
     public Owner updateOwnerAccount(Owner owner)
     {
-       return ownerRepository.save(getOwnerByEmail(owner.getEmail()));
+        getOwnerByEmail(owner.getEmail());
+        return ownerRepository.save(owner);
 
     }
 
