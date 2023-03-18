@@ -25,9 +25,10 @@ public class EmployeeService {
         return employee;
     }
 
-    @Transactional Employee updateEmployee(Employee)
+    @Transactional Employee updateEmployee(Employee employee)
     {
-        Employee employee = employeeRepository.find
+        getEmployeeByEmail(employee.getEmail());
+        return employeeRepository.save(employee);
     }
 
     @Transactional
