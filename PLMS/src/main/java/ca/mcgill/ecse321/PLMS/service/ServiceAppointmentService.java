@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.PLMS.service;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -34,15 +35,20 @@ public class ServiceAppointmentService {
   @Transactional
   public ServiceAppointment createServiceAppointment(ServiceAppointment serviceAppointment){
     // first calculate the end time of the service appointment by using the length of the appointment
-    LocalTime localStartTime = serviceAppointment.getStartTime().toLocalTime();
-    LocalTime localEndTime = localStartTime.plusHours((long)Math.floor(serviceAppointment.getService().getLengthInHours()));
-    localEndTime.plusMinutes((long)(serviceAppointment.getService().getLengthInHours() - Math.floor(serviceAppointment.getService().getLengthInHours())));
-
+    LocalTime localEndTime = findEndTime(serviceAppointment.getStartTime().toLocalTime(), serviceAppointment);
+    serviceAppointment.setEndTime(Time.valueOf(localEndTime));
     // don't do parking lot check yet
     // don't do employee assignment yet
 
     ServiceAppointment appointment = serviceAppointmentRepo.save(serviceAppointment);
     return appointment;
+  }
+
+  public LocalTime findEndTime(LocalTime startTime, ServiceAppointment serviceAppointment){
+    LocalTime localStartTime = serviceAppointment.getStartTime().toLocalTime();
+    LocalTime localEndTime = localStartTime.plusHours((long)Math.floor(serviceAppointment.getService().getLengthInHours()));
+    localEndTime.plusMinutes((long)(serviceAppointment.getService().getLengthInHours() - Math.floor(serviceAppointment.getService().getLengthInHours())));
+    return localEndTime;
   }
 
   // 2
@@ -141,5 +147,24 @@ public class ServiceAppointmentService {
     
     // the appointment exists, so delete it
     serviceAppointmentRepo.deleteById(id);
+  }
+
+  @Transactional
+  public ServiceAppointment updateServiceAppointment(ServiceAppointment serviceAppointment, int id){
+    // first calculate the end time of the service appointment by using the length of the appointment
+    ServiceAppointment updatedAppointment = serviceAppointmentRepo.findServiceAppointmentById(id);
+    if (updatedAppointment == null){
+      throw new PLMSException(HttpStatus.NOT_FOUND, "Service appointment is not found.");
+    }
+
+    updatedAppointment.setStartTime(serviceAppointment.getStartTime());
+    LocalTime localEndTime = findEndTime(serviceAppointment.getStartTime().toLocalTime(), serviceAppointment);
+    serviceAppointment.setEndTime(Time.valueOf(localEndTime));
+    updatedAppointment.setDate(serviceAppointment.getDate());
+    // don't do parking lot check yet
+    // don't do employee assignment yet
+
+    ServiceAppointment appointment = serviceAppointmentRepo.save(serviceAppointment);
+    return appointment;
   }
 }
