@@ -292,19 +292,12 @@ public class FloorServiceTests {
       final int largeSpotCounter = 0;
       final boolean isMemberOnly = false;
       final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
-		  final int smallSpotCapacity2 = 60;
-      final int largeSpotCapacity2 = 5;
-      final int smallSpotCounter2 = 70;
-      final int largeSpotCounter2 = 1;
-      final boolean isMemberOnly2 = true;
-      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2, isMemberOnly2);
 
-      when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
-      when(floorService.getFloorByFloorNumber(floorNumber)).thenReturn(floor);
+      when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(null);
 
       PLMSException e = assertThrows(PLMSException.class,
-				() -> floorService.updateFloor(floor2));
-		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+				() -> floorService.updateFloor(floor));
+		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
 		assertEquals("Floor with floor number: " + floorNumber + " does not exist.", e.getMessage());
     }
 

@@ -12,6 +12,7 @@ import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Service;
 
 //@org.springframework.stereotype.Service
+@org.springframework.stereotype.Service
 public class ServiceService {
 
 
