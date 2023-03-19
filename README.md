@@ -48,7 +48,7 @@ The software system was designed to respond to a set of requirements specified b
 | Evan Boyd | Floor and ServiceAppointment controller, DTO, and service classes. Unit and integration tests for Floor and ServiceAppointment classes. Domain model attribute edits|  |
 | Samer Abdulkarim |MonthlyCustomer, Employee, Owner and Parking Lot controller, DTO, and service classes. Unit and integration tests for the MonthlyCustomer, Employee, Owner and Parking Lot classes.   |  |
 | Emilien Taisne | Floor and ServiceAppointment controller, DTO, and service classes. Unit and integration tests for Floor and ServiceAppointment classes. |  |
-| Walid Aissa |  |   |
+| Walid Aissa | Pass, Monthly Pass and GuestPass controller, DTO, and service classes. Unit and integration tests for Pass, Monthly Pass and GuestPass classes. Service service |   |
 | Karim Al Sabbagh |   |  |
 | Karl Bridi |  |  |
 
