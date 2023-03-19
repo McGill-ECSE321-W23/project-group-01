@@ -1,7 +1,5 @@
 package ca.mcgill.ecse321.PLMS.service;
 
-import java.sql.Time;
-import java.time.LocalTime;
 import java.util.List;
 
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
@@ -33,41 +31,34 @@ public class ParkingLotService {
     @Transactional
     public ParkingLot getParkingLot() {
         List<ParkingLot> parkingLot = (List<ParkingLot>) parkingLotRepository.findAll();
-        if (parkingLot.isEmpty()) {
+        if (parkingLot.isEmpty())
             throw new PLMSException(HttpStatus.NOT_FOUND, "Parking Lot not found");
-        }
         return parkingLot.get(0);
     }
 
     @Transactional
     public ParkingLot createParkingLot(ParkingLot parkingLot) {
-        List<ParkingLot> parkingLot = (List<ParkingLot>) parkingLotRepository.findAll();
-        if (parkingLot.isEmpty()) {
-            throw new PLMSException(HttpStatus.NOT_FOUND, "Parking Lot not found");
-        }
-
-        return parkingLot.get(0);
+        validateOpeningClosingTime(parkingLot);
+        if (parkingLotRepository.findParkingLotById(parkingLot.getId()) == null)
+            return parkingLotRepository.save(parkingLot);
+        else
+            throw new PLMSException(HttpStatus.CONFLICT, "Parking Lot with this ID already exists");
     }
 
     @Transactional
-    public ParkingLot updateParkingLot(ParkingLot parkingLot) {
-        List<ParkingLot> parkingLot = (List<ParkingLot>) parkingLotRepository.findAll();
-        if (parkingLot.isEmpty()) {
-            throw new PLMSException(HttpStatus.NOT_FOUND, "Parking Lot not found");
-        }
-
-        return parkingLot.get(0);
+    public ParkingLot updateParkingLot(ParkingLot parkingLot)
+    {
+        getParkingLotById(parkingLot.getId());
+        validateOpeningClosingTime(parkingLot);
+        return parkingLotRepository.save(parkingLot);
     }
 
-
-
-    @Transactional
-    public void validateOpeningClosingTime(Time openingTime, Time closingTime){
-        int comparison = openingTime.toLocalTime().compareTo(closingTime.toLocalTime());
-        if (comparison == 0){
+    public void validateOpeningClosingTime(ParkingLot parkingLot){
+        int comparison = (parkingLot.getOpeningTime()).toLocalTime().compareTo((parkingLot.getClosingTime()).toLocalTime());
+        if (comparison == 0)
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Opening and closing times cannot be the same.");
-        }else if(comparison > 0){
+        else if(comparison > 0)
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Opening time cannot be after closing time.");
-        }
+
     }
 }
