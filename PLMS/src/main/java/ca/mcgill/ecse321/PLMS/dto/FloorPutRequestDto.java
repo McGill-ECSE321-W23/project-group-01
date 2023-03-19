@@ -4,7 +4,7 @@ import ca.mcgill.ecse321.PLMS.model.Floor;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-public class FloorRequestDto {
+public class FloorPutRequestDto {
   @NotNull(message = "Cannot have an empty floor number.")
   @Min(value = 0, message = "The floor number must be a non negative number.")
   private Integer floorNumber;

@@ -29,9 +29,27 @@ public class Floor
   @ManyToOne
   private ParkingLot parkingLot;
 
- 
+  
+  /**
+   * Default constructor
+   */
+  public Floor(){}
 
-
+  /**
+   * Constructor of the floor class
+   * @param aFloorNumber - floor number
+   * @param aLargeSpotCapacity - number of large spots on the floor
+   * @param aSmallSpotCapacity - number of small spots on the floor
+   * @param aSmallSpotCounter - number of small spots occupied on the floor
+   * @param aLargeSpotCounter - number of large spots occupied on the floor
+   */
+  public Floor(int aFloorNumber, int aLargeSpotCapacity, int aSmallSpotCapacity, int aSmallSpotCounter, int aLargeSpotCounter){
+    this.floorNumber = aFloorNumber;
+    this.largeSpotCapacity = aLargeSpotCapacity;
+    this.smallSpotCapacity = aSmallSpotCapacity;
+    this.smallSpotCounter = aSmallSpotCounter;
+    this.largeSpotCounter = aLargeSpotCounter;
+  }
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------
