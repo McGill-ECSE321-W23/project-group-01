@@ -16,6 +16,7 @@ public class EmployeeService {
 
     @Transactional
     public Iterable<Employee> getAllEmployees(){ return employeeRepository.findAll(); }
+
     @Transactional
     public Employee getEmployeeByEmail(String email) {
         Employee employee = employeeRepository.findEmployeeByEmail(email);
@@ -32,7 +33,6 @@ public class EmployeeService {
         if(employee.getHourlyWage() <= 0)
             throw new PLMSException(HttpStatus.NOT_FOUND, "Hourly wage must be strictly positive.");
         return employeeRepository.save(employee);
-        
     }
 
     @Transactional
