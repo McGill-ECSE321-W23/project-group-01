@@ -12,8 +12,13 @@ import jakarta.persistence.*;
 @Entity
 public class MonthlyCustomer extends Account
 {
+    public MonthlyCustomer(String email, String password, String name) {
+        super(email, password, name);
+    }
 
-  //------------------------
+    public MonthlyCustomer() {}
+
+    //------------------------
   // MEMBER VARIABLES (all belong to the super class account)
   //------------------------
 

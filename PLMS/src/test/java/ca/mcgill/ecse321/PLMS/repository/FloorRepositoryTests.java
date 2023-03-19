@@ -73,10 +73,10 @@ public class FloorRepositoryTests {
 
         //=-=-=-=-=-=- Save floor -=-=-=-=-=-=//
         mainFloor = floorRepository.save(mainFloor);
-        int id = mainFloor.getId();
+        int id = mainFloor.getFloorNumber();
 
         //=-=-=-=-=-=- Read floor -=-=-=-=-=-=//
-        mainFloor = floorRepository.findFloorById(id);
+        mainFloor = floorRepository.findFloorByFloorNumber(id);
 
         //=-=-=-=-=-=- Asserts -=-=-=-=-=-=//
         assertNotNull(mainFloor);

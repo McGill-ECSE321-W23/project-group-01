@@ -14,13 +14,15 @@ import ca.mcgill.ecse321.PLMS.repository.ServiceRepository;
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Service;
 
-@org.springframework.stereotype.Service
+//@org.springframework.stereotype.Service
 public class ServiceService {
+
+
 
     /*
    * Functionalities of the service service class
-   * 
-   * 1) GET all services 
+   *
+   * 1) GET all services
    * 2) GET service appointment by service name
    * 3) POST service
    * 4) DELETE service appointment by service name
@@ -76,7 +78,7 @@ public class ServiceService {
         if(lengthInHours == null || lengthInHours < 0){
             errorMessage.add("Length in hours needs to be a number greater or equal to 0");
         }
-        
+
 
         if (errorMessage.size() > 0) {
 			throw new PLMSException(HttpStatus.NOT_ACCEPTABLE, String.join(" ", errorMessage));
@@ -162,7 +164,7 @@ public class ServiceService {
         Service serviceToUpdate = serviceRepository.findServiceByServiceName(serviceName);
 
         ArrayList<String> errorMessage = new ArrayList<String>();
-        
+
         if(serviceToUpdate == null){
             throw new PLMSException(HttpStatus.NOT_FOUND, "Service with name " + serviceName + " does not exists.");
         }
@@ -174,7 +176,7 @@ public class ServiceService {
         if(newLengthInHours == null || newLengthInHours < 0){
             errorMessage.add("Length in hours needs to be a number greater or equal to 0");
         }
-        
+
 
         if (errorMessage.size() > 0) {
 			throw new PLMSException(HttpStatus.BAD_REQUEST, String.join(" ", errorMessage));
@@ -187,7 +189,6 @@ public class ServiceService {
         return serviceToUpdate;
     }
 
-
-
-    
 }
+
+

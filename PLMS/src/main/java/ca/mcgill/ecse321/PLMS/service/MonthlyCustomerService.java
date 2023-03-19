@@ -21,7 +21,7 @@ public class MonthlyCustomerService {
     public MonthlyCustomer getMonthlyCustomerByEmail(String email) {
         MonthlyCustomer monthlyCustomer = monthlyCustomerRepository.findMonthlyCustomerByEmail(email);
         if (monthlyCustomer == null) {
-            throw new PLMSException(HttpStatus.NOT_FOUND, "Owner not found.");
+            throw new PLMSException(HttpStatus.NOT_FOUND, "Monthly customer not found.");
         }
         return monthlyCustomer;
     }
@@ -29,7 +29,8 @@ public class MonthlyCustomerService {
     @Transactional
     public MonthlyCustomer updateMonthlyCustomer(MonthlyCustomer monthlyCustomer)
     {
-        return monthlyCustomerRepository.save(getMonthlyCustomerByEmail(monthlyCustomer.getEmail()));
+        getMonthlyCustomerByEmail(monthlyCustomer.getEmail());
+        return monthlyCustomerRepository.save(monthlyCustomer);
     }
 
     @Transactional

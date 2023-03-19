@@ -23,10 +23,18 @@ public abstract class Account
   private String email; // each account will be identified by a unique email address
   private String password;
   private String name;
+
+  public Account() {}
+  public Account(String email, String password, String name)
+  {
+    this.email = email;
+    this.password = password;
+    this.name = name;
+  }
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------
-
+  
   public boolean setEmail(String aEmail)
   {
     boolean wasSet = false;
