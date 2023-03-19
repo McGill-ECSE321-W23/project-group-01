@@ -46,7 +46,7 @@ The software system was designed to respond to a set of requirements specified b
 | Name | Contributions | Total Hours | 
 | --- | --- | --- |
 | Evan Boyd | Floor and ServiceAppointment controller, DTO, and service classes. Unit and integration tests for Floor and ServiceAppointment classes. |  |
-| Samer Abdulkarim |  |  |
+| Samer Abdulkarim |Subclasses of Account and Parking Lot controller, DTO, and service classes. Unit and integration tests for the subclasses and Parking Lot classes.   |  |
 | Emilien Taisne | Floor and ServiceAppointment controller, DTO, and service classes. Unit and integration tests for Floor and ServiceAppointment classes. |  |
 | Walid Aissa |  |   |
 | Karim Al Sabbagh |   |  |
