@@ -50,6 +50,19 @@ public class ParkingLotService {
         return parkingLot.get(0);
     }
 
+    @Transactional
+    public ParkingLot updateParkingLot() {
+        List<ParkingLot> parkingLot = (List<ParkingLot>) parkingLotRepository.findAll();
+        if (parkingLot.isEmpty()) {
+            throw new PLMSException(HttpStatus.NOT_FOUND, "Parking Lot not found");
+        }
+
+        return parkingLot.get(0);
+    }
+
+
+
+
 
 
     @Transactional
