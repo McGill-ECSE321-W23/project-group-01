@@ -75,16 +75,6 @@ public class FloorService {
         //check if the floor exists (the floor has to exist to edit it)
         Floor existingFloor = getFloorByFloorNumber(floor.getFloorNumber());
 
-        // counter cannot be larger than capacity
-        if(floor.getLargeSpotCapacity() < floor.getLargeSpotCounter()){
-            throw new PLMSException(HttpStatus.BAD_REQUEST, "The large spots occupied exceeds the capacity.");
-        }
-
-        // counter cannot be larger than capacity
-        if(floor.getSmallSpotCapacity() < floor.getSmallSpotCounter()){
-            throw new PLMSException(HttpStatus.BAD_REQUEST, "The small spots occupied exceeds the capacity.");
-        }
-
         // update the properties of the existing Floor entity
         existingFloor.setLargeSpotCapacity(floor.getLargeSpotCapacity());
         existingFloor.setSmallSpotCapacity(floor.getSmallSpotCapacity());
