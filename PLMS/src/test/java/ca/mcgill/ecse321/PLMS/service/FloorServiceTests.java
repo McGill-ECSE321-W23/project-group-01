@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.PLMS.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
@@ -54,7 +53,8 @@ public class FloorServiceTests {
       final int largeSpotCapacity = 25;
       final int smallSpotCounter = 0;
       final int largeSpotCounter = 0;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter);
+      final boolean isMemberOnly = false;
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
 
       // Call the component under test
@@ -88,7 +88,8 @@ public class FloorServiceTests {
       final int largeSpotCapacity = 25;
       final int smallSpotCounter = 0;
       final int largeSpotCounter = 0;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter);
+      final boolean isMemberOnly = false;
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(null);
 
       //Normal parameters
@@ -137,15 +138,15 @@ public class FloorServiceTests {
       final int largeSpotCapacity = 25;
       final int smallSpotCounter = 0;
       final int largeSpotCounter = 0;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter);
+      final boolean isMemberOnly = false;
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
-
-      final int floorNumber2 = 1;
-      final int smallSpotCapacity2 = 100;
-      final int largeSpotCapacity2 = 65;
-      final int smallSpotCounter2 = 0;
-      final int largeSpotCounter2 = 0;
-      final Floor floor2 = new Floor(floorNumber2, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2);
+		  final int smallSpotCapacity2 = 60;
+      final int largeSpotCapacity2 = 5;
+      final int smallSpotCounter2 = 70;
+      final int largeSpotCounter2 = 1;
+      final boolean isMemberOnly2 = true;
+      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2, isMemberOnly2);
 
       PLMSException e = assertThrows(PLMSException.class,
 				() -> floorService.createFloor(floor2));
@@ -162,7 +163,8 @@ public class FloorServiceTests {
       final int largeSpotCapacity = 25;
       final int smallSpotCounter = 0;
       final int largeSpotCounter = 0;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter);
+      final boolean isMemberOnly = false;
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(null);
       when(parkingLotRepository.findAll()).thenReturn(null);
       PLMSException e = assertThrows(PLMSException.class,
@@ -178,14 +180,14 @@ public class FloorServiceTests {
       final int largeSpotCapacity = 25;
       final int smallSpotCounter = 0;
       final int largeSpotCounter = 0;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter);
-
-      final int floorNumber2 = 2;
-		  final int smallSpotCapacity2 = 70;
-      final int largeSpotCapacity2 = 25;
-      final int smallSpotCounter2 = 0;
-      final int largeSpotCounter2 = 0;
-      final Floor floor2 = new Floor(floorNumber2, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2);
+      final boolean isMemberOnly = false;
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
+		  final int smallSpotCapacity2 = 60;
+      final int largeSpotCapacity2 = 5;
+      final int smallSpotCounter2 = 70;
+      final int largeSpotCounter2 = 1;
+      final boolean isMemberOnly2 = true;
+      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2, isMemberOnly2);
 
       //Normal parameters
       Time openingTime = Time.valueOf("6:00:00");
@@ -251,12 +253,14 @@ public class FloorServiceTests {
       final int largeSpotCapacity = 25;
       final int smallSpotCounter = 0;
       final int largeSpotCounter = 0;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter);
+      final boolean isMemberOnly = false;
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
 		  final int smallSpotCapacity2 = 60;
       final int largeSpotCapacity2 = 5;
       final int smallSpotCounter2 = 1;
-      final int largeSpotCounter2 = 2;
-      final Floor floor2 = new Floor(1, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2);
+      final int largeSpotCounter2 = 1;
+      final boolean isMemberOnly2 = true;
+      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2, isMemberOnly2);
 
       // load first floor into repo
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
@@ -272,6 +276,7 @@ public class FloorServiceTests {
       assertEquals(largeSpotCapacity2, updated.getLargeSpotCapacity());
       assertEquals(largeSpotCounter2, updated.getLargeSpotCounter());
       assertEquals(smallSpotCounter2, updated.getSmallSpotCounter());
+      assertEquals(isMemberOnly2, updated.getIsMemberOnly());
     }
 
     @Test
@@ -282,12 +287,14 @@ public class FloorServiceTests {
       final int largeSpotCapacity = 25;
       final int smallSpotCounter = 0;
       final int largeSpotCounter = 0;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter);
+      final boolean isMemberOnly = false;
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
 		  final int smallSpotCapacity2 = 60;
       final int largeSpotCapacity2 = 5;
       final int smallSpotCounter2 = 1;
-      final int largeSpotCounter2 = 61;
-      final Floor floor2 = new Floor(1, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2);
+      final int largeSpotCounter2 = 50;
+      final boolean isMemberOnly2 = true;
+      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2, isMemberOnly2);
 
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
       when(floorService.getFloorByFloorNumber(floorNumber)).thenReturn(floor);
@@ -307,12 +314,14 @@ public class FloorServiceTests {
       final int largeSpotCapacity = 25;
       final int smallSpotCounter = 0;
       final int largeSpotCounter = 0;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter);
+      final boolean isMemberOnly = false;
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
 		  final int smallSpotCapacity2 = 60;
       final int largeSpotCapacity2 = 5;
       final int smallSpotCounter2 = 70;
       final int largeSpotCounter2 = 1;
-      final Floor floor2 = new Floor(1, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2);
+      final boolean isMemberOnly2 = true;
+      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2, isMemberOnly2);
 
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
       when(floorService.getFloorByFloorNumber(floorNumber)).thenReturn(floor);
