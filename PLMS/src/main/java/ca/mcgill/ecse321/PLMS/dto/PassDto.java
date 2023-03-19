@@ -29,10 +29,10 @@ public class PassDto {
 
 
     /**
-   * Constructor for creating a pass transfer object by using the fields of 
-   * a pass object.
-   * @param pass - pass to turn into a transfer object
-   */
+     * Constructor for creating a pass transfer object by using the fields of 
+     * a pass object.
+     * @param pass - pass to turn into a transfer object
+     */
 
     public PassDto(Pass pass){
         this.id = pass.getId();
