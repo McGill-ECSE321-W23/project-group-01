@@ -93,6 +93,7 @@ public class ServiceAppointment
   {
     return id;
   }
+
   /* Code from template association_GetOne */
   public Employee getEmployee()
   {
