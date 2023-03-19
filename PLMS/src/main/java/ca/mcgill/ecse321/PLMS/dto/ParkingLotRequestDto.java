@@ -19,8 +19,11 @@ public class ParkingLotRequestDto {
   @PositiveOrZero(message = "Small spot fee must be non-negative.")
   private Double smallSpotFee;
   @NotNull(message = "Monthly flat fee must not be null.")
-  @PositiveOrZero(message = "Monthly flat fee must be non-negative.")
-  private Double monthlyFlatFee;
+  @PositiveOrZero(message = "Small spot monthly flat fee must be non-negative.")
+  private Double smallSpotMonthlyFlatFee;
+  @NotNull(message = "Monthly flat fee must not be null.")
+  @PositiveOrZero(message = "Large spot monthly flat fee must be non-negative.")
+  private Double largeSpotMonthlyFlatFee;
 	
 	public void setOpeningTime(Time openingTime) {
 		this.openingTime = openingTime;
@@ -38,15 +41,16 @@ public class ParkingLotRequestDto {
 		this.smallSpotFee = smallSpotFee;
 	}
 
-    public void setMonthlyFlatFee(Double monthlyFlatFee) {
-		this.monthlyFlatFee = monthlyFlatFee;
+    public void setSmallSpotMonthlyFlatFee(Double smallSpotMonthlyFlatFee) {
+		this.smallSpotMonthlyFlatFee = smallSpotMonthlyFlatFee;
+	}
+
+  public void setLargeSpotMonthlyFlatFee(Double largeSpotMonthlyFlatFee) {
+		this.largeSpotMonthlyFlatFee = largeSpotMonthlyFlatFee;
 	}
 	
-
-	
-	public ParkingLot toModel() {
-		ParkingLot p = new ParkingLot(openingTime, closingTime, largeSpotFee, smallSpotFee, monthlyFlatFee);
-      
+  public ParkingLot toModel() {
+    ParkingLot p = new ParkingLot(openingTime, closingTime, largeSpotFee, smallSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);
 		return p;
 	}
 }

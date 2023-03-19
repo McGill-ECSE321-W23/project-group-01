@@ -55,7 +55,8 @@ public class FloorRepositoryTests {
         parkingLot.setClosingTime(closingTime);
         parkingLot.setLargeSpotFee(largeSpotFee);
         parkingLot.setSmallSpotFee(smallSpotFee);
-        parkingLot.setMonthlyFlatFee(monthlyFlatFee);
+        parkingLot.setSmallSpotMonthlyFlatFee(monthlyFlatFee);
+        parkingLot.setLargeSpotMonthlyFlatFee(monthlyFlatFee + 10);
         //Save parking lot
         parkingLot = parkingLotRepository.save(parkingLot);
         int parkingLotId = parkingLot.getId();

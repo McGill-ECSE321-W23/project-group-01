@@ -10,7 +10,8 @@ public class ParkingLotResponseDto {
     private Time closingTime;
     private Double largeSpotFee;
     private Double smallSpotFee;
-    private Double monthlyFlatFee;
+    private Double smallSpotMonthlyFlatFee;
+		private Double largeSpotMonthlyFlatFee;
 	
 	public ParkingLotResponseDto(ParkingLot p) {
 		this.id = p.getId();
@@ -18,7 +19,8 @@ public class ParkingLotResponseDto {
 		this.closingTime = p.getClosingTime();
         this.largeSpotFee = p.getLargeSpotFee();
         this.smallSpotFee = p.getSmallSpotFee();
-        this.monthlyFlatFee = p.getMonthlyFlatFee();
+        this.smallSpotMonthlyFlatFee = p.getSmallSpotMonthlyFlatFee();
+				this.largeSpotMonthlyFlatFee = p.getLargeSpotMonthlyFlatFee();
 	}
 	
 	public int getId() {
@@ -41,7 +43,11 @@ public class ParkingLotResponseDto {
 		return smallSpotFee;
 	}
 
-    public Double getMonthlyFlatFee() {
-		return monthlyFlatFee;
+	public Double getSmallSpotMonthlyFlatFee() {
+		return smallSpotMonthlyFlatFee;
+	}
+
+	public Double getLargeSpotMonthlyFlatFee() {
+		return largeSpotMonthlyFlatFee;
 	}
 }
