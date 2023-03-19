@@ -32,7 +32,6 @@ public class EmployeeService {
         if(employee.getHourlyWage() <= 0)
             throw new PLMSException(HttpStatus.NOT_FOUND, "Hourly wage must be strictly positive.");
         return employeeRepository.save(employee);
-        
     }
 
     @Transactional
