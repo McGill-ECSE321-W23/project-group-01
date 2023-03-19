@@ -4,13 +4,21 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
+import ca.mcgill.ecse321.PLMS.model.Employee;
+import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
+import ca.mcgill.ecse321.PLMS.repository.EmployeeRepository;
+import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 import ca.mcgill.ecse321.PLMS.repository.ServiceAppointmentRepository;
 import jakarta.transaction.Transactional;
 
@@ -30,6 +38,10 @@ public class ServiceAppointmentService {
   // going to definitely need to have a service appointment repository
   @Autowired
   ServiceAppointmentRepository serviceAppointmentRepo;
+  @Autowired
+  ParkingLotRepository parkingLotRepository;
+  @Autowired
+  EmployeeRepository employeeRepository;
 
   // 1
   @Transactional
@@ -37,8 +49,15 @@ public class ServiceAppointmentService {
     // first calculate the end time of the service appointment by using the length of the appointment
     LocalTime localEndTime = findEndTime(serviceAppointment.getStartTime().toLocalTime(), serviceAppointment);
     serviceAppointment.setEndTime(Time.valueOf(localEndTime));
-    // don't do parking lot check yet
-    // don't do employee assignment yet
+    
+    // check for the parking lot in the database, if it doesn't exist yet we cannot create the appointment
+    ParkingLot lot = parkingLotAddedToDatabase();
+
+    // check to see if the hours are within lot hours of operation
+    validateAppointmentHours(serviceAppointment.getStartTime(), serviceAppointment.getEndTime(), lot.getOpeningTime(), lot.getClosingTime());
+
+    // we randomly assign employees, if there are any.
+    serviceAppointment.setEmployee(findEmployeeToAssignToAppointment());
 
     ServiceAppointment appointment = serviceAppointmentRepo.save(serviceAppointment);
     return appointment;
@@ -162,10 +181,81 @@ public class ServiceAppointmentService {
     updatedAppointment.setEndTime(Time.valueOf(localEndTime));
     updatedAppointment.setDate(serviceAppointment.getDate());
     updatedAppointment.setId(id);
-    // don't do parking lot check yet
-    // don't do employee assignment yet
+    // check for the parking lot in the database, if it doesn't exist yet we cannot create the appointment
+    ParkingLot lot = parkingLotAddedToDatabase();
 
+    // check to see if the hours are within lot hours of operation
+    validateAppointmentHours(updatedAppointment.getStartTime(), updatedAppointment.getEndTime(), lot.getOpeningTime(), lot.getClosingTime());
+    
+
+    // we randomly assign employees, if there are any.
+    updatedAppointment.setEmployee(findEmployeeToAssignToAppointment());
     ServiceAppointment appointment = serviceAppointmentRepo.save(updatedAppointment);
     return appointment;
+  }
+
+  /**
+   * Method to find assigned employee to service appointment.
+   * Employees are assigned at random, since our application does not need to accomodate schedules (as per Marwan).
+   * @return
+   */
+  public Employee findEmployeeToAssignToAppointment(){
+    Iterable<Employee> employees = employeeRepository.findAll();
+    // for now, we won't restrict a user from booking an appointment if there aren't any employees
+    if (employees == null){
+      return null;
+    }
+    // convert into an array list
+    ArrayList<Employee> employeeList = StreamSupport.stream(employees.spliterator(), false).collect(Collectors.toCollection(ArrayList::new));
+
+    // find a random index, and select the employee at that index.
+    Random random = new Random();
+    int i = random.nextInt(employeeList.size());
+    Employee randomEmployee = employeeList.get(i);
+    return randomEmployee;
+  }
+  /**
+   * Helper method to find the single parking lot object
+   * stored in the database. Throws exception if it isn't there.
+   * @return - parking lot object, if it exists
+   */
+  public ParkingLot parkingLotAddedToDatabase(){
+    Iterable<ParkingLot> lots = parkingLotRepository.findAll();
+    // if no lot in the system, we cannot book an appointment
+    if (lots == null){
+        throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot book appointment since the parking lot has not been created yet. Please try again at a later date.");
+    }
+    // return the parking lot
+    return lots.iterator().next();
+  }
+
+  /**
+   * Helper function to throw PLMS exceptions related to scheduling errors.
+   * Appointments must fall within the hours of operation of the lot.
+   * @param apptStartTime
+   * @param apptEndTime
+   * @param openingTime
+   * @param closingTime
+   */
+  public void validateAppointmentHours(Time apptStartTime, Time apptEndTime, Time openingTime, Time closingTime){
+
+    // check to see if start time is before the opening time
+    int comparisonResult1 = apptStartTime.compareTo(openingTime);
+    if (comparisonResult1 < 0) {
+      throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot have an appointment beginning before the lot opens.");
+    } 
+
+    // check to see if the start time is after the lot closes
+    int comparisonResult2 = apptStartTime.compareTo(closingTime);
+    if (comparisonResult2 > 0) {
+      throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot have an appointment beginning after the lot closes.");
+    } 
+
+    // check to see if the end time is after the lot closes
+    int comparisonResult3 = apptEndTime.compareTo(closingTime);
+    if (comparisonResult3 > 0) {
+      throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot have an appointment ending after the lot closes.");
+    } 
+
   }
 }
