@@ -17,13 +17,8 @@ public class FloorRequestDto {
   @Min(value = 0, message = "Cannot be a negative number of large parking spots on a floor.")
   private Integer largeSpotCapacity;
 
-  @NotNull(message = "Cannot have an empty number of small spots occupied.")
-  @Min(value = 0, message = "Cannot be a negative number of small parking spots occupied on a floor.")
-  private Integer smallSpotCounter;
-
-  @NotNull(message = "Cannot have an empty number of large spots occupied.")
-  @Min(value = 0, message = "Cannot be a negative number of large parking spots occupied on a floor.")
-  private Integer largeSpotCounter;
+  @NotNull(message = "Member only must be true or false.")
+  private Boolean isMemberOnly;
 
   /**
    * Method to construct a floor object from a floor request dto object
@@ -34,8 +29,9 @@ public class FloorRequestDto {
     floor.setFloorNumber(this.floorNumber);
     floor.setSmallSpotCapacity(this.smallSpotCapacity);
     floor.setLargeSpotCapacity(this.largeSpotCapacity);
-    floor.setSmallSpotCounter(this.smallSpotCounter);
-    floor.setLargeSpotCounter(this.largeSpotCounter);
+    // initialize counters to zero. These will get incremented with each pass that is registered to a floor
+    floor.setSmallSpotCounter(0);
+    floor.setLargeSpotCounter(0);
     return floor;
   }
 
@@ -51,12 +47,8 @@ public class FloorRequestDto {
     this.largeSpotCapacity = largeSpotCapacity;
   }
 
-  public void setSmallSpotCounter(int smallSpotCounter){
-    this.smallSpotCounter = smallSpotCounter;
-  }
-
-  public void setLargeSpotCounter(int largeSpotCounter){
-    this.largeSpotCounter = largeSpotCounter;
+  public void setIsMemberOnly(boolean isMemberOnly){
+    this.isMemberOnly = isMemberOnly;
   }
 
   // NEED TO ADD GETTERS TO REQUEST DTOs!
@@ -72,12 +64,8 @@ public class FloorRequestDto {
     return this.largeSpotCapacity;
   }
 
-  public int getSmallSpotCounter(){
-    return this.smallSpotCounter;
-  }
-
-  public int getLargeSpotCounter(){
-    return this.largeSpotCounter;
+  public boolean getIsMemberOnly(){
+    return this.isMemberOnly;
   }
 
 }

@@ -24,14 +24,34 @@ public class Floor
   private int smallSpotCapacity;
   private int smallSpotCounter;
   private int largeSpotCounter;
+  private boolean isMemberOnly;
 
   // association to parking lot
   @ManyToOne
   private ParkingLot parkingLot;
 
- 
+  
+  /**
+   * Default constructor
+   */
+  public Floor(){}
 
-
+  /**
+   * Constructor of the floor class
+   * @param aFloorNumber - floor number
+   * @param aLargeSpotCapacity - number of large spots on the floor
+   * @param aSmallSpotCapacity - number of small spots on the floor
+   * @param aSmallSpotCounter - number of small spots occupied on the floor
+   * @param aLargeSpotCounter - number of large spots occupied on the floor
+   */
+  public Floor(int aFloorNumber, int aLargeSpotCapacity, int aSmallSpotCapacity, int aSmallSpotCounter, int aLargeSpotCounter, boolean aIsMemberOnly){
+    this.floorNumber = aFloorNumber;
+    this.largeSpotCapacity = aLargeSpotCapacity;
+    this.smallSpotCapacity = aSmallSpotCapacity;
+    this.smallSpotCounter = aSmallSpotCounter;
+    this.largeSpotCounter = aLargeSpotCounter;
+    this.isMemberOnly = aIsMemberOnly;
+  }
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------
@@ -89,6 +109,16 @@ public class Floor
   public int getSmallSpotCapacity()
   {
     return smallSpotCapacity;
+  }
+  
+  public boolean getIsMemberOnly()
+  {
+    return isMemberOnly;
+  }
+
+  public void setIsMemberOnly(boolean isMemberOnly)
+  {
+    this.isMemberOnly = isMemberOnly;
   }
 
   /**

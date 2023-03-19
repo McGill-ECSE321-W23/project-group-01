@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import ca.mcgill.ecse321.PLMS.dto.FloorRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.FloorResponseDto;
 import ca.mcgill.ecse321.PLMS.model.Floor;

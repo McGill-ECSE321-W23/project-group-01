@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.PLMS.service;
 
-import java.io.Console;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Floor;
+import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
+import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -16,6 +17,9 @@ public class FloorService {
 
     @Autowired
     FloorRepository floorRepository;
+
+    @Autowired
+    ParkingLotRepository parkingLotRepository;
 
     /**
      * Service method to fetch all floors in the database
@@ -47,6 +51,16 @@ public class FloorService {
         if (floorRepository.findFloorByFloorNumber(floor.getFloorNumber()) != null){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Floor with floor number: " + floor.getFloorNumber() + " already exists.");
         }
+
+        // check for the parking lot in the database, if it doesn't exist yet we cannot create the floor
+        Iterable<ParkingLot> lots = parkingLotRepository.findAll();
+        if (lots == null){
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot create floor since the parking lot has not been created");
+        }
+
+        ParkingLot lot = lots.iterator().next();
+        floor.setParkingLot(lot);
+
         //create object
         floor = floorRepository.save(floor);
         //returned created object
@@ -59,9 +73,27 @@ public class FloorService {
     @Transactional
     public Floor updateFloor(Floor floor){
         //check if the floor exists (the floor has to exist to edit it)
-        getFloorByFloorNumber(floor.getFloorNumber());
-        floor = floorRepository.save(floor);
-        return floor;
+        Floor existingFloor = getFloorByFloorNumber(floor.getFloorNumber());
+
+        // counter cannot be larger than capacity
+        if(floor.getLargeSpotCapacity() < floor.getLargeSpotCounter()){
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "The large spots occupied exceeds the capacity.");
+        }
+
+        // counter cannot be larger than capacity
+        if(floor.getSmallSpotCapacity() < floor.getSmallSpotCounter()){
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "The small spots occupied exceeds the capacity.");
+        }
+
+        // update the properties of the existing Floor entity
+        existingFloor.setLargeSpotCapacity(floor.getLargeSpotCapacity());
+        existingFloor.setSmallSpotCapacity(floor.getSmallSpotCapacity());
+        existingFloor.setLargeSpotCounter(floor.getLargeSpotCounter());
+        existingFloor.setSmallSpotCounter(floor.getSmallSpotCounter());
+
+        // save the changes to the database
+        existingFloor = floorRepository.save(existingFloor);
+        return existingFloor;
     }
 
     /**
@@ -73,5 +105,7 @@ public class FloorService {
         Floor floor = getFloorByFloorNumber(floorNumber);
         floorRepository.delete(floor);
     }
+
+
 
 }
