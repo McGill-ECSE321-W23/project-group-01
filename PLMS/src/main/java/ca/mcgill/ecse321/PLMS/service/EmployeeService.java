@@ -16,6 +16,7 @@ public class EmployeeService {
 
     @Transactional
     public Iterable<Employee> getAllEmployees(){ return employeeRepository.findAll(); }
+
     @Transactional
     public Employee getEmployeeByEmail(String email) {
         Employee employee = employeeRepository.findEmployeeByEmail(email);

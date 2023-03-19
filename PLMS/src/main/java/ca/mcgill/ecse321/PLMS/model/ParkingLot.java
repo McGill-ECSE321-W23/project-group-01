@@ -4,6 +4,7 @@ package ca.mcgill.ecse321.PLMS.model;
 
 import java.sql.Time;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 
 /**
  * Class that is part of the domain model of the Parking Lot Management System (PLMS)
