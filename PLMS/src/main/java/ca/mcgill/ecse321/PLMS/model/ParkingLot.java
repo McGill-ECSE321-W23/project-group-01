@@ -4,6 +4,7 @@ package ca.mcgill.ecse321.PLMS.model;
 
 import java.sql.Time;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 
 /**
  * Class that is part of the domain model of the Parking Lot Management System (PLMS)
@@ -35,6 +36,16 @@ public class ParkingLot
   // CONSTRUCTOR
   //------------------------
 
+  @SuppressWarnings("unused")
+  public ParkingLot(){}
+
+  public ParkingLot(Time openingTime, Time closingTime, double largeSpotFee, double smallSpotFee, double monthlyFlatFee){
+    this.openingTime = openingTime;
+    this.closingTime = closingTime;
+    this.largeSpotFee = largeSpotFee;
+    this.smallSpotFee = smallSpotFee;
+    this.monthlyFlatFee = monthlyFlatFee;
+  }
 
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS

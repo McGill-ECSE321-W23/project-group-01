@@ -16,18 +16,37 @@ public class EmployeeService {
 
     @Transactional
     public Iterable<Employee> getAllEmployees(){ return employeeRepository.findAll(); }
+
     @Transactional
     public Employee getEmployeeByEmail(String email) {
         Employee employee = employeeRepository.findEmployeeByEmail(email);
         if (employee == null) {
-            throw new PLMSException(HttpStatus.NOT_FOUND, "Emplpyee not found.");
+            throw new PLMSException(HttpStatus.NOT_FOUND, "Employee not found.");
         }
         return employee;
     }
 
     @Transactional
-    public Employee createEmployeeAccount(Employee employee) {
-        // Create the account
+    public Employee updateEmployee(Employee employee)
+    {
+        getEmployeeByEmail(employee.getEmail());
+        if(employee.getHourlyWage() <= 0)
+            throw new PLMSException(HttpStatus.NOT_FOUND, "Hourly wage must be strictly positive.");
         return employeeRepository.save(employee);
+    }
+
+    @Transactional
+    public Employee createEmployeeAccount(Employee employee) {
+        if(employee.getHourlyWage() <= 0)
+            throw new PLMSException(HttpStatus.NOT_FOUND, "Hourly wage must be strictly positive.");
+        if (employeeRepository.findEmployeeByEmail(employee.getEmail()) == null)
+            return employeeRepository.save(employee);
+        else
+            throw new PLMSException(HttpStatus.CONFLICT, "Account with this email already exists");
+    }
+
+    @Transactional
+    public void deleteEmployeeAccount(String email) {
+        employeeRepository.delete(getEmployeeByEmail(email));
     }
 }

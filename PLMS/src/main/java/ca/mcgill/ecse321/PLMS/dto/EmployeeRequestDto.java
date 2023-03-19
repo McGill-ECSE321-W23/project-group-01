@@ -2,7 +2,7 @@ package ca.mcgill.ecse321.PLMS.dto;
 
 import ca.mcgill.ecse321.PLMS.model.Employee;
 import jakarta.validation.constraints.*;
-import org.hibernate.validator.constraints.Range;
+
 
 public class EmployeeRequestDto {
 
@@ -25,8 +25,7 @@ public class EmployeeRequestDto {
     @Pattern(regexp = "^[a-zA-Z\s]+$", message = "Job title can only have letters")
     private String jobTitle;
 
-    @Range(min = 1, max = 300000)
-    private double hourlyWage;
+    private Double hourlyWage;
 
     public void setEmail(String aEmail)
     { this.email = aEmail; }
