@@ -39,17 +39,17 @@ public class ParkingLotService {
     @Transactional
     public ParkingLot createParkingLot(ParkingLot parkingLot) {
         validateOpeningClosingTime(parkingLot);
-        if (parkingLotRepository.findParkingLotById(parkingLot.getId()) == null)
+        if ( ((List<ParkingLot>) parkingLotRepository.findAll()).isEmpty())
             return parkingLotRepository.save(parkingLot);
         else
-            throw new PLMSException(HttpStatus.CONFLICT, "Parking Lot with this ID already exists");
+            throw new PLMSException(HttpStatus.CONFLICT, "Parking Lot already exists");
     }
 
     @Transactional
     public ParkingLot updateParkingLot(ParkingLot parkingLot)
     {
-        getParkingLotById(parkingLot.getId());
         validateOpeningClosingTime(parkingLot);
+        parkingLot.setId(getParkingLot().getId());
         return parkingLotRepository.save(parkingLot);
     }
 

@@ -36,6 +36,16 @@ public class ParkingLot
   // CONSTRUCTOR
   //------------------------
 
+  @SuppressWarnings("unused")
+  public ParkingLot(){}
+
+  public ParkingLot(Time openingTime, Time closingTime, double largeSpotFee, double smallSpotFee, double monthlyFlatFee){
+    this.openingTime = openingTime;
+    this.closingTime = closingTime;
+    this.largeSpotFee = largeSpotFee;
+    this.smallSpotFee = smallSpotFee;
+    this.monthlyFlatFee = monthlyFlatFee;
+  }
 
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS

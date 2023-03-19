@@ -45,12 +45,7 @@ public class ParkingLotRequestDto {
 
 	
 	public ParkingLot toModel() {
-		ParkingLot p = new ParkingLot();
-		p.setClosingTime(closingTime);
-    p.setOpeningTime(openingTime);
-    p.setMonthlyFlatFee(monthlyFlatFee);
-    p.setLargeSpotFee(largeSpotFee);
-    p.setSmallSpotFee(smallSpotFee);
+		ParkingLot p = new ParkingLot(openingTime, closingTime, largeSpotFee, smallSpotFee, monthlyFlatFee);
       
 		return p;
 	}

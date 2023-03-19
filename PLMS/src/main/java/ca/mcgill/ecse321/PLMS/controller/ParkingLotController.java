@@ -42,7 +42,7 @@ public class ParkingLotController {
 	}
 
     @PutMapping(value = {"/parkingLot/update"})
-    public ResponseEntity<ParkingLotResponseDto> updateEmployee(@Valid @RequestBody ParkingLotRequestDto parkingLotRequestDto)
+    public ResponseEntity<ParkingLotResponseDto> updateParkingLot(@Valid @RequestBody ParkingLotRequestDto parkingLotRequestDto)
     {
         ParkingLot p = parkingLotRequestDto.toModel();
         p = parkingLotService.updateParkingLot(p);
