@@ -41,7 +41,7 @@ public class ParkingLotService {
     }
 
     @Transactional
-    public ParkingLot createParkingLot() {
+    public ParkingLot createParkingLot(ParkingLot parkingLot) {
         List<ParkingLot> parkingLot = (List<ParkingLot>) parkingLotRepository.findAll();
         if (parkingLot.isEmpty()) {
             throw new PLMSException(HttpStatus.NOT_FOUND, "Parking Lot not found");
@@ -51,7 +51,7 @@ public class ParkingLotService {
     }
 
     @Transactional
-    public ParkingLot updateParkingLot() {
+    public ParkingLot updateParkingLot(ParkingLot parkingLot) {
         List<ParkingLot> parkingLot = (List<ParkingLot>) parkingLotRepository.findAll();
         if (parkingLot.isEmpty()) {
             throw new PLMSException(HttpStatus.NOT_FOUND, "Parking Lot not found");
@@ -59,9 +59,6 @@ public class ParkingLotService {
 
         return parkingLot.get(0);
     }
-
-
-
 
 
 
