@@ -71,7 +71,8 @@ public class GuestPassRepositoryTests {
         parkingLot.setClosingTime(closingTime);
         parkingLot.setLargeSpotFee(largeSpotFee);
         parkingLot.setSmallSpotFee(smallSpotFee);
-        parkingLot.setMonthlyFlatFee(monthlyFlatFee);
+        parkingLot.setSmallSpotMonthlyFlatFee(monthlyFlatFee);
+        parkingLot.setLargeSpotMonthlyFlatFee(monthlyFlatFee + 10);
         //Save parking lot
         parkingLot = parkingLotRepository.save(parkingLot);
         parkingLot = parkingLotRepository.findParkingLotById(parkingLot.getId());

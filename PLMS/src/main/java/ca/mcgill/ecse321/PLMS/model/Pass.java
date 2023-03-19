@@ -26,6 +26,7 @@ public abstract class Pass
   private int id;
   private String licensePlate;
   private String confirmationCode;
+  private boolean isLarge;
 
   //Pass Associations
   @ManyToOne
@@ -108,6 +109,19 @@ public abstract class Pass
   {
     boolean wasSet = false;
     floor = aNewFloor;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean getIsLarge()
+  {
+    return isLarge;
+  }
+
+  public boolean setIsLarge(boolean aIsLarge)
+  {
+    boolean wasSet = false;
+    isLarge = aIsLarge;
     wasSet = true;
     return wasSet;
   }

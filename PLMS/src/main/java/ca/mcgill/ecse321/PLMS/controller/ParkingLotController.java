@@ -59,7 +59,8 @@ public class ParkingLotController {
         parkingLotRequestDto.setClosingTime(Time.valueOf(closingTime));
         parkingLotRequestDto.setLargeSpotFee(p.getLargeSpotFee());
         parkingLotRequestDto.setSmallSpotFee(p.getSmallSpotFee());
-        parkingLotRequestDto.setMonthlyFlatFee(p.getMonthlyFlatFee());
+        parkingLotRequestDto.setSmallSpotMonthlyFlatFee(p.getSmallSpotMonthlyFlatFee());
+        parkingLotRequestDto.setLargeSpotMonthlyFlatFee(p.getLargeSpotMonthlyFlatFee());
         @Valid ParkingLotRequestDto s = parkingLotRequestDto;
         ParkingLot parkingLot = parkingLotRequestDto.toModel();
         parkingLot = parkingLotService.updateParkingLot(parkingLot);
@@ -75,15 +76,16 @@ public class ParkingLotController {
         parkingLotRequestDto.setClosingTime(p.getClosingTime());
         parkingLotRequestDto.setLargeSpotFee(smallSpotFee);
         parkingLotRequestDto.setSmallSpotFee(largeSpotFee);
-        parkingLotRequestDto.setMonthlyFlatFee(p.getMonthlyFlatFee());
+        parkingLotRequestDto.setSmallSpotMonthlyFlatFee(p.getSmallSpotMonthlyFlatFee());
+        parkingLotRequestDto.setLargeSpotMonthlyFlatFee(p.getLargeSpotMonthlyFlatFee());
         @Valid ParkingLotRequestDto s = parkingLotRequestDto;
         ParkingLot parkingLot = parkingLotRequestDto.toModel();
         parkingLot = parkingLotService.updateParkingLot(parkingLot);
         return new ResponseEntity<ParkingLotResponseDto>(new ParkingLotResponseDto(parkingLot), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/parkingLot/update/monthly/{monthlyFlatFee}"})
-    public ResponseEntity<ParkingLotResponseDto> updateMonthlyFlatFee(@PathVariable Double monthlyFlatFee)
+    @PutMapping(value = {"/parkingLot/update/smallmonthly/{monthlyFlatFee}"})
+    public ResponseEntity<ParkingLotResponseDto> updateSmallSpotMonthlyFlatFee(@PathVariable Double smallSpotMonthlyFlatFee)
     {
         ParkingLot p = parkingLotService.getParkingLot();
         ParkingLotRequestDto parkingLotRequestDto = new ParkingLotRequestDto();
@@ -91,7 +93,25 @@ public class ParkingLotController {
         parkingLotRequestDto.setClosingTime(p.getClosingTime());
         parkingLotRequestDto.setLargeSpotFee(p.getLargeSpotFee());
         parkingLotRequestDto.setSmallSpotFee(p.getSmallSpotFee());
-        parkingLotRequestDto.setMonthlyFlatFee(monthlyFlatFee);
+        parkingLotRequestDto.setSmallSpotMonthlyFlatFee(smallSpotMonthlyFlatFee);
+        parkingLotRequestDto.setLargeSpotMonthlyFlatFee(p.getLargeSpotMonthlyFlatFee());
+        @Valid ParkingLotRequestDto s = parkingLotRequestDto;
+        ParkingLot parkingLot = parkingLotRequestDto.toModel();
+        parkingLot = parkingLotService.updateParkingLot(parkingLot);
+        return new ResponseEntity<ParkingLotResponseDto>(new ParkingLotResponseDto(parkingLot), HttpStatus.OK);
+    }
+
+    @PutMapping(value = {"/parkingLot/update/largemonthly/{monthlyFlatFee}"})
+    public ResponseEntity<ParkingLotResponseDto> updateMonthlyFlatFee(@PathVariable Double largeSpotMonthlyFlatFee)
+    {
+        ParkingLot p = parkingLotService.getParkingLot();
+        ParkingLotRequestDto parkingLotRequestDto = new ParkingLotRequestDto();
+        parkingLotRequestDto.setOpeningTime(p.getOpeningTime());
+        parkingLotRequestDto.setClosingTime(p.getClosingTime());
+        parkingLotRequestDto.setLargeSpotFee(p.getLargeSpotFee());
+        parkingLotRequestDto.setSmallSpotFee(p.getSmallSpotFee());
+        parkingLotRequestDto.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
+        parkingLotRequestDto.setSmallSpotMonthlyFlatFee(p.getSmallSpotMonthlyFlatFee());
         @Valid ParkingLotRequestDto s = parkingLotRequestDto;
         ParkingLot parkingLot = parkingLotRequestDto.toModel();
         parkingLot = parkingLotService.updateParkingLot(parkingLot);

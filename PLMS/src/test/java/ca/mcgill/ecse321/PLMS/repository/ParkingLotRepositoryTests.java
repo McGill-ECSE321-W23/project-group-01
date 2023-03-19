@@ -41,7 +41,8 @@ public class ParkingLotRepositoryTests {
         parkingLot.setClosingTime(closingTime);
         parkingLot.setSmallSpotFee(smallSpotFee);
         parkingLot.setLargeSpotFee(largeSpotFee);
-        parkingLot.setMonthlyFlatFee(monthlyFlatFee);
+        parkingLot.setSmallSpotMonthlyFlatFee(monthlyFlatFee);
+        parkingLot.setLargeSpotMonthlyFlatFee(monthlyFlatFee + 10);
 
         //Save service
         parkingLot = parkingLotRepository.save(parkingLot);
@@ -58,6 +59,6 @@ public class ParkingLotRepositoryTests {
         assertEquals(closingTime, parkingLot.getClosingTime());
         assertEquals(smallSpotFee, parkingLot.getSmallSpotFee());
         assertEquals(largeSpotFee, parkingLot.getLargeSpotFee());
-        assertEquals(monthlyFlatFee,parkingLot.getMonthlyFlatFee());
+        assertEquals(monthlyFlatFee,parkingLot.getSmallSpotMonthlyFlatFee());
     } 
 }

@@ -64,7 +64,8 @@ public class PassRepositoryTests {
         parkingLot.setClosingTime(closingTime);
         parkingLot.setSmallSpotFee(smallSpotFee);
         parkingLot.setLargeSpotFee(largeSpotFee);
-        parkingLot.setMonthlyFlatFee(monthlyFlatFee);
+        parkingLot.setSmallSpotMonthlyFlatFee(monthlyFlatFee);
+        parkingLot.setLargeSpotMonthlyFlatFee(monthlyFlatFee + 10);
 
         //Save service
         parkingLot = parkingLotRepository.save(parkingLot);
@@ -138,7 +139,8 @@ public class PassRepositoryTests {
         parkingLot.setClosingTime(closingTime);
         parkingLot.setSmallSpotFee(smallSpotFee);
         parkingLot.setLargeSpotFee(largeSpotFee);
-        parkingLot.setMonthlyFlatFee(monthlyFlatFee);
+        parkingLot.setSmallSpotMonthlyFlatFee(monthlyFlatFee);
+        parkingLot.setLargeSpotMonthlyFlatFee(monthlyFlatFee + 10);
 
         //Save service
         parkingLot = parkingLotRepository.save(parkingLot);
