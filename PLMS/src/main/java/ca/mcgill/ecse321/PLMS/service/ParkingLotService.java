@@ -24,7 +24,7 @@ public class ParkingLotService {
     public ParkingLot getParkingLotById(int id) {
         ParkingLot parkingLot = parkingLotRepository.findParkingLotById(id) ;
         if (parkingLot == null) {
-            throw new PLMSException(HttpStatus.NOT_FOUND, "Parking Lot not found");
+            throw new PLMSException(HttpStatus.NOT_FOUND, "Parking Lot non-existant");
         }
 
         return parkingLot;
@@ -36,7 +36,6 @@ public class ParkingLotService {
         if (parkingLot.isEmpty()) {
             throw new PLMSException(HttpStatus.NOT_FOUND, "Parking Lot not found");
         }
-
         return parkingLot.get(0);
     }
 

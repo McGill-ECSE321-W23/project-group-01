@@ -8,19 +8,19 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 public class ParkingLotRequestDto {
 
-    @NotNull(message = "Opening time must not be null.")
-    private Time openingTime;
-    @NotNull(message = "Closing time must not be null.")
-    private Time closingTime;
-    @NotNull(message = "Large spot fee must not be null.")
-    @PositiveOrZero(message = "Large spot fee must be non-negative.")
-    private Double largeSpotFee;
-    @NotNull(message = "Small spot fee must not be null.")
-    @PositiveOrZero(message = "Small spot fee must be non-negative.")
-    private Double smallSpotFee;
-    @NotNull(message = "Monthly flat fee must not be null.")
-    @PositiveOrZero(message = "Monthly flat fee must be non-negative.")
-    private Double monthlyFlatFee;
+  @NotNull(message = "Opening time must not be null.")
+  private Time openingTime;
+  @NotNull(message = "Closing time must not be null.")
+  private Time closingTime;
+  @NotNull(message = "Large spot fee must not be null.")
+  @PositiveOrZero(message = "Large spot fee must be non-negative.")
+  private Double largeSpotFee;
+  @NotNull(message = "Small spot fee must not be null.")
+  @PositiveOrZero(message = "Small spot fee must be non-negative.")
+  private Double smallSpotFee;
+  @NotNull(message = "Monthly flat fee must not be null.")
+  @PositiveOrZero(message = "Monthly flat fee must be non-negative.")
+  private Double monthlyFlatFee;
 	
 	public void setOpeningTime(Time openingTime) {
 		this.openingTime = openingTime;
@@ -42,15 +42,16 @@ public class ParkingLotRequestDto {
 		this.monthlyFlatFee = monthlyFlatFee;
 	}
 	
+
 	
 	public ParkingLot toModel() {
 		ParkingLot p = new ParkingLot();
 		p.setClosingTime(closingTime);
-        p.setOpeningTime(openingTime);
-        p.setMonthlyFlatFee(monthlyFlatFee);
-        p.setLargeSpotFee(largeSpotFee);
-        p.setSmallSpotFee(smallSpotFee);
-        
+    p.setOpeningTime(openingTime);
+    p.setMonthlyFlatFee(monthlyFlatFee);
+    p.setLargeSpotFee(largeSpotFee);
+    p.setSmallSpotFee(smallSpotFee);
+      
 		return p;
 	}
 }
