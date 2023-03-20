@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.PLMS.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -8,6 +9,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -248,5 +250,46 @@ public class ServiceAppointmentServiceTests {
     assertEquals(secondDate, output.getDate());
     assertEquals(secondStartTime, output.getStartTime());
     assertEquals(secondEndTime, output.getEndTime());
+  }
+
+  @Test
+  public void testGetAllAppointmentsOnDate(){
+    String serviceName = "30 min Car Wash";
+    int serviceCost = 30;
+    double serviceLengthInHours = 0.5;
+    Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
+    Date firstDate = Date.valueOf("2023-02-21");
+    Date secondDate = Date.valueOf("2024-02-21");
+    Time firstStartTime = Time.valueOf("18:00:00");
+    Time firstEndTime = Time.valueOf("18:30:00");
+    Time secondStartTime = Time.valueOf("12:00:00");
+    Time secondEndTime = Time.valueOf("12:30:00");
+    ServiceAppointment appt = new ServiceAppointment(firstDate, firstStartTime, firstEndTime, service);
+    // test the time calculation
+    ServiceAppointment appt2 = new ServiceAppointment(secondDate, secondStartTime, secondEndTime, service);
+
+    Time openingTime = Time.valueOf("6:00:00");
+    Time closingTime = Time.valueOf("22:00:00");
+    double smallSpotFee = 3.5;
+    double largeSpotFee = 4.5;
+    double smallSpotMonthlyFlatFee = 150;
+    double largeSpotMonthlyFlatFee = 150;
+    int id = 10;
+    ParkingLot parkingLot = new ParkingLot(openingTime, closingTime, smallSpotFee, largeSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);
+    // The parking lot repo should return a single parking lot
+    when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
+    // return both appointments for find all
+    ArrayList<ServiceAppointment> testData = new ArrayList<ServiceAppointment>();
+    testData.add(appt);
+    testData.add(appt2);
+    when(serviceAppointmentRepository.findAll()).thenReturn((Iterable<ServiceAppointment>) testData);
+    Iterable<ServiceAppointment> appts = serviceAppointmentService.getAllServiceAppointmentsByDate(firstDate);
+    Iterator<ServiceAppointment> it = appts.iterator();
+    ServiceAppointment output = it.next();
+    assertEquals(firstDate, output.getDate());
+    assertEquals(firstStartTime, output.getStartTime());
+    assertEquals(firstEndTime, output.getEndTime());
+    // ensure there is only one appointment on this date
+    assertFalse(it.hasNext());
   }
 }
