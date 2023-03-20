@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 public class GuestPassController {
 
     @Autowired
-    private GuestPassService GuestPassService;
+    private GuestPassService guestPassService;
 
     /**
      * Gets all guest passes.
@@ -31,56 +31,56 @@ public class GuestPassController {
      * @return All guest passes.
      */
     @GetMapping("/guestpass")
-    public Iterable<GuestPassDto> getAllGuestPasses(){
-        return StreamSupport.stream(guestpassService.getAllGuestPasses().spliterator(), false).map(f -> new
-        GuestPassDto(f)).collect(Collectors.toList());
+    public Iterable<GuestPassResponseDto> getAllGuestPasses(){
+        return StreamSupport.stream(guestPassService.getAllGuestPasses().spliterator(), false).map(f -> new
+        GuestPassResponseDto(f)).collect(Collectors.toList());
     }
 
     /**
      * Gets a guestpass by the guestpass id
      * 
-     * @return guestpass with id id
+     * @return GuestPassResponseDto of guestpass with id id
      */
     @GetMapping("/guestpass/{id}")
-    public ResponseEntity<PassDto> getGuestPassById(@PathVariable int id){
-    Pass pass = monthlyPassService.getGuestPassById(id);
-    PassDto responseBody = new MonthlyPassDto(pass);
-    return new ResponseEntity<PassDto>(responseBody, HttpStatus.OK);
+    public ResponseEntity<GuestPassResponseDto> getGuestPassById(@PathVariable int id){
+    GuestPass guestPass = guestPassService.getGuestPassById(id);
+    GuestPassReponseDto responseBody = new GuestPassReponseDto(pass);
+    return new ResponseEntity<GuestPassResponseDto>(responseBody, HttpStatus.OK);
     }
 
     /**
      * Gets all guest passes at the floor floorNumber (inactive passes filtered out in service layer)
      * 
-     * @return guest passes with floor floorNumber
+     * @return GuestPassResponseDto of guest passes with floor floorNumber
      */
     @GetMapping("/guestpass{floorNumber}")
-    public Iterable<GuestPassDto> getGuestPassesByFloor(){
+    public Iterable<GuestPassResponseDto> getGuestPassesByFloor(){
         return StreamSupport.stream(guestPassService.getGuestPassesByFloor().spliterator(), false).map(f -> new
-        GuestPassDto(f)).collect(Collectors.toList());
+        GuestPassResponseDto(f)).collect(Collectors.toList());
     }
 
     /**
      * Gets all guest passes active on a date
      * 
-     * @return guest passes with date date
+     * @return GuestPassResponseDto of guest passes with date date
      */
     @GetMapping("/guestpass{date}")
-    public Iterable<GuestPassDto> getGuestPassesByDate(){
+    public Iterable<GuestPassResponseDto> getGuestPassesByDate(){
         return StreamSupport.stream(guestPassService.getGuestPassesByDate().spliterator(), false).map(f -> new
-        GuestPassDto(f)).collect(Collectors.toList());
+        GuestPassResponseDto(f)).collect(Collectors.toList());
     }
 
     /**
      * Creates a guest pass.
      * 
-     * @return GuestPassDto of the created guest pass
+     * @return GuestPassResponseDto of the created guest pass
      */
     @PostMapping("/guestpass")
-    public ResponseEntity<GuestPassDto> createGuestMonthlyPass(@Valid @RequestBody GuestPassDto guestPassDto){
-        GuestPass guestPass = guestPassDto.toModel();
+    public ResponseEntity<GuestPassResponseDto> createGuestMonthlyPass(@Valid @RequestBody GuestPassRequestDto guestPassRequestDto){
+        GuestPass guestPass = guestPassRequestDto.toModel();
         guestPass = guestPassService.createGuestPass(guestPass);
-        GuestPassDto responseBody = new GuestPassDto(pass);
-        return new ResponseEntity<GuestPassDto>(responseBody, HttpStatus.CREATED);
+        GuestPassResponseDto responseBody = new GuestPassReponseDto(pass);
+        return new ResponseEntity<GuestPassResponseDto>(responseBody, HttpStatus.CREATED);
 
     }
 
