@@ -292,4 +292,15 @@ public class ServiceAppointmentServiceTests {
     // ensure there is only one appointment on this date
     assertFalse(it.hasNext());
   }
+
+  @Test
+  public void testGetAllAppointmentsOnInvalidDate(){
+    Date date = Date.valueOf("2023-02-21");
+    ArrayList<ServiceAppointment> testData = new ArrayList<ServiceAppointment>();
+    when(serviceAppointmentRepository.findAll()).thenReturn((Iterable<ServiceAppointment>) testData);
+    PLMSException e = assertThrows(PLMSException.class,
+				() -> serviceAppointmentService.getAllServiceAppointmentsByDate(Date.valueOf("2023-02-21")));
+		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+		assertEquals("There are no appointments on date " + date, e.getMessage());
+  }
 }
