@@ -97,7 +97,7 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
-  public void createValidAppointmentWithoutAccount(){
+  public void testCreateValidAppointmentWithAccounts(){
     // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
     String serviceName = "30 min Car Wash";
     int serviceCost = 30;
@@ -107,6 +107,7 @@ public class ServiceAppointmentServiceTests {
     Date date = Date.valueOf("2023-02-21");
     Time startTime = Time.valueOf("12:00:00");
     Time endTime = Time.valueOf("12:45:00");
+    // CHECK TO SEE THAT TIME CALCULATION IS CORRECT
     Time endTime2 = Time.valueOf("12:30:00");
     String email = "jeff.jeff@jeff.com";
     String password = "PasswordSuperSecured12345";
@@ -133,7 +134,7 @@ public class ServiceAppointmentServiceTests {
     ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
     ServiceAppointment appt2 = new ServiceAppointment(date, startTime, endTime2, service);
     appt2.setEmployee(jeff);
-    when(serviceAppointmentRepository.save(appt)).thenReturn(appt2);
+    when(serviceAppointmentRepository.save(appt)).thenReturn(appt);
 
     ServiceAppointment output = serviceAppointmentService.createServiceAppointment(appt);
 
@@ -142,6 +143,44 @@ public class ServiceAppointmentServiceTests {
     assertEquals(endTime2, output.getEndTime());
     assertEquals(serviceName, output.getService().getServiceName());
     assertEquals(name, output.getEmployee().getName());
+  }
 
+  @Test
+  public void testCreateValidAppointmentWithoutAccounts(){
+    // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
+    String serviceName = "30 min Car Wash";
+    int serviceCost = 30;
+    double serviceLengthInHours = 0.5;
+    Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
+    //normal parameters
+    Date date = Date.valueOf("2023-02-21");
+    Time startTime = Time.valueOf("12:00:00");
+    Time endTime = Time.valueOf("18:00:00");
+    Time endTime2 = Time.valueOf("12:30:00");
+    ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
+    ServiceAppointment appt2 = new ServiceAppointment(date, startTime, endTime2, service);
+
+    Time openingTime = Time.valueOf("6:00:00");
+    Time closingTime = Time.valueOf("22:00:00");
+    double smallSpotFee = 3.5;
+    double largeSpotFee = 4.5;
+    double smallSpotMonthlyFlatFee = 150;
+    double largeSpotMonthlyFlatFee = 150;
+    int id = 10;
+    ParkingLot parkingLot = new ParkingLot(openingTime, closingTime, smallSpotFee, largeSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);
+    //--------------------------------//
+
+    
+    // The parking lot repo should return a single parking lot
+    when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
+
+    when(serviceAppointmentRepository.save(appt)).thenReturn(appt2);
+    ServiceAppointment output = serviceAppointmentService.createServiceAppointment(appt);
+    assertEquals(date, output.getDate());
+    assertEquals(startTime, output.getStartTime());
+    assertEquals(endTime2, output.getEndTime());
+    assertEquals(serviceName, output.getService().getServiceName());
+    assertEquals(null, output.getCustomer());
+    assertEquals(null, output.getEmployee());
   }
 }
