@@ -183,4 +183,23 @@ public class ServiceAppointmentServiceTests {
     assertEquals(null, output.getCustomer());
     assertEquals(null, output.getEmployee());
   }
+
+  @Test
+  public void testCreateAppointmentBeforeLot(){
+    // there is no parking lot, so we cannot book an appointment
+    when(parkingLotRepository.findAll()).thenReturn(new ArrayList<ParkingLot>());
+    String serviceName = "30 min Car Wash";
+    int serviceCost = 30;
+    double serviceLengthInHours = 0.5;
+    Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
+    Date date = Date.valueOf("2023-02-21");
+    Time startTime = Time.valueOf("12:00:00");
+    Time endTime = Time.valueOf("18:00:00");
+    ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
+
+    PLMSException e = assertThrows(PLMSException.class,
+				() -> serviceAppointmentService.createServiceAppointment(appt));
+		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+		assertEquals("Cannot book appointment since the parking lot has not been created yet. Please try again at a later date.", e.getMessage());
+  }
 }
