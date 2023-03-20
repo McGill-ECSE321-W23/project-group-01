@@ -375,4 +375,35 @@ public class ServiceAppointmentServiceTests {
     assertFalse(it.hasNext());
 
   }
+
+  @Test
+  public void testCreateInvalidStartTime(){
+    String serviceName = "30 min Car Wash";
+    int serviceCost = 30;
+    double serviceLengthInHours = 0.5;
+    Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
+    Date date = Date.valueOf("2023-02-21");
+    // before operating hours
+    Time startTime = Time.valueOf("5:00:00");
+    Time endTime = Time.valueOf("5:30:00");
+    ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
+
+    Time openingTime = Time.valueOf("6:00:00");
+    Time closingTime = Time.valueOf("22:00:00");
+    double smallSpotFee = 3.5;
+    double largeSpotFee = 4.5;
+    double smallSpotMonthlyFlatFee = 150;
+    double largeSpotMonthlyFlatFee = 150;
+    int id = 10;
+    ParkingLot parkingLot = new ParkingLot(openingTime, closingTime, smallSpotFee, largeSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);
+    // The parking lot repo should return a single parking lot
+    when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
+    PLMSException e = assertThrows(PLMSException.class,
+				() -> serviceAppointmentService.createServiceAppointment(appt));
+		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+		assertEquals("Cannot have an appointment beginning before the lot opens.", e.getMessage());
+
+
+  }
+
 }
