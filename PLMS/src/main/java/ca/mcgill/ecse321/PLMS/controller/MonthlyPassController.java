@@ -1,8 +1,12 @@
 package ca.mcgill.ecse321.PLMS.controller;
 
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +49,7 @@ public class MonthlyPassController {
     @GetMapping("/monthlypass/{id}")
     public ResponseEntity<MonthlyPassResponseDto> getPassById(@PathVariable int id){
     MonthlyPass monthlyPass = monthlyPassService.getMonthlyPassById(id);
-    MonthlyPassResponseDto responseBody = new MonthlyPassResponseDto(pass);
+    MonthlyPassResponseDto responseBody = new MonthlyPassResponseDto(monthlyPass);
     return new ResponseEntity<MonthlyPassResponseDto>(responseBody, HttpStatus.OK);
     }
 
@@ -54,7 +58,7 @@ public class MonthlyPassController {
      * 
      * @return MonthlyPassResponseDto of monthly passes with floor floorNumber
      */
-    @GetMapping("/monthlypass{floorNumber}")
+    @GetMapping("/monthlypass/floor/{floorNumber}")
     public Iterable<MonthlyPassResponseDto> getMonthlyPassesByFloor(){
         return StreamSupport.stream(monthlyPassService.getMonthlyPassesByFloor().spliterator(), false).map(f -> new
         MonthlyPassResponseDto(f)).collect(Collectors.toList());
@@ -65,7 +69,7 @@ public class MonthlyPassController {
      * 
      * @return MonthlyPassResponseDto of monthly passes of monthly customer with email email
      */
-    @GetMapping("/monthlypass{email}")
+    @GetMapping("/monthlypass/customer/{email}")
     public Iterable<MonthlyPassResponseDto> getMonthlyPassesByMonthlyCustomer(){
         return StreamSupport.stream(monthlyPassService.getMonthlyPassesByMonthlyCustomer().spliterator(), false).map(f -> new
         MonthlyPassResponseDto(f)).collect(Collectors.toList());
@@ -77,10 +81,10 @@ public class MonthlyPassController {
      * @return MonthlyPassResponseDto of the created monthly pass
      */
     @PostMapping("/monthlypass")
-    public ResponseEntity<PassDto> createMonthlyPass(@Valid @RequestBody MonthlyPassRequestDto monthlyPassRequestDto){
+    public ResponseEntity<MonthlyPassResponseDto> createMonthlyPass(@Valid @RequestBody MonthlyPassRequestDto monthlyPassRequestDto){
         MonthlyPass monthlyPass = monthlyPassRequestDto.toModel();
         monthlyPass = monthlyPassService.createMonthlyPass(monthlyPass);
-        MonthlyPassResponseDto responseBody = new MonthlyPassResponseDto(pass);
+        MonthlyPassResponseDto responseBody = new MonthlyPassResponseDto(monthlyPass);
         return new ResponseEntity<MonthlyPassResponseDto>(responseBody, HttpStatus.CREATED);
 
     }

@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.PLMS.dto;
 
+import java.sql.Date;
+
 import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -13,8 +15,11 @@ public class MonthlyPassResponseDto {
     private String spotNumber;
     private String confirmationCode;
     private String licensePlate;
-    private FloorResponseDto floor;
-    private MonthlyCustomerResponseDto monthlycustomer;
+    private Boolean isLarge;
+    private Date startDate;
+    private Date endDate;
+    private Integer floorNumber;
+    private String monthlyCustomerEmail;
 
     /**
      * Constructor for creating a monthlypass response transfer object by using the fields of 
@@ -28,32 +33,51 @@ public class MonthlyPassResponseDto {
         this.spotNumber = monthlypass.getSpotNumber();
         this.confirmationCode = monthlypass.getConfirmationCode();
         this.licensePlate = monthlypass.getLicensePlate();
-        this.floor = monthlypass.getFloor();
-        this.monthlycustomer = monthlypass.getCustomer();
+        this.floorNumber = monthlypass.getFloor().getFloorNumber();
+        this.monthlyCustomerEmail = monthlypass.getCustomer().getEmail();
+        this.isLarge = monthlypass.getIsLarge();
+        this.startDate = monthlypass.getStartDate();
+        this.endDate = monthlypass.getEndDate();
     }
 
     public Double getFee(){
         return this.fee;
     }
 
-    public Double getSpotNumber(){
+    public Integer getId(){
+        return this.id;
+    }
+
+    public Boolean getIsLarge(){
+        return this.isLarge;
+    }
+
+    public Date getStartDate(){
+        return this.startDate;
+    }
+
+    public Date getEndDate(){
+        return this.endDate;
+    }
+
+    public String getSpotNumber(){
         return this.spotNumber;
     }
 
-    public Double getConfirmationCode(){
+    public String getConfirmationCode(){
         return this.confirmationCode;
     }
 
-    public Double getLicensePlate(){
+    public String getLicensePlate(){
         return this.licensePlate;
     }
 
-    public FloorResponseDTO getFloor(){
-        return this.floor;
+    public Integer getFloor(){
+        return this.floorNumber;
     }
 
-    public MonthlyCustomerResponseDto getMonthlyCustomer(){
-        return this.monthlycustomer;
+    public String getMonthlyCustomerEmail(){
+        return this.monthlyCustomerEmail;
     }
 
 

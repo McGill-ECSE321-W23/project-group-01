@@ -1,19 +1,13 @@
 package ca.mcgill.ecse321.PLMS.dto;
 
-import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
+import java.sql.Date;
+import java.sql.Time;
+
+import ca.mcgill.ecse321.PLMS.model.GuestPass;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-
 public class GuestPassRequestDto {
-
-    @NotNull(message = "Cannot have an empty id.")
-    @Min(value = 0, message = "The id must be a non negative number.")
-    private Integer id;
-
-    @NotNull(message = "Cannot have an empty fee.")
-    @Min(value = 0, message = "The fee must be a non negative number.")
-    private Double fee;
 
     @NotNull(message = "Cannot have an empty spotNumber.")
     private String spotNumber;
@@ -24,50 +18,52 @@ public class GuestPassRequestDto {
     @NotNull(message = "Cannot have an empty licensePlate.")
     private String licensePlate;
 
-    private FloorDto floor;
+    @NotNull(message = "Cannot have an empty floor number.")
+    private Integer floorNumber;
 
+    @NotNull(message = "Cannot have an empty start time.")
+    private Time startTime;
 
+    @NotNull(message = "Cannot have an empty end time.")
+    private Time endTime;
 
-    /**
-     * Constructor for creating a guest pass request transfer object by using the fields of 
-     * a guestPass object.
-     * @param guestPass - guest pass to turn into a request transfer object
-     */
+    @NotNull(message = "Must specify whether the pass is small or large.")
+    private Boolean isLarge;
 
-
-    public MonthlyPass toModel(){
-        GuestPass guestPass = new MonthlyPass();
-        guestpass.setFee(this.fee);
+    public GuestPass toModel(){
+        GuestPass guestPass = new GuestPass();
         guestPass.setSpotNumber(this.spotNumber);
         guestPass.setConfirmationCode(this.confirmationCode);
         guestPass.setLicensePlate(this.licensePlate);
-        guestPass.setFloor(this.floor);
+        guestPass.setStartTime(startTime);
+        guestPass.setEndTime(endTime);
+        guestPass.setIsLarge(isLarge);
         return guestPass;
     }
-
-    public void setFee(Double fee){
-        this.fee = fee;
-    }
-
 
     public void setSpotNumber(String spotNumber){
         this.spotNumber = spotNumber;
     }
 
-
     public void setConfirmationCode(String confirmationCode){
         this.confirmationCode = confirmationCode;
     }
 
-
-    public void setLicensePlate(String LicensePlate){
+    public void setLicensePlate(String licensePlate){
         this.licensePlate = licensePlate;
     }
 
-
-    public void setFloor(FloorDto floor){
-        this.floor = floor;
+    public void setFloorNumber(Integer floorNumber){
+        this.floorNumber = floorNumber;
     }
 
+    public void setStartTime(Time startTime){
+        this.startTime = startTime;
+    }
 
+    public void setEndTime(Time endTime){
+        this.endTime = endTime;
+    }
+
+    // Getters omitted for brevity
 }

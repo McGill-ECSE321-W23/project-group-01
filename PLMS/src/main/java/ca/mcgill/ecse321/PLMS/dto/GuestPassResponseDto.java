@@ -1,9 +1,9 @@
 package ca.mcgill.ecse321.PLMS.dto;
 
-import ca.mcgill.ecse321.PLMS.model.GuestPass;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import java.sql.Date;
+import java.sql.Time;
 
+import ca.mcgill.ecse321.PLMS.model.GuestPass;
 
 
 public class GuestPassResponseDto {
@@ -14,43 +14,69 @@ public class GuestPassResponseDto {
     private String spotNumber;
     private String confirmationCode;
     private String licensePlate;
-    private FloorResponseDto floor;
-
+    private Boolean isLarge;
+    private Date date;
+    private Time startTime;
+    private Time endTime;
+    private Integer floorNumber;
 
     /**
-     * Constructor for creating a guestpass response transfer object by using the fields of 
-     * a guestpass object.
-     * @param guestpass - guestpass to turn into a transfer object
+     * Constructor for creating a guestPass response transfer object by using the fields of 
+     * a guestPass object.
+     * @param guestPass - guestPass to turn into a transfer object
      */
 
-    public GuestPassResponseDto(GuestPass guestpass){
-        this.id = guestpass.getId();
-        this.fee = guestpass.getFee();
-        this.spotNumber = guestpass.getSpotNumber();
-        this.confirmationCode = guestpass.getConfirmationCode();
-        this.licensePlate = guestpass.getLicensePlate();
-        this.floor = guestpass.getFloor();
+    public GuestPassResponseDto(GuestPass guestPass){
+        this.id = guestPass.getId();
+        this.fee = guestPass.getFee();
+        this.spotNumber = guestPass.getSpotNumber();
+        this.confirmationCode = guestPass.getConfirmationCode();
+        this.licensePlate = guestPass.getLicensePlate();
+        this.floorNumber = guestPass.getFloor().getFloorNumber();
+        this.isLarge = guestPass.getIsLarge();
+        this.date = guestPass.getDate();
+        this.startTime = guestPass.getStartTime();
+        this.endTime = guestPass.getEndTime();
     }
 
     public Double getFee(){
         return this.fee;
     }
 
-    public Double getSpotNumber(){
+    public Integer getId(){
+        return this.id;
+    }
+
+    public Boolean getIsLarge(){
+        return this.isLarge;
+    }
+
+    public Date getDate(){
+        return this.date;
+    }
+
+    public Time getStartTime(){
+        return this.startTime;
+    }
+
+    public Time getEndTime(){
+        return this.endTime;
+    }
+
+    public String getSpotNumber(){
         return this.spotNumber;
     }
 
-    public Double getConfirmationCode(){
+    public String getConfirmationCode(){
         return this.confirmationCode;
     }
 
-    public Double getLicensePlate(){
+    public String getLicensePlate(){
         return this.licensePlate;
     }
 
-    public FloorResponseDTO getFloor(){
-        return this.floor;
+    public Integer getFloor(){
+        return this.floorNumber;
     }
-
 
 }
