@@ -303,4 +303,36 @@ public class ServiceAppointmentServiceTests {
 		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
 		assertEquals("There are no appointments on date " + date, e.getMessage());
   }
+
+  @Test
+  public void testGetAllAppointmentsByEmployee(){
+    // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
+    String serviceName = "30 min Car Wash";
+    int serviceCost = 30;
+    double serviceLengthInHours = 0.5;
+    Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
+    //normal parameters
+    Date date = Date.valueOf("2023-02-21");
+    Time startTime = Time.valueOf("12:00:00");
+    Time endTime = Time.valueOf("12:30:00");
+    String email = "jeff.jeff@jeff.com";
+    String password = "PasswordSuperSecured12345";
+    String name = "Jeff";
+    String jobDescription = "Porter or something like that, im not sure how to describe that job but this is a job description";
+    int hourlyWage = 15;
+    Employee jeff = new Employee(email, password, name, jobDescription, hourlyWage);
+    ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
+    appt.setEmployee(jeff);
+    when(serviceAppointmentRepository.findAll()).thenReturn(Collections.singletonList(appt));
+    Iterable<ServiceAppointment> appts = serviceAppointmentService.getAllServiceAppointmentsByEmployee(email);
+    Iterator<ServiceAppointment> it = appts.iterator();
+    ServiceAppointment output = it.next();
+    assertEquals(date, output.getDate());
+    assertEquals(startTime, output.getStartTime());
+    assertEquals(endTime, output.getEndTime());
+    assertEquals(email, output.getEmployee().getEmail());
+    // ensure there is only one appointment on this date
+    assertFalse(it.hasNext());
+
+  }
 }
