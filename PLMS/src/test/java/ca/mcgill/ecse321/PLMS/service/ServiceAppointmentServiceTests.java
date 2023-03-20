@@ -202,4 +202,14 @@ public class ServiceAppointmentServiceTests {
 		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
 		assertEquals("Cannot book appointment since the parking lot has not been created yet. Please try again at a later date.", e.getMessage());
   }
+
+  @Test 
+  public void testInvalidDeletion(){
+    int id = 4;
+    when(serviceAppointmentRepository.findById(id)).thenReturn(null);
+    PLMSException e = assertThrows(PLMSException.class,
+				() -> serviceAppointmentService.deleteServiceAppointmentById(id));
+		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+		assertEquals("Service appointment with ID " + id + " does not exist.", e.getMessage());
+  }
 }
