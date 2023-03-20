@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.PLMS.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
@@ -12,7 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 
+import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Service;
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
 import ca.mcgill.ecse321.PLMS.repository.EmployeeRepository;
@@ -57,15 +60,33 @@ public class ServiceAppointmentServiceTests {
   @Test
   public void testGetValidAppointment(){
     // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
-    // String serviceName = "30 min Car Wash";
-    // int serviceCost = 30;
-    // double serviceLengthInHours = 0.5;
-    // Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
-    // //normal parameters
-    // Date date = Date.valueOf("2023-02-21");
-    // Time startTime = Time.valueOf("12:00:00");
-    // Time endTime = Time.valueOf("18:00:00");
-    // ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
-    // when(serviceAppointmentRepository)
+    int id = 4;
+    String serviceName = "30 min Car Wash";
+    int serviceCost = 30;
+    double serviceLengthInHours = 0.5;
+    Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
+    //normal parameters
+    Date date = Date.valueOf("2023-02-21");
+    Time startTime = Time.valueOf("12:00:00");
+    Time endTime = Time.valueOf("18:00:00");
+    ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
+    when(serviceAppointmentRepository.findServiceAppointmentById(4)).thenReturn(appt);
+    ServiceAppointment output = serviceAppointmentService.findServiceAppointmentById(id);
+    assertEquals(date, output.getDate());
+    assertEquals(startTime, output.getStartTime());
+    assertEquals(endTime, output.getEndTime());
+    assertEquals(serviceName, output.getService().getServiceName());
+  }
+
+
+  @Test
+  public void testGetInvalidAppointment(){
+    // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
+    int id = 4;
+    when(serviceAppointmentRepository.findServiceAppointmentById(4)).thenReturn(null);
+    PLMSException e = assertThrows(PLMSException.class,
+				() -> serviceAppointmentService.findServiceAppointmentById(id));
+		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+		assertEquals("Service appointment with ID " + id + " does not exist.", e.getMessage());
   }
 }
