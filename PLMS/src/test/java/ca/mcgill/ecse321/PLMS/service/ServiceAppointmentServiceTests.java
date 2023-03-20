@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Employee;
+import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.model.Service;
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
@@ -111,12 +112,17 @@ public class ServiceAppointmentServiceTests {
     Time endTime = Time.valueOf("12:45:00");
     // CHECK TO SEE THAT TIME CALCULATION IS CORRECT
     Time endTime2 = Time.valueOf("12:30:00");
-    String email = "jeff.jeff@jeff.com";
+    String eEmail = "jeff.jeff@jeff.com";
     String password = "PasswordSuperSecured12345";
     String name = "Jeff";
     String jobDescription = "Porter or something like that, im not sure how to describe that job but this is a job description";
     int hourlyWage = 15;
-    Employee jeff = new Employee(email, password, name, jobDescription, hourlyWage);
+    Employee jeff = new Employee(eEmail, password, name, jobDescription, hourlyWage);
+
+    String mEmail = "patrick@dorsia.com";
+    String mPassword = "ihavetoreturnsomevideotapes";
+    String mName = "Patrick Bateman";
+    MonthlyCustomer pat = new MonthlyCustomer(mEmail, mPassword, mName);
 
 
     Time openingTime = Time.valueOf("6:00:00");
@@ -133,9 +139,10 @@ public class ServiceAppointmentServiceTests {
     // The parking lot repo should return a single parking lot
     when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
     when(employeeRepository.findAll()).thenReturn(Collections.singletonList(jeff));
+    when(monthlyCustomerRepository.findAll()).thenReturn(Collections.singletonList(pat));
     ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
-    ServiceAppointment appt2 = new ServiceAppointment(date, startTime, endTime2, service);
-    appt2.setEmployee(jeff);
+    appt.setEmployee(jeff);
+    appt.setCustomer(pat);
     when(serviceAppointmentRepository.save(appt)).thenReturn(appt);
 
     ServiceAppointment output = serviceAppointmentService.createServiceAppointment(appt);
@@ -145,6 +152,7 @@ public class ServiceAppointmentServiceTests {
     assertEquals(endTime2, output.getEndTime());
     assertEquals(serviceName, output.getService().getServiceName());
     assertEquals(name, output.getEmployee().getName());
+    assertEquals(mName, output.getCustomer().getName());
   }
 
   @Test
@@ -306,6 +314,38 @@ public class ServiceAppointmentServiceTests {
 
   @Test
   public void testGetAllAppointmentsByEmployee(){
+    // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
+    String serviceName = "30 min Car Wash";
+    int serviceCost = 30;
+    double serviceLengthInHours = 0.5;
+    Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
+    //normal parameters
+    Date date = Date.valueOf("2023-02-21");
+    Time startTime = Time.valueOf("12:00:00");
+    Time endTime = Time.valueOf("12:30:00");
+    String email = "jeff.jeff@jeff.com";
+    String password = "PasswordSuperSecured12345";
+    String name = "Jeff";
+    String jobDescription = "Porter or something like that, im not sure how to describe that job but this is a job description";
+    int hourlyWage = 15;
+    Employee jeff = new Employee(email, password, name, jobDescription, hourlyWage);
+    ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
+    appt.setEmployee(jeff);
+    when(serviceAppointmentRepository.findAll()).thenReturn(Collections.singletonList(appt));
+    Iterable<ServiceAppointment> appts = serviceAppointmentService.getAllServiceAppointmentsByEmployee(email);
+    Iterator<ServiceAppointment> it = appts.iterator();
+    ServiceAppointment output = it.next();
+    assertEquals(date, output.getDate());
+    assertEquals(startTime, output.getStartTime());
+    assertEquals(endTime, output.getEndTime());
+    assertEquals(email, output.getEmployee().getEmail());
+    // ensure there is only one appointment on this date
+    assertFalse(it.hasNext());
+
+  }
+
+  @Test
+  public void testGetAllAppointmentsByMonthlyCustomer(){
     // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
     String serviceName = "30 min Car Wash";
     int serviceCost = 30;
