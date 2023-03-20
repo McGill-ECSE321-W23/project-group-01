@@ -355,29 +355,28 @@ public class ServiceAppointmentServiceTests {
     Date date = Date.valueOf("2023-02-21");
     Time startTime = Time.valueOf("12:00:00");
     Time endTime = Time.valueOf("12:30:00");
-    String email = "jeff.jeff@jeff.com";
-    String password = "PasswordSuperSecured12345";
-    String name = "Jeff";
-    String jobDescription = "Porter or something like that, im not sure how to describe that job but this is a job description";
-    int hourlyWage = 15;
-    Employee jeff = new Employee(email, password, name, jobDescription, hourlyWage);
     ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
-    appt.setEmployee(jeff);
+    String mEmail = "patrick@dorsia.com";
+    String mPassword = "ihavetoreturnsomevideotapes";
+    String mName = "Patrick Bateman";
+    MonthlyCustomer pat = new MonthlyCustomer(mEmail, mPassword, mName);
+    appt.setCustomer(pat);
     when(serviceAppointmentRepository.findAll()).thenReturn(Collections.singletonList(appt));
-    Iterable<ServiceAppointment> appts = serviceAppointmentService.getAllServiceAppointmentsByEmployee(email);
+    Iterable<ServiceAppointment> appts = serviceAppointmentService.getAllServiceAppointmentsByMonthlyCustomer(mEmail);
     Iterator<ServiceAppointment> it = appts.iterator();
     ServiceAppointment output = it.next();
     assertEquals(date, output.getDate());
     assertEquals(startTime, output.getStartTime());
     assertEquals(endTime, output.getEndTime());
-    assertEquals(email, output.getEmployee().getEmail());
+    assertEquals(mEmail, output.getCustomer().getEmail());
     // ensure there is only one appointment on this date
     assertFalse(it.hasNext());
 
   }
 
   @Test
-  public void testCreateInvalidStartTime(){
+  public void testCreateInvalidStartTime1(){
+    // test for creating appointment before lot opens
     String serviceName = "30 min Car Wash";
     int serviceCost = 30;
     double serviceLengthInHours = 0.5;
@@ -402,8 +401,62 @@ public class ServiceAppointmentServiceTests {
 				() -> serviceAppointmentService.createServiceAppointment(appt));
 		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
 		assertEquals("Cannot have an appointment beginning before the lot opens.", e.getMessage());
-
-
   }
 
+  @Test
+  public void testCreateInvalidStartTime2(){
+    // test for creating appointment before lot opens
+    String serviceName = "30 min Car Wash";
+    int serviceCost = 30;
+    double serviceLengthInHours = 0.5;
+    Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
+    Date date = Date.valueOf("2023-02-21");
+    // before operating hours
+    Time startTime = Time.valueOf("23:00:00");
+    Time endTime = Time.valueOf("23:30:00");
+    ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
+
+    Time openingTime = Time.valueOf("6:00:00");
+    Time closingTime = Time.valueOf("22:00:00");
+    double smallSpotFee = 3.5;
+    double largeSpotFee = 4.5;
+    double smallSpotMonthlyFlatFee = 150;
+    double largeSpotMonthlyFlatFee = 150;
+    int id = 10;
+    ParkingLot parkingLot = new ParkingLot(openingTime, closingTime, smallSpotFee, largeSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);
+    // The parking lot repo should return a single parking lot
+    when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
+    PLMSException e = assertThrows(PLMSException.class,
+				() -> serviceAppointmentService.createServiceAppointment(appt));
+		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+		assertEquals("Cannot have an appointment beginning after the lot closes.", e.getMessage());
+  }
+
+  @Test
+  public void testCreateInvalidEndTime(){
+    String serviceName = "2 hour Car Wash";
+    int serviceCost = 30;
+    double serviceLengthInHours = 2;
+    Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
+    Date date = Date.valueOf("2023-02-21");
+    // before operating hours
+    Time startTime = Time.valueOf("21:00:00");
+    Time endTime = Time.valueOf("23:00:00");
+    ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
+
+    Time openingTime = Time.valueOf("6:00:00");
+    Time closingTime = Time.valueOf("22:00:00");
+    double smallSpotFee = 3.5;
+    double largeSpotFee = 4.5;
+    double smallSpotMonthlyFlatFee = 150;
+    double largeSpotMonthlyFlatFee = 150;
+    int id = 10;
+    ParkingLot parkingLot = new ParkingLot(openingTime, closingTime, smallSpotFee, largeSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);
+    // The parking lot repo should return a single parking lot
+    when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
+    PLMSException e = assertThrows(PLMSException.class,
+				() -> serviceAppointmentService.createServiceAppointment(appt));
+		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+		assertEquals("Cannot have an appointment ending after the lot closes.", e.getMessage());
+  }
 }
