@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.PLMS.dto;
 
 import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
-import ca.mcgill.ecse321.PLMS.dto.MonthlyCustomerResponseDto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
@@ -30,6 +29,7 @@ public class MonthlyPassResponseDto {
         this.confirmationCode = monthlypass.getConfirmationCode();
         this.licensePlate = monthlypass.getLicensePlate();
         this.floor = monthlypass.getFloor();
+        this.monthlycustomer = monthlypass.getCustomer();
     }
 
     public Double getFee(){
