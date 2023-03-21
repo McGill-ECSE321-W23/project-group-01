@@ -18,6 +18,7 @@ public class MonthlyPassRequestDto {
     @NotNull(message = "Cannot have an empty end date.")
     @FutureOrPresent(message = "End date must be today or in the future.")
     private LocalDate enddate;
+    
 
     @NotNull(message = "Cannot have an empty spot number.")
     private String spotNumber;

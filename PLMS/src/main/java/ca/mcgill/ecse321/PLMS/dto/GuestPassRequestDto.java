@@ -22,10 +22,9 @@ public class GuestPassRequestDto {
     private Integer floorNumber;
 
     @NotNull(message = "Cannot have an empty start time.")
-    private Time startTime;
+    @Min(value = 1, message = "Must enter a positive number of 15 minute increments.")
+    private Integer numberOfFifteenMinuteIncrements;
 
-    @NotNull(message = "Cannot have an empty end time.")
-    private Time endTime;
 
     @NotNull(message = "Must specify whether the pass is small or large.")
     private Boolean isLarge;
@@ -35,8 +34,6 @@ public class GuestPassRequestDto {
         guestPass.setSpotNumber(this.spotNumber);
         guestPass.setConfirmationCode(this.confirmationCode);
         guestPass.setLicensePlate(this.licensePlate);
-        guestPass.setStartTime(startTime);
-        guestPass.setEndTime(endTime);
         guestPass.setIsLarge(isLarge);
         return guestPass;
     }
@@ -56,14 +53,4 @@ public class GuestPassRequestDto {
     public void setFloorNumber(Integer floorNumber){
         this.floorNumber = floorNumber;
     }
-
-    public void setStartTime(Time startTime){
-        this.startTime = startTime;
-    }
-
-    public void setEndTime(Time endTime){
-        this.endTime = endTime;
-    }
-
-    // Getters omitted for brevity
 }
