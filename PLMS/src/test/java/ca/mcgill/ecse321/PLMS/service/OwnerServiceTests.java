@@ -87,7 +87,7 @@ public class OwnerServiceTests {
         when(ownerRepository.findOwnerByEmail(email)).thenReturn(null);
 
         PLMSException e = assertThrows(PLMSException.class, () -> ownerService.getOwnerByEmail(email));
-        assertEquals(e.getMessage(), "Owner not found.");
+        assertEquals(e.getMessage(), "Owner not found."); //
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
     }
 
