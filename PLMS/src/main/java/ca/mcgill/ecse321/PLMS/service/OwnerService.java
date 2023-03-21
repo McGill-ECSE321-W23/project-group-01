@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.PLMS.service;
 
+import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
+
+import java.util.ArrayList;
 
 /**
  * Service class for the Account model objects in the database
@@ -20,7 +23,11 @@ public class OwnerService {
     OwnerRepository ownerRepository;
 
     @Transactional
-    public Iterable<Owner> getAllOwners() { return ownerRepository.findAll(); }
+    public Iterable<Owner> getAllOwners() {
+        ArrayList<Owner> arrayList = (ArrayList<Owner>) ownerRepository.findAll();
+        if (arrayList.isEmpty())
+            throw new PLMSException(HttpStatus.NO_CONTENT, "There are no owners in the system");
+        return ownerRepository.findAll(); }
 
     @Transactional
     public Owner getOwnerByEmail(String email) {
@@ -45,7 +52,7 @@ public class OwnerService {
         if (ownerRepository.findOwnerByEmail(owner.getEmail()) == null)
 		    return ownerRepository.save(owner);
         else
-            throw new PLMSException(HttpStatus.CONFLICT, "Account with this email already exists");
+            throw new PLMSException(HttpStatus.CONFLICT, "Owner account with this email already exists");
 
     }
 

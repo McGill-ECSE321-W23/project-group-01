@@ -18,6 +18,13 @@ public class MonthlyCustomer extends Account
 
     public MonthlyCustomer() {}
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof MonthlyCustomer)) return false;
+        return super.equals(o);
+    }
+
+
     //------------------------
   // MEMBER VARIABLES (all belong to the super class account)
   //------------------------

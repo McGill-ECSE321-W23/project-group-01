@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 @Service
 public class MonthlyCustomerService {
 
@@ -15,7 +17,11 @@ public class MonthlyCustomerService {
     MonthlyCustomerRepository monthlyCustomerRepository;
 
     @Transactional
-    public Iterable<MonthlyCustomer> getAllMonthlyCustomers() { return monthlyCustomerRepository.findAll(); }
+    public Iterable<MonthlyCustomer> getAllMonthlyCustomers() {
+        ArrayList<MonthlyCustomer> arrayList = (ArrayList<MonthlyCustomer>) monthlyCustomerRepository.findAll();
+        if (arrayList.isEmpty())
+            throw new PLMSException(HttpStatus.NO_CONTENT, "There are no monthly customers in the system");
+        return monthlyCustomerRepository.findAll(); }
 
     @Transactional
     public MonthlyCustomer getMonthlyCustomerByEmail(String email) {

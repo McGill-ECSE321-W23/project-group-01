@@ -68,4 +68,23 @@ public class Employee extends Account
             "jobTitle" + ":" + getJobTitle()+ "," +
             "hourlyWage" + ":" + getHourlyWage()+ "]";
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (!super.equals(o)) return false;
+    if (this == o) return true;
+    if (!(o instanceof Employee employee)) return false;
+    if (Double.compare(employee.hourlyWage, hourlyWage) != 0) return false;
+    return jobTitle.equals(employee.jobTitle);
+  }
+
+  @Override
+  public int hashCode() {
+    int result;
+    long temp;
+    result = jobTitle.hashCode();
+    temp = Double.doubleToLongBits(hourlyWage);
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    return result;
+  }
 }
