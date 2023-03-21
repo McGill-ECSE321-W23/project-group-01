@@ -30,3 +30,4 @@ public class ServiceRequestDto {
         return new Service(serviceName, cost, lengthInHours);
     }
 }
+
