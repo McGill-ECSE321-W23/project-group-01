@@ -2,11 +2,14 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Employee;
+import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 
 @Service
 public class EmployeeService {
@@ -15,7 +18,11 @@ public class EmployeeService {
     EmployeeRepository employeeRepository;
 
     @Transactional
-    public Iterable<Employee> getAllEmployees(){ return employeeRepository.findAll(); }
+    public Iterable<Employee> getAllEmployees(){
+        ArrayList<Employee> arrayList = (ArrayList<Employee>) employeeRepository.findAll();
+        if (arrayList.isEmpty())
+            throw new PLMSException(HttpStatus.NO_CONTENT, "There are employees in the system");
+        return employeeRepository.findAll(); }
 
     @Transactional
     public Employee getEmployeeByEmail(String email) {
@@ -31,7 +38,7 @@ public class EmployeeService {
     {
         getEmployeeByEmail(employee.getEmail());
         if(employee.getHourlyWage() <= 0)
-            throw new PLMSException(HttpStatus.NOT_FOUND, "Hourly wage must be strictly positive.");
+            throw new PLMSException(HttpStatus.NOT_FOUND, "Hourly wage must be positive.");
         return employeeRepository.save(employee);
     }
 
@@ -42,7 +49,7 @@ public class EmployeeService {
         if (employeeRepository.findEmployeeByEmail(employee.getEmail()) == null)
             return employeeRepository.save(employee);
         else
-            throw new PLMSException(HttpStatus.CONFLICT, "Account with this email already exists");
+            throw new PLMSException(HttpStatus.CONFLICT, "Employee account with this email already exists");
     }
 
     @Transactional

@@ -18,7 +18,14 @@ public class Owner extends Account
     }
 
     public Owner() {}
-  //------------------------
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Owner)) return false;
+        return super.equals(o);
+    }
+
+    //------------------------
   // MEMBER VARIABLES (all belong to the super class account)
   //------------------------
 
