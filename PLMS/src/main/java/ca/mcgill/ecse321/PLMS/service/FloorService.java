@@ -78,9 +78,6 @@ public class FloorService {
         // update the properties of the existing Floor entity
         existingFloor.setLargeSpotCapacity(floor.getLargeSpotCapacity());
         existingFloor.setSmallSpotCapacity(floor.getSmallSpotCapacity());
-        existingFloor.setLargeSpotCounter(floor.getLargeSpotCounter());
-        existingFloor.setSmallSpotCounter(floor.getSmallSpotCounter());
-
         // save the changes to the database
         existingFloor = floorRepository.save(existingFloor);
         return existingFloor;

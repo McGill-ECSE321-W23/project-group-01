@@ -23,6 +23,13 @@ public class Service
   private double cost;
   private double lengthInHours;
 
+  public Service(){}
+
+  public Service(String serviceName, double cost, double lengthInHours){
+    this.serviceName = serviceName;
+    this.cost = cost;
+    this.lengthInHours = lengthInHours;
+  }
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------

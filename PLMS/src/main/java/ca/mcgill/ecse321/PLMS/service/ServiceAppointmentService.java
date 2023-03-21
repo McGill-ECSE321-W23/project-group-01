@@ -64,8 +64,9 @@ public class ServiceAppointmentService {
 
   public LocalTime findEndTime(LocalTime startTime, ServiceAppointment serviceAppointment){
     LocalTime localStartTime = serviceAppointment.getStartTime().toLocalTime();
-    LocalTime localEndTime = localStartTime.plusHours((long)Math.floor(serviceAppointment.getService().getLengthInHours()));
-    localEndTime.plusMinutes((long)(serviceAppointment.getService().getLengthInHours() - Math.floor(serviceAppointment.getService().getLengthInHours())));
+    int hours = (int) serviceAppointment.getService().getLengthInHours();
+    int minutes = (int) ((serviceAppointment.getService().getLengthInHours() - hours) * 60);
+    LocalTime localEndTime = localStartTime.plusHours(hours).plusMinutes(minutes);
     return localEndTime;
   }
 
@@ -201,7 +202,7 @@ public class ServiceAppointmentService {
   public Employee findEmployeeToAssignToAppointment(){
     Iterable<Employee> employees = employeeRepository.findAll();
     // for now, we won't restrict a user from booking an appointment if there aren't any employees
-    if (employees == null){
+    if (!employees.iterator().hasNext()){
       return null;
     }
     // convert into an array list
@@ -221,7 +222,7 @@ public class ServiceAppointmentService {
   public ParkingLot parkingLotAddedToDatabase(){
     Iterable<ParkingLot> lots = parkingLotRepository.findAll();
     // if no lot in the system, we cannot book an appointment
-    if (lots == null){
+    if (!lots.iterator().hasNext()){
         throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot book appointment since the parking lot has not been created yet. Please try again at a later date.");
     }
     // return the parking lot
