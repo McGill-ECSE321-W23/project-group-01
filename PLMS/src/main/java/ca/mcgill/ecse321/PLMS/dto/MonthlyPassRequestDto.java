@@ -11,13 +11,9 @@ import jakarta.validation.constraints.NotNull;
 public class MonthlyPassRequestDto {
 
     //=-=-=-=-=- jakarta validation of variables -=-=-=-=-=//
-    @NotNull(message = "Cannot have an empty start date.")
-    @FutureOrPresent(message = "Start date must be today or in the future.")
-    private LocalDate startdate;
-
-    @NotNull(message = "Cannot have an empty end date.")
-    @FutureOrPresent(message = "End date must be today or in the future.")
-    private LocalDate enddate;
+    @NotNull(message = "Cannot have an empty number of months.")
+    @Min(value = 1, message = "Must enter a positive number of months.")
+    private Integer numberOfMonths;
     
 
     @NotNull(message = "Cannot have an empty spot number.")
@@ -52,6 +48,7 @@ public class MonthlyPassRequestDto {
         monthlypass.setSpotNumber(this.spotNumber);
         monthlypass.setConfirmationCode(this.confirmationCode);
         monthlypass.setLicensePlate(this.licensePlate);
+        monthlypass.setIsLarge(this.isLarge);
         return monthlypass;
     }
 

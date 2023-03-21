@@ -9,19 +9,19 @@ import jakarta.validation.constraints.NotNull;
 
 public class GuestPassRequestDto {
 
-    @NotNull(message = "Cannot have an empty spotNumber.")
+    @NotNull(message = "Cannot have an empty spot number.")
     private String spotNumber;
 
-    @NotNull(message = "Cannot have an empty confirmationCode.")
+    @NotNull(message = "Cannot have an empty confirmation code.")
     private String confirmationCode;
 
-    @NotNull(message = "Cannot have an empty licensePlate.")
+    @NotNull(message = "Cannot have an empty license plate.")
     private String licensePlate;
 
     @NotNull(message = "Cannot have an empty floor number.")
     private Integer floorNumber;
 
-    @NotNull(message = "Cannot have an empty start time.")
+    @NotNull(message = "Cannot have an empty number of 15 minute increments.")
     @Min(value = 1, message = "Must enter a positive number of 15 minute increments.")
     private Integer numberOfFifteenMinuteIncrements;
 
