@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
 public class MonthlyCustomerServiceTests {
 
     @Mock
@@ -28,11 +30,6 @@ public class MonthlyCustomerServiceTests {
     @InjectMocks
     private MonthlyCustomerService monthlyCustomerService;
 
-    @BeforeEach
-    @AfterEach
-    public void clearDataBase() {
-        monthlyCustomerRepository.deleteAll();
-    }
 
     @Test
     public void testGetAllMonthlyCustomers() {
@@ -53,8 +50,9 @@ public class MonthlyCustomerServiceTests {
 
         when(monthlyCustomerRepository.findAll()).thenReturn(customers);
         Iterable<MonthlyCustomer> output = monthlyCustomerService.getAllMonthlyCustomers();
-        assertEquals(output.iterator().next(), john);
-        assertEquals(output.iterator().next(), jane);
+        Iterator<MonthlyCustomer> i = output.iterator();
+        assertEquals(i.next(), john);
+        assertEquals(i.next(), jane);
     }
 
     @Test

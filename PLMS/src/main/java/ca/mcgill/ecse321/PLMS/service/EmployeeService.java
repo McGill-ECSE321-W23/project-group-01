@@ -21,7 +21,7 @@ public class EmployeeService {
     public Iterable<Employee> getAllEmployees(){
         ArrayList<Employee> arrayList = (ArrayList<Employee>) employeeRepository.findAll();
         if (arrayList.isEmpty())
-            throw new PLMSException(HttpStatus.NO_CONTENT, "There are employees in the system");
+            throw new PLMSException(HttpStatus.NO_CONTENT, "There are no employees in the system");
         return employeeRepository.findAll(); }
 
     @Transactional

@@ -8,13 +8,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 public class OwnerServiceTests {
 
     @Mock
@@ -23,11 +26,6 @@ public class OwnerServiceTests {
     @InjectMocks
     private OwnerService ownerService;
 
-    @BeforeEach
-    @AfterEach
-    public void clearDataBase() {
-        ownerRepository.deleteAll();
-    }
 
     @Test
     public void testGetAllOwners() {
@@ -48,8 +46,9 @@ public class OwnerServiceTests {
 
         when(ownerRepository.findAll()).thenReturn(customers);
         Iterable<Owner> output = ownerService.getAllOwners();
-        assertEquals(output.iterator().next(), john);
-        assertEquals(output.iterator().next(), jane);
+        Iterator<Owner> i = output.iterator();
+        assertEquals(i.next(), john);
+        assertEquals(i.next(), jane);
     }
 
     @Test
