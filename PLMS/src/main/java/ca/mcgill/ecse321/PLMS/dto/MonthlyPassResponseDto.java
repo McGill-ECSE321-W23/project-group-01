@@ -34,7 +34,7 @@ public class MonthlyPassResponseDto {
         this.confirmationCode = monthlypass.getConfirmationCode();
         this.licensePlate = monthlypass.getLicensePlate();
         this.floorNumber = monthlypass.getFloor().getFloorNumber();
-        this.monthlyCustomerEmail = monthlypass.getCustomer().getEmail();
+        if (monthlypass.getCustomer() != null) this.monthlyCustomerEmail = monthlypass.getCustomer().getEmail();
         this.isLarge = monthlypass.getIsLarge();
         this.startDate = monthlypass.getStartDate();
         this.endDate = monthlypass.getEndDate();
