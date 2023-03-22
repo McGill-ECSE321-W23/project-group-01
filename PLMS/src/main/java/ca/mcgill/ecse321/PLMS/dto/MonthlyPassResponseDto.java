@@ -3,8 +3,6 @@ package ca.mcgill.ecse321.PLMS.dto;
 import java.sql.Date;
 
 import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 
 
 public class MonthlyPassResponseDto {

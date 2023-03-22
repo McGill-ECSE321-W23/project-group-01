@@ -1,9 +1,7 @@
 package ca.mcgill.ecse321.PLMS.dto;
 
-import java.time.LocalDate;
 
 import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
@@ -65,5 +63,21 @@ public class MonthlyPassRequestDto {
 
     public void setLicensePlate(String licensePlate){
         this.licensePlate = licensePlate;
+    }
+
+    public void setNumberOfMonths(Integer numberOfMonths){
+        this.numberOfMonths = numberOfMonths;
+    }
+
+    public void setFloorNumber(Integer floorNumber){
+        this.floorNumber = floorNumber;
+    }
+
+    public void setIsLarge(Boolean isLarge){
+        this.isLarge = isLarge;
+    }
+
+    public void setCustomerEmail(String customerEmail){
+        this.customerEmail = customerEmail;
     }
 }

@@ -1,7 +1,5 @@
 package ca.mcgill.ecse321.PLMS.dto;
 
-import java.sql.Date;
-import java.sql.Time;
 
 import ca.mcgill.ecse321.PLMS.model.GuestPass;
 import jakarta.validation.constraints.Min;
