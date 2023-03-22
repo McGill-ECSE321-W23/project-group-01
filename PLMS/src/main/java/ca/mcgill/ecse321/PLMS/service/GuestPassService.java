@@ -10,6 +10,9 @@ import ca.mcgill.ecse321.PLMS.repository.GuestPassRepository;
 
 import jakarta.transaction.Transactional;
 
+import java.sql.Date;
+import java.util.Arrays;
+
 @Service
 public class GuestPassService {
 
@@ -29,7 +32,7 @@ public class GuestPassService {
      * Service method to fetch a guest pass with a specific guest pass id in the database
      */
     @Transactional
-    public GuestPass getGuestPassByGuestPassId(int guestPassId){
+    public GuestPass getGuestPassById(int guestPassId){
         GuestPass guestPass = guestPassRepository.findGuestPassById(guestPassId);
         if (guestPass == null){
             throw new PLMSException(HttpStatus.NOT_FOUND, "Guest pass with id: " + guestPassId + " does not exist.");
@@ -60,7 +63,7 @@ public class GuestPassService {
     @Transactional
     public GuestPass updateGuestPass(GuestPass guestPass){
         //check if the guest pass exists (the guest pass has to exist to edit it)
-        GuestPass existingGuestPass = getGuestPassByGuestPassId(guestPass.getId());
+        GuestPass existingGuestPass = getGuestPassById(guestPass.getId());
 
         // update the properties of the existing GuestPass entity
         existingGuestPass.setStartTime(guestPass.getStartTime());
@@ -76,9 +79,16 @@ public class GuestPassService {
     @Transactional
     public void deleteGuestPassByGuestPassId(int guestPassId) {
         //Checks for non null are made in the method already
-        GuestPass guestPass = getGuestPassByGuestPassId(guestPassId);
+        GuestPass guestPass = getGuestPassById(guestPassId);
         guestPassRepository.delete(guestPass);
 
     }
 
+    public Arrays getGuestPassesByFloor(int floorNumber) {
+        return null;
+    }
+
+    public Arrays getGuestPassesByDate(Date date) {
+        return null;
+    }
 }

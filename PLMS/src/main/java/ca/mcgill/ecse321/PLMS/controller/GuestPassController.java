@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.PLMS.controller;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -22,6 +23,8 @@ import ca.mcgill.ecse321.PLMS.model.GuestPass;
 import ca.mcgill.ecse321.PLMS.service.GuestPassService;
 import jakarta.validation.Valid;
 
+import static java.util.Arrays.spliterator;
+
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -35,7 +38,7 @@ public class GuestPassController {
      * 
      * @return All guest passes.
      */
-    @GetMapping("/guestpass")
+    @GetMapping("/guestPass")
     public Iterable<GuestPassResponseDto> getAllGuestPasses(){
         return StreamSupport.stream(guestPassService.getAllGuestPasses().spliterator(), false).map(f -> new
         GuestPassResponseDto(f)).collect(Collectors.toList());
@@ -46,7 +49,7 @@ public class GuestPassController {
      * 
      * @return GuestPassResponseDto of guestpass with id id
      */
-    @GetMapping("/guestpass/{id}")
+    @GetMapping("/guestPass/{id}")
     public ResponseEntity<GuestPassResponseDto> getGuestPassById(@PathVariable int id){
     GuestPass guestPass = guestPassService.getGuestPassById(id);
     GuestPassResponseDto responseBody = new GuestPassResponseDto(guestPass);
@@ -58,10 +61,10 @@ public class GuestPassController {
      * 
      * @return GuestPassResponseDto of guest passes with floor floorNumber
      */
-    @GetMapping("/guestpass/floor/{floorNumber}")
+    @GetMapping("/guestPass/floor/{floorNumber}")
     public Iterable<GuestPassResponseDto> getGuestPassesByFloor(@PathVariable int floorNumber){
         return StreamSupport.stream(guestPassService.getGuestPassesByFloor(floorNumber).spliterator(), false).map(f -> new
-        GuestPassResponseDto(f)).collect(Collectors.toList());
+        GuestPassResponseDto((GuestPass) f)).collect(Collectors.toList());
     }
 
     /**
@@ -69,10 +72,11 @@ public class GuestPassController {
      * 
      * @return GuestPassResponseDto of guest passes with date date
      */
-    @GetMapping("/guestpass/date/{date}")
+    @GetMapping("/guestPass/date/{date}")
     public Iterable<GuestPassResponseDto> getGuestPassesByDate(@PathVariable Date date){
-        return StreamSupport.stream(guestPassService.getGuestPassesByDate(date).spliterator(), false).map(f -> new
-        GuestPassResponseDto(f)).collect(Collectors.toList());
+        List<GuestPassResponseDto> collect = StreamSupport.stream(guestPassService.getGuestPassesByDate(date).spliterator(), false).map(f -> new
+                GuestPassResponseDto((GuestPass) f)).collect(Collectors.toList());
+        return collect;
     }
 
     /**
@@ -80,7 +84,7 @@ public class GuestPassController {
      * 
      * @return GuestPassResponseDto of the created guest pass
      */
-    @PostMapping("/guestpass")
+    @PostMapping("/guestPass")
     public ResponseEntity<GuestPassResponseDto> createGuestMonthlyPass(@Valid @RequestBody GuestPassRequestDto guestPassRequestDto){
         GuestPass guestPass = guestPassRequestDto.toModel();
         guestPass = guestPassService.createGuestPass(guestPass);
