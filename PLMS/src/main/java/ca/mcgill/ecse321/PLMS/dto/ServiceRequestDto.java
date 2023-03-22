@@ -9,9 +9,9 @@ public class ServiceRequestDto {
     @NotNull
     @NotBlank(message = "Service name cannot be blank.")
     private String serviceName;
-    @Min(value = 0, message = "Cost cannot be a negative number.")
+    @Min(value = 0, message = "Cost needs to be a number greater or equal to 0")
     private double cost;
-    @Min(value = 0, message = "Length cannot be a negative number.")
+    @Min(value = 0, message = "Length in hours needs to be a number greater or equal to 0.")
     private double lengthInHours;
 
     public void setServiceName(String serviceName) {

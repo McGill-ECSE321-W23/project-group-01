@@ -55,27 +55,23 @@ public class ServiceService {
         Service service = new Service();
 
 
-        if (serviceName == null){
-            errorMessage.add("Service name cannot be empty");
-        }
-        else {
-            serviceName = serviceName.trim();
-            if (serviceName.length() == 0) {
-				errorMessage.add("Service name cannot be empty.");
-			}
-            Service serviceWithSameName = serviceRepository.findServiceByServiceName(serviceName);
-            if(serviceWithSameName != null){
-                errorMessage.add("Service name already taken");
-            }
+
+        serviceName = serviceName.trim();
+//        if (serviceName.length() == 0) {
+//				errorMessage.add("Service name cannot be empty.");
+//        }
+        Service serviceWithSameName = serviceRepository.findServiceByServiceName(serviceName);
+        if(serviceWithSameName != null){
+            errorMessage.add("Service name already taken");
         }
 
-        if(cost == null || cost < 0){
-            errorMessage.add("Cost needs to be a number greater or equal to 0");
-        }
-
-        if(lengthInHours == null || lengthInHours < 0){
-            errorMessage.add("Length in hours needs to be a number greater or equal to 0");
-        }
+//        if(cost == null || cost < 0){
+//            errorMessage.add("Cost needs to be a number greater or equal to 0");
+//        }
+//
+//        if(lengthInHours == null || lengthInHours < 0){
+//            errorMessage.add("Length in hours needs to be a number greater or equal to 0");
+//        }
 
 
         if (errorMessage.size() > 0) {
