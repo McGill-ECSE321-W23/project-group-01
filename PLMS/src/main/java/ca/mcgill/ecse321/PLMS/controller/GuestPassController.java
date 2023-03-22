@@ -86,7 +86,11 @@ public class GuestPassController {
     @PostMapping("/guestPass")
     public ResponseEntity<GuestPassResponseDto> createGuestMonthlyPass(@Valid @RequestBody GuestPassRequestDto guestPassRequestDto){
         GuestPass guestPass = guestPassRequestDto.toModel();
-        guestPass = guestPassService.createGuestPass(guestPass);
+        /*
+         * THE GUEST PASS REQUEST DTO DOES NOT CONTAIN A FLOOR. IT CONTAINS A FLOOR NUMBER.
+         * NEED TO PASS FLOOR NUMBER TO THE SERVICE LAYER!
+         */
+        guestPass = guestPassService.createGuestPass(guestPass, guestPassRequestDto.getFloorNumber());
         GuestPassResponseDto responseBody = new GuestPassResponseDto(guestPass);
         return new ResponseEntity<GuestPassResponseDto>(responseBody, HttpStatus.CREATED);
 

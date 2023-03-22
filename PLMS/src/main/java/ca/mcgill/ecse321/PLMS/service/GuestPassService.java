@@ -50,7 +50,11 @@ public class GuestPassService {
      * Service method to store the created guest pass object into the database
      */
     @Transactional
-    public GuestPass createGuestPass(GuestPass guestPass){
+    public GuestPass createGuestPass(GuestPass guestPass, int floorNumber){
+        /*
+         * NEED TO USE FLOOR NUMBER TO GET THE FLOOR!!!!!!!!
+         * There no ID being passed in by the GuestPass dto either... you dont need to check if it already exists!
+         */
         //checks on the new object are made in the DTO
         //check if the guest pass already exists
         if (guestPassRepository.findGuestPassById(guestPass.getId()) != null){

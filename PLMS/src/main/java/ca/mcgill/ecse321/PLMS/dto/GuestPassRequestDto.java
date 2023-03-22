@@ -51,4 +51,8 @@ public class GuestPassRequestDto {
     public void setFloorNumber(Integer floorNumber){
         this.floorNumber = floorNumber;
     }
+
+    public int getFloorNumber() {
+      return this.floorNumber;
+    }
 }
