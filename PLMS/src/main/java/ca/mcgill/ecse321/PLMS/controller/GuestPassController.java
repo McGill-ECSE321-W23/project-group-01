@@ -74,9 +74,8 @@ public class GuestPassController {
      */
     @GetMapping("/guestPass/date/{date}")
     public Iterable<GuestPassResponseDto> getGuestPassesByDate(@PathVariable Date date){
-        List<GuestPassResponseDto> collect = StreamSupport.stream(guestPassService.getGuestPassesByDate(date).spliterator(), false).map(f -> new
-                GuestPassResponseDto((GuestPass) f)).collect(Collectors.toList());
-        return collect;
+        return StreamSupport.stream(guestPassService.getGuestPassesByDate(date).spliterator(), false).map(f -> new
+        GuestPassResponseDto((GuestPass) f)).collect(Collectors.toList());
     }
 
     /**

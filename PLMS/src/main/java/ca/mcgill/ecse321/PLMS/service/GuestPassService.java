@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.PLMS.service;
 
+import ca.mcgill.ecse321.PLMS.model.Floor;
+import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -11,7 +13,9 @@ import ca.mcgill.ecse321.PLMS.repository.GuestPassRepository;
 import jakarta.transaction.Transactional;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class GuestPassService {
@@ -19,6 +23,8 @@ public class GuestPassService {
     @Autowired
     GuestPassRepository guestPassRepository;
 
+    @Autowired
+    FloorRepository floorRepository;
 
     /**
      * Service method to fetch all guest passes in the database
@@ -84,11 +90,30 @@ public class GuestPassService {
 
     }
 
-    public Arrays getGuestPassesByFloor(int floorNumber) {
-        return null;
+    public List<GuestPass> getGuestPassesByFloor(int floorNumber) {
+        List<GuestPass> guestPasses = new ArrayList<GuestPass>();
+        Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
+        for (GuestPass pass : guestPassRepository.findAll()) {
+            if (pass.getFloor() != null && pass.getFloor().equals(floor)) {
+                guestPasses.add(pass);
+            }
+        }
+        return guestPasses;
     }
 
-    public Arrays getGuestPassesByDate(Date date) {
-        return null;
+
+    public List<GuestPass> getGuestPassesByDate(Date date) {
+        List<GuestPass> guestPasses = (List<GuestPass>) guestPassRepository.findAll();
+        List<GuestPass> guestPassesByDate = new ArrayList<>();
+        for (GuestPass guestPass : guestPasses) {
+            if (guestPass.getDate().equals(date)) {
+                guestPassesByDate.add(guestPass);
+            }
+        }
+        if (guestPassesByDate.isEmpty()){
+            // null means guestPasses don't exist for that date, throw PLMS error
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no guest passes for date " + date);
+        }
+        return guestPassesByDate;
     }
 }
