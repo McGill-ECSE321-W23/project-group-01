@@ -140,7 +140,7 @@ public class ServiceAppointmentController {
        * @return The service appointment object created
        */
       @PutMapping("/serviceAppointment/{id}")
-      public ResponseEntity<ServiceAppointmentResponseDto> udpateServiceAppointment(@PathVariable int id, @Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
+      public ResponseEntity<ServiceAppointmentResponseDto> updateServiceAppointment(@PathVariable int id, @Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
         //Converting 
         Service service = serviceService.getServiceByServiceName(serviceAppointmentRequestDto.getServiceName());
         
