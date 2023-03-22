@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import java.util.ArrayList;
 
+import ca.mcgill.ecse321.PLMS.model.Floor;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,35 @@ public class ServiceService {
 
 
     /**
+     * Service method to store the created service object into the database
+     */
+    @Transactional
+    public Service createService(Service service){
+        //checks on the new object are made in the DTO
+        //check if the service already exists
+        if (serviceRepository.findServiceByServiceName(service.getServiceName()) != null){
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "Service with service name: " + service.getServiceName() + " already exists.");
+        }
+        //create object
+        service = serviceRepository.save(service);
+        //returned created object
+        return service;
+    }
+
+    /**
+     * Service method that updates a floor object in the database
+     */
+    @jakarta.transaction.Transactional
+    public Service updateService(Service service){
+        //check if the service exists (the service has to exist to edit it)
+        Service existingService = getServiceByServiceName(service.getServiceName());
+
+        // save the changes to the database
+        existingService = serviceRepository.save(existingService);
+        return existingService;
+    }
+
+    /**
 	 * creates a new service.
 	 *
 	 * The service Name is trimmed before being saved.
@@ -48,44 +78,46 @@ public class ServiceService {
 	 *            Length in hours for the service
 	 * @return
 	 */
-    @Transactional
-    public Service createService(String serviceName, Double cost, Double lengthInHours){
-
-        ArrayList<String> errorMessage = new ArrayList<String>();
-        Service service = new Service();
 
 
-
-        serviceName = serviceName.trim();
-//        if (serviceName.length() == 0) {
-//				errorMessage.add("Service name cannot be empty.");
-//        }
-        Service serviceWithSameName = serviceRepository.findServiceByServiceName(serviceName);
-        if(serviceWithSameName != null){
-            errorMessage.add("Service name already taken");
-        }
-
-//        if(cost == null || cost < 0){
-//            errorMessage.add("Cost needs to be a number greater or equal to 0");
+//    @Transactional
+//    public Service createService(String serviceName, Double cost, Double lengthInHours){
+//
+//        ArrayList<String> errorMessage = new ArrayList<String>();
+//        Service service = new Service();
+//
+//
+//
+//        serviceName = serviceName.trim();
+////        if (serviceName.length() == 0) {
+////				errorMessage.add("Service name cannot be empty.");
+////        }
+//        Service serviceWithSameName = serviceRepository.findServiceByServiceName(serviceName);
+//        if(serviceWithSameName != null){
+//            errorMessage.add("Service name already taken");
 //        }
 //
-//        if(lengthInHours == null || lengthInHours < 0){
-//            errorMessage.add("Length in hours needs to be a number greater or equal to 0");
-//        }
-
-
-        if (errorMessage.size() > 0) {
-			throw new PLMSException(HttpStatus.NOT_ACCEPTABLE, String.join(" ", errorMessage));
-		}
-
-        serviceName = serviceName.trim();
-
-        service.setServiceName(serviceName);
-        service.setCost(cost);
-        service.setLengthInHours(lengthInHours);
-        serviceRepository.save(service);
-        return service;
-    }
+////        if(cost == null || cost < 0){
+////            errorMessage.add("Cost needs to be a number greater or equal to 0");
+////        }
+////
+////        if(lengthInHours == null || lengthInHours < 0){
+////            errorMessage.add("Length in hours needs to be a number greater or equal to 0");
+////        }
+//
+//
+//        if (errorMessage.size() > 0) {
+//			throw new PLMSException(HttpStatus.NOT_ACCEPTABLE, String.join(" ", errorMessage));
+//		}
+//
+//        serviceName = serviceName.trim();
+//
+//        service.setServiceName(serviceName);
+//        service.setCost(cost);
+//        service.setLengthInHours(lengthInHours);
+//        serviceRepository.save(service);
+//        return service;
+//    }
 
     /**
 	 * Returns the service information for the service with the given
