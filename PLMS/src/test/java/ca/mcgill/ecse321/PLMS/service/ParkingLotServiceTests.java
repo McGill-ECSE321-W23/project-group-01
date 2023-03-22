@@ -39,8 +39,8 @@ public class ParkingLotServiceTests {
     @Test
     public void testGetValidParkingLot(){
       // set up a mock parkingLot to be used by parkinglot repo
-      final Time openingTime = new Time(0, 0, 0);
-      final Time closingTime = new Time(1, 0, 0);
+      final Time openingTime = Time.valueOf("6:00:00");
+        final Time closingTime = Time.valueOf("22:00:00");
       final double largeSpotFee = 25;
       final double smallSpotFee = 3;
       final double smallMonthlyFlatFee = 2;
@@ -57,8 +57,8 @@ public class ParkingLotServiceTests {
     @Test
     public void testGetInvalidParkingLot(){
         // set up a mock parkingLot to be used by parkingLot repo
-        final Time openingTime = new Time(0, 0, 0);
-        final Time closingTime = new Time(1, 0, 0);
+        final Time openingTime = Time.valueOf("6:00:00");
+        final Time closingTime = Time.valueOf("22:00:00");
         final double largeSpotFee = 25;
         final double smallSpotFee = 3;
         final double smallMonthlyFlatFee = 2;
@@ -73,8 +73,8 @@ public class ParkingLotServiceTests {
     @Test
     public void testCreateValidParkingLot(){
         // set up a mock parkingLot to be used by parkingLot repo
-        final Time openingTime = new Time(0, 0, 0);
-        final Time closingTime = new Time(1, 0, 0);
+        final Time openingTime = Time.valueOf("6:00:00");
+        final Time closingTime = Time.valueOf("22:00:00");
         final double largeSpotFee = 25;
         final double smallSpotFee = 3;
         final double smallMonthlyFlatFee = 2;
@@ -92,8 +92,8 @@ public class ParkingLotServiceTests {
     @Test
     public void testCreateInvalidEqualTimesParkingLot(){
         // set up a mock parkingLot to be used by parkingLot repo
-        final Time openingTime = new Time(2, 0, 0);
-        final Time closingTime = new Time(2, 0, 0);
+        final Time openingTime = Time.valueOf("6:00:00");
+        final Time closingTime = Time.valueOf("6:00:00");
         final double largeSpotFee = 25;
         final double smallSpotFee = 3;
         final double smallMonthlyFlatFee = 2;
@@ -109,8 +109,8 @@ public class ParkingLotServiceTests {
     @Test
     public void testCreateInvalidTimesParkingLot() {
         // set up a mock parkingLot to be used by parkingLot repo
-        final Time openingTime = new Time(3, 0, 0);
-        final Time closingTime = new Time(2, 0, 0);
+        final Time openingTime = Time.valueOf("22:00:00");
+        final Time closingTime = Time.valueOf("6:00:00");
         final double largeSpotFee = 25;
         final double smallSpotFee = 3;
         final double smallMonthlyFlatFee = 2;
@@ -125,8 +125,8 @@ public class ParkingLotServiceTests {
 
     @Test
     public void testUpdateValidParkingLot() {
-        final Time openingTime = new Time(0, 0, 0);
-        final Time closingTime = new Time(1, 0, 0);
+        final Time openingTime = Time.valueOf("6:00:00");
+        final Time closingTime = Time.valueOf("22:00:00");
         final double largeSpotFee = 25;
         final double smallSpotFee = 3;
         final double smallMonthlyFlatFee = 2;
@@ -135,8 +135,8 @@ public class ParkingLotServiceTests {
         ArrayList<ParkingLot> parkingLotArrayList = new ArrayList<>();
         parkingLotArrayList.add(parkingLot);
         when (parkingLotRepository.findAll()).thenReturn(parkingLotArrayList);
-        final Time openingTime1 = new Time(1, 0, 0);
-        final Time closingTime1 = new Time(2, 0, 0);
+        final Time openingTime1 = Time.valueOf("7:00:00");
+        final Time closingTime1 = Time.valueOf("23:00:00");
         final double largeSpotFee1 = 50;
         final double smallSpotFee1 = 10;
         final double smallMonthlyFlatFee1 = 10;
@@ -149,8 +149,8 @@ public class ParkingLotServiceTests {
 
     @Test
     public void testUpdateInvalidEqualTimesParkingLot() {
-        final Time openingTime = new Time(0, 0, 0);
-        final Time closingTime = new Time(1, 0, 0);
+        final Time openingTime = Time.valueOf("6:00:00");
+        final Time closingTime = Time.valueOf("22:00:00");
         final double largeSpotFee = 25;
         final double smallSpotFee = 3;
         final double smallMonthlyFlatFee = 2;
@@ -159,8 +159,8 @@ public class ParkingLotServiceTests {
         ArrayList<ParkingLot> parkingLotArrayList = new ArrayList<>();
         parkingLotArrayList.add(parkingLot);
         when (parkingLotRepository.findAll()).thenReturn(parkingLotArrayList);
-        final Time openingTime1 = new Time(2, 0, 0);
-        final Time closingTime1 = new Time(2, 0, 0);
+        final Time openingTime1 = Time.valueOf("6:00:00");
+        final Time closingTime1 = Time.valueOf("6:00:00");
         final double largeSpotFee1 = 50;
         final double smallSpotFee1 = 10;
         final double smallMonthlyFlatFee1 = 10;
@@ -173,8 +173,8 @@ public class ParkingLotServiceTests {
 
     @Test
     public void testUpdateInvalidTimesParkingLot() {
-        final Time openingTime = new Time(0, 0, 0);
-        final Time closingTime = new Time(1, 0, 0);
+        final Time openingTime = Time.valueOf("6:00:00");
+        final Time closingTime = Time.valueOf("22:00:00");
         final double largeSpotFee = 25;
         final double smallSpotFee = 3;
         final double smallMonthlyFlatFee = 2;
@@ -183,8 +183,8 @@ public class ParkingLotServiceTests {
         ArrayList<ParkingLot> parkingLotArrayList = new ArrayList<>();
         parkingLotArrayList.add(parkingLot);
         when (parkingLotRepository.findAll()).thenReturn(parkingLotArrayList);
-        final Time openingTime1 = new Time(3, 0, 0);
-        final Time closingTime1 = new Time(2, 0, 0);
+        final Time openingTime1 = Time.valueOf("22:00:00");
+        final Time closingTime1 = Time.valueOf("6:00:00");
         final double largeSpotFee1 = 50;
         final double smallSpotFee1 = 10;
         final double smallMonthlyFlatFee1 = 10;
