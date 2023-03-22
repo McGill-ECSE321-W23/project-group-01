@@ -41,7 +41,7 @@ public class ServiceController {
     }
 
     /**
-     * Gets a service by the service number
+     * Gets a service by the service name
      *
      * @return service with serviceName
      */
@@ -71,14 +71,14 @@ public class ServiceController {
      *
      * @return service with updated values
      */
-    @PutMapping("/service/{serviceName}")
-    public ResponseEntity<ServiceResponseDto> updateServiceInfo(@PathVariable String serviceName, @RequestBody @Valid ServiceRequestDto serviceDto){
+    @PutMapping("/service/")
+    public ResponseEntity<ServiceResponseDto> updateServiceInfo(@RequestBody @Valid ServiceRequestDto serviceDto){
         Service service = serviceDto.toModel();
-        service.setServiceName(serviceName);
         service = serviceService.updateService(service);
         ServiceResponseDto responseBody = new ServiceResponseDto(service);
         return new ResponseEntity<ServiceResponseDto>(responseBody, HttpStatus.CREATED);
     }
+
 
     /**
      * Deletes a service
