@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -126,10 +127,10 @@ public class ServiceServiceTests {
         final double lengthInHours = 1;
         final Service serv = new Service(serviceName, fee, lengthInHours);
         when(serviceRepository.findServiceByServiceName(serviceName)).thenReturn(serv);
+        doNothing().when(serviceRepository).deleteById(serviceName);
 
         serviceService.deleteServiceByServiceName(serviceName);
-        PLMSException e = assertThrows(PLMSException.class, () -> serviceService.getServiceByServiceName(serviceName));
-        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        verify(serviceRepository).deleteById(serviceName);
 
     }
 
