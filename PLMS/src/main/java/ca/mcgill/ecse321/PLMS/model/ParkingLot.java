@@ -143,8 +143,42 @@ public class ParkingLot
     return id;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof ParkingLot)) return false;
+    if (o == null) return false;
 
- /**
+    ParkingLot that = (ParkingLot) o;
+
+    if (Double.compare(that.largeSpotFee, largeSpotFee) != 0) return false;
+    if (Double.compare(that.smallSpotFee, smallSpotFee) != 0) return false;
+    if (Double.compare(that.smallSpotMonthlyFlatFee, smallSpotMonthlyFlatFee) != 0) return false;
+    if (Double.compare(that.largeSpotMonthlyFlatFee, largeSpotMonthlyFlatFee) != 0) return false;
+    if (id != that.id) return false;
+    if (!openingTime.equals(that.openingTime)) return false;
+    return closingTime.equals(that.closingTime);
+  }
+
+  @Override
+  public int hashCode() {
+    int result;
+    long temp;
+    result = openingTime.hashCode();
+    result = 31 * result + closingTime.hashCode();
+    temp = Double.doubleToLongBits(largeSpotFee);
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    temp = Double.doubleToLongBits(smallSpotFee);
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    temp = Double.doubleToLongBits(smallSpotMonthlyFlatFee);
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    temp = Double.doubleToLongBits(largeSpotMonthlyFlatFee);
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    result = 31 * result + id;
+    return result;
+  }
+
+  /**
  * toString() helper method
  * Helpful for debugging
  */

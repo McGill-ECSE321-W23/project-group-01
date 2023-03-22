@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.PLMS.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
@@ -30,7 +31,7 @@ public class ParkingLotService {
 
     @Transactional
     public ParkingLot getParkingLot() {
-        List<ParkingLot> parkingLot = (List<ParkingLot>) parkingLotRepository.findAll();
+        List<ParkingLot> parkingLot = (ArrayList<ParkingLot>) parkingLotRepository.findAll();
         if (parkingLot.isEmpty())
             throw new PLMSException(HttpStatus.NOT_FOUND, "Parking Lot not found");
         return parkingLot.get(0);
@@ -49,8 +50,13 @@ public class ParkingLotService {
     public ParkingLot updateParkingLot(ParkingLot parkingLot)
     {
         validateOpeningClosingTime(parkingLot);
-        parkingLot.setId(getParkingLot().getId());
-        return parkingLotRepository.save(parkingLot);
+        getParkingLot().setClosingTime(parkingLot.getClosingTime());
+        getParkingLot().setOpeningTime(parkingLot.getOpeningTime());
+        getParkingLot().setLargeSpotFee(parkingLot.getLargeSpotFee());
+        getParkingLot().setSmallSpotFee(parkingLot.getSmallSpotFee());
+        getParkingLot().setSmallSpotMonthlyFlatFee(parkingLot.getSmallSpotMonthlyFlatFee());
+        getParkingLot().setLargeSpotMonthlyFlatFee(parkingLot.getLargeSpotMonthlyFlatFee());
+        return getParkingLot();
     }
 
     public void validateOpeningClosingTime(ParkingLot parkingLot){
