@@ -55,7 +55,7 @@ public class FloorService {
         // check for the parking lot in the database, if it doesn't exist yet we cannot create the floor
         Iterable<ParkingLot> lots = parkingLotRepository.findAll();
         if (lots == null){
-            throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot create floor since the parking lot has not been created");
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot create floor since the parking lot has not been created.");
         }
 
         ParkingLot lot = lots.iterator().next();

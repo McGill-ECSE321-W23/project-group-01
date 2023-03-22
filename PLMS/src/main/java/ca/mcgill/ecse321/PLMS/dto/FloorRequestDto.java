@@ -52,19 +52,19 @@ public class FloorRequestDto {
   }
 
   // NEED TO ADD GETTERS TO REQUEST DTOs!
-  public int getFloorNumber(){
+  public Integer getFloorNumber(){
     return this.floorNumber;
   }
 
-  public int getSmallSpotCapacity(){
+  public Integer getSmallSpotCapacity(){
     return this.smallSpotCapacity;
   }
 
-  public int getLargeSpotCapacity(){
+  public Integer getLargeSpotCapacity(){
     return this.largeSpotCapacity;
   }
 
-  public boolean getIsMemberOnly(){
+  public Boolean getIsMemberOnly(){
     return this.isMemberOnly;
   }
 
