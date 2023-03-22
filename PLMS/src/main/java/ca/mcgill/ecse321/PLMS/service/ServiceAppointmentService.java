@@ -73,6 +73,9 @@ public class ServiceAppointmentService {
   // 2
   @Transactional
   public Iterable<ServiceAppointment> getAllServiceAppointments(){
+    ArrayList<ServiceAppointment> arrayList = (ArrayList<ServiceAppointment>) serviceAppointmentRepo.findAll();
+        if (arrayList.isEmpty())
+            throw new PLMSException(HttpStatus.NO_CONTENT, "There are no service appointments in the system");
     return serviceAppointmentRepo.findAll();
   }
 

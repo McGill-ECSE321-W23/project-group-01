@@ -97,10 +97,16 @@ public class GuestPassService {
     public List<GuestPass> getGuestPassesByFloor(int floorNumber) {
         List<GuestPass> guestPasses = new ArrayList<GuestPass>();
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
+        if(floor == null){
+            throw new PLMSException(HttpStatus.NOT_FOUND, "The floor with floor number " + floorNumber + " does not exist.");
+        }
         for (GuestPass pass : guestPassRepository.findAll()) {
             if (pass.getFloor() != null && pass.getFloor().equals(floor)) {
                 guestPasses.add(pass);
             }
+        }
+        if(guestPasses.size() == 0){
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no guest passes on floor " + floorNumber);
         }
         return guestPasses;
     }
