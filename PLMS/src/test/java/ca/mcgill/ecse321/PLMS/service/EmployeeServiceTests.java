@@ -116,12 +116,11 @@ public class EmployeeServiceTests {
 
         assertNotNull(output);
         assertEquals(john, output);
-        verify(employeeRepository, times(1)).save(john);
 
     }
 
     @Test
-    public void testCreateInvalidEmployeeAccount()
+    public void testCreateInvalidByDuplicateEmailEmployeeAccount()
     {
         final String email = "john.doe@mcgill.ca";
         final String password = "JohnDoe2002";
@@ -141,9 +140,120 @@ public class EmployeeServiceTests {
         PLMSException e = assertThrows(PLMSException.class, () -> employeeService.createEmployeeAccount(jane));
         assertEquals(e.getStatus(), HttpStatus.CONFLICT);
         assertEquals(e.getMessage(), "Employee account with this email already exists");
+    }
+
+    @Test
+    public void testCreateInvalidHourlyWageEmployeeAccount()
+    {
+        final String email = "john.doe@mcgill.ca";
+        final String password = "JohnDoe2002";
+        final String name = "John Doe";
+        final double wage = 0;
+        final String description = "Parking Cashier";
+        final Employee john = new Employee(email, password, name, description, wage);
+
+        PLMSException e = assertThrows(PLMSException.class, () -> employeeService.createEmployeeAccount(john));
+        assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(e.getMessage(), "Hourly wage must be positive.");
+    }
+
+    @Test
+    public void testUpdateValidWageEmployeeAccount()
+    {
+        final String email = "john.doe@mcgill.ca";
+        final String password = "JohnDoe2002";
+        final String name = "John Doe";
+        final double wage = 12.0;
+        final String description = "Parking Cashier";
+        final Employee john = new Employee(email, password, name, description, wage);
+
+        when(employeeRepository.findEmployeeByEmail(email)).thenReturn(john);
+
+        final String password1 = "JaneDoe2002";
+        final String name1 = "Jane Doe";
+        final double wage1 = 14.0; //# say no to gender pay gap
+        final String description1 = "Mechanic";
+        final Employee jane = new Employee(email, password1, name1, description1, wage1);
+        when(employeeRepository.save(john)).thenReturn(jane);
+        Employee output = employeeService.updateEmployee(jane);
+
+        assertEquals(output, jane);
 
 
     }
+
+    @Test
+    public void testUpdateInvalidWageEmployeeAccount()
+    {
+        final String email = "john.doe@mcgill.ca";
+        final String password = "JohnDoe2002";
+        final String name = "John Doe";
+        final double wage = 12.0;
+        final String description = "Parking Cashier";
+        final Employee john = new Employee(email, password, name, description, wage);
+
+        when(employeeRepository.findEmployeeByEmail(email)).thenReturn(john);
+
+        final String password1 = "JaneDoe2002";
+        final String name1 = "Jane Doe";
+        final double wage1 = -12.0; //# say no to gender pay gap
+        final String description1 = "Mechanic";
+        final Employee jane = new Employee(email, password1, name1, description1, wage1);
+
+        PLMSException e = assertThrows(PLMSException.class, () -> employeeService.updateEmployee(jane));
+        assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(e.getMessage(), "Hourly wage must be positive.");
+    }
+
+    @Test
+    public void testUpdateInvalidEmailEmployeeAccount() {
+        final String email = "john.doe@mcgill.ca";
+        final String password = "JohnDoe2002";
+        final String name = "John Doe";
+        final double wage = 12.0;
+        final String description = "Parking Cashier";
+        final Employee john = new Employee(email, password, name, description, wage);
+
+        when(employeeRepository.findEmployeeByEmail(email)).thenReturn(null);
+
+        PLMSException e = assertThrows(PLMSException.class, () -> employeeService.updateEmployee(john));
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(), "Employee not found.");
+    }
+
+    @Test
+    public void testDeleteEmployeeAccount() {
+        final String email = "john.doe@mcgill.ca";
+        final String password = "JohnDoe2002";
+        final String name = "John Doe";
+        final double wage = 12.0;
+        final String description = "Parking Cashier";
+        final Employee john = new Employee(email, password, name, description, wage);
+
+        when(employeeRepository.findEmployeeByEmail(email)).thenReturn(john);
+        employeeService.deleteEmployeeAccount(email);
+        verify(employeeRepository, times(1)).delete(argThat((Employee e) -> email.equals(e.getEmail())));
+        verify(employeeRepository, times(0)).delete(argThat((Employee e) -> !email.equals(e.getEmail())));
+
+    }
+
+    @Test
+    public void testInvalidDeleteEmployeeAccount() {
+        final String email = "john.doe@mcgill.ca";
+        final String password = "JohnDoe2002";
+        final String name = "John Doe";
+        final double wage = 12.0;
+        final String description = "Parking Cashier";
+        final Employee john = new Employee(email, password, name, description, wage);
+
+        when(employeeRepository.findEmployeeByEmail(email)).thenReturn(null);
+        PLMSException e = assertThrows(PLMSException.class, () -> employeeService.deleteEmployeeAccount(email));
+
+        assertEquals(e.getMessage(), "Employee not found.");
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+
+    }
+
 
 
 

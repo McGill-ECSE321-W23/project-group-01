@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
+import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
 import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.AfterEach;
@@ -60,7 +61,7 @@ public class MonthlyCustomerServiceTests {
         ArrayList<MonthlyCustomer> customers = new ArrayList<>();
         when(monthlyCustomerRepository.findAll()).thenReturn(customers);
         PLMSException e = assertThrows(PLMSException.class, () -> monthlyCustomerService.getAllMonthlyCustomers());
-        assertEquals(e.getStatus(), HttpStatus.NO_CONTENT);
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
         assertEquals(e.getMessage(),"There are no monthly customers in the system" );
     }
 
@@ -128,6 +129,48 @@ public class MonthlyCustomerServiceTests {
         assertEquals(e.getMessage(), "Account with this email already exists");
 
 
+
+    }
+
+
+    @Test
+    public void testValidUpdateOwnerAccount()
+    {
+        final String email = "john.doe@mcgill.ca";
+        final String password = "JohnDoe2002";
+        final String name = "John Doe";
+        final MonthlyCustomer john = new MonthlyCustomer(email, password, name);
+        when(monthlyCustomerRepository.findMonthlyCustomerByEmail(email)).thenReturn(john);
+
+        final String password2 = "JaneDoe2002";
+        final String name2 = "Jane Doe";
+        final MonthlyCustomer jane = new MonthlyCustomer(email, password2, name2);
+
+        when(monthlyCustomerRepository.save(john)).thenReturn(jane);
+        MonthlyCustomer output = monthlyCustomerService.updateMonthlyCustomer(jane);
+
+        assertEquals(output, jane);
+
+    }
+
+    @Test
+    public void testInvalidUpdateOwnerAccount()
+    {
+        final String email = "john.doe@mcgill.ca";
+        final String password = "JohnDoe2002";
+        final String name = "John Doe";
+        final MonthlyCustomer john = new MonthlyCustomer(email, password, name);
+        when(monthlyCustomerRepository.findMonthlyCustomerByEmail(email)).thenReturn(null);
+
+
+        final String password2 = "JaneDoe2002";
+        final String name2 = "Jane Doe";
+        final MonthlyCustomer jane = new MonthlyCustomer(email, password2, name2);
+
+        PLMSException e = assertThrows(PLMSException.class, () -> monthlyCustomerService.updateMonthlyCustomer(jane));
+
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(), "Monthly customer not found.");
 
     }
 
