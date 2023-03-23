@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.PLMS.service;
 
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,10 @@ public class FloorService {
      */
     @Transactional
     public Iterable<Floor> getAllFloors(){
-       return floorRepository.findAll();
+        ArrayList<Floor> arrayList = (ArrayList<Floor>) floorRepository.findAll();
+        if (arrayList.isEmpty())
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no floors in the system");
+       return arrayList;
     }
 
     /**
