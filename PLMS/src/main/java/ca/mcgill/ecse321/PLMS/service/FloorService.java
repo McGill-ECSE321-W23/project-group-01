@@ -54,10 +54,9 @@ public class FloorService {
 
         // check for the parking lot in the database, if it doesn't exist yet we cannot create the floor
         Iterable<ParkingLot> lots = parkingLotRepository.findAll();
-        if (lots == null){
+        if (lots == null || !lots.iterator().hasNext()){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot create floor since the parking lot has not been created.");
         }
-
         ParkingLot lot = lots.iterator().next();
         floor.setParkingLot(lot);
 
@@ -76,20 +75,22 @@ public class FloorService {
         Floor existingFloor = getFloorByFloorNumber(floor.getFloorNumber());
 
         // counter cannot be larger than capacity
-        if(floor.getLargeSpotCapacity() < floor.getLargeSpotCounter()){
+        if(floor.getLargeSpotCapacity() < existingFloor.getLargeSpotCounter()){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "The large spots occupied exceeds the capacity.");
         }
 
         // counter cannot be larger than capacity
-        if(floor.getSmallSpotCapacity() < floor.getSmallSpotCounter()){
+        if(floor.getSmallSpotCapacity() < existingFloor.getSmallSpotCounter()){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "The small spots occupied exceeds the capacity.");
         }
 
         // update the properties of the existing Floor entity
+        existingFloor.setIsMemberOnly(floor.getIsMemberOnly());
         existingFloor.setLargeSpotCapacity(floor.getLargeSpotCapacity());
         existingFloor.setSmallSpotCapacity(floor.getSmallSpotCapacity());
-        existingFloor.setLargeSpotCounter(floor.getLargeSpotCounter());
-        existingFloor.setSmallSpotCounter(floor.getSmallSpotCounter());
+        //In update we dont want to reset the counter to 0, the floor given by the user automaticly has the counters at 0s
+        // existingFloor.setLargeSpotCounter(floor.getLargeSpotCounter());
+        // existingFloor.setSmallSpotCounter(floor.getSmallSpotCounter());
 
         // save the changes to the database
         existingFloor = floorRepository.save(existingFloor);

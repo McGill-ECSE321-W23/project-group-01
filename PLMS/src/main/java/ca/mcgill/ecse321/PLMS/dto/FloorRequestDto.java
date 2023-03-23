@@ -27,6 +27,7 @@ public class FloorRequestDto {
   public Floor toModel(){
     Floor floor = new Floor();
     floor.setFloorNumber(this.floorNumber);
+    floor.setIsMemberOnly(this.isMemberOnly);
     floor.setSmallSpotCapacity(this.smallSpotCapacity);
     floor.setLargeSpotCapacity(this.largeSpotCapacity);
     // initialize counters to zero. These will get incremented with each pass that is registered to a floor
@@ -35,19 +36,19 @@ public class FloorRequestDto {
     return floor;
   }
 
-  public void setFloorNumber(int floorNumber){
+  public void setFloorNumber(Integer floorNumber){
     this.floorNumber = floorNumber;
   }
 
-  public void setSmallSpotCapacity(int smallSpotCapacity){
+  public void setSmallSpotCapacity(Integer smallSpotCapacity){
     this.smallSpotCapacity = smallSpotCapacity;
   }
 
-  public void setLargeSpotCapacity(int largeSpotCapacity){
+  public void setLargeSpotCapacity(Integer largeSpotCapacity){
     this.largeSpotCapacity = largeSpotCapacity;
   }
 
-  public void setIsMemberOnly(boolean isMemberOnly){
+  public void setIsMemberOnly(Boolean isMemberOnly){
     this.isMemberOnly = isMemberOnly;
   }
 
