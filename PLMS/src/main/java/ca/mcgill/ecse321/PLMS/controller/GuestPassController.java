@@ -32,7 +32,7 @@ public class GuestPassController {
 
     /**
      * Gets all guest passes.
-     * 
+     *
      * @return All guest passes.
      */
     @GetMapping("/guestpass")
@@ -43,7 +43,7 @@ public class GuestPassController {
 
     /**
      * Gets a guestpass by the guestpass id
-     * 
+     *
      * @return GuestPassResponseDto of guestpass with id id
      */
     @GetMapping("/guestpass/{id}")
@@ -55,7 +55,7 @@ public class GuestPassController {
 
     /**
      * Gets all guest passes at the floor floorNumber (inactive passes filtered out in service layer)
-     * 
+     *
      * @return GuestPassResponseDto of guest passes with floor floorNumber
      */
     @GetMapping("/guestpass/floor/{floorNumber}")
@@ -66,7 +66,7 @@ public class GuestPassController {
 
     /**
      * Gets all guest passes active on a date
-     * 
+     *
      * @return GuestPassResponseDto of guest passes with date date
      */
     @GetMapping("/guestpass/date/{date}")
@@ -77,11 +77,11 @@ public class GuestPassController {
 
     /**
      * Creates a guest pass.
-     * 
+     *
      * @return GuestPassResponseDto of the created guest pass
      */
     @PostMapping("/guestpass")
-    public ResponseEntity<GuestPassResponseDto> createGuestMonthlyPass(@Valid @RequestBody GuestPassRequestDto guestPassRequestDto){
+    public ResponseEntity<GuestPassResponseDto> createGuestMonthlyPass(@Valid @RequestBody GuestPassRequestDto guestPassRequestDto) {
         GuestPass guestPass = guestPassRequestDto.toModel();
         guestPass = guestPassService.createGuestPass(guestPass);
         GuestPassResponseDto responseBody = new GuestPassResponseDto(guestPass);

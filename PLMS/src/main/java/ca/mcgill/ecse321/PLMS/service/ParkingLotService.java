@@ -50,13 +50,14 @@ public class ParkingLotService {
     public ParkingLot updateParkingLot(ParkingLot parkingLot)
     {
         validateOpeningClosingTime(parkingLot);
-        getParkingLot().setClosingTime(parkingLot.getClosingTime());
-        getParkingLot().setOpeningTime(parkingLot.getOpeningTime());
-        getParkingLot().setLargeSpotFee(parkingLot.getLargeSpotFee());
-        getParkingLot().setSmallSpotFee(parkingLot.getSmallSpotFee());
-        getParkingLot().setSmallSpotMonthlyFlatFee(parkingLot.getSmallSpotMonthlyFlatFee());
-        getParkingLot().setLargeSpotMonthlyFlatFee(parkingLot.getLargeSpotMonthlyFlatFee());
-        return getParkingLot();
+        ParkingLot p = getParkingLot();
+        p.setClosingTime(parkingLot.getClosingTime());
+        p.setOpeningTime(parkingLot.getOpeningTime());
+        p.setLargeSpotFee(parkingLot.getLargeSpotFee());
+        p.setSmallSpotFee(parkingLot.getSmallSpotFee());
+        p.setSmallSpotMonthlyFlatFee(parkingLot.getSmallSpotMonthlyFlatFee());
+        p.setLargeSpotMonthlyFlatFee(parkingLot.getLargeSpotMonthlyFlatFee());
+        return parkingLotRepository.save(p);
     }
 
     public void validateOpeningClosingTime(ParkingLot parkingLot){

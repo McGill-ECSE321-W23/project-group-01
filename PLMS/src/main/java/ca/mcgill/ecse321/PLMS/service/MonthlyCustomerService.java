@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
+import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class MonthlyCustomerService {
     public Iterable<MonthlyCustomer> getAllMonthlyCustomers() {
         ArrayList<MonthlyCustomer> arrayList = (ArrayList<MonthlyCustomer>) monthlyCustomerRepository.findAll();
         if (arrayList.isEmpty())
-            throw new PLMSException(HttpStatus.NO_CONTENT, "There are no monthly customers in the system");
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no monthly customers in the system");
         return monthlyCustomerRepository.findAll(); }
 
     @Transactional
@@ -35,8 +36,10 @@ public class MonthlyCustomerService {
     @Transactional
     public MonthlyCustomer updateMonthlyCustomer(MonthlyCustomer monthlyCustomer)
     {
-        getMonthlyCustomerByEmail(monthlyCustomer.getEmail());
-        return monthlyCustomerRepository.save(monthlyCustomer);
+        MonthlyCustomer customer = getMonthlyCustomerByEmail(monthlyCustomer.getEmail());
+        customer.setName(monthlyCustomer.getName());
+        customer.setPassword(monthlyCustomer.getPassword());
+        return monthlyCustomerRepository.save(customer);
     }
 
     @Transactional
