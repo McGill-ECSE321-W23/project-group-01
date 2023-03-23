@@ -89,7 +89,7 @@ public class GuestPassService {
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot reserve spot for more than 12 hours");
         }
         // Check if spot is not occupied
-        if (!isSpotAvailable(floor, guestPass.getSpotNumber(),startTime, endTime)){
+        if (isSpotOccupied(floor.getFloorNumber(), guestPass.getSpotNumber(),startTime, endTime)){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Spot " + guestPass.getSpotNumber() + " is currently occupied");
         }
 
@@ -196,8 +196,23 @@ public class GuestPassService {
 
     }
 
-    public boolean isSpotAvailable(Floor floor, String spotNumber, Time startTime, Time endTime) {
-        List<GuestPass> occupiedGuestPasses = guestPassRepository.findByFloorAndSpotNumberAndTimePeriod(floor.getFloorNumber(), spotNumber, startTime, endTime);
-        return occupiedGuestPasses.isEmpty();
+//    public boolean isSpotAvailable(Floor floor, String spotNumber, Time startTime, Time endTime) {
+//        List<GuestPass> occupiedGuestPasses = guestPassRepository.findByFloorAndSpotNumberAndTimePeriod(floor.getFloorNumber(), spotNumber, startTime, endTime);
+//        return occupiedGuestPasses.isEmpty();
+//    }
+
+    public boolean isSpotOccupied(int floorNumber, String spotNumber, Time startTime, Time endTime) {
+        List<GuestPass> guestPasses = getGuestPassesByFloor(floorNumber); // get all guest passes for the floor
+        for (GuestPass guestPass : guestPasses) {
+            if (guestPass.getSpotNumber() == spotNumber){ // check if spot number matches
+                Time guestPassStartTime = guestPass.getStartTime();
+                Time guestPassEndTime = guestPass.getEndTime();
+                if (guestPassStartTime.before(endTime) && guestPassEndTime.after(startTime)) {
+                    // guest pass overlaps with the specified time range
+                    return true;
+                }
+            }
+        }
+        return false; // guest pass not found
     }
 }

@@ -24,8 +24,8 @@ public interface MonthlyPassRepository extends CrudRepository<MonthlyPass, Integ
 
     List<MonthlyPass> findMonthlyPassesByFloorAndSpotNumberAndTimePeriod(int floorNumber, String spotNumber, Date startDate, Date endDate);
 
-    // Get all the monthly passes on a floor with the same spot number within an interval of time
-    @Query("SELECT mp FROM MonthlyPass mp JOIN mp.floor f WHERE f.floorNumber = :floorNumber AND mp.spotNumber = :spotNumber AND ((mp.startDate >= :startDate AND mp.startDate < :endDate) OR (mp.endDate > :startDate AND mp.endDate <= :endDate))")
-    List<GuestPass> findByFloorAndSpotNumberAndTimePeriod(@Param("floorNumber") int floorNumber, @Param("spotNumber") String spotNumber, @Param("startTime") Time startTime, @Param("endTime") Time endTime);
+//    // Get all the monthly passes on a floor with the same spot number within an interval of time
+//    @Query("SELECT mp FROM MonthlyPass mp JOIN mp.floor f WHERE f.floorNumber = :floorNumber AND mp.spotNumber = :spotNumber AND ((mp.startDate >= :startDate AND mp.startDate < :endDate) OR (mp.endDate > :startDate AND mp.endDate <= :endDate))")
+//    List<GuestPass> findByFloorAndSpotNumberAndTimePeriod(@Param("floorNumber") int floorNumber, @Param("spotNumber") String spotNumber, @Param("startTime") Time startTime, @Param("endTime") Time endTime);
 }
 

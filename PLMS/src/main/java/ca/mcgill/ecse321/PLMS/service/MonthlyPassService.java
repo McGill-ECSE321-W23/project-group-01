@@ -86,7 +86,7 @@ public class MonthlyPassService {
         monthlyPass.setEndDate(endDate);
 
         // Check if the spot is not occupied
-        if (!isSpotAvailable(floor, monthlyPass.getSpotNumber(), monthlyPass.getStartDate(), endDate)) {
+        if (isSpotOccupied(floor.getFloorNumber(), monthlyPass.getSpotNumber(), monthlyPass.getStartDate(), endDate)) {
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Spot " + monthlyPass.getSpotNumber() + " is currently occupied");
         }
 
@@ -171,9 +171,24 @@ public class MonthlyPassService {
         return monthlyPassesByDate;
     }
 
-    public boolean isSpotAvailable(Floor floor, String spotNumber, Date startDate, Date endDate) {
-        List<MonthlyPass> occupiedMonthlyPasses = monthlyPassRepository.findMonthlyPassesByFloorAndSpotNumberAndTimePeriod(floor.getFloorNumber(), spotNumber, startDate, endDate);
-        return occupiedMonthlyPasses.isEmpty();
+//    public boolean isSpotAvailable(Floor floor, String spotNumber, Date startDate, Date endDate) {
+//        List<MonthlyPass> occupiedMonthlyPasses = monthlyPassRepository.findMonthlyPassesByFloorAndSpotNumberAndTimePeriod(floor.getFloorNumber(), spotNumber, startDate, endDate);
+//        return occupiedMonthlyPasses.isEmpty();
+//    }
+
+    public boolean isSpotOccupied(int floorNumber, String spotNumber, Date startDate, Date endDate) {
+        List<MonthlyPass> monthlyPasses = getMonthlyPassesByFloor(floorNumber); // get all monthly passes for the floor
+        for (MonthlyPass monthlyPass : monthlyPasses) {
+            if (monthlyPass.getSpotNumber().equals(spotNumber)){ // check if spot number matches
+                Date passStartDate = monthlyPass.getStartDate();
+                Date passEndDate = monthlyPass.getEndDate();
+                if (passStartDate.before(endDate) && passEndDate.after(startDate)) {
+                    // monthly pass overlaps with the specified date range
+                    return true;
+                }
+            }
+        }
+        return false; // no overlapping monthly passes found
     }
 
 }
