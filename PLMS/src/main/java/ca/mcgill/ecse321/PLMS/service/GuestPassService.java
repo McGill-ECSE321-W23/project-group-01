@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -82,6 +83,7 @@ public class GuestPassService {
         LocalDateTime localEndTime = localDateTime.plusMinutes(nrIncrements*15);
         Time endTime = Time.valueOf(localEndTime.toLocalTime());
         validateGuestPassHours(startTime, endTime, parkingLot.getOpeningTime(), parkingLot.getClosingTime());
+
         // Check if the spot is reserved for less than 12 hours
         if (nrIncrements > 12*4){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot reserve spot for more than 12 hours");
@@ -94,7 +96,8 @@ public class GuestPassService {
         // set start and end time
         guestPass.setStartTime(startTime);
         guestPass.setEndTime(endTime);
-
+        LocalDateTime localDate = LocalDateTime.now();
+        guestPass.setDate((Date) Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
         // Set fee and increment floor counter
         if (guestPass.getIsLarge()){
             guestPass.setFee(nrIncrements*parkingLot.getLargeSpotFee());
