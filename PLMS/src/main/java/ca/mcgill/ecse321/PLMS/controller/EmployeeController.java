@@ -38,7 +38,7 @@ public class EmployeeController {
 
     @GetMapping(value = {"/employee", "/employee/"})
     public ResponseEntity<EmployeeResponseDto> getEmployeeByEmail(@RequestParam String email) {
-        return new ResponseEntity<EmployeeResponseDto>(new EmployeeResponseDto(employeeService.getEmployeeByEmail(email)), HttpStatus.ACCEPTED);
+        return new ResponseEntity<EmployeeResponseDto>(new EmployeeResponseDto(employeeService.getEmployeeByEmail(email)), HttpStatus.OK);
     }
 
     /**
@@ -52,7 +52,8 @@ public class EmployeeController {
     {
         Employee Employee = EmployeeRequest.toModel(); // 1. You pass in a request, validates the constraints, creates an Employee if they pass
         Employee =  employeeService.createEmployeeAccount(Employee); // 2. You use the service class to check if it exists and save it
-        return new ResponseEntity<EmployeeResponseDto>(new EmployeeResponseDto(Employee), HttpStatus.OK); //3. You mask the model by returning a Response
+        EmployeeResponseDto responseBody = new EmployeeResponseDto(Employee);
+        return new ResponseEntity<EmployeeResponseDto>(responseBody, HttpStatus.CREATED); //3. You mask the model by returning a Response
     }
 
 

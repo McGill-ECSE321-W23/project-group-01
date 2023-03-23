@@ -27,67 +27,67 @@ import jakarta.validation.Valid;
 @RestController
 public class MonthlyPassController {
 
-    @Autowired
-    private MonthlyPassService monthlyPassService;
-
-    /**
-     * Gets all monthly passes.
-     *
-     * @return MonthlyPassResponseDto of all monthly passes.
-     */
-    @GetMapping("/pass")
-    public Iterable<MonthlyPassResponseDto> getAllMonthlyPasses(){
-        return StreamSupport.stream(monthlypassService.getAllMonthlyPasses().spliterator(), false).map(f -> new
-        MonthlyPassResponseDto(f)).collect(Collectors.toList());
-    }
-
-    /**
-     * Gets a monthlypass by the monthlypass id
-     *
-     * @return monthlypass with id id
-     */
-    @GetMapping("/monthlypass/{id}")
-    public ResponseEntity<MonthlyPassResponseDto> getPassById(@PathVariable int id){
-    MonthlyPass monthlyPass = monthlyPassService.getMonthlyPassById(id);
-    MonthlyPassResponseDto responseBody = new MonthlyPassResponseDto(monthlyPass);
-    return new ResponseEntity<MonthlyPassResponseDto>(responseBody, HttpStatus.OK);
-    }
-
-    /**
-     * Gets all monthly passes at the floor floorNumber (inactive passes filtered out in service layer)
-     *
-     * @return MonthlyPassResponseDto of monthly passes with floor floorNumber
-     */
-    @GetMapping("/monthlypass/floor/{floorNumber}")
-    public Iterable<MonthlyPassResponseDto> getMonthlyPassesByFloor(){
-        return StreamSupport.stream(monthlyPassService.getMonthlyPassesByFloor().spliterator(), false).map(f -> new
-        MonthlyPassResponseDto(f)).collect(Collectors.toList());
-    }
-
-    /**
-     * Gets all monthly passes by monthly customer
-     *
-     * @return MonthlyPassResponseDto of monthly passes of monthly customer with email email
-     */
-    @GetMapping("/monthlypass/customer/{email}")
-    public Iterable<MonthlyPassResponseDto> getMonthlyPassesByMonthlyCustomer(){
-        return StreamSupport.stream(monthlyPassService.getMonthlyPassesByMonthlyCustomer().spliterator(), false).map(f -> new
-        MonthlyPassResponseDto(f)).collect(Collectors.toList());
-    }
-
-    /**
-     * Creates a monthly pass.
-     *
-     * @return MonthlyPassResponseDto of the created monthly pass
-     */
-    @PostMapping("/monthlypass")
-    public ResponseEntity<MonthlyPassResponseDto> createMonthlyPass(@Valid @RequestBody MonthlyPassRequestDto monthlyPassRequestDto){
-        MonthlyPass monthlyPass = monthlyPassRequestDto.toModel();
-        monthlyPass = monthlyPassService.createMonthlyPass(monthlyPass);
-        MonthlyPassResponseDto responseBody = new MonthlyPassResponseDto(monthlyPass);
-        return new ResponseEntity<MonthlyPassResponseDto>(responseBody, HttpStatus.CREATED);
-
-    }
+//    @Autowired
+//    private MonthlyPassService monthlyPassService;
+//
+//    /**
+//     * Gets all monthly passes.
+//     *
+//     * @return MonthlyPassResponseDto of all monthly passes.
+//     */
+//    @GetMapping("/pass")
+//    public Iterable<MonthlyPassResponseDto> getAllMonthlyPasses(){
+//        return StreamSupport.stream(monthlypassService.getAllMonthlyPasses().spliterator(), false).map(f -> new
+//        MonthlyPassResponseDto(f)).collect(Collectors.toList());
+//    }
+//
+//    /**
+//     * Gets a monthlypass by the monthlypass id
+//     *
+//     * @return monthlypass with id id
+//     */
+//    @GetMapping("/monthlypass/{id}")
+//    public ResponseEntity<MonthlyPassResponseDto> getPassById(@PathVariable int id){
+//    MonthlyPass monthlyPass = monthlyPassService.getMonthlyPassById(id);
+//    MonthlyPassResponseDto responseBody = new MonthlyPassResponseDto(monthlyPass);
+//    return new ResponseEntity<MonthlyPassResponseDto>(responseBody, HttpStatus.OK);
+//    }
+//
+//    /**
+//     * Gets all monthly passes at the floor floorNumber (inactive passes filtered out in service layer)
+//     *
+//     * @return MonthlyPassResponseDto of monthly passes with floor floorNumber
+//     */
+//    @GetMapping("/monthlypass/floor/{floorNumber}")
+//    public Iterable<MonthlyPassResponseDto> getMonthlyPassesByFloor(){
+//        return StreamSupport.stream(monthlyPassService.getMonthlyPassesByFloor().spliterator(), false).map(f -> new
+//        MonthlyPassResponseDto(f)).collect(Collectors.toList());
+//    }
+//
+//    /**
+//     * Gets all monthly passes by monthly customer
+//     *
+//     * @return MonthlyPassResponseDto of monthly passes of monthly customer with email email
+//     */
+//    @GetMapping("/monthlypass/customer/{email}")
+//    public Iterable<MonthlyPassResponseDto> getMonthlyPassesByMonthlyCustomer(){
+//        return StreamSupport.stream(monthlyPassService.getMonthlyPassesByMonthlyCustomer().spliterator(), false).map(f -> new
+//        MonthlyPassResponseDto(f)).collect(Collectors.toList());
+//    }
+//
+//    /**
+//     * Creates a monthly pass.
+//     *
+//     * @return MonthlyPassResponseDto of the created monthly pass
+//     */
+//    @PostMapping("/monthlypass")
+//    public ResponseEntity<MonthlyPassResponseDto> createMonthlyPass(@Valid @RequestBody MonthlyPassRequestDto monthlyPassRequestDto){
+//        MonthlyPass monthlyPass = monthlyPassRequestDto.toModel();
+//        monthlyPass = monthlyPassService.createMonthlyPass(monthlyPass);
+//        MonthlyPassResponseDto responseBody = new MonthlyPassResponseDto(monthlyPass);
+//        return new ResponseEntity<MonthlyPassResponseDto>(responseBody, HttpStatus.CREATED);
+//
+//    }
 
 
 }
