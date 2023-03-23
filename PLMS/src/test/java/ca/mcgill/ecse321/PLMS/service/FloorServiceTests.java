@@ -36,16 +36,11 @@ public class FloorServiceTests {
     @InjectMocks
     private FloorService floorService;
 
-    @BeforeEach
-    @AfterEach
-    public void clearDataBase(){
-        floorRepository.deleteAll();
-
-        parkingLotRepository.deleteAll();
-    }
-
     
     @Test
+    /**
+     * test getting a valid floor from our database
+     */
     public void testGetValidFloor(){
       // set up a mock floor to be used by floor repo
       final int floorNumber = 1;
@@ -70,6 +65,9 @@ public class FloorServiceTests {
     }
 
     @Test
+    /**
+     * test getting a floor that is not in the database
+     */
     public void testGetInvalidFloor(){
       final int invalidFloorNumber = 42;
 		  when(floorRepository.findFloorByFloorNumber(invalidFloorNumber)).thenReturn(null);
@@ -81,6 +79,22 @@ public class FloorServiceTests {
     }
 
     @Test
+    /**
+     * Test getting the floors when there are none in the database
+     */
+    public void testGetAllInvalidFloors(){
+      ArrayList<Floor> floors = new ArrayList<Floor>();
+      when(floorRepository.findAll()).thenReturn((Iterable<Floor>)floors);
+      PLMSException e = assertThrows(PLMSException.class,
+				() -> floorService.getAllFloors());
+		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+		assertEquals("There are no floors in the system", e.getMessage());
+    }
+
+    @Test
+    /**
+     * Test to create a valid floor object in the database
+     */
     public void testCreateValidFloor(){
       // set up a mock floor to be used by floor repo
       final int floorNumber = 1;
@@ -133,6 +147,10 @@ public class FloorServiceTests {
     }
 
     @Test
+    /**
+     * Test to create a floor with a duplicate floor number. Our system
+     * should not allow the owner to create duplicate floor numbers
+     */
     public void testCreateDuplicateFloor(){
       // set up a mock floor to be used by floor repo
       final int floorNumber = 1;
@@ -158,6 +176,10 @@ public class FloorServiceTests {
     }
 
     @Test
+    /**
+     * Floors cannot be in the database if the base parking lot object
+     * has not yet been created.
+     */
     public void testCreateFloorWithoutParkingLot(){
       // set up a mock floor to be used by floor repo
       final int floorNumber = 1;
@@ -176,6 +198,9 @@ public class FloorServiceTests {
     }
 
     @Test
+    /**
+     * Test to get multiple floors all at once from the service class
+     */
     public void testGetAllFloors(){
       final int floorNumber = 1;
 		  final int smallSpotCapacity = 70;
@@ -217,7 +242,7 @@ public class FloorServiceTests {
       floors.add(floor2);
 
       // perform get all floors
-      when(floorService.getAllFloors()).thenReturn(floors);
+      when(floorRepository.findAll()).thenReturn(floors);
       Iterable<Floor> output = floorService.getAllFloors();
       Floor floorOutput1 =  floors.iterator().next();
       Floor floorOutput2 = floors.iterator().next();
@@ -250,6 +275,9 @@ public class FloorServiceTests {
 
 
     @Test
+    /**
+     * Test to update a floor in our database
+     */
     public void updateValidFloor(){
       // create mock floors
       final int floorNumber = 1;
@@ -283,6 +311,9 @@ public class FloorServiceTests {
     }
 
     @Test
+    /**
+     * Attempt to update a floor that doesn't already exist in the DB.
+     */
     public void testInvalidUpdate(){
       // create mock floors, with invalid small spot counter
       final int floorNumber = 1;

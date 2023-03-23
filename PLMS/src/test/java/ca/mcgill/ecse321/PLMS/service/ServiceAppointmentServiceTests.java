@@ -46,6 +46,9 @@ public class ServiceAppointmentServiceTests {
   private ServiceAppointmentService serviceAppointmentService;
 
   @Test
+  /**
+   * Test getting all the appointments from the database
+   */
   public void testGetAllAppointments(){
     //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
     String serviceName = "30 min Car Wash";
@@ -67,6 +70,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Test getting an appointment that in the database, based on its id.
+   */
   public void testGetValidAppointment(){
     // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
     int id = 4;
@@ -89,6 +95,9 @@ public class ServiceAppointmentServiceTests {
 
 
   @Test
+  /**
+   * Test getting an appointment that doesnt exist in the DB.
+   */
   public void testGetInvalidAppointment(){
     // random id for testing
     int id = 4;
@@ -100,6 +109,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Test getting all the appointments associated with an account.
+   */
   public void testCreateValidAppointmentWithAccounts(){
     // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
     String serviceName = "30 min Car Wash";
@@ -156,6 +168,24 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Test getting appointments when no appointments are in the DB.
+   */
+  public void testGetAllInvalidServiceAppointments(){
+    ArrayList<ServiceAppointment> serviceAppts = new ArrayList<ServiceAppointment>();
+    when(serviceAppointmentRepository.findAll()).thenReturn((Iterable<ServiceAppointment>)serviceAppts);
+    PLMSException e = assertThrows(PLMSException.class,
+      () -> serviceAppointmentService.getAllServiceAppointments());
+    assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+    assertEquals("There are no service appointments in the system", e.getMessage());
+  }
+
+
+  @Test
+  /**
+   * Test creating appointments when person booking doesn't have an account,
+   * as well as booking an appointment when there's no employees.
+   */
   public void testCreateValidAppointmentWithoutAccounts(){
     // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
     String serviceName = "30 min Car Wash";
@@ -194,6 +224,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * We cannot create a service appointment before the parking lot has been made.
+   */
   public void testCreateAppointmentBeforeLot(){
     // there is no parking lot, so we cannot book an appointment
     when(parkingLotRepository.findAll()).thenReturn(new ArrayList<ParkingLot>());
@@ -212,7 +245,10 @@ public class ServiceAppointmentServiceTests {
 		assertEquals("Cannot book appointment since the parking lot has not been created yet. Please try again at a later date.", e.getMessage());
   }
 
-  @Test 
+  @Test
+  /**
+   * Test deleting an appointment that is not in the database  
+   */ 
   public void testInvalidDeletion(){
     int id = 4;
     when(serviceAppointmentRepository.findById(id)).thenReturn(null);
@@ -223,6 +259,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Test updating an appointment that's in the database
+   */
   public void testValidUpdate(){
     // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
     String serviceName = "30 min Car Wash";
@@ -261,6 +300,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Test get all appointments that are scheduled for a day.
+   */
   public void testGetAllAppointmentsOnDate(){
     String serviceName = "30 min Car Wash";
     int serviceCost = 30;
@@ -302,6 +344,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Test getting appointments on a day for which there are no appointments scheduled
+   */
   public void testGetAllAppointmentsOnInvalidDate(){
     Date date = Date.valueOf("2023-02-21");
     ArrayList<ServiceAppointment> testData = new ArrayList<ServiceAppointment>();
@@ -313,6 +358,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Test getting all service appointments that are scheduled for an employee's account.
+   */
   public void testGetAllAppointmentsByEmployee(){
     // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
     String serviceName = "30 min Car Wash";
@@ -345,6 +393,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Test getting all the appointments scheduled by a customer's account.
+   */
   public void testGetAllAppointmentsByMonthlyCustomer(){
     // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
     String serviceName = "30 min Car Wash";
@@ -375,6 +426,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Trying to schedule on an invalid time (cannot book before the lot has opened)
+   */
   public void testCreateInvalidStartTime1(){
     // test for creating appointment before lot opens
     String serviceName = "30 min Car Wash";
@@ -404,6 +458,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Trying to schedule on an invalid time (cannot book after the lot has closed)
+   */
   public void testCreateInvalidStartTime2(){
     // test for creating appointment before lot opens
     String serviceName = "30 min Car Wash";
@@ -433,6 +490,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Trying to schedule on an invalid time (having the end time after the lot closes)
+   */
   public void testCreateInvalidEndTime(){
     String serviceName = "2 hour Car Wash";
     int serviceCost = 30;
