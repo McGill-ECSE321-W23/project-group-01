@@ -84,12 +84,22 @@ public class GuestPassController {
      * @return GuestPassResponseDto of the created guest pass
      */
     @PostMapping("/guestPass")
-    public ResponseEntity<GuestPassResponseDto> createGuestMonthlyPass(@Valid @RequestBody GuestPassRequestDto guestPassRequestDto){
+    public ResponseEntity<GuestPassResponseDto> createGuestPass(@Valid @RequestBody GuestPassRequestDto guestPassRequestDto){
         GuestPass guestPass = guestPassRequestDto.toModel();
-        guestPass = guestPassService.createGuestPass(guestPass);
+        int floorNumber = guestPassRequestDto.getFloorNumber();
+        int nrIncrements = guestPassRequestDto.getNumberOfFifteenMinuteIncrements();
+        guestPass = guestPassService.createGuestPass(guestPass, floorNumber, nrIncrements);
         GuestPassResponseDto responseBody = new GuestPassResponseDto(guestPass);
         return new ResponseEntity<GuestPassResponseDto>(responseBody, HttpStatus.CREATED);
 
+    }
+
+    /**
+     * Deletes a guest pass
+     */
+    @DeleteMapping("/guestPass/{id}")
+    public void deleteFloor(@PathVariable int id){
+        guestPassService.deleteGuestPassById(id);
     }
 
   
