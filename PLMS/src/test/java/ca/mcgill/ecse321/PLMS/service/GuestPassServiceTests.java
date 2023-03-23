@@ -81,7 +81,7 @@ public class GuestPassServiceTests {
     {
         final int id = 42;
         when(guestPassRepo.findGuestPassById(id)).thenReturn(null);
-        PLMSException e = assertThrows(PLMSException.class, () -> guestPassService.deleteGuestPassByGuestPassId(id));
+        PLMSException e = assertThrows(PLMSException.class, () -> guestPassService.deleteGuestPassById(id));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
         assertEquals(e.getMessage(), "Guest pass with id: " + id + " does not exist.");
     }
@@ -108,7 +108,7 @@ public class GuestPassServiceTests {
       guestPass.setEndTime(endTime);
         when(guestPassRepo.findGuestPassById(id)).thenReturn(guestPass);
 
-        guestPassService.deleteGuestPassByGuestPassId(id);
+        guestPassService.deleteGuestPassById(id);
 
     }
 
