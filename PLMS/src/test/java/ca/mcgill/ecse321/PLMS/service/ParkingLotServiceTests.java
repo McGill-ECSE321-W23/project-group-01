@@ -56,14 +56,6 @@ public class ParkingLotServiceTests {
 
     @Test
     public void testGetInvalidParkingLot(){
-        // set up a mock parkingLot to be used by parkingLot repo
-        final Time openingTime = Time.valueOf("6:00:00");
-        final Time closingTime = Time.valueOf("22:00:00");
-        final double largeSpotFee = 25;
-        final double smallSpotFee = 3;
-        final double smallMonthlyFlatFee = 2;
-        final double largeMonthlyFlatFee = 2;
-        ParkingLot parkingLot = new ParkingLot(openingTime, closingTime, largeSpotFee, smallSpotFee, smallMonthlyFlatFee, largeMonthlyFlatFee);
         PLMSException e = assertThrows(PLMSException.class, () -> parkingLotService.getParkingLot());
         assertEquals(e.getMessage(), "Parking Lot not found");
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);

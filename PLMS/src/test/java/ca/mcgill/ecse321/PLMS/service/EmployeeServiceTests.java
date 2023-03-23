@@ -3,8 +3,6 @@ package ca.mcgill.ecse321.PLMS.service;
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Employee;
 import ca.mcgill.ecse321.PLMS.repository.EmployeeRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -60,7 +58,7 @@ public class EmployeeServiceTests {
         ArrayList<Employee> customers = new ArrayList<>();
         when(employeeRepository.findAll()).thenReturn(customers);
         PLMSException e = assertThrows(PLMSException.class, () -> employeeService.getAllEmployees());
-        assertEquals(e.getStatus(), HttpStatus.NO_CONTENT);
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
         assertEquals(e.getMessage(),"There are no employees in the system" );
     }
 
@@ -87,11 +85,6 @@ public class EmployeeServiceTests {
     public void testGetEmployeeByInvalidEmail()
     {
         final String email = "jane.doe@mcgill.ca";
-        final String password = "JohnDoe2002";
-        final String name = "John Doe";
-        final double wage = 12.0;
-        final String description = "Parking Cashier";
-        final Employee john = new Employee(email, password, name, description, wage);
 
         when(employeeRepository.findEmployeeByEmail(email)).thenReturn(null);
 

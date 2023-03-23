@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -143,15 +144,21 @@ public class ServiceAppointmentServiceTests {
     double largeSpotFee = 4.5;
     double smallSpotMonthlyFlatFee = 150;
     double largeSpotMonthlyFlatFee = 150;
-    int id = 10;
     ParkingLot parkingLot = new ParkingLot(openingTime, closingTime, smallSpotFee, largeSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);
     //--------------------------------//
 
     
     // The parking lot repo should return a single parking lot
-    when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
-    when(employeeRepository.findAll()).thenReturn(Collections.singletonList(jeff));
-    when(monthlyCustomerRepository.findAll()).thenReturn(Collections.singletonList(pat));
+    ArrayList<ParkingLot> lot = new ArrayList<>();
+    lot.add(parkingLot);
+    ArrayList<Employee> employees = new ArrayList<>();
+    employees.add(jeff);
+    ArrayList<MonthlyCustomer> customers = new ArrayList<>();
+    customers.add(pat);
+    
+    when(parkingLotRepository.findAll()).thenReturn(lot);
+    when(employeeRepository.findAll()).thenReturn(employees);
+    when(monthlyCustomerRepository.findAll()).thenReturn(customers);
     ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
     appt.setEmployee(jeff);
     appt.setCustomer(pat);
@@ -205,7 +212,6 @@ public class ServiceAppointmentServiceTests {
     double largeSpotFee = 4.5;
     double smallSpotMonthlyFlatFee = 150;
     double largeSpotMonthlyFlatFee = 150;
-    int id = 10;
     ParkingLot parkingLot = new ParkingLot(openingTime, closingTime, smallSpotFee, largeSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);
     //--------------------------------//
 
@@ -324,7 +330,6 @@ public class ServiceAppointmentServiceTests {
     double largeSpotFee = 4.5;
     double smallSpotMonthlyFlatFee = 150;
     double largeSpotMonthlyFlatFee = 150;
-    int id = 10;
     ParkingLot parkingLot = new ParkingLot(openingTime, closingTime, smallSpotFee, largeSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);
     // The parking lot repo should return a single parking lot
     when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
@@ -447,7 +452,6 @@ public class ServiceAppointmentServiceTests {
     double largeSpotFee = 4.5;
     double smallSpotMonthlyFlatFee = 150;
     double largeSpotMonthlyFlatFee = 150;
-    int id = 10;
     ParkingLot parkingLot = new ParkingLot(openingTime, closingTime, smallSpotFee, largeSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);
     // The parking lot repo should return a single parking lot
     when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
@@ -479,7 +483,6 @@ public class ServiceAppointmentServiceTests {
     double largeSpotFee = 4.5;
     double smallSpotMonthlyFlatFee = 150;
     double largeSpotMonthlyFlatFee = 150;
-    int id = 10;
     ParkingLot parkingLot = new ParkingLot(openingTime, closingTime, smallSpotFee, largeSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);
     // The parking lot repo should return a single parking lot
     when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
@@ -510,7 +513,6 @@ public class ServiceAppointmentServiceTests {
     double largeSpotFee = 4.5;
     double smallSpotMonthlyFlatFee = 150;
     double largeSpotMonthlyFlatFee = 150;
-    int id = 10;
     ParkingLot parkingLot = new ParkingLot(openingTime, closingTime, smallSpotFee, largeSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);
     // The parking lot repo should return a single parking lot
     when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
@@ -518,5 +520,49 @@ public class ServiceAppointmentServiceTests {
 				() -> serviceAppointmentService.createServiceAppointment(appt));
 		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
 		assertEquals("Cannot have an appointment ending after the lot closes.", e.getMessage());
+  }
+
+  @Test
+  public void testCreateWithSchedulingConflict(){
+    String serviceName = "30 min Car Wash";
+    int serviceCost = 30;
+    double serviceLengthInHours = 0.5;
+    Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
+    Date firstDate = Date.valueOf("2023-02-21");
+    Date secondDate = Date.valueOf("2023-02-21");
+    Time firstStartTime = Time.valueOf("17:00:00");
+    Time firstEndTime = Time.valueOf("17:30:00");
+    Time secondStartTime = Time.valueOf("17:15:00");
+    Time secondEndTime = Time.valueOf("17:45:00");
+    String eEmail = "jeff.jeff@jeff.com";
+    String password = "PasswordSuperSecured12345";
+    String name = "Jeff";
+    String jobDescription = "Porter or something like that, im not sure how to describe that job but this is a job description";
+    int hourlyWage = 15;
+    Employee jeff = new Employee(eEmail, password, name, jobDescription, hourlyWage);
+    ArrayList<Employee> employees = new ArrayList<>();
+    employees.add(jeff);
+    when(employeeRepository.findAll()).thenReturn(employees);
+    ServiceAppointment appt = new ServiceAppointment(firstDate, firstStartTime, firstEndTime, service);
+    appt.setEmployee(jeff);
+    // test the time calculation
+    ServiceAppointment appt2 = new ServiceAppointment(secondDate, secondStartTime, secondEndTime, service);
+
+    ArrayList<ServiceAppointment> appts = new ArrayList<>();
+    appts.add(appt);
+    appts.add(appt2);
+    Time openingTime = Time.valueOf("6:00:00");
+    Time closingTime = Time.valueOf("22:00:00");
+    double smallSpotFee = 3.5;
+    double largeSpotFee = 4.5;
+    double smallSpotMonthlyFlatFee = 150;
+    double largeSpotMonthlyFlatFee = 150;
+    ParkingLot parkingLot = new ParkingLot(openingTime, closingTime, smallSpotFee, largeSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);
+    // The parking lot repo should return a single parking lot
+    when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
+    when(serviceAppointmentRepository.findAll()).thenReturn(appts);
+    when(serviceAppointmentRepository.save(appt2)).thenReturn(appt2);
+    ServiceAppointment output = serviceAppointmentService.createServiceAppointment(appt2);
+    assertNull(output.getEmployee());
   }
 }

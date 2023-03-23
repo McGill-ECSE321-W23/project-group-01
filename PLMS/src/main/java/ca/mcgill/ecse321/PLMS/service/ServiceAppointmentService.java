@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
@@ -61,7 +62,7 @@ public class ServiceAppointmentService {
     validateAppointmentHours(serviceAppointment.getStartTime(), serviceAppointment.getEndTime(), lot.getOpeningTime(), lot.getClosingTime());
 
     // we randomly assign employees, if there are any.
-    serviceAppointment.setEmployee(findEmployeeToAssignToAppointment());
+    serviceAppointment.setEmployee(findEmployeeToAssignToAppointment(serviceAppointment));
 
     ServiceAppointment appointment = serviceAppointmentRepo.save(serviceAppointment);
     return appointment;
@@ -89,7 +90,7 @@ public class ServiceAppointmentService {
   public Iterable<ServiceAppointment> getAllServiceAppointments(){
     ArrayList<ServiceAppointment> arrayList = (ArrayList<ServiceAppointment>) serviceAppointmentRepo.findAll();
         if (arrayList.isEmpty())
-            throw new PLMSException(HttpStatus.NO_CONTENT, "There are no service appointments in the system");
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no service appointments in the system");
     return serviceAppointmentRepo.findAll();
   }
 
@@ -232,7 +233,7 @@ public class ServiceAppointmentService {
     
 
     // we randomly assign employees, if there are any.
-    updatedAppointment.setEmployee(findEmployeeToAssignToAppointment());
+    updatedAppointment.setEmployee(findEmployeeToAssignToAppointment(updatedAppointment));
     ServiceAppointment appointment = serviceAppointmentRepo.save(updatedAppointment);
     return appointment;
   }
@@ -251,20 +252,41 @@ public class ServiceAppointmentService {
     if (employees.size() == 0){
       return null;
     }
-
+    ArrayList<ServiceAppointment> allAppts = (ArrayList<ServiceAppointment>) serviceAppointmentRepo.findAll();
     // iterate over employees to find the first employee that has no scheduling conflict for the current appointment
     for (Employee employee : employees){
       // get all the appointments for the current employee
-      ArrayList<ServiceAppointment> appointments = (ArrayList<ServiceAppointment>)getAllServiceAppointmentsByEmployee(employee.getEmail());
-      boolean hasConflictingAppointment = false;
-      for(ServiceAppointment appt : appointments){
-
+      ArrayList<ServiceAppointment> appointmentsForEmployee = new ArrayList<>();
+      for(ServiceAppointment appt : allAppts){
+        if(appt.getEmployee() != null && appt.getEmployee().getEmail().equals(employee.getEmail())) appointmentsForEmployee.add(appt);
       }
+      // now check for scheduling conflicts in all of their appointments
+      boolean hasConflictingAppointment = false;
+      for(ServiceAppointment appt : appointmentsForEmployee){
+        hasConflictingAppointment = isConflicting(appointment, appt);
+      }
+      if (!hasConflictingAppointment) return employee;
 
     }
     
     return null;
   }
+
+  /**
+   * Function to check if two appointments have time overlap. Used for scheduling employees.
+   * @param appt1
+   * @param appt2
+   * @return
+   */
+  public boolean isConflicting(ServiceAppointment appt1, ServiceAppointment appt2) {
+    LocalDateTime start1 = LocalDateTime.of(appt1.getDate().toLocalDate(), appt1.getStartTime().toLocalTime());
+    LocalDateTime end1 = LocalDateTime.of(appt1.getDate().toLocalDate(), appt1.getEndTime().toLocalTime());
+
+    LocalDateTime start2 = LocalDateTime.of(appt1.getDate().toLocalDate(), appt1.getStartTime().toLocalTime());
+    LocalDateTime end2 = LocalDateTime.of(appt1.getDate().toLocalDate(), appt1.getEndTime().toLocalTime());
+    
+    return start1.isBefore(end2) && end1.isAfter(start1) || (start2.isBefore(end1) && end2.isAfter(start2));
+}
   /**
    * Helper method to find the single parking lot object
    * stored in the database. Throws exception if it isn't there.
