@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import java.util.ArrayList;
 
-import ca.mcgill.ecse321.PLMS.model.Floor;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +110,9 @@ public class ServiceService {
 	 */
     @Transactional
     public Iterable<Service> getAllServices(){
+        ArrayList<Service> arrayList = (ArrayList<Service>) serviceRepository.findAll();
+        if (arrayList.isEmpty())
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no services in the system");
         return serviceRepository.findAll();
     }
 
