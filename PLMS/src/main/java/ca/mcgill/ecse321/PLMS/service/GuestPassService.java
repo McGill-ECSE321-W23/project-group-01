@@ -82,7 +82,10 @@ public class GuestPassService {
         LocalDateTime localEndTime = localDateTime.plusMinutes(nrIncrements*15);
         Time endTime = Time.valueOf(localEndTime.toLocalTime());
         validateGuestPassHours(startTime, endTime, parkingLot.getOpeningTime(), parkingLot.getClosingTime());
-
+        // Check if the spot is reserved for less than 12 hours
+        if (nrIncrements > 12*4){
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot reserve spot for more than 12 hours");
+        }
         // Check if spot is not occupied
         if (!isSpotAvailable(floor, guestPass.getSpotNumber(),startTime, endTime)){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Spot " + guestPass.getSpotNumber() + " is currently occupied");
