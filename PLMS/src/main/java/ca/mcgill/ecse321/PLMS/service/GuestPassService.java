@@ -10,16 +10,18 @@ import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.GuestPass;
+import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
 import ca.mcgill.ecse321.PLMS.repository.GuestPassRepository;
-
+import ca.mcgill.ecse321.PLMS.repository.MonthlyPassRepository;
 import jakarta.transaction.Transactional;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -27,6 +29,9 @@ public class GuestPassService {
 
     @Autowired
     GuestPassRepository guestPassRepository;
+
+    @Autowired
+    MonthlyPassRepository monthlyPassRepository;
 
     @Autowired
     FloorRepository floorRepository;
@@ -60,16 +65,11 @@ public class GuestPassService {
     @Transactional
     public GuestPass createGuestPass(GuestPass guestPass, int floorNumber, int nrIncrements) {
         //checks on the new object are made in the DTO
-        //check if the guest pass already exists
-        if (guestPassRepository.findGuestPassById(guestPass.getId()) != null) {
-            throw new PLMSException(HttpStatus.BAD_REQUEST, "Guest pass with id: " + guestPass.getId() + " already exists.");
-        }
         // Get the associated floor from floor number inputted into guestPass
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
         if (floor == null) {
             throw new PLMSException(HttpStatus.NOT_FOUND, "The floor with floor number " + floorNumber + " does not exist.");
         }
-//        ParkingLot parkingLot = parkingLotRepository.findParkingLotById(floor.getParkingLot().getId());
         ParkingLot parkingLot = floor.getParkingLot();
 
         //Check if floor is a member only
@@ -98,6 +98,12 @@ public class GuestPassService {
         guestPass.setEndTime(endTime);
         LocalDateTime localDate = LocalDateTime.now();
         guestPass.setDate((Date) Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
+
+        // check to see if we've exceed the floor capacity by booking this spot.
+        if(hasExceededCapacity(floorNumber, guestPass.getIsLarge())){
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "All spots of this size on floor " + floorNumber +" are occupied.");
+        }
+
         // Set fee and increment floor counter
         if (guestPass.getIsLarge()){
             guestPass.setFee(nrIncrements*parkingLot.getLargeSpotFee());
@@ -111,6 +117,56 @@ public class GuestPassService {
 
         // Returned created object
         return guestPass;
+    }
+
+    /**
+     * Helper method to check if we have exceeded capacity on a floor based
+     * on the number of guest passes and monthly passes on that floor
+     * @param floorNumber - number of the floor
+     * @param isLarge - size of the spot
+     * @return - true if we've reached capacity for those spots, false otherwise
+     */
+    public boolean hasExceededCapacity(int floorNumber, boolean isLarge){
+        // get all the passes
+        ArrayList<GuestPass> guestPasses = (ArrayList<GuestPass>) guestPassRepository.findAll();
+        ArrayList<MonthlyPass> monthlyPasses = (ArrayList<MonthlyPass>) monthlyPassRepository.findAll();
+        // number of passes on the floor
+        int numberOfPasses = 0;
+        // filter through the guest passes to find passes that are of the same size and same floor number
+        for (GuestPass pass : guestPasses){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge){
+                numberOfPasses += 1;
+            }
+        }
+
+        for (MonthlyPass pass : monthlyPasses){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge){
+                numberOfPasses += 1;
+            }
+        }
+
+        Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
+        if(isLarge){
+            return numberOfPasses >= floor.getLargeSpotCapacity();
+        }else{
+            return numberOfPasses >= floor.getSmallSpotCapacity();
+        }
+    }
+
+    /**
+     * Function for checking if a pass is active right at this point in time, given the start and end times
+     * and date.
+     * @param date - date of the pass
+     * @param startTime - start time of the pass
+     * @param endTime - end time of the pass
+     * @return true if the pass is currently active
+     */
+    public static boolean isActiveRightNow(LocalDate date, LocalTime startTime, LocalTime endTime) {
+        LocalDateTime start = LocalDateTime.of(date, startTime);
+        LocalDateTime end = LocalDateTime.of(date, endTime);
+        LocalDateTime now = LocalDateTime.now();
+        
+        return now.isAfter(start) && now.isBefore(end);
     }
 
     /**
@@ -196,18 +252,14 @@ public class GuestPassService {
 
     }
 
-//    public boolean isSpotAvailable(Floor floor, String spotNumber, Time startTime, Time endTime) {
-//        List<GuestPass> occupiedGuestPasses = guestPassRepository.findByFloorAndSpotNumberAndTimePeriod(floor.getFloorNumber(), spotNumber, startTime, endTime);
-//        return occupiedGuestPasses.isEmpty();
-//    }
 
     public boolean isSpotOccupied(int floorNumber, String spotNumber, Time startTime, Time endTime) {
         List<GuestPass> guestPasses = getGuestPassesByFloor(floorNumber); // get all guest passes for the floor
         for (GuestPass guestPass : guestPasses) {
-            if (guestPass.getSpotNumber() == spotNumber){ // check if spot number matches
+            if (guestPass.getSpotNumber().equals(spotNumber)){ // check if spot number matches
                 Time guestPassStartTime = guestPass.getStartTime();
                 Time guestPassEndTime = guestPass.getEndTime();
-                if (guestPassStartTime.before(endTime) && guestPassEndTime.after(startTime)) {
+                if (guestPassStartTime.before(endTime) && guestPassEndTime.after(startTime) || (startTime.before(guestPassEndTime) && endTime.after(guestPassStartTime))) {
                     // guest pass overlaps with the specified time range
                     return true;
                 }

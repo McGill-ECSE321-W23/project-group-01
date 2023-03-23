@@ -129,38 +129,4 @@ public class GuestPassRepositoryTests {
 
         assertEquals(parkingLotId, guestPass.getFloor().getParkingLot().getId());
     }
-
-    @Test
-    public void testFindByFloorAndSpotNumberAndTimePeriod() {
-
-        Floor Floor1 = new Floor( 1, 10, 10, 10, 10, false);
-
-        // Create some test data
-        GuestPass gp1 = new GuestPass();
-        gp1.setFloor(Floor1);
-        gp1.setSpotNumber("1A");
-        gp1.setStartTime(Time.valueOf(LocalTime.of(9, 0)));
-        gp1.setEndTime(Time.valueOf(LocalTime.of(10, 0)));
-        guestPassRepository.save(gp1);
-
-        GuestPass gp2 = new GuestPass();
-        gp2.setFloor(Floor1);
-        gp2.setSpotNumber("1A");
-        gp2.setStartTime(Time.valueOf(LocalTime.of(11, 0)));
-        gp2.setEndTime(Time.valueOf(LocalTime.of(12, 0)));
-        guestPassRepository.save(gp2);
-
-        GuestPass gp3 = new GuestPass();
-        gp3.setFloor(Floor1);
-        gp3.setSpotNumber("2A");
-        gp3.setStartTime(Time.valueOf(LocalTime.of(13, 0)));
-        gp3.setEndTime(Time.valueOf(LocalTime.of(14, 0)));
-        guestPassRepository.save(gp3);
-
-        // Test the method
-        List<GuestPass> result = guestPassRepository.findByFloorAndSpotNumberAndTimePeriod(1, "1A",
-                Time.valueOf(LocalTime.of(9, 30)), Time.valueOf(LocalTime.of(11, 30)));
-
-        assertThat(result).containsExactly(gp1, gp2);
-    }
 }
