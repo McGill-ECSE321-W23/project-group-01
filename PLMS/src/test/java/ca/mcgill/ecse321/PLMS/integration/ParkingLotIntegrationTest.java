@@ -182,7 +182,7 @@ public class ParkingLotIntegrationTest {
         assertContains("Closing time must not be null.", response.getBody());
         assertContains("Large spot fee must not be null.", response.getBody());
         assertContains("Small spot fee must not be null.", response.getBody());
-        assertContains("Monthly flat fee must not be null.", response.getBody());
+        assertContains("monthly flat fee must not be null.", response.getBody());
 	}
 
     @Test

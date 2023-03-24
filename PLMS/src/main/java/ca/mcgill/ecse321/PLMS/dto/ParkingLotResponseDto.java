@@ -22,6 +22,8 @@ public class ParkingLotResponseDto {
         this.smallSpotMonthlyFlatFee = p.getSmallSpotMonthlyFlatFee();
 				this.largeSpotMonthlyFlatFee = p.getLargeSpotMonthlyFlatFee();
 	}
+
+	public ParkingLotResponseDto() {}
 	
 	public int getId() {
 		return id;
