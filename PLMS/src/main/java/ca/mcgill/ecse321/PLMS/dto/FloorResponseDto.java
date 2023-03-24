@@ -7,8 +7,6 @@ public class FloorResponseDto {
   private int floorNumber;
   private int smallSpotCapacity;
   private int largeSpotCapacity;
-  private int smallSpotCounter;
-  private int largeSpotCounter;
 
   /**
    * Default constructor
@@ -24,8 +22,6 @@ public class FloorResponseDto {
     this.floorNumber = floor.getFloorNumber();
     this.smallSpotCapacity = floor.getSmallSpotCapacity();
     this.largeSpotCapacity = floor.getLargeSpotCapacity();
-    this.smallSpotCounter = floor.getSmallSpotCounter();
-    this.largeSpotCounter = floor.getLargeSpotCounter();
   }
 
   // getters
@@ -42,13 +38,6 @@ public class FloorResponseDto {
     return this.largeSpotCapacity;
   }
 
-  public int getSmallSpotCounter(){
-    return this.smallSpotCounter;
-  }
-
-  public int getLargeSpotCounter(){
-    return this.largeSpotCounter;
-  }
 
   // need to add setters to responses!
 
@@ -64,13 +53,6 @@ public class FloorResponseDto {
     this.largeSpotCapacity = largeSpotCapacity;
   }
 
-  public void setSmallSpotCounter(int smallSpotCounter){
-    this.smallSpotCounter = smallSpotCounter;
-  }
-
-  public void setLargeSpotCounter(int largeSpotCounter){
-    this.largeSpotCounter = largeSpotCounter;
-  }
 
 
 }

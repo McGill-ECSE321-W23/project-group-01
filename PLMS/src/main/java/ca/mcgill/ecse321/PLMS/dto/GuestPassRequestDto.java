@@ -52,7 +52,11 @@ public class GuestPassRequestDto {
         this.floorNumber = floorNumber;
     }
 
-    public int getFloorNumber() {
-      return this.floorNumber;
+    public Integer getFloorNumber() {
+        return floorNumber;
+    }
+
+    public Integer getNumberOfFifteenMinuteIncrements() {
+        return numberOfFifteenMinuteIncrements;
     }
 }
