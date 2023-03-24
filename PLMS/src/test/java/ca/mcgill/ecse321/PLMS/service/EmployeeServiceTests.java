@@ -3,8 +3,6 @@ package ca.mcgill.ecse321.PLMS.service;
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Employee;
 import ca.mcgill.ecse321.PLMS.repository.EmployeeRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -253,14 +251,5 @@ public class EmployeeServiceTests {
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
 
     }
-
-    
-
-
-
-
-
-
-
 }
 

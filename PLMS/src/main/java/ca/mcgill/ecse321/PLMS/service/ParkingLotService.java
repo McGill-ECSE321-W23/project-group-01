@@ -33,7 +33,7 @@ public class ParkingLotService {
     public ParkingLot getParkingLot() {
         List<ParkingLot> parkingLot = (ArrayList<ParkingLot>) parkingLotRepository.findAll();
         if (parkingLot.isEmpty())
-            throw new PLMSException(HttpStatus.NOT_FOUND, "Parking Lot not found");
+            throw new PLMSException(HttpStatus.NOT_FOUND, "Parking Lot not found.");
         return parkingLot.get(0);
     }
 

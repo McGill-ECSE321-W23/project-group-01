@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 
 import ca.mcgill.ecse321.PLMS.dto.ParkingLotRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.ParkingLotResponseDto;
+import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 
 
@@ -41,6 +43,13 @@ public class ParkingLotIntegrationTest {
 		public static final int INVALID_ID = Integer.MAX_VALUE;
 
 		private int id;
+        private Time openingTime;
+        private Time closingTime;
+        private double largeSpotFee;
+        private double smallSpotFee;
+        private double smallSpotMonthlyFlatFee;
+        private double largeSpotMonthlyFlatFee;
+
 
 		public int getId() {
 			return id;
@@ -49,6 +58,54 @@ public class ParkingLotIntegrationTest {
 		public void setId(int id) {
 			this.id = id;
 		}
+    
+        public Time getOpeningTime() {
+            return openingTime;
+        }
+    
+        public Time getClosingTime() {
+            return closingTime;
+        }
+    
+        public Double getLargeSpotFee() {
+            return largeSpotFee;
+        }
+    
+        public Double getSmallSpotFee() {
+            return smallSpotFee;
+        }
+    
+        public Double getSmallSpotMonthlyFlatFee() {
+            return smallSpotMonthlyFlatFee;
+        }
+    
+        public Double getLargeSpotMonthlyFlatFee() {
+            return largeSpotMonthlyFlatFee;
+        }
+
+        public void setOpeningTime(Time openingTime) {
+            this.openingTime = openingTime;
+        }
+    
+        public void setClosingTime(Time closingTime) {
+            this.closingTime = closingTime;
+        }
+    
+        public void setLargeSpotFee(Double largeSpotFee) {
+            this.largeSpotFee = largeSpotFee;
+        }
+    
+        public void setSmallSpotFee(Double smallSpotFee) {
+            this.smallSpotFee = smallSpotFee;
+        }
+    
+        public void setSmallSpotMonthlyFlatFee(Double smallSpotMonthlyFlatFee) {
+            this.smallSpotMonthlyFlatFee = smallSpotMonthlyFlatFee;
+        }
+    
+      public void setLargeSpotMonthlyFlatFee(Double largeSpotMonthlyFlatFee) {
+            this.largeSpotMonthlyFlatFee = largeSpotMonthlyFlatFee;
+        }
 	}
 
 	private TestFixture fixture;
@@ -68,8 +125,17 @@ public class ParkingLotIntegrationTest {
 		parkingLotRepository.deleteAll();
 	}
 
-	@Test
+    @Test
 	@Order(0)
+	public void testGetInvalidPerson() {
+		ResponseEntity<String> response = client.getForEntity("/parkingLot", String.class);
+
+		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+		assertEquals("Parking Lot not found.", response.getBody());
+	}
+
+	@Test
+	@Order(1)
 	public void testCreateParkingLot() {
 
         Time openingTime = new Time(0,0,0);
@@ -88,7 +154,7 @@ public class ParkingLotIntegrationTest {
         request.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
 
 
-		ResponseEntity<ParkingLotResponseDto> response = client.postForEntity("/person", request, ParkingLotResponseDto.class);
+		ResponseEntity<ParkingLotResponseDto> response = client.postForEntity("//parkingLot/creation", request, ParkingLotResponseDto.class);
 
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
 		assertNotNull(response.getBody());
@@ -108,53 +174,89 @@ public class ParkingLotIntegrationTest {
 	}
 
     @Test
-	@Order(0)
+	@Order(2)
 	public void testCreateInvalidParkingLot() {
 		ParkingLotRequestDto request = new ParkingLotRequestDto();
 
-		ResponseEntity<String> response = client.postForEntity("/person", request, String.class);
+		ResponseEntity<String> response = client.postForEntity("/parkingLot/creation", request, String.class);
 
 		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-		assertContains("Name cannot be blank.", response.getBody());
-		assertContains("Password must not be null.", response.getBody());
+		assertContains("Opening time must not be null.", response.getBody());
+        assertContains("Closing time must not be null.", response.getBody());
+        assertContains("Large spot fee must not be null.", response.getBody());
+        assertContains("Small spot fee must not be null.", response.getBody());
+        assertContains("Monthly flat fee must not be null.", response.getBody());
 	}
 
-    
+    @Test
+	@Order(3)
+	public void testCreateInvalidParkingLot2() {
+		ParkingLotRequestDto request = new ParkingLotRequestDto();
+        request.setClosingTime(new Time(5, 0, 0));
+        request.setOpeningTime(new Time(0, 0, 0));
+        request.setLargeSpotFee(-2.0);
+        request.setLargeSpotMonthlyFlatFee(-3.3);
+        request.setSmallSpotFee(-32.3);
+        request.setLargeSpotMonthlyFlatFee(-32.3);
+
+		ResponseEntity<String> response = client.postForEntity("/parkingLot/creation", request, String.class);
+
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+		assertContains("Large spot fee must be non-negative.", response.getBody());
+        assertContains("Small spot fee must be non-negative.", response.getBody());
+        assertContains("Small spot monthly flat fee must be non-negative.", response.getBody());
+        assertContains("Large spot monthly flat fee must be non-negative.", response.getBody());
+	}
+
+    @Test
+	@Order(4)
+	public void testCreateAnotherParkingLot() {
+		ParkingLotRequestDto request = new ParkingLotRequestDto();
+
+        Time openingTime = new Time(5,0,0);
+        Time closingTime = new Time(2, 0, 0)
+        double largeSpotFee = 42;
+        double smallSpotFee = 54;
+        double smallSpotMonthlyFlatFee = 613;
+        double largeSpotMonthlyFlatFee = 9321;
+
+		request.setOpeningTime(openingTime);
+		request.setClosingTime(closingTime);
+        request.setLargeSpotFee(largeSpotFee);
+        request.setSmallSpotFee(smallSpotFee);
+        request.setSmallSpotMonthlyFlatFee(smallSpotMonthlyFlatFee);
+        request.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
+
+
+		ResponseEntity<String> response = client.postForEntity("/parkingLot/creation", request, String.class);
+
+		assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        ArrayList<ParkingLot> parkingLots = (ArrayList<ParkingLot>) parkingLotRepository.findAll();
+		assertEquals(1, parkingLots.size());
+        assertEquals(fixture.getId(), parkingLots.get(0));
+        assertContains("Parking Lot already exists", response.getBody());
+	}
+
+
 	@Test
-	@Order(1)
-	public void testGetPerson() {
+	@Order(5)
+	public void testGetParkingLot() {
 		int id = fixture.getId();
 
-		ResponseEntity<PersonResponseDto> response = client.getForEntity("/person/" + id, PersonResponseDto.class);
+		ResponseEntity<ParkingLotResponseDto> response = client.getForEntity("/parkingLot" + id, ParkingLotResponseDto.class);
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertNotNull(response.getBody());
-		assertEquals(TestFixture.PERSON_NAME, response.getBody().getName());
-		LocalDate today = LocalDateTime.now().toLocalDate();
-		assertEquals(today, response.getBody().getCreationDate());
-		assertEquals(id, response.getBody().getId());
+		assertEquals(fixture.getId(), response.getBody().getId());
+        assertEquals(fixture.getOpeningTime(), response.getBody().getOpeningTime());
+        assertEquals(fixture.getClosingTime(), response.getBody().getClosingTime());
+        assertEquals(fixture.getSmallSpotFee(), response.getBody().getSmallSpotFee());
+        assertEquals(fixture.getLargeSpotFee(), response.getBody().getLargeSpotFee());
+        assertEquals(fixture.getSmallSpotMonthlyFlatFee(), response.getBody().getSmallSpotMonthlyFlatFee());
+        assertEquals(fixture.getLargeSpotMonthlyFlatFee(), response.getBody().getLargeSpotMonthlyFlatFee());
 	}
 
-	@Test
-	@Order(2)
-	public void testCreateInvalidPerson() {
-		PersonRequestDto request = new PersonRequestDto();
-
-		ResponseEntity<String> response = client.postForEntity("/person", request, String.class);
-
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-		assertContains("Name cannot be blank.", response.getBody());
-		assertContains("Password must not be null.", response.getBody());
-	}
-
-	@Test
-	@Order(3)
-	public void testGetInvalidPerson() {
-		ResponseEntity<String> response = client.getForEntity("/person/" + TestFixture.INVALID_ID, String.class);
-
-		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-		assertEquals("Not found.", response.getBody());
-	}
+	
 
 	private static void assertContains(String expected, String actual) {
 		String assertionMessage = String.format("Error message ('%s') contains '%s'.", actual, expected);
