@@ -38,7 +38,7 @@ public class MonthlyPassServiceTests {
   private FloorRepository floorRepo;
 
   @Mock
-  private MonthlyCustomerRepository MonthlyCustomerRepository;
+  private MonthlyCustomerRepository monthlyCustomerRepo;
 
   @InjectMocks
   private MonthlyPassService monthlyPassService;
@@ -260,8 +260,85 @@ public class MonthlyPassServiceTests {
         assertEquals(outputMonthlyPass.getStartDate(), starDate2);
         assertEquals(outputMonthlyPass.getEndDate(), endDate2);
         assertEquals(output.getCustomer(), null);
-        
+
     }
+
+    @Test
+    public void testGetMonthlyPassesByMonthlyCustomer(){
+        double fee = 50.50;
+        String spotNumber = "A24";
+        String licensePlate = "123ABC123";
+        Date startDate = Date.valueOf("2023-02-21");
+        Date endDate = Date.valueOf("2023-03-20");
+        boolean isLarge = true;
+        String confirmationCode = "NeverGonnaGiveYouUp";
+        int id = 1;
+
+        double fee2 = 50.50;
+        String spotNumber2 = "A25";
+        String licensePlate2 = "123ABC124";
+        Date startDate2 = Date.valueOf("2023-02-22");
+        Date endDate2 = Date.valueOf("2023-03-21");
+        boolean isLarge2 = true;
+        String confirmationCode2 = "NeverGonnaGiveYouUp";
+        int id2 = 2;
+    
+    
+        String email = "rick.roll@gmail.com";
+        String password = "intelliJLover123";
+        String name = "Samer Abdulkarim";
+        MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
+        monthlyCustomer.setEmail(email);
+        monthlyCustomer.setPassword(password);
+        monthlyCustomer.setName(name);
+        
+        MonthlyPass monthlyPass = new MonthlyPass();
+        monthlyPass.setFee(fee);
+        monthlyPass.setSpotNumber(spotNumber);
+        monthlyPass.setConfirmationCode(confirmationCode);
+        monthlyPass.setIsLarge(isLarge);
+        monthlyPass.setStartDate(startDate);
+        monthlyPass.setEndDate(endDate);
+        monthlyPass.setLicensePlate(licensePlate);
+        monthlyPass.setCustomer(monthlyCustomer);
+
+        MonthlyPass monthlyPass2 = new MonthlyPass();
+        monthlyPass2.setFee(fee2);
+        monthlyPass2.setSpotNumber(spotNumber2);
+        monthlyPass2.setConfirmationCode(confirmationCode2);
+        monthlyPass2.setIsLarge(isLarge2);
+        monthlyPass2.setStartDate(startDate2);
+        monthlyPass2.setEndDate(endDate2);
+        monthlyPass2.setLicensePlate(licensePlate2);
+        monthlyPass2.setCustomer(monthlyCustomer);
+
+        ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
+        monthlyPasses.add(monthlyPass1);
+        monthlyPasses.add(monthlyPass2);
+
+        when(MonthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+        when(monthlyCustomerRepo.findMonthlyCustomerByEmail(email)).thenReturn(monthlyCustomer);
+
+        ArrayList<MonthlyPass> output = (ArrayList<MonthlyPass>) monthlyPassService.getMonthlyPassesByMonthlyCustomer(email);
+        Iterator<MonthlyPass> i = output.iterator();
+        MonthlyPass outputMonthlyPass = i.next();
+
+        assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber);
+        assertEquals(outputMonthlyPass.getStartDate(), starDate);
+        assertEquals(outputMonthlyPass.getEndDate(), endDate);
+        assertEquals(output.getCustomer(), monthlyCustomer);
+
+        outputMonthlyPass = i.next();
+        assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber2);
+        assertEquals(outputMonthlyPass.getStartDate(), starDate2);
+        assertEquals(outputMonthlyPass.getEndDate(), endDate2);
+        assertEquals(output.getCustomer(), monthlyCustomer);
+    }
+
+    
+
+
+
 
 
 
