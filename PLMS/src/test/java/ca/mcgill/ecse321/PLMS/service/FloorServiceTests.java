@@ -179,7 +179,7 @@ public class FloorServiceTests {
       PLMSException e = assertThrows(PLMSException.class,
 				() -> floorService.createFloor(floor));
 		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
-		assertEquals("Cannot create floor since the parking lot has not been created", e.getMessage());
+		assertEquals("Cannot create floor since the parking lot has not been created.", e.getMessage());
     }
 
     @Test

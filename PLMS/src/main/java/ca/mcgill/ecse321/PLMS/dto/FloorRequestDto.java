@@ -27,41 +27,42 @@ public class FloorRequestDto {
   public Floor toModel(){
     Floor floor = new Floor();
     floor.setFloorNumber(this.floorNumber);
+    floor.setIsMemberOnly(this.isMemberOnly);
     floor.setSmallSpotCapacity(this.smallSpotCapacity);
     floor.setLargeSpotCapacity(this.largeSpotCapacity);
     return floor;
   }
 
-  public void setFloorNumber(int floorNumber){
+  public void setFloorNumber(Integer floorNumber){
     this.floorNumber = floorNumber;
   }
 
-  public void setSmallSpotCapacity(int smallSpotCapacity){
+  public void setSmallSpotCapacity(Integer smallSpotCapacity){
     this.smallSpotCapacity = smallSpotCapacity;
   }
 
-  public void setLargeSpotCapacity(int largeSpotCapacity){
+  public void setLargeSpotCapacity(Integer largeSpotCapacity){
     this.largeSpotCapacity = largeSpotCapacity;
   }
 
-  public void setIsMemberOnly(boolean isMemberOnly){
+  public void setIsMemberOnly(Boolean isMemberOnly){
     this.isMemberOnly = isMemberOnly;
   }
 
   // NEED TO ADD GETTERS TO REQUEST DTOs!
-  public int getFloorNumber(){
+  public Integer getFloorNumber(){
     return this.floorNumber;
   }
 
-  public int getSmallSpotCapacity(){
+  public Integer getSmallSpotCapacity(){
     return this.smallSpotCapacity;
   }
 
-  public int getLargeSpotCapacity(){
+  public Integer getLargeSpotCapacity(){
     return this.largeSpotCapacity;
   }
 
-  public boolean getIsMemberOnly(){
+  public Boolean getIsMemberOnly(){
     return this.isMemberOnly;
   }
 

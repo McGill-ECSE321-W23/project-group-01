@@ -5,6 +5,7 @@ import ca.mcgill.ecse321.PLMS.model.Floor;
 public class FloorResponseDto {
   // attributes
   private int floorNumber;
+  private boolean isMemberOnly;
   private int smallSpotCapacity;
   private int largeSpotCapacity;
 
@@ -20,6 +21,7 @@ public class FloorResponseDto {
    */
   public FloorResponseDto(Floor floor){
     this.floorNumber = floor.getFloorNumber();
+    this.isMemberOnly = floor.getIsMemberOnly();
     this.smallSpotCapacity = floor.getSmallSpotCapacity();
     this.largeSpotCapacity = floor.getLargeSpotCapacity();
   }
@@ -30,8 +32,12 @@ public class FloorResponseDto {
     return this.floorNumber;
   }
 
-  public int getSmallCapacity(){
-    return this.smallSpotCapacity;
+  public boolean getMemberOnly(){
+    return this.isMemberOnly;
+  }
+
+  public int getSmallSpotCapacity() {
+      return smallSpotCapacity;
   }
 
   public int getLargeSpotCapacity(){
@@ -43,6 +49,10 @@ public class FloorResponseDto {
 
   public void setFloorNumber(int floorNumber){
     this.floorNumber = floorNumber;
+  }
+
+  public void setMemberOnly(boolean isMemberOnly) {
+      this.isMemberOnly = isMemberOnly;
   }
 
   public void setSmallSpotCapacity(int smallSpotCapacity){
