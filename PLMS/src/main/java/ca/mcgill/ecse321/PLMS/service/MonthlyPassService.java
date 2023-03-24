@@ -171,7 +171,6 @@ public class MonthlyPassService {
         return monthlyPassesByDate;
     }
 
-
     public boolean isSpotOccupied(int floorNumber, String spotNumber, Date startDate, Date endDate) {
         List<MonthlyPass> monthlyPasses = getMonthlyPassesByFloor(floorNumber); // get all monthly passes for the floor
         for (MonthlyPass monthlyPass : monthlyPasses) {
@@ -188,3 +187,4 @@ public class MonthlyPassService {
     }
 
 }
+

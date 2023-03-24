@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.PLMS.service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
+import ca.mcgill.ecse321.PLMS.model.Employee;
 import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
 import org.junit.jupiter.api.Test;
@@ -119,8 +120,45 @@ public class OwnerServiceTests {
         assertEquals(e.getMessage(), "Owner account with this email already exists");
 
 
+    }
+
+    @Test
+    public void testInvalidUpdateOwnerAccount()
+    {
+        final String email = "john.doe@mcgill.ca";
+        final String password = "JohnDoe2002";
+        final String name = "John Doe";
+        final Owner john = new Owner(email, password, name);
+        when(ownerRepository.findOwnerByEmail(email)).thenReturn(null);
+
+        final String password2 = "JaneDoe2002";
+        final String name2 = "Jane Doe";
+        final Owner jane = new Owner(email, password2, name2);
+        PLMSException e = assertThrows(PLMSException.class, () -> ownerService.updateOwnerAccount(jane));
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(), "Owner not found.");
+    }
+
+    @Test
+    public void testValidUpdateOwnerAccount()
+    {
+        final String email = "john.doe@mcgill.ca";
+        final String password = "JohnDoe2002";
+        final String name = "John Doe";
+        final Owner john = new Owner(email, password, name);
+        when(ownerRepository.findOwnerByEmail(email)).thenReturn(john);
+
+        final String password2 = "JaneDoe2002";
+        final String name2 = "Jane Doe";
+        final Owner jane = new Owner(email, password2, name2);
+
+        when(ownerRepository.save(john)).thenReturn(jane);
+        Owner output = ownerService.updateOwnerAccount(jane);
+
+        assertEquals(output, jane);
 
     }
+
 
 
 

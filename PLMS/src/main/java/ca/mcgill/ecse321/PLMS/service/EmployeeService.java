@@ -35,16 +35,20 @@ public class EmployeeService {
     @Transactional
     public Employee updateEmployee(Employee employee)
     {
-        getEmployeeByEmail(employee.getEmail());
+        Employee e = getEmployeeByEmail(employee.getEmail());
         if(employee.getHourlyWage() <= 0)
-            throw new PLMSException(HttpStatus.NOT_FOUND, "Hourly wage must be positive.");
-        return employeeRepository.save(employee);
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "Hourly wage must be positive.");
+        e.setHourlyWage(employee.getHourlyWage());
+        e.setPassword(employee.getPassword());
+        e.setJobTitle(employee.getJobTitle());
+        e.setName(employee.getName());
+        return employeeRepository.save(e);
     }
 
     @Transactional
     public Employee createEmployeeAccount(Employee employee) {
         if(employee.getHourlyWage() <= 0)
-            throw new PLMSException(HttpStatus.NOT_FOUND, "Hourly wage must be strictly positive.");
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "Hourly wage must be positive.");
         if (employeeRepository.findEmployeeByEmail(employee.getEmail()) == null)
             return employeeRepository.save(employee);
         else

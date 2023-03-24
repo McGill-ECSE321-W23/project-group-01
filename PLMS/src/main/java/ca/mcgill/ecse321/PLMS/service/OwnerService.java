@@ -41,8 +41,10 @@ public class OwnerService {
     @Transactional
     public Owner updateOwnerAccount(Owner owner)
     {
-        getOwnerByEmail(owner.getEmail());
-        return ownerRepository.save(owner);
+        Owner o = getOwnerByEmail(owner.getEmail());
+        o.setPassword(owner.getPassword());
+        o.setName(owner.getEmail());
+        return ownerRepository.save(o);
 
     }
 

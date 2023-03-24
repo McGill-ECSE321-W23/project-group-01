@@ -100,4 +100,5 @@ public class MonthlyPassRequestDto {
     public String getCustomerEmail(){
         return this.customerEmail;
     }
+
 }

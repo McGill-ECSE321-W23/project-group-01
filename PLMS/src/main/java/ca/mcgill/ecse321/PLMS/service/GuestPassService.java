@@ -69,6 +69,7 @@ public class GuestPassService {
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
         if (floor == null) {
             throw new PLMSException(HttpStatus.NOT_FOUND, "The floor with floor number " + floorNumber + " does not exist.");
+
         }
         ParkingLot parkingLot = floor.getParkingLot();
 
@@ -109,6 +110,7 @@ public class GuestPassService {
             guestPass.setFee(nrIncrements*parkingLot.getLargeSpotFee());
         } else{
             guestPass.setFee(nrIncrements*parkingLot.getSmallSpotFee());
+
         }
         // Create object
         guestPass = guestPassRepository.save(guestPass);
@@ -133,12 +135,14 @@ public class GuestPassService {
         // filter through the guest passes to find passes that are of the same size and same floor number
         for (GuestPass pass : guestPasses){
             if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowGuestPass(pass.getDate().toLocalDate(), pass.getStartTime().toLocalTime(), pass.getEndTime().toLocalTime())){
+
                 numberOfPasses += 1;
             }
         }
 
         for (MonthlyPass pass : monthlyPasses){
             if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(pass.getStartDate().toLocalDate(), pass.getEndDate().toLocalDate())){
+
                 numberOfPasses += 1;
             }
         }
@@ -182,6 +186,7 @@ public class GuestPassService {
     }
 
     /**
+
      * Service method that updates a guest pass object in the database
      */
     @Transactional
@@ -272,6 +277,7 @@ public class GuestPassService {
                 Time guestPassStartTime = guestPass.getStartTime();
                 Time guestPassEndTime = guestPass.getEndTime();
                 if ((guestPassStartTime.before(endTime) && guestPassEndTime.after(startTime)) || (startTime.before(guestPassEndTime) && endTime.after(guestPassStartTime))) {
+
                     // guest pass overlaps with the specified time range
                     return true;
                 }

@@ -1,10 +1,12 @@
 package ca.mcgill.ecse321.PLMS.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;import static org.assertj.core.api.Assertions.assertThat;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalTime;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

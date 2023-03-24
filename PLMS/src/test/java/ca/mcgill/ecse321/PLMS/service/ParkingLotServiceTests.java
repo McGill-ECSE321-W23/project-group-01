@@ -134,8 +134,8 @@ public class ParkingLotServiceTests {
         final double smallMonthlyFlatFee1 = 10;
         final double largeMonthlyFlatFee1 = 20;
         ParkingLot parkingLot1 = new ParkingLot(openingTime1, closingTime1, largeSpotFee1, smallSpotFee1, smallMonthlyFlatFee1, largeMonthlyFlatFee1);
+        when(parkingLotRepository.save(parkingLot)).thenReturn(parkingLot1);
         ParkingLot output = parkingLotService.updateParkingLot(parkingLot1);
-
         assertEquals(output, parkingLot1);
     }
 
