@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.PLMS.model;
 
 import jakarta.persistence.*;
 
-import java.util.Comparator;
 
 /**
  * Abstract class that is part of the domain model of the Parking Lot Management System (PLMS)

@@ -130,8 +130,7 @@ public class FloorServiceTests {
       // check to see that it was correctly assigned to the parking lot
       assertEquals(id, output.getParkingLot().getId());
       
-      // We also want to check that the service actually saved John in the database!
-      // personRepo.save() should be called exactly once
+      // check to see that we've actually saved the floor in the DB
       verify(floorRepository, times(1)).save(floor);
     }
 
@@ -153,6 +152,7 @@ public class FloorServiceTests {
       final boolean isMemberOnly2 = true;
       final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, isMemberOnly2);
 
+      // assert the correct error
       PLMSException e = assertThrows(PLMSException.class,
 				() -> floorService.createFloor(floor2));
 		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
@@ -170,12 +170,12 @@ public class FloorServiceTests {
       final int floorNumber = 1;
 		  final int smallSpotCapacity = 70;
       final int largeSpotCapacity = 25;
-      final int smallSpotCounter = 0;
-      final int largeSpotCounter = 0;
       final boolean isMemberOnly = false;
       final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, isMemberOnly);
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(null);
       when(parkingLotRepository.findAll()).thenReturn(null);
+
+      // assert the error thrown
       PLMSException e = assertThrows(PLMSException.class,
 				() -> floorService.createFloor(floor));
 		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
@@ -295,6 +295,7 @@ public class FloorServiceTests {
 
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(null);
 
+      // assert the errors thrown
       PLMSException e = assertThrows(PLMSException.class,
 				() -> floorService.updateFloor(floor));
 		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());

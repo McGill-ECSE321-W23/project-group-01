@@ -171,10 +171,6 @@ public class MonthlyPassService {
         return monthlyPassesByDate;
     }
 
-//    public boolean isSpotAvailable(Floor floor, String spotNumber, Date startDate, Date endDate) {
-//        List<MonthlyPass> occupiedMonthlyPasses = monthlyPassRepository.findMonthlyPassesByFloorAndSpotNumberAndTimePeriod(floor.getFloorNumber(), spotNumber, startDate, endDate);
-//        return occupiedMonthlyPasses.isEmpty();
-//    }
 
     public boolean isSpotOccupied(int floorNumber, String spotNumber, Date startDate, Date endDate) {
         List<MonthlyPass> monthlyPasses = getMonthlyPassesByFloor(floorNumber); // get all monthly passes for the floor
