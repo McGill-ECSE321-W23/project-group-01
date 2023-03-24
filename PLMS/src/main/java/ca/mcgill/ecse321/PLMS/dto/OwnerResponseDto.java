@@ -12,6 +12,8 @@ public class OwnerResponseDto {
         this.name = owner.getName();
     }
 
+    public OwnerResponseDto() {}
+
 
     public String getEmail()
     { return email; }

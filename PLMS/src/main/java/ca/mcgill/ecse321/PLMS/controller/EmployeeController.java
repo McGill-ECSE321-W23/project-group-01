@@ -38,7 +38,7 @@ public class EmployeeController {
 
     @GetMapping(value = {"/employee", "/employee/"})
     public ResponseEntity<EmployeeResponseDto> getEmployeeByEmail(@RequestParam String email) {
-        return new ResponseEntity<EmployeeResponseDto>(new EmployeeResponseDto(employeeService.getEmployeeByEmail(email)), HttpStatus.ACCEPTED);
+        return new ResponseEntity<EmployeeResponseDto>(new EmployeeResponseDto(employeeService.getEmployeeByEmail(email)), HttpStatus.OK);
     }
 
     /**
@@ -52,7 +52,8 @@ public class EmployeeController {
     {
         Employee Employee = EmployeeRequest.toModel(); // 1. You pass in a request, validates the constraints, creates an Employee if they pass
         Employee =  employeeService.createEmployeeAccount(Employee); // 2. You use the service class to check if it exists and save it
-        return new ResponseEntity<EmployeeResponseDto>(new EmployeeResponseDto(Employee), HttpStatus.OK); //3. You mask the model by returning a Response
+        EmployeeResponseDto responseBody = new EmployeeResponseDto(Employee);
+        return new ResponseEntity<EmployeeResponseDto>(responseBody, HttpStatus.CREATED); //3. You mask the model by returning a Response
     }
 
 
@@ -66,73 +67,6 @@ public class EmployeeController {
 
     }
 
-    @PutMapping(value = {"/employee/update/password/{email}"})
-    public ResponseEntity<EmployeeResponseDto> updateEmployeePassword(@PathVariable String email, @RequestParam String password)
-    {
-        Employee o = employeeService.getEmployeeByEmail(email);
-        EmployeeRequestDto EmployeeRequest = new EmployeeRequestDto();
-        EmployeeRequest.setPassword(o.getName());
-        EmployeeRequest.setName(password); //Asked TA no need for validation
-        EmployeeRequest.setEmail(email);
-        EmployeeRequest.setHourlyWage(o.getHourlyWage());
-        EmployeeRequest.setJobTitle(o.getJobTitle());
-        @Valid EmployeeRequestDto s = EmployeeRequest;
-        Employee o_updated = EmployeeRequest.toModel();
-        o_updated = employeeService.updateEmployee(o_updated);
-        return new ResponseEntity<EmployeeResponseDto>(new EmployeeResponseDto(o_updated), HttpStatus.OK);
-
-    }
-
-    @PutMapping(value = {"/employee/update/name/{email}"})
-    public ResponseEntity<EmployeeResponseDto> updateEmployeeName(@PathVariable String email, @RequestParam String name)
-    {
-        Employee o = employeeService.getEmployeeByEmail(email);
-        EmployeeRequestDto EmployeeRequest = new EmployeeRequestDto();
-        EmployeeRequest.setPassword(o.getPassword());
-        EmployeeRequest.setName(name); //Asked TA no need for validation
-        EmployeeRequest.setEmail(email);
-        EmployeeRequest.setHourlyWage(o.getHourlyWage());
-        EmployeeRequest.setJobTitle(o.getJobTitle());
-        @Valid EmployeeRequestDto s = EmployeeRequest;
-        Employee o_updated = EmployeeRequest.toModel();
-        o_updated = employeeService.updateEmployee(o_updated);
-        return new ResponseEntity<EmployeeResponseDto>(new EmployeeResponseDto(o_updated), HttpStatus.OK);
-
-    }
-
-    @PutMapping(value = {"/employee/update/job/{email}"})
-    public ResponseEntity<EmployeeResponseDto> updateEmployeeJobTitle(@PathVariable String email, @RequestParam String jobTitle)
-    {
-        Employee o = employeeService.getEmployeeByEmail(email);
-        EmployeeRequestDto EmployeeRequest = new EmployeeRequestDto();
-        EmployeeRequest.setPassword(o.getPassword());
-        EmployeeRequest.setName(o.getName()); //Asked TA no need for validation
-        EmployeeRequest.setEmail(email);
-        EmployeeRequest.setJobTitle(jobTitle);
-        EmployeeRequest.setHourlyWage(o.getHourlyWage());
-        @Valid EmployeeRequestDto s = EmployeeRequest;
-        Employee o_updated = EmployeeRequest.toModel();
-        o_updated = employeeService.updateEmployee(o_updated);
-        return new ResponseEntity<EmployeeResponseDto>(new EmployeeResponseDto(o_updated), HttpStatus.OK);
-
-    }
-
-    @PutMapping(value = {"/employee/update/wage/{email}"})
-    public ResponseEntity<EmployeeResponseDto> updateEmployeeHourlyWage(@PathVariable String email, @RequestParam Double hourlyWage)
-    {
-        Employee o = employeeService.getEmployeeByEmail(email);
-        EmployeeRequestDto employeeRequest = new EmployeeRequestDto();
-        employeeRequest.setPassword(o.getPassword());
-        employeeRequest.setName(o.getName()); //Asked TA no need for validation
-        employeeRequest.setEmail(email);
-        employeeRequest.setJobTitle(o.getJobTitle());
-        employeeRequest.setHourlyWage(hourlyWage);
-        @Valid EmployeeRequestDto s = employeeRequest;
-        Employee o_updated = employeeRequest.toModel();
-        o_updated = employeeService.updateEmployee(o_updated);
-        return new ResponseEntity<EmployeeResponseDto>(new EmployeeResponseDto(o_updated), HttpStatus.OK);
-
-    }
 
     @DeleteMapping("/employee/delete/{email}")
     public void deleteEmployee(@PathVariable String email) {
