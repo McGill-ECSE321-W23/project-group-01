@@ -18,6 +18,8 @@ public class EmployeeResponseDto {
         this.hourlyWage = employee.getHourlyWage();
     }
 
+    EmployeeResponseDto() {}
+
     public String getEmail()
     { return email; }
 

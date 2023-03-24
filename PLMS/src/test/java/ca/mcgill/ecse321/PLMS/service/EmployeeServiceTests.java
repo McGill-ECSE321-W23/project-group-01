@@ -60,7 +60,7 @@ public class EmployeeServiceTests {
         ArrayList<Employee> customers = new ArrayList<>();
         when(employeeRepository.findAll()).thenReturn(customers);
         PLMSException e = assertThrows(PLMSException.class, () -> employeeService.getAllEmployees());
-        assertEquals(e.getStatus(), HttpStatus.NO_CONTENT);
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
         assertEquals(e.getMessage(),"There are no employees in the system" );
     }
 
@@ -234,7 +234,7 @@ public class EmployeeServiceTests {
         employeeService.deleteEmployeeAccount(email);
         verify(employeeRepository, times(1)).delete(argThat((Employee e) -> email.equals(e.getEmail())));
         verify(employeeRepository, times(0)).delete(argThat((Employee e) -> !email.equals(e.getEmail())));
-
+        //add repository tests
     }
 
     @Test

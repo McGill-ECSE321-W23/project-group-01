@@ -57,7 +57,7 @@ public class OwnerServiceTests {
         ArrayList<Owner> customers = new ArrayList<>();
         when(ownerRepository.findAll()).thenReturn(customers);
         PLMSException e = assertThrows(PLMSException.class, () -> ownerService.getAllOwners());
-        assertEquals(e.getStatus(), HttpStatus.NO_CONTENT);
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
         assertEquals(e.getMessage(),"There are no owners in the system" );
     }
 
