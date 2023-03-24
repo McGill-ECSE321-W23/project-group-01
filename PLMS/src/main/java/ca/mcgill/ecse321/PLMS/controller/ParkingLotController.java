@@ -84,8 +84,8 @@ public class ParkingLotController {
         return new ResponseEntity<ParkingLotResponseDto>(new ParkingLotResponseDto(parkingLot), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/parkingLot/update/smallmonthly/{monthlyFlatFee}"})
-    public ResponseEntity<ParkingLotResponseDto> updateSmallSpotMonthlyFlatFee(@PathVariable Double smallSpotMonthlyFlatFee)
+    @PutMapping(value = {"/parkingLot/update/smallMonthly/{smallSpotMonthlyFlatFee}/largeMonthly/{largeSpotMonthlyFlatFee}"})
+    public ResponseEntity<ParkingLotResponseDto> updateSmallSpotMonthlyFlatFee(@PathVariable Double smallSpotMonthlyFlatFee, @PathVariable Double largeSpotMonthlyFlatFee)
     {
         ParkingLot p = parkingLotService.getParkingLot();
         ParkingLotRequestDto parkingLotRequestDto = new ParkingLotRequestDto();
@@ -94,30 +94,10 @@ public class ParkingLotController {
         parkingLotRequestDto.setLargeSpotFee(p.getLargeSpotFee());
         parkingLotRequestDto.setSmallSpotFee(p.getSmallSpotFee());
         parkingLotRequestDto.setSmallSpotMonthlyFlatFee(smallSpotMonthlyFlatFee);
-        parkingLotRequestDto.setLargeSpotMonthlyFlatFee(p.getLargeSpotMonthlyFlatFee());
-        @Valid ParkingLotRequestDto s = parkingLotRequestDto;
-        ParkingLot parkingLot = parkingLotRequestDto.toModel();
-        parkingLot = parkingLotService.updateParkingLot(parkingLot);
-        return new ResponseEntity<ParkingLotResponseDto>(new ParkingLotResponseDto(parkingLot), HttpStatus.OK);
-    }
-
-    @PutMapping(value = {"/parkingLot/update/largemonthly/{monthlyFlatFee}"})
-    public ResponseEntity<ParkingLotResponseDto> updateMonthlyFlatFee(@PathVariable Double largeSpotMonthlyFlatFee)
-    {
-        ParkingLot p = parkingLotService.getParkingLot();
-        ParkingLotRequestDto parkingLotRequestDto = new ParkingLotRequestDto();
-        parkingLotRequestDto.setOpeningTime(p.getOpeningTime());
-        parkingLotRequestDto.setClosingTime(p.getClosingTime());
-        parkingLotRequestDto.setLargeSpotFee(p.getLargeSpotFee());
-        parkingLotRequestDto.setSmallSpotFee(p.getSmallSpotFee());
         parkingLotRequestDto.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
-        parkingLotRequestDto.setSmallSpotMonthlyFlatFee(p.getSmallSpotMonthlyFlatFee());
         @Valid ParkingLotRequestDto s = parkingLotRequestDto;
         ParkingLot parkingLot = parkingLotRequestDto.toModel();
         parkingLot = parkingLotService.updateParkingLot(parkingLot);
         return new ResponseEntity<ParkingLotResponseDto>(new ParkingLotResponseDto(parkingLot), HttpStatus.OK);
     }
-
-
-
 }

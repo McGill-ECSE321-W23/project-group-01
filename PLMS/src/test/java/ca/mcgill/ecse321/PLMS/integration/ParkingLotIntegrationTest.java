@@ -139,7 +139,7 @@ public class ParkingLotIntegrationTest {
 	public void testCreateParkingLot() {
 
         Time openingTime = new Time(0,0,0);
-        Time closingTime = new Time(4, 0, 0)
+        Time closingTime = new Time(4, 0, 0);
         double largeSpotFee = 4;
         double smallSpotFee = 5;
         double smallSpotMonthlyFlatFee = 6;
@@ -154,7 +154,7 @@ public class ParkingLotIntegrationTest {
         request.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
 
 
-		ResponseEntity<ParkingLotResponseDto> response = client.postForEntity("//parkingLot/creation", request, ParkingLotResponseDto.class);
+		ResponseEntity<ParkingLotResponseDto> response = client.postForEntity("/parkingLot/creation", request, ParkingLotResponseDto.class);
 
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
 		assertNotNull(response.getBody());
@@ -164,9 +164,6 @@ public class ParkingLotIntegrationTest {
         assertEquals(smallSpotFee, response.getBody().getSmallSpotFee());
         assertEquals(smallSpotMonthlyFlatFee, response.getBody().getSmallSpotMonthlyFlatFee());
         assertEquals(largeSpotMonthlyFlatFee, response.getBody().getLargeSpotMonthlyFlatFee());
-
-		LocalDate today = LocalDateTime.now().toLocalDate();
-		//assertEquals(today, response.getBody().getCreationDate());
 		assertTrue(response.getBody().getId() >= 1, "Response ID is at least 1.");
 
 		// Save the ID so that later tests can use it
@@ -214,7 +211,7 @@ public class ParkingLotIntegrationTest {
 		ParkingLotRequestDto request = new ParkingLotRequestDto();
 
         Time openingTime = new Time(5,0,0);
-        Time closingTime = new Time(2, 0, 0)
+        Time closingTime = new Time(2, 0, 0);
         double largeSpotFee = 42;
         double smallSpotFee = 54;
         double smallSpotMonthlyFlatFee = 613;
@@ -256,7 +253,83 @@ public class ParkingLotIntegrationTest {
         assertEquals(fixture.getLargeSpotMonthlyFlatFee(), response.getBody().getLargeSpotMonthlyFlatFee());
 	}
 
-	
+    @Test
+	@Order(6)
+	public void testUpdateParkingLot() {
+
+        Time openingTime = new Time(2,0,0);
+        Time closingTime = new Time(6, 0, 0);
+        double largeSpotFee = 5;
+        double smallSpotFee = 6;
+        double smallSpotMonthlyFlatFee = 7;
+        double largeSpotMonthlyFlatFee = 10;
+
+		ParkingLotRequestDto request = new ParkingLotRequestDto();
+		request.setOpeningTime(openingTime);
+		request.setClosingTime(closingTime);
+        request.setLargeSpotFee(largeSpotFee);
+        request.setSmallSpotFee(smallSpotFee);
+        request.setSmallSpotMonthlyFlatFee(smallSpotMonthlyFlatFee);
+        request.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
+
+
+		ResponseEntity<ParkingLotResponseDto> response = client.postForEntity("/parkingLot/update", request, ParkingLotResponseDto.class);
+
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertNotNull(response.getBody());
+		assertEquals(openingTime, response.getBody().getOpeningTime());
+        assertEquals(closingTime, response.getBody().getClosingTime());
+        assertEquals(largeSpotFee, response.getBody().getLargeSpotFee());
+        assertEquals(smallSpotFee, response.getBody().getSmallSpotFee());
+        assertEquals(smallSpotMonthlyFlatFee, response.getBody().getSmallSpotMonthlyFlatFee());
+        assertEquals(largeSpotMonthlyFlatFee, response.getBody().getLargeSpotMonthlyFlatFee());
+		assertEquals(fixture.getId(), response.getBody().getId());
+	}
+
+    // @Test
+	// @Order(7)
+	// public void testUpdateOpeningClosingParkingLot() {
+
+    //     Time openingTime = new Time(2,0,0);
+    //     Time closingTime = new Time(6, 0, 0);
+
+	// 	ParkingLotRequestDto request = new ParkingLotRequestDto();
+	// 	request.setOpeningTime(openingTime);
+	// 	request.setClosingTime(closingTime);
+    //     request.setLargeSpotFee(largeSpotFee);
+    //     request.setSmallSpotFee(smallSpotFee);
+    //     request.setSmallSpotMonthlyFlatFee(smallSpotMonthlyFlatFee);
+    //     request.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
+
+	// 	ResponseEntity<ParkingLotResponseDto> response = client.putForEntity("/parkingLot/update/opening/{openingTime}/closing/{closingTime}", ParkingLotResponseDto.class);
+
+	// 	assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+	// }
+
+    @Test
+	@Order(8)
+	public void testInvalidUpdateParkingLot() {
+
+        Time openingTime = new Time(2,0,0);
+        Time closingTime = new Time(6, 0, 0);
+        double largeSpotFee = -5;
+        double smallSpotFee = 6;
+        double smallSpotMonthlyFlatFee = -7;
+        double largeSpotMonthlyFlatFee = 10;
+
+		ParkingLotRequestDto request = new ParkingLotRequestDto();
+		request.setOpeningTime(openingTime);
+		request.setClosingTime(closingTime);
+        request.setLargeSpotFee(largeSpotFee);
+        request.setSmallSpotFee(smallSpotFee);
+        request.setSmallSpotMonthlyFlatFee(smallSpotMonthlyFlatFee);
+        request.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
+
+		ResponseEntity<String> response = client.postForEntity("/parkingLot/update", request, String.class);
+
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+	}
+
 
 	private static void assertContains(String expected, String actual) {
 		String assertionMessage = String.format("Error message ('%s') contains '%s'.", actual, expected);
