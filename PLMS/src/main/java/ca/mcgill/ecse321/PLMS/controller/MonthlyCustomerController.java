@@ -66,12 +66,12 @@ public class MonthlyCustomerController {
     public ResponseEntity<MonthlyCustomerResponseDto> updateMonthlyCustomerPassword(@PathVariable String email, @PathVariable String password)
     {
         MonthlyCustomer o = monthlyCustomerService.getMonthlyCustomerByEmail(email);
-        MonthlyCustomerRequestDto MonthlyCustomerRequest = new MonthlyCustomerRequestDto();
-        MonthlyCustomerRequest.setPassword(password);
-        MonthlyCustomerRequest.setName(o.getName()); //Asked TA no need for validation
-        MonthlyCustomerRequest.setEmail(email);
-        @Valid MonthlyCustomer s = o;
-        MonthlyCustomer o_updated = MonthlyCustomerRequest.toModel();
+        MonthlyCustomerRequestDto monthlyCustomerRequest = new MonthlyCustomerRequestDto();
+        monthlyCustomerRequest.setPassword(password);
+        monthlyCustomerRequest.setName(o.getName()); //Asked TA no need for validation
+        monthlyCustomerRequest.setEmail(email);
+        @Valid MonthlyCustomerRequestDto s = monthlyCustomerRequest;
+        MonthlyCustomer o_updated = monthlyCustomerRequest.toModel();
         o_updated = monthlyCustomerService.updateMonthlyCustomer(o_updated);
         return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(o_updated), HttpStatus.OK);
 
@@ -85,7 +85,7 @@ public class MonthlyCustomerController {
         MonthlyCustomerRequest.setPassword(o.getPassword());
         MonthlyCustomerRequest.setName(name); //Asked TA no need for validation
         MonthlyCustomerRequest.setEmail(email);
-        @Valid MonthlyCustomer s = o;
+        @Valid MonthlyCustomerRequestDto s = MonthlyCustomerRequest;
         MonthlyCustomer o_updated = MonthlyCustomerRequest.toModel();
         o_updated = monthlyCustomerService.updateMonthlyCustomer(o_updated);
         return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(o_updated), HttpStatus.OK);

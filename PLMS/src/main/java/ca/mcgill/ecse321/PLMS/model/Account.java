@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.PLMS.model;
 
 import jakarta.persistence.*;
 
+
 /**
  * Abstract class that is part of the domain model of the Parking Lot Management System (PLMS)
  * This abstract class contains information common to all the account types for all types of users
@@ -11,8 +12,7 @@ import jakarta.persistence.*;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Account
-{
+public abstract class Account {
 
   //------------------------
   // MEMBER VARIABLES
@@ -84,5 +84,23 @@ public abstract class Account
             "email" + ":" + getEmail()+ "," +
             "password" + ":" + getPassword()+ "," +
             "name" + ":" + getName()+ "]";
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Account account)) return false;
+
+    if (!email.equals(account.email)) return false;
+    if (!password.equals(account.password)) return false;
+    return name.equals(account.name);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = email.hashCode();
+    result = 31 * result + password.hashCode();
+    result = 31 * result + name.hashCode();
+    return result;
   }
 }

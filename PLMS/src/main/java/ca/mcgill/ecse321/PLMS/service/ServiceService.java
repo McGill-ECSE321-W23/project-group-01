@@ -11,6 +11,10 @@ import ca.mcgill.ecse321.PLMS.repository.ServiceRepository;
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Service;
 
+<<<<<<< HEAD
+=======
+//@org.springframework.stereotype.Service
+>>>>>>> ea1e6dfd056e871e575557b37e51e46f7a1c33b7
 @org.springframework.stereotype.Service
 public class ServiceService {
 
@@ -29,32 +33,16 @@ public class ServiceService {
 
 
     /**
-	 * creates a new service.
-	 *
-	 * The service Name is trimmed before being saved.
-	 *
-	 * Throws an PLMSException if the serviceName is empty, if the
-	 * cost is null or < 0, if the serviceName is already taken by another service,
-	 * or if the lengthInHours is null or < 0.
-	 *
-	 * @param serviceName
-	 *            Name of the new service (primary key)
-	 * @param cost
-	 *            Cost for the service
-	 * @param lengthInHours
-	 *            Length in hours for the service
-	 * @return
-	 */
+     * Service method to store the created service object into the database
+     */
     @Transactional
-    public Service createService(String serviceName, Double cost, Double lengthInHours){
-
-        ArrayList<String> errorMessage = new ArrayList<String>();
-        Service service = new Service();
-
-
-        if (serviceName == null){
-            errorMessage.add("Service name cannot be empty");
+    public Service createService(Service service){
+        //checks on the new object are made in the DTO
+        //check if the service already exists
+        if (serviceRepository.findServiceByServiceName(service.getServiceName()) != null){
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "Service with service name: " + service.getServiceName() + " already exists.");
         }
+<<<<<<< HEAD
         else {
             serviceName = serviceName.trim();
             if (serviceName.length() == 0) {
@@ -85,8 +73,28 @@ public class ServiceService {
         service.setCost(cost);
         service.setLengthInHours(lengthInHours);
         serviceRepository.save(service);
+=======
+        //create object
+        service = serviceRepository.save(service);
+        //returned created object
+>>>>>>> ea1e6dfd056e871e575557b37e51e46f7a1c33b7
         return service;
     }
+
+    /**
+     * Service method that updates a floor object in the database
+     */
+    @jakarta.transaction.Transactional
+    public Service updateService(Service service){
+        //check if the service exists (the service has to exist to edit it)
+        Service existingService = getServiceByServiceName(service.getServiceName());
+
+        // save the changes to the database
+        existingService = serviceRepository.save(existingService);
+        return existingService;
+    }
+
+
 
     /**
 	 * Returns the service information for the service with the given
@@ -136,9 +144,13 @@ public class ServiceService {
 	 */
     @Transactional
     public Iterable<Service> getAllServices(){
+        ArrayList<Service> arrayList = (ArrayList<Service>) serviceRepository.findAll();
+        if (arrayList.isEmpty())
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no services in the system");
         return serviceRepository.findAll();
     }
 
+<<<<<<< HEAD
 
     /**
 	 * Updates the service information for the service with the given name.
@@ -187,4 +199,6 @@ public class ServiceService {
 
 
     
+=======
+>>>>>>> ea1e6dfd056e871e575557b37e51e46f7a1c33b7
 }

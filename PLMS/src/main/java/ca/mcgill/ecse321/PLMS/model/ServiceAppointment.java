@@ -4,6 +4,10 @@ package ca.mcgill.ecse321.PLMS.model;
 
 import java.sql.Date;
 import java.sql.Time;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 
 /**
@@ -35,8 +39,35 @@ public class ServiceAppointment
   @ManyToOne
   private MonthlyCustomer customer;
   @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Service service;
 
+  /**
+   * Service appointment constructor
+   * @param date - date of the appointment
+   * @param startTime - start time of the appointment
+   * @param endTime - end time of the appointment
+   */
+  public ServiceAppointment(Date date, Time startTime, Time endTime, Service service){
+    this.date = date;
+    this.startTime = startTime;
+    this.endTime = endTime;
+    this.service = service;
+  }
+
+  public ServiceAppointment(Date date, Time startTime, Time endTime, Service service, Employee employee, MonthlyCustomer customer){
+    this.date = date;
+    this.startTime = startTime;
+    this.endTime = endTime;
+    this.service = service;
+    this.employee = employee;
+    this.customer = customer;
+  }
+
+  /**
+   * Default constructor
+   */
+  public ServiceAppointment(){}
 
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS

@@ -1,5 +1,8 @@
 package ca.mcgill.ecse321.PLMS.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 
 /**
@@ -22,12 +25,11 @@ public class Floor
   private Integer floorNumber; // each floor is uniquely identified by its floor number
   private int largeSpotCapacity;
   private int smallSpotCapacity;
-  private int smallSpotCounter;
-  private int largeSpotCounter;
   private boolean isMemberOnly;
 
   // association to parking lot
   @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private ParkingLot parkingLot;
 
   
@@ -44,12 +46,10 @@ public class Floor
    * @param aSmallSpotCounter - number of small spots occupied on the floor
    * @param aLargeSpotCounter - number of large spots occupied on the floor
    */
-  public Floor(int aFloorNumber, int aLargeSpotCapacity, int aSmallSpotCapacity, int aSmallSpotCounter, int aLargeSpotCounter, boolean aIsMemberOnly){
+  public Floor(int aFloorNumber, int aLargeSpotCapacity, int aSmallSpotCapacity, boolean aIsMemberOnly){
     this.floorNumber = aFloorNumber;
     this.largeSpotCapacity = aLargeSpotCapacity;
     this.smallSpotCapacity = aSmallSpotCapacity;
-    this.smallSpotCounter = aSmallSpotCounter;
-    this.largeSpotCounter = aLargeSpotCounter;
     this.isMemberOnly = aIsMemberOnly;
   }
   //------------------------
@@ -80,22 +80,6 @@ public class Floor
     return wasSet;
   }
 
-  public boolean setSmallSpotCounter(int aSmallSpotCounter)
-  {
-    boolean wasSet = false;
-    smallSpotCounter = aSmallSpotCounter;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean setLargeSpotCounter(int aLargeSpotCounter)
-  {
-    boolean wasSet = false;
-    largeSpotCounter = aLargeSpotCounter;
-    wasSet = true;
-    return wasSet;
-  }
-
   public int getFloorNumber()
   {
     return floorNumber;
@@ -119,19 +103,6 @@ public class Floor
   public void setIsMemberOnly(boolean isMemberOnly)
   {
     this.isMemberOnly = isMemberOnly;
-  }
-
-  /**
-   * employees/owner increment these counts to keep track of vacancy
-   */
-  public int getSmallSpotCounter()
-  {
-    return smallSpotCounter;
-  }
-
-  public int getLargeSpotCounter()
-  {
-    return largeSpotCounter;
   }
 
   public boolean setParkingLot(ParkingLot aNewParkingLot)
@@ -158,8 +129,6 @@ public class Floor
     return super.toString() + "["+
             "floorNumber" + ":" + getFloorNumber()+ "," +
             "largeSpotCapacity" + ":" + getLargeSpotCapacity()+ "," +
-            "smallSpotCapacity" + ":" + getSmallSpotCapacity()+ "," +
-            "smallSpotCounter" + ":" + getSmallSpotCounter()+ "," +
-            "largeSpotCounter" + ":" + getLargeSpotCounter()+ "]";
+            "smallSpotCapacity" + ":" + getSmallSpotCapacity();
   }
 }

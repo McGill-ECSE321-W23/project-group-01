@@ -10,9 +10,6 @@ import static org.mockito.Mockito.when;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -36,25 +33,18 @@ public class FloorServiceTests {
     @InjectMocks
     private FloorService floorService;
 
-    @BeforeEach
-    @AfterEach
-    public void clearDataBase(){
-        floorRepository.deleteAll();
-
-        parkingLotRepository.deleteAll();
-    }
-
     
     @Test
+    /**
+     * test getting a valid floor from our database
+     */
     public void testGetValidFloor(){
       // set up a mock floor to be used by floor repo
       final int floorNumber = 1;
 		  final int smallSpotCapacity = 70;
       final int largeSpotCapacity = 25;
-      final int smallSpotCounter = 0;
-      final int largeSpotCounter = 0;
       final boolean isMemberOnly = false;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, isMemberOnly);
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
 
       // Call the component under test
@@ -65,11 +55,12 @@ public class FloorServiceTests {
       assertEquals(floorNumber, output.getFloorNumber());
       assertEquals(smallSpotCapacity, output.getSmallSpotCapacity());
       assertEquals(largeSpotCapacity, output.getLargeSpotCapacity());
-      assertEquals(largeSpotCounter, output.getLargeSpotCounter());
-      assertEquals(smallSpotCounter, output.getSmallSpotCounter());
     }
 
     @Test
+    /**
+     * test getting a floor that is not in the database
+     */
     public void testGetInvalidFloor(){
       final int invalidFloorNumber = 42;
 		  when(floorRepository.findFloorByFloorNumber(invalidFloorNumber)).thenReturn(null);
@@ -81,15 +72,29 @@ public class FloorServiceTests {
     }
 
     @Test
+    /**
+     * Test getting the floors when there are none in the database
+     */
+    public void testGetAllInvalidFloors(){
+      ArrayList<Floor> floors = new ArrayList<Floor>();
+      when(floorRepository.findAll()).thenReturn((Iterable<Floor>)floors);
+      PLMSException e = assertThrows(PLMSException.class,
+				() -> floorService.getAllFloors());
+		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+		assertEquals("There are no floors in the system", e.getMessage());
+    }
+
+    @Test
+    /**
+     * Test to create a valid floor object in the database
+     */
     public void testCreateValidFloor(){
       // set up a mock floor to be used by floor repo
       final int floorNumber = 1;
 		  final int smallSpotCapacity = 70;
       final int largeSpotCapacity = 25;
-      final int smallSpotCounter = 0;
-      final int largeSpotCounter = 0;
       final boolean isMemberOnly = false;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, isMemberOnly);
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(null);
 
       //Normal parameters
@@ -97,7 +102,8 @@ public class FloorServiceTests {
       Time closingTime = Time.valueOf("22:00:00");
       double smallSpotFee = 3.5;
       double largeSpotFee = 4.5;
-      double monthlyFlatFee = 150;
+      double smallSpotMonthlyFlatFee = 150;
+      double largeSpotMonthlyFlatFee = 150;
       int id = 10;
       ParkingLot parkingLot = new ParkingLot();
       //--------------------------------//
@@ -107,9 +113,10 @@ public class FloorServiceTests {
       parkingLot.setClosingTime(closingTime);
       parkingLot.setSmallSpotFee(smallSpotFee);
       parkingLot.setLargeSpotFee(largeSpotFee);
-      parkingLot.setMonthlyFlatFee(monthlyFlatFee);
+      parkingLot.setSmallSpotMonthlyFlatFee(smallSpotMonthlyFlatFee);
+      parkingLot.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
       parkingLot.setId(id);
-      // Configure the mock parkingLotRepository to return the mock ParkingLot object
+      // The parking lot repo should return a single parking lot
       when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
       when(floorRepository.save(floor)).thenReturn(floor);
       Floor output = floorService.createFloor(floor);
@@ -119,35 +126,33 @@ public class FloorServiceTests {
       assertEquals(floorNumber, output.getFloorNumber());
       assertEquals(smallSpotCapacity, output.getSmallSpotCapacity());
       assertEquals(largeSpotCapacity, output.getLargeSpotCapacity());
-      assertEquals(largeSpotCounter, output.getLargeSpotCounter());
-      assertEquals(smallSpotCounter, output.getSmallSpotCounter());
 
       // check to see that it was correctly assigned to the parking lot
       assertEquals(id, output.getParkingLot().getId());
       
-      // We also want to check that the service actually saved John in the database!
-      // personRepo.save() should be called exactly once
+      // check to see that we've actually saved the floor in the DB
       verify(floorRepository, times(1)).save(floor);
     }
 
     @Test
+    /**
+     * Test to create a floor with a duplicate floor number. Our system
+     * should not allow the owner to create duplicate floor numbers
+     */
     public void testCreateDuplicateFloor(){
       // set up a mock floor to be used by floor repo
       final int floorNumber = 1;
 		  final int smallSpotCapacity = 70;
       final int largeSpotCapacity = 25;
-      final int smallSpotCounter = 0;
-      final int largeSpotCounter = 0;
       final boolean isMemberOnly = false;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, isMemberOnly);
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
 		  final int smallSpotCapacity2 = 60;
       final int largeSpotCapacity2 = 5;
-      final int smallSpotCounter2 = 70;
-      final int largeSpotCounter2 = 1;
       final boolean isMemberOnly2 = true;
-      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2, isMemberOnly2);
+      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, isMemberOnly2);
 
+      // assert the correct error
       PLMSException e = assertThrows(PLMSException.class,
 				() -> floorService.createFloor(floor2));
 		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
@@ -156,17 +161,21 @@ public class FloorServiceTests {
     }
 
     @Test
+    /**
+     * Floors cannot be in the database if the base parking lot object
+     * has not yet been created.
+     */
     public void testCreateFloorWithoutParkingLot(){
       // set up a mock floor to be used by floor repo
       final int floorNumber = 1;
 		  final int smallSpotCapacity = 70;
       final int largeSpotCapacity = 25;
-      final int smallSpotCounter = 0;
-      final int largeSpotCounter = 0;
       final boolean isMemberOnly = false;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, isMemberOnly);
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(null);
       when(parkingLotRepository.findAll()).thenReturn(null);
+
+      // assert the error thrown
       PLMSException e = assertThrows(PLMSException.class,
 				() -> floorService.createFloor(floor));
 		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
@@ -174,27 +183,27 @@ public class FloorServiceTests {
     }
 
     @Test
+    /**
+     * Test to get multiple floors all at once from the service class
+     */
     public void testGetAllFloors(){
       final int floorNumber = 1;
 		  final int smallSpotCapacity = 70;
       final int largeSpotCapacity = 25;
-      final int smallSpotCounter = 0;
-      final int largeSpotCounter = 0;
       final boolean isMemberOnly = false;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, isMemberOnly);
 		  final int smallSpotCapacity2 = 60;
       final int largeSpotCapacity2 = 5;
-      final int smallSpotCounter2 = 70;
-      final int largeSpotCounter2 = 1;
       final boolean isMemberOnly2 = true;
-      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2, isMemberOnly2);
+      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, isMemberOnly2);
 
       //Normal parameters
       Time openingTime = Time.valueOf("6:00:00");
       Time closingTime = Time.valueOf("22:00:00");
       double smallSpotFee = 3.5;
       double largeSpotFee = 4.5;
-      double monthlyFlatFee = 150;
+      double smallSpotMonthlyFlatFee = 150;
+      double largeSpotMonthlyFlatFee = 150;
       int id = 10;
       ParkingLot parkingLot = new ParkingLot();
       //--------------------------------//
@@ -204,7 +213,8 @@ public class FloorServiceTests {
       parkingLot.setClosingTime(closingTime);
       parkingLot.setSmallSpotFee(smallSpotFee);
       parkingLot.setLargeSpotFee(largeSpotFee);
-      parkingLot.setMonthlyFlatFee(monthlyFlatFee);
+      parkingLot.setSmallSpotMonthlyFlatFee(smallSpotMonthlyFlatFee);
+      parkingLot.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
       parkingLot.setId(id);
       floor.setParkingLot(parkingLot);
       floor2.setParkingLot(parkingLot);
@@ -213,7 +223,7 @@ public class FloorServiceTests {
       floors.add(floor2);
 
       // perform get all floors
-      when(floorService.getAllFloors()).thenReturn(floors);
+      when(floorRepository.findAll()).thenReturn(floors);
       Iterable<Floor> output = floorService.getAllFloors();
       Floor floorOutput1 =  floors.iterator().next();
       Floor floorOutput2 = floors.iterator().next();
@@ -226,8 +236,6 @@ public class FloorServiceTests {
       assertEquals(floorNumber, floorOutput1.getFloorNumber());
       assertEquals(smallSpotCapacity, floorOutput1.getSmallSpotCapacity());
       assertEquals(largeSpotCapacity, floorOutput1.getLargeSpotCapacity());
-      assertEquals(largeSpotCounter, floorOutput1.getLargeSpotCounter());
-      assertEquals(smallSpotCounter, floorOutput1.getSmallSpotCounter());
 
       // check to see that it was correctly assigned to the parking lot
       assertEquals(id, floorOutput1.getParkingLot().getId());
@@ -237,8 +245,6 @@ public class FloorServiceTests {
       assertEquals(floorNumber, floorOutput2.getFloorNumber());
       assertEquals(smallSpotCapacity, floorOutput2.getSmallSpotCapacity());
       assertEquals(largeSpotCapacity, floorOutput2.getLargeSpotCapacity());
-      assertEquals(largeSpotCounter, floorOutput2.getLargeSpotCounter());
-      assertEquals(smallSpotCounter, floorOutput2.getSmallSpotCounter());
 
       // check to see that it was correctly assigned to the parking lot
       assertEquals(id, floorOutput2.getParkingLot().getId());
@@ -246,91 +252,54 @@ public class FloorServiceTests {
 
 
     @Test
+    /**
+     * Test to update a floor in our database
+     */
     public void updateValidFloor(){
       // create mock floors
       final int floorNumber = 1;
 		  final int smallSpotCapacity = 70;
       final int largeSpotCapacity = 25;
-      final int smallSpotCounter = 0;
-      final int largeSpotCounter = 0;
       final boolean isMemberOnly = false;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, isMemberOnly);
 		  final int smallSpotCapacity2 = 60;
       final int largeSpotCapacity2 = 5;
-      final int smallSpotCounter2 = 1;
-      final int largeSpotCounter2 = 1;
       final boolean isMemberOnly2 = true;
-      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2, isMemberOnly2);
+      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, isMemberOnly2);
 
       // load first floor into repo
       when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
       when(floorService.getFloorByFloorNumber(floorNumber)).thenReturn(floor);
       when(floorRepository.save(floor)).thenReturn(floor2);
       Floor updated = floorService.updateFloor(floor2);
-      System.out.println("Mock repository returned: " + floorRepository.findFloorByFloorNumber(floorNumber));
 
       // assert the newly updated floor values
       assertNotNull(updated);
       assertEquals(floorNumber, updated.getFloorNumber());
       assertEquals(smallSpotCapacity2, updated.getSmallSpotCapacity());
       assertEquals(largeSpotCapacity2, updated.getLargeSpotCapacity());
-      assertEquals(largeSpotCounter2, updated.getLargeSpotCounter());
-      assertEquals(smallSpotCounter2, updated.getSmallSpotCounter());
       assertEquals(isMemberOnly2, updated.getIsMemberOnly());
     }
 
     @Test
-    public void updateInvalidLargeSpotCounter(){
-      // create mock floors
+    /**
+     * Attempt to update a floor that doesn't already exist in the DB.
+     */
+    public void testInvalidUpdate(){
+      // create mock floors, with invalid small spot counter
       final int floorNumber = 1;
 		  final int smallSpotCapacity = 70;
       final int largeSpotCapacity = 25;
-      final int smallSpotCounter = 0;
-      final int largeSpotCounter = 0;
       final boolean isMemberOnly = false;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
-		  final int smallSpotCapacity2 = 60;
-      final int largeSpotCapacity2 = 5;
-      final int smallSpotCounter2 = 1;
-      final int largeSpotCounter2 = 50;
-      final boolean isMemberOnly2 = true;
-      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2, isMemberOnly2);
+      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, isMemberOnly);
 
-      when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
-      when(floorService.getFloorByFloorNumber(floorNumber)).thenReturn(floor);
-      when(floorRepository.save(floor)).thenReturn(floor2);
+      when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(null);
 
+      // assert the errors thrown
       PLMSException e = assertThrows(PLMSException.class,
-				() -> floorService.updateFloor(floor2));
-		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
-		assertEquals("The large spots occupied exceeds the capacity.", e.getMessage());
-    }
-
-    @Test
-    public void updateInvalidSmallSpotCounter(){
-      // create mock floors
-      final int floorNumber = 1;
-		  final int smallSpotCapacity = 70;
-      final int largeSpotCapacity = 25;
-      final int smallSpotCounter = 0;
-      final int largeSpotCounter = 0;
-      final boolean isMemberOnly = false;
-      final Floor floor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
-		  final int smallSpotCapacity2 = 60;
-      final int largeSpotCapacity2 = 5;
-      final int smallSpotCounter2 = 70;
-      final int largeSpotCounter2 = 1;
-      final boolean isMemberOnly2 = true;
-      final Floor floor2 = new Floor(floorNumber, largeSpotCapacity2, smallSpotCapacity2, smallSpotCounter2, largeSpotCounter2, isMemberOnly2);
-
-      when(floorRepository.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
-      when(floorService.getFloorByFloorNumber(floorNumber)).thenReturn(floor);
-      when(floorRepository.save(floor)).thenReturn(floor2);
-
-      PLMSException e = assertThrows(PLMSException.class,
-				() -> floorService.updateFloor(floor2));
-		assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
-		assertEquals("The small spots occupied exceeds the capacity.", e.getMessage());
+				() -> floorService.updateFloor(floor));
+		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+		assertEquals("Floor with floor number: " + floorNumber + " does not exist.", e.getMessage());
     }
 
 }

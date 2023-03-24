@@ -2,9 +2,9 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -43,7 +43,12 @@ public class ServiceAppointmentService {
   @Autowired
   EmployeeRepository employeeRepository;
 
-  // 1
+  /**
+   * Creates a service appointment. Checks for scheduling issues and assigns employee
+   * if there is one before saving in database
+   * @param serviceAppointment - appt to schedule
+   * @return - scheduled appt
+   */
   @Transactional
   public ServiceAppointment createServiceAppointment(ServiceAppointment serviceAppointment){
     // first calculate the end time of the service appointment by using the length of the appointment
@@ -57,25 +62,43 @@ public class ServiceAppointmentService {
     validateAppointmentHours(serviceAppointment.getStartTime(), serviceAppointment.getEndTime(), lot.getOpeningTime(), lot.getClosingTime());
 
     // we randomly assign employees, if there are any.
-    serviceAppointment.setEmployee(findEmployeeToAssignToAppointment());
+    serviceAppointment.setEmployee(findEmployeeToAssignToAppointment(serviceAppointment));
 
     ServiceAppointment appointment = serviceAppointmentRepo.save(serviceAppointment);
     return appointment;
   }
 
+  /**
+   * Find the end time of the appointment based on the length of the appointment
+   * @param startTime - start time of the appointment 
+   * @param serviceAppointment - appointment
+   * @return - the end time of the appointment
+   */
   public LocalTime findEndTime(LocalTime startTime, ServiceAppointment serviceAppointment){
     LocalTime localStartTime = serviceAppointment.getStartTime().toLocalTime();
-    LocalTime localEndTime = localStartTime.plusHours((long)Math.floor(serviceAppointment.getService().getLengthInHours()));
-    localEndTime.plusMinutes((long)(serviceAppointment.getService().getLengthInHours() - Math.floor(serviceAppointment.getService().getLengthInHours())));
+    int hours = (int) serviceAppointment.getService().getLengthInHours();
+    int minutes = (int) ((serviceAppointment.getService().getLengthInHours() - hours) * 60);
+    LocalTime localEndTime = localStartTime.plusHours(hours).plusMinutes(minutes);
     return localEndTime;
   }
 
-  // 2
+  /**
+   * Get all the service appointments in the entire database
+   * @return
+   */
   @Transactional
   public Iterable<ServiceAppointment> getAllServiceAppointments(){
+    ArrayList<ServiceAppointment> arrayList = (ArrayList<ServiceAppointment>) serviceAppointmentRepo.findAll();
+        if (arrayList.isEmpty())
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no service appointments in the system");
     return serviceAppointmentRepo.findAll();
   }
 
+  /**
+   * Get a service appointment based on the id.
+   * @param id - id of the appointment
+   * @return appt if it exists
+   */
   @Transactional
   public ServiceAppointment findServiceAppointmentById(int id){
     ServiceAppointment appointment = serviceAppointmentRepo.findServiceAppointmentById(id);
@@ -85,7 +108,11 @@ public class ServiceAppointmentService {
     return appointment;
   }
 
-  // 3
+  /**
+   * Find all the service appointments that are scheduled for a particular date.
+   * @param date - date for which we want to find appointments
+   * @return all appointments on that date, if there are any
+   */
   @Transactional
   public Iterable<ServiceAppointment> getAllServiceAppointmentsByDate(Date date){
     // first find all the appointments
@@ -106,7 +133,11 @@ public class ServiceAppointmentService {
     return appointmentsOnDate;
   }
 
-  // 4; we take in the employee's ID to find their appointments, which is their email
+  /**
+   * Find the all the service appointments for an employee
+   * @param employeeEmail - employee for which we want to find appointments
+   * @return all appointments for this employee, if there are any
+   */
   @Transactional
   public Iterable<ServiceAppointment> getAllServiceAppointmentsByEmployee(String employeeEmail){
     Iterable<ServiceAppointment> appointments = serviceAppointmentRepo.findAll();
@@ -129,7 +160,11 @@ public class ServiceAppointmentService {
     return appointmentsForEmployee;
   }
 
-  // 4; we take in the monthly customer's ID to find their appointments, which is their email
+  /**
+   * Find all the service appointments for a monthly customer, if there are any
+   * @param monthlyCustomerEmail - email of customer we want to find appointments for
+   * @return all appointments with the customer
+   */
   @Transactional
   public Iterable<ServiceAppointment> getAllServiceAppointmentsByMonthlyCustomer(String monthlyCustomerEmail){
     Iterable<ServiceAppointment> appointments = serviceAppointmentRepo.findAll();
@@ -152,7 +187,10 @@ public class ServiceAppointmentService {
     return appointmentsForCustomer;
   }
 
-  // 7: We are deleting appointment's by their ID
+  /**
+   * Delete a service appointment by an id.
+   * @param id
+   */
   @Transactional
   public void deleteServiceAppointmentById(int id){
     // first get the service appointment by id
@@ -168,6 +206,12 @@ public class ServiceAppointmentService {
     serviceAppointmentRepo.deleteById(id);
   }
 
+  /**
+   * Update a service appointment's attributes, based on the id of the appt.
+   * @param serviceAppointment - appointment to update
+   * @param id - id of the appt
+   * @return updated appt
+   */
   @Transactional
   public ServiceAppointment updateServiceAppointment(ServiceAppointment serviceAppointment, int id){
     // first calculate the end time of the service appointment by using the length of the appointment
@@ -189,31 +233,60 @@ public class ServiceAppointmentService {
     
 
     // we randomly assign employees, if there are any.
-    updatedAppointment.setEmployee(findEmployeeToAssignToAppointment());
+    updatedAppointment.setEmployee(findEmployeeToAssignToAppointment(updatedAppointment));
     ServiceAppointment appointment = serviceAppointmentRepo.save(updatedAppointment);
     return appointment;
   }
 
   /**
    * Method to find assigned employee to service appointment.
-   * Employees are assigned at random, since our application does not need to accomodate schedules (as per Marwan).
-   * @return
+   * Employees are assigned based on prior scheduling conflicts. We also allow for 
+   * appointments to have a null employee, as the user should be allowed to have access
+   * to scheduling appointments, regardless of whether employees are there. Marwan stated that scheduling is
+   * not a priority (we simply booked appointments and just assign an employee)
+   * @return - null if no employees to schedule, or an employee with no scheduling conflicts
    */
-  public Employee findEmployeeToAssignToAppointment(){
-    Iterable<Employee> employees = employeeRepository.findAll();
-    // for now, we won't restrict a user from booking an appointment if there aren't any employees
-    if (employees == null){
+  public Employee findEmployeeToAssignToAppointment(ServiceAppointment appointment){
+    ArrayList<Employee> employees = (ArrayList<Employee>)employeeRepository.findAll();
+    // we won't restrict a user from booking an appointment if there aren't any employees
+    if (employees.size() == 0){
       return null;
     }
-    // convert into an array list
-    ArrayList<Employee> employeeList = StreamSupport.stream(employees.spliterator(), false).collect(Collectors.toCollection(ArrayList::new));
+    ArrayList<ServiceAppointment> allAppts = (ArrayList<ServiceAppointment>) serviceAppointmentRepo.findAll();
+    // iterate over employees to find the first employee that has no scheduling conflict for the current appointment
+    for (Employee employee : employees){
+      // get all the appointments for the current employee
+      ArrayList<ServiceAppointment> appointmentsForEmployee = new ArrayList<>();
+      for(ServiceAppointment appt : allAppts){
+        if(appt.getEmployee() != null && appt.getEmployee().getEmail().equals(employee.getEmail())) appointmentsForEmployee.add(appt);
+      }
+      // now check for scheduling conflicts in all of their appointments
+      boolean hasConflictingAppointment = false;
+      for(ServiceAppointment appt : appointmentsForEmployee){
+        hasConflictingAppointment = isConflicting(appointment, appt);
+      }
+      if (!hasConflictingAppointment) return employee;
 
-    // find a random index, and select the employee at that index.
-    Random random = new Random();
-    int i = random.nextInt(employeeList.size());
-    Employee randomEmployee = employeeList.get(i);
-    return randomEmployee;
+    }
+    
+    return null;
   }
+
+  /**
+   * Function to check if two appointments have time overlap. Used for scheduling employees.
+   * @param appt1
+   * @param appt2
+   * @return
+   */
+  public boolean isConflicting(ServiceAppointment appt1, ServiceAppointment appt2) {
+    LocalDateTime start1 = LocalDateTime.of(appt1.getDate().toLocalDate(), appt1.getStartTime().toLocalTime());
+    LocalDateTime end1 = LocalDateTime.of(appt1.getDate().toLocalDate(), appt1.getEndTime().toLocalTime());
+
+    LocalDateTime start2 = LocalDateTime.of(appt1.getDate().toLocalDate(), appt1.getStartTime().toLocalTime());
+    LocalDateTime end2 = LocalDateTime.of(appt1.getDate().toLocalDate(), appt1.getEndTime().toLocalTime());
+    
+    return start1.isBefore(end2) && end1.isAfter(start1) || (start2.isBefore(end1) && end2.isAfter(start2));
+}
   /**
    * Helper method to find the single parking lot object
    * stored in the database. Throws exception if it isn't there.
@@ -222,7 +295,7 @@ public class ServiceAppointmentService {
   public ParkingLot parkingLotAddedToDatabase(){
     Iterable<ParkingLot> lots = parkingLotRepository.findAll();
     // if no lot in the system, we cannot book an appointment
-    if (lots == null){
+    if (!lots.iterator().hasNext()){
         throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot book appointment since the parking lot has not been created yet. Please try again at a later date.");
     }
     // return the parking lot

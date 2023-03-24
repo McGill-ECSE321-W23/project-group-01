@@ -4,7 +4,6 @@ package ca.mcgill.ecse321.PLMS.model;
 
 import java.sql.Time;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.FutureOrPresent;
 
 /**
  * Class that is part of the domain model of the Parking Lot Management System (PLMS)
@@ -27,7 +26,8 @@ public class ParkingLot
   private Time closingTime;
   private double largeSpotFee;
   private double smallSpotFee;
-  private double monthlyFlatFee;
+  private double smallSpotMonthlyFlatFee;
+  private double largeSpotMonthlyFlatFee;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
@@ -39,12 +39,13 @@ public class ParkingLot
   @SuppressWarnings("unused")
   public ParkingLot(){}
 
-  public ParkingLot(Time openingTime, Time closingTime, double largeSpotFee, double smallSpotFee, double monthlyFlatFee){
+  public ParkingLot(Time openingTime, Time closingTime, double largeSpotFee, double smallSpotFee, double smallSpotMonthlyFlatFee, double largeSpotMonthlyFlatFee){
     this.openingTime = openingTime;
     this.closingTime = closingTime;
     this.largeSpotFee = largeSpotFee;
     this.smallSpotFee = smallSpotFee;
-    this.monthlyFlatFee = monthlyFlatFee;
+    this.smallSpotMonthlyFlatFee = smallSpotMonthlyFlatFee;
+    this.largeSpotMonthlyFlatFee = largeSpotMonthlyFlatFee;
   }
 
   //------------------------
@@ -83,10 +84,18 @@ public class ParkingLot
     return wasSet;
   }
 
-  public boolean setMonthlyFlatFee(double aMonthlyFlatFee)
+  public boolean setSmallSpotMonthlyFlatFee(double aMonthlyFlatFee)
   {
     boolean wasSet = false;
-    monthlyFlatFee = aMonthlyFlatFee;
+    smallSpotMonthlyFlatFee = aMonthlyFlatFee;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setLargeSpotMonthlyFlatFee(double aMonthlyFlatFee)
+  {
+    boolean wasSet = false;
+    largeSpotMonthlyFlatFee = aMonthlyFlatFee;
     wasSet = true;
     return wasSet;
   }
@@ -119,9 +128,14 @@ public class ParkingLot
     return smallSpotFee;
   }
 
-  public double getMonthlyFlatFee()
+  public double getSmallSpotMonthlyFlatFee()
   {
-    return monthlyFlatFee;
+    return smallSpotMonthlyFlatFee;
+  }
+
+  public double getLargeSpotMonthlyFlatFee()
+  {
+    return largeSpotMonthlyFlatFee;
   }
 
   public int getId()
@@ -129,8 +143,42 @@ public class ParkingLot
     return id;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof ParkingLot)) return false;
+    if (o == null) return false;
 
- /**
+    ParkingLot that = (ParkingLot) o;
+
+    if (Double.compare(that.largeSpotFee, largeSpotFee) != 0) return false;
+    if (Double.compare(that.smallSpotFee, smallSpotFee) != 0) return false;
+    if (Double.compare(that.smallSpotMonthlyFlatFee, smallSpotMonthlyFlatFee) != 0) return false;
+    if (Double.compare(that.largeSpotMonthlyFlatFee, largeSpotMonthlyFlatFee) != 0) return false;
+    if (id != that.id) return false;
+    if (!openingTime.equals(that.openingTime)) return false;
+    return closingTime.equals(that.closingTime);
+  }
+
+  @Override
+  public int hashCode() {
+    int result;
+    long temp;
+    result = openingTime.hashCode();
+    result = 31 * result + closingTime.hashCode();
+    temp = Double.doubleToLongBits(largeSpotFee);
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    temp = Double.doubleToLongBits(smallSpotFee);
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    temp = Double.doubleToLongBits(smallSpotMonthlyFlatFee);
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    temp = Double.doubleToLongBits(largeSpotMonthlyFlatFee);
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    result = 31 * result + id;
+    return result;
+  }
+
+  /**
  * toString() helper method
  * Helpful for debugging
  */
@@ -139,7 +187,7 @@ public class ParkingLot
     return super.toString() + "["+
             "largeSpotFee" + ":" + getLargeSpotFee()+ "," +
             "smallSpotFee" + ":" + getSmallSpotFee()+ "," +
-            "monthlyFlatFee" + ":" + getMonthlyFlatFee()+ "," +
+            "smallSpotMonthlyFlatFee" + ":" + getSmallSpotMonthlyFlatFee()+ "," + "largeSpotMonthlyFlatFee" + ":" + getLargeSpotMonthlyFlatFee()+ "," +
             "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "openingTime" + "=" + (getOpeningTime() != null ? !getOpeningTime().equals(this)  ? getOpeningTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "closingTime" + "=" + (getClosingTime() != null ? !getClosingTime().equals(this)  ? getClosingTime().toString().replaceAll("  ","    ") : "this" : "null");

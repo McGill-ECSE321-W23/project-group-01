@@ -2,11 +2,14 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
+import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 
 @Service
 public class MonthlyCustomerService {
@@ -15,7 +18,11 @@ public class MonthlyCustomerService {
     MonthlyCustomerRepository monthlyCustomerRepository;
 
     @Transactional
-    public Iterable<MonthlyCustomer> getAllMonthlyCustomers() { return monthlyCustomerRepository.findAll(); }
+    public Iterable<MonthlyCustomer> getAllMonthlyCustomers() {
+        ArrayList<MonthlyCustomer> arrayList = (ArrayList<MonthlyCustomer>) monthlyCustomerRepository.findAll();
+        if (arrayList.isEmpty())
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no monthly customers in the system");
+        return monthlyCustomerRepository.findAll(); }
 
     @Transactional
     public MonthlyCustomer getMonthlyCustomerByEmail(String email) {
@@ -29,8 +36,10 @@ public class MonthlyCustomerService {
     @Transactional
     public MonthlyCustomer updateMonthlyCustomer(MonthlyCustomer monthlyCustomer)
     {
-        getMonthlyCustomerByEmail(monthlyCustomer.getEmail());
-        return monthlyCustomerRepository.save(monthlyCustomer);
+        MonthlyCustomer customer = getMonthlyCustomerByEmail(monthlyCustomer.getEmail());
+        customer.setName(monthlyCustomer.getName());
+        customer.setPassword(monthlyCustomer.getPassword());
+        return monthlyCustomerRepository.save(customer);
     }
 
     @Transactional

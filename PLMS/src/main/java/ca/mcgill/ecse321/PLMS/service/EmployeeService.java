@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 @Service
 public class EmployeeService {
 
@@ -15,7 +17,11 @@ public class EmployeeService {
     EmployeeRepository employeeRepository;
 
     @Transactional
-    public Iterable<Employee> getAllEmployees(){ return employeeRepository.findAll(); }
+    public Iterable<Employee> getAllEmployees(){
+        ArrayList<Employee> arrayList = (ArrayList<Employee>) employeeRepository.findAll();
+        if (arrayList.isEmpty())
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no employees in the system");
+        return employeeRepository.findAll(); }
 
     @Transactional
     public Employee getEmployeeByEmail(String email) {
@@ -29,20 +35,24 @@ public class EmployeeService {
     @Transactional
     public Employee updateEmployee(Employee employee)
     {
-        getEmployeeByEmail(employee.getEmail());
+        Employee e = getEmployeeByEmail(employee.getEmail());
         if(employee.getHourlyWage() <= 0)
-            throw new PLMSException(HttpStatus.NOT_FOUND, "Hourly wage must be strictly positive.");
-        return employeeRepository.save(employee);
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "Hourly wage must be positive.");
+        e.setHourlyWage(employee.getHourlyWage());
+        e.setPassword(employee.getPassword());
+        e.setJobTitle(employee.getJobTitle());
+        e.setName(employee.getName());
+        return employeeRepository.save(e);
     }
 
     @Transactional
     public Employee createEmployeeAccount(Employee employee) {
         if(employee.getHourlyWage() <= 0)
-            throw new PLMSException(HttpStatus.NOT_FOUND, "Hourly wage must be strictly positive.");
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "Hourly wage must be positive.");
         if (employeeRepository.findEmployeeByEmail(employee.getEmail()) == null)
             return employeeRepository.save(employee);
         else
-            throw new PLMSException(HttpStatus.CONFLICT, "Account with this email already exists");
+            throw new PLMSException(HttpStatus.CONFLICT, "Employee account with this email already exists");
     }
 
     @Transactional

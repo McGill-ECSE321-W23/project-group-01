@@ -25,7 +25,6 @@ public class GuestPass extends Pass
   private Date date;
   private Time startTime;
   private Time endTime;
-  private boolean isLarge;
 
 
   //------------------------
@@ -56,13 +55,6 @@ public class GuestPass extends Pass
     return wasSet;
   }
 
-  public boolean setIsLarge(boolean aIsLarge)
-  {
-    boolean wasSet = false;
-    isLarge = aIsLarge;
-    wasSet = true;
-    return wasSet;
-  }
 
   public Date getDate()
   {
@@ -79,15 +71,6 @@ public class GuestPass extends Pass
     return endTime;
   }
 
-  public boolean getIsLarge()
-  {
-    return isLarge;
-  }
-  /* Code from template attribute_IsBoolean */
-  public boolean isIsLarge()
-  {
-    return isLarge;
-  }
 
  /**
  * toString() helper method

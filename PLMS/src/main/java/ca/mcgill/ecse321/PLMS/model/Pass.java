@@ -1,5 +1,8 @@
 package ca.mcgill.ecse321.PLMS.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 
 /**
@@ -26,9 +29,11 @@ public abstract class Pass
   private int id;
   private String licensePlate;
   private String confirmationCode;
+  private boolean isLarge;
 
   //Pass Associations
   @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Floor floor;
 
 
@@ -108,6 +113,19 @@ public abstract class Pass
   {
     boolean wasSet = false;
     floor = aNewFloor;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean getIsLarge()
+  {
+    return isLarge;
+  }
+
+  public boolean setIsLarge(boolean aIsLarge)
+  {
+    boolean wasSet = false;
+    isLarge = aIsLarge;
     wasSet = true;
     return wasSet;
   }
