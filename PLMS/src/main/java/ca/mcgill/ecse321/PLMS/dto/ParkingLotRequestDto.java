@@ -15,18 +15,22 @@ public class ParkingLotRequestDto {
   @NotNull(message = "Closing time must not be null.")
   private Time closingTime;
 
+  @NotNull(message = "Large spot fee must not be null.")
   @PositiveOrZero(message = "Large spot fee must be non-negative.")
   private Double largeSpotFee;
 
+  @NotNull(message = "Small spot fee must not be null.")
   @PositiveOrZero(message = "Small spot fee must be non-negative.")
   private Double smallSpotFee;
 
+  @NotNull(message = "Monthly flat fee must not be null.")
   @PositiveOrZero(message = "Small spot monthly flat fee must be non-negative.")
   private Double smallSpotMonthlyFlatFee;
 
+  @NotNull(message = "Monthly flat fee must not be null.")
   @PositiveOrZero(message = "Large spot monthly flat fee must be non-negative.")
   private Double largeSpotMonthlyFlatFee;
-	
+
 	public void setOpeningTime(Time openingTime) {
 
         this.openingTime = openingTime;
@@ -36,19 +40,19 @@ public class ParkingLotRequestDto {
 		this.closingTime = closingTime;
 	}
 
-    public void setLargeSpotFee(double largeSpotFee) {
+    public void setLargeSpotFee(Double largeSpotFee) {
 		this.largeSpotFee = largeSpotFee;
 	}
 
-    public void setSmallSpotFee(double smallSpotFee) {
+    public void setSmallSpotFee(Double smallSpotFee) {
 		this.smallSpotFee = smallSpotFee;
 	}
 
-    public void setSmallSpotMonthlyFlatFee(double smallSpotMonthlyFlatFee) {
+    public void setSmallSpotMonthlyFlatFee(Double smallSpotMonthlyFlatFee) {
 		this.smallSpotMonthlyFlatFee = smallSpotMonthlyFlatFee;
 	}
 
-  public void setLargeSpotMonthlyFlatFee(double largeSpotMonthlyFlatFee) {
+  public void setLargeSpotMonthlyFlatFee(Double largeSpotMonthlyFlatFee) {
 		this.largeSpotMonthlyFlatFee = largeSpotMonthlyFlatFee;
 	}
 
@@ -56,13 +60,13 @@ public class ParkingLotRequestDto {
 
     public Time getClosingTime() { return closingTime; }
 
-    public double getLargeSpotFee() { return largeSpotFee;}
+    public Double getLargeSpotFee() { return largeSpotFee;}
 
-    public double getSmallSpotFee() { return smallSpotFee; }
+    public Double getSmallSpotFee() { return smallSpotFee; }
 
-    public double getSmallSpotMonthlyFlatFee() { return smallSpotMonthlyFlatFee; }
+    public Double getSmallSpotMonthlyFlatFee() { return smallSpotMonthlyFlatFee; }
 
-    public double getLargeSpotMonthlyFlatFee() { return largeSpotMonthlyFlatFee; }
+    public Double getLargeSpotMonthlyFlatFee() { return largeSpotMonthlyFlatFee; }
 
     public ParkingLot toModel() {
     ParkingLot p = new ParkingLot(openingTime, closingTime, largeSpotFee, smallSpotFee, smallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee);

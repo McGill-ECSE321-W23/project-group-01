@@ -21,11 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import ca.mcgill.ecse321.PLMS.dto.ParkingLotRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.ParkingLotResponseDto;
+import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 
@@ -168,6 +171,12 @@ public class ParkingLotIntegrationTest {
 
 		// Save the ID so that later tests can use it
 		fixture.setId(response.getBody().getId());
+        fixture.setClosingTime(response.getBody().getClosingTime());
+        fixture.setOpeningTime(response.getBody().getOpeningTime());
+        fixture.setSmallSpotFee(response.getBody().getSmallSpotFee());
+        fixture.setLargeSpotFee(response.getBody().getLargeSpotFee());
+        fixture.setSmallSpotMonthlyFlatFee(response.getBody().getSmallSpotMonthlyFlatFee());
+        fixture.setLargeSpotMonthlyFlatFee(response.getBody().getLargeSpotMonthlyFlatFee());
 	}
 
     @Test
@@ -182,7 +191,7 @@ public class ParkingLotIntegrationTest {
         assertContains("Closing time must not be null.", response.getBody());
         assertContains("Large spot fee must not be null.", response.getBody());
         assertContains("Small spot fee must not be null.", response.getBody());
-        assertContains("monthly flat fee must not be null.", response.getBody());
+        assertContains("Monthly flat fee must not be null.", response.getBody());
 	}
 
     @Test
@@ -195,6 +204,7 @@ public class ParkingLotIntegrationTest {
         request.setLargeSpotMonthlyFlatFee(-3.3);
         request.setSmallSpotFee(-32.3);
         request.setLargeSpotMonthlyFlatFee(-32.3);
+        request.setSmallSpotMonthlyFlatFee(-32.3);
 
 		ResponseEntity<String> response = client.postForEntity("/parkingLot/creation", request, String.class);
 
@@ -210,7 +220,7 @@ public class ParkingLotIntegrationTest {
 	public void testCreateAnotherParkingLot() {
 		ParkingLotRequestDto request = new ParkingLotRequestDto();
 
-        Time openingTime = new Time(5,0,0);
+        Time openingTime = new Time(1,0,0);
         Time closingTime = new Time(2, 0, 0);
         double largeSpotFee = 42;
         double smallSpotFee = 54;
@@ -230,7 +240,7 @@ public class ParkingLotIntegrationTest {
 		assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         ArrayList<ParkingLot> parkingLots = (ArrayList<ParkingLot>) parkingLotRepository.findAll();
 		assertEquals(1, parkingLots.size());
-        assertEquals(fixture.getId(), parkingLots.get(0));
+        assertEquals(fixture.getId(), parkingLots.get(0).getId());
         assertContains("Parking Lot already exists", response.getBody());
 	}
 
@@ -238,9 +248,7 @@ public class ParkingLotIntegrationTest {
 	@Test
 	@Order(5)
 	public void testGetParkingLot() {
-		int id = fixture.getId();
-
-		ResponseEntity<ParkingLotResponseDto> response = client.getForEntity("/parkingLot" + id, ParkingLotResponseDto.class);
+		ResponseEntity<ParkingLotResponseDto> response = client.getForEntity("/parkingLot", ParkingLotResponseDto.class);
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertNotNull(response.getBody());
@@ -272,8 +280,8 @@ public class ParkingLotIntegrationTest {
         request.setSmallSpotMonthlyFlatFee(smallSpotMonthlyFlatFee);
         request.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
 
-
-		ResponseEntity<ParkingLotResponseDto> response = client.postForEntity("/parkingLot/update", request, ParkingLotResponseDto.class);
+        HttpEntity<ParkingLotRequestDto> requestEntity = new HttpEntity<>(request);
+		ResponseEntity<ParkingLotResponseDto> response = client.exchange("/parkingLot/update", HttpMethod.PUT, requestEntity, ParkingLotResponseDto.class);
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertNotNull(response.getBody());
@@ -286,35 +294,15 @@ public class ParkingLotIntegrationTest {
 		assertEquals(fixture.getId(), response.getBody().getId());
 	}
 
-    // @Test
-	// @Order(7)
-	// public void testUpdateOpeningClosingParkingLot() {
-
-    //     Time openingTime = new Time(2,0,0);
-    //     Time closingTime = new Time(6, 0, 0);
-
-	// 	ParkingLotRequestDto request = new ParkingLotRequestDto();
-	// 	request.setOpeningTime(openingTime);
-	// 	request.setClosingTime(closingTime);
-    //     request.setLargeSpotFee(largeSpotFee);
-    //     request.setSmallSpotFee(smallSpotFee);
-    //     request.setSmallSpotMonthlyFlatFee(smallSpotMonthlyFlatFee);
-    //     request.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
-
-	// 	ResponseEntity<ParkingLotResponseDto> response = client.putForEntity("/parkingLot/update/opening/{openingTime}/closing/{closingTime}", ParkingLotResponseDto.class);
-
-	// 	assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-	// }
-
     @Test
-	@Order(8)
+	@Order(7)
 	public void testInvalidUpdateParkingLot() {
 
         Time openingTime = new Time(2,0,0);
         Time closingTime = new Time(6, 0, 0);
-        double largeSpotFee = -5;
+        double largeSpotFee = -5.0;
         double smallSpotFee = 6;
-        double smallSpotMonthlyFlatFee = -7;
+        double smallSpotMonthlyFlatFee = -7.0;
         double largeSpotMonthlyFlatFee = 10;
 
 		ParkingLotRequestDto request = new ParkingLotRequestDto();
@@ -325,7 +313,8 @@ public class ParkingLotIntegrationTest {
         request.setSmallSpotMonthlyFlatFee(smallSpotMonthlyFlatFee);
         request.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
 
-		ResponseEntity<String> response = client.postForEntity("/parkingLot/update", request, String.class);
+		HttpEntity<ParkingLotRequestDto> requestEntity = new HttpEntity<>(request);
+		ResponseEntity<String> response = client.exchange("/parkingLot/update", HttpMethod.PUT, requestEntity, String.class);
 
 		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 	}
