@@ -392,7 +392,6 @@ public class MonthlyPassServiceTests {
     @Test
     public void testGetInvalidMonthlyPassesByMonthlyCustomer2(){
         
-    
         String email = "rick.roll@gmail.com";
         String password = "intelliJLover123";
         String name = "Samer Abdulkarim";
@@ -428,7 +427,61 @@ public class MonthlyPassServiceTests {
         PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByMonthlyCustomer(email2));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
         assertEquals(e.getMessage(), "There are no monthly passes for " + monthlyCustomer2.getEmail());
+        
     }
+
+    @Test
+    public void testGetMonthlyPassesByFloor(){
+      
+      String email = "rick.roll@gmail.com";
+      String password = "intelliJLover123";
+      String name = "Samer Abdulkarim";
+      MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
+      monthlyCustomer.setEmail(email);
+      monthlyCustomer.setPassword(password);
+      monthlyCustomer.setName(name);
+        
+      MonthlyPass monthlyPass = new MonthlyPass();
+      monthlyPass.setFee(fee);
+      monthlyPass.setSpotNumber(spotNumber);
+      monthlyPass.setConfirmationCode(confirmationCode);
+      monthlyPass.setIsLarge(isLarge);
+      monthlyPass.setStartDate(startDate);
+      monthlyPass.setEndDate(endDate);
+      monthlyPass.setLicensePlate(licensePlate);
+      monthlyPass.setCustomer(monthlyCustomer);
+
+      MonthlyPass monthlyPass2 = new MonthlyPass();
+      monthlyPass2.setFee(fee2);
+      monthlyPass2.setSpotNumber(spotNumber2);
+      monthlyPass2.setConfirmationCode(confirmationCode2);
+      monthlyPass2.setIsLarge(isLarge2);
+      monthlyPass2.setStartDate(startDate2);
+      monthlyPass2.setEndDate(endDate2);
+      monthlyPass2.setLicensePlate(licensePlate2);
+      monthlyPass2.setCustomer(monthlyCustomer);
+
+      Floor floor = new Floor();
+      floor.setFloorNumber(1);
+      Floor floor2 = new Floor();
+      floor2.setFloorNumber(2);
+
+      monthlyPass.setFloor(floor);
+      monthlyPass2.setFloor(floor2);
+      ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
+      monthlyPasses.add(monthlyPass);
+      monthlyPasses.add(monthlyPass2);
+      
+      when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+      when(floorRepo.findFloorByFloorNumber(1)).thenReturn(floor);
+
+      ArrayList<MonthlyPass> output = (ArrayList<MonthlyPass>) monthlyPassService.getMonthlyPassesByFloor(1);
+      Iterator<MonthlyPass> i = output.iterator();
+      MonthlyPass outputMonthlyPass = i.next();
+      assertEquals(output.size(), 1);
+      assertEquals(outputMonthlyPass.getFloor().getFloorNumber(), 1);
+    }
+
 
     
 
