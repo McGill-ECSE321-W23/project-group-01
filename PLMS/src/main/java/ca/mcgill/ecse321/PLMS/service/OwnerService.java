@@ -11,6 +11,7 @@ import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Service class for the Account model objects in the database
@@ -24,9 +25,10 @@ public class OwnerService {
 
     @Transactional
     public Iterable<Owner> getAllOwners() {
-        ArrayList<Owner> arrayList = (ArrayList<Owner>) ownerRepository.findAll();
-        if (arrayList.isEmpty())
-            throw new PLMSException(HttpStatus.NO_CONTENT, "There are no owners in the system");
+        Iterable<Owner> owners = ownerRepository.findAll();
+        Iterator<Owner> iterator = owners.iterator();
+        if (!iterator.hasNext())
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no owners in the system");
         return ownerRepository.findAll(); }
 
     @Transactional
@@ -43,7 +45,7 @@ public class OwnerService {
     {
         Owner o = getOwnerByEmail(owner.getEmail());
         o.setPassword(owner.getPassword());
-        o.setName(owner.getEmail());
+        o.setName(owner.getName());
         return ownerRepository.save(o);
 
     }

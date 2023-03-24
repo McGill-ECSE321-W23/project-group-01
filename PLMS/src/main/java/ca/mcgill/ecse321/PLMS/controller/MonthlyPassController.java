@@ -1,9 +1,5 @@
 package ca.mcgill.ecse321.PLMS.controller;
 
-<<<<<<< miscellaneous-fixes
-=======
-import java.util.Date;
->>>>>>> main
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
