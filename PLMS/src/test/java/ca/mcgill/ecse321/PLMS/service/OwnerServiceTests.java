@@ -4,8 +4,6 @@ import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Employee;
 import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -81,9 +79,6 @@ public class OwnerServiceTests {
     public void testGetOwnerByInvalidEmail()
     {
         final String email = "jane.doe@mcgill.ca";
-        final String password = "JohnDoe2002";
-        final String name = "John Doe";
-        final Owner john = new Owner(email, password, name);
         when(ownerRepository.findOwnerByEmail(email)).thenReturn(null);
 
         PLMSException e = assertThrows(PLMSException.class, () -> ownerService.getOwnerByEmail(email));

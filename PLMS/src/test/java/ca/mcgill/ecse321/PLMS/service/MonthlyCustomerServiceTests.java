@@ -4,9 +4,6 @@ import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
-import org.aspectj.lang.annotation.After;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -15,7 +12,6 @@ import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
@@ -85,9 +81,6 @@ public class MonthlyCustomerServiceTests {
     public void testGetMonthlyCustomerByInvalidEmail()
     {
         final String email = "jane.doe@mcgill.ca";
-        final String password = "JohnDoe2002";
-        final String name = "John Doe";
-        final MonthlyCustomer john = new MonthlyCustomer(email, password, name);
         when(monthlyCustomerRepository.findMonthlyCustomerByEmail(email)).thenReturn(null);
 
         PLMSException e = assertThrows(PLMSException.class, () -> monthlyCustomerService.getMonthlyCustomerByEmail(email));

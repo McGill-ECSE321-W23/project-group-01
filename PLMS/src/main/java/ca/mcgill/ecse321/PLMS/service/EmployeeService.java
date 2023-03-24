@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Employee;
-import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,7 @@ public class EmployeeService {
     public Iterable<Employee> getAllEmployees(){
         ArrayList<Employee> arrayList = (ArrayList<Employee>) employeeRepository.findAll();
         if (arrayList.isEmpty())
-            throw new PLMSException(HttpStatus.NO_CONTENT, "There are no employees in the system");
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no employees in the system");
         return employeeRepository.findAll(); }
 
     @Transactional
