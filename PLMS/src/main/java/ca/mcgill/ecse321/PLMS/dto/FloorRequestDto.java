@@ -29,9 +29,6 @@ public class FloorRequestDto {
     floor.setFloorNumber(this.floorNumber);
     floor.setSmallSpotCapacity(this.smallSpotCapacity);
     floor.setLargeSpotCapacity(this.largeSpotCapacity);
-    // initialize counters to zero. These will get incremented with each pass that is registered to a floor
-    floor.setSmallSpotCounter(0);
-    floor.setLargeSpotCounter(0);
     return floor;
   }
 

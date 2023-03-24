@@ -2,8 +2,11 @@ package ca.mcgill.ecse321.PLMS.dto;
 
 
 import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.Date;
 
 
 public class MonthlyPassRequestDto {
@@ -29,15 +32,20 @@ public class MonthlyPassRequestDto {
     @NotNull(message = "Must specify whether the pass is for a small or large car")
     private Boolean isLarge;
 
+    @NotNull(message = "Start date cannot be null")
+    @FutureOrPresent(message = "Start date must be equal or greater than current date")
+    private Date startDate;
+
+
     // this is allowed to be null, as you don't need an account to register
     private String customerEmail;
+
 
 
 
     /**
      * Constructor for creating a monthly pass request transfer object by using the fields of 
      * a monthlypass object.
-     * @param monthlypass - monthly pass to turn into a request transfer object
      */
 
 
@@ -80,4 +88,17 @@ public class MonthlyPassRequestDto {
     public void setCustomerEmail(String customerEmail){
         this.customerEmail = customerEmail;
     }
+
+    public Integer getNumberOfMonths() {
+        return numberOfMonths;
+    }
+
+    public Integer getFloorNumber() {
+        return floorNumber;
+    }
+
+    public String getCustomerEmail(){
+        return this.customerEmail;
+    }
+
 }

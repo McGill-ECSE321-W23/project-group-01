@@ -1,5 +1,8 @@
 package ca.mcgill.ecse321.PLMS.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 
 /**
@@ -30,6 +33,7 @@ public abstract class Pass
 
   //Pass Associations
   @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Floor floor;
 
 

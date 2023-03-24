@@ -4,6 +4,10 @@ package ca.mcgill.ecse321.PLMS.model;
 
 import java.sql.Date;
 import java.sql.Time;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 
 /**
@@ -35,6 +39,7 @@ public class ServiceAppointment
   @ManyToOne
   private MonthlyCustomer customer;
   @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Service service;
 
   /**
