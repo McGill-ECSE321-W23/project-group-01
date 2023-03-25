@@ -285,7 +285,7 @@ public class ServiceAppointmentService {
     LocalDateTime start2 = LocalDateTime.of(appt2.getDate(), appt2.getStartTime().toLocalTime());
     LocalDateTime end2 = LocalDateTime.of(appt2.getDate(), appt2.getEndTime().toLocalTime());
     
-    return start1.isBefore(end2) && end1.isAfter(start1) || (start2.isBefore(end1) && end2.isAfter(start2));
+    return start1.isBefore(end2) && end1.isAfter(start2) || (start2.isBefore(end1) && end2.isAfter(start1));
 }
   /**
    * Helper method to find the single parking lot object
