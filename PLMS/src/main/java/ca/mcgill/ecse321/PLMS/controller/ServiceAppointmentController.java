@@ -150,7 +150,7 @@ public class ServiceAppointmentController {
         ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(service, monthlyCustomer);
         serviceAppointment = serviceAppointmentService.updateServiceAppointment(serviceAppointment, id);
         ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
-        return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.CREATED);
+        return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.OK);
       }
       
       /**

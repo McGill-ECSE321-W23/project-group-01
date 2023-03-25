@@ -225,6 +225,7 @@ public class ServiceAppointmentService {
     updatedAppointment.setEndTime(Time.valueOf(localEndTime));
     updatedAppointment.setDate(serviceAppointment.getDate());
     updatedAppointment.setId(id);
+    updatedAppointment.setService(serviceAppointment.getService());
     // check for the parking lot in the database, if it doesn't exist yet we cannot create the appointment
     ParkingLot lot = parkingLotAddedToDatabase();
 

@@ -415,16 +415,81 @@ public class ServiceAppointmentIntegrationTest {
         assertContains("There are no service appointments for employee invalid@email.invalid" , response.getBody());
     }
 
-    // //6: Get all the appointment with a customer email
-    // @Test
-    // @Order(15)
-    // public void testGetAllServiceAppointmentsWithCustomerEmail(){
+    //6: Get all the appointment with a customer email
+    @Test
+    @Order(15)
+    public void testGetAllServiceAppointmentsWithCustomerEmail(){
+        ResponseEntity<List> response = client.getForEntity("/serviceAppointment/customer/"+FixedServiceAppointment.validMonthlyCustomer.getEmail(), List.class);
 
-    // }
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
 
-    // //6.a: Try getting all appointments at an invalid customer email
-    // @Test
-    // @Order(16)
+        List<Map<String, Object>> responseBody = response.getBody();
+        
+        assertEquals(1, responseBody.size());
+
+        assertEquals(FixedServiceAppointment.validDate.toString(), responseBody.get(0).get("date"));
+        assertEquals(FixedServiceAppointment.validTime.toString(), responseBody.get(0).get("startTime"));
+        assertEquals(findEndTime(FixedServiceAppointment.validTime.toLocalTime(), FixedServiceAppointment.validService).toString(), responseBody.get(0).get("endTime"));
+        assertEquals(FixedServiceAppointment.validMonthlyCustomer.getEmail(), responseBody.get(0).get("customerEmail"));
+        assertEquals(FixedServiceAppointment.validEmployee.getEmail(), responseBody.get(0).get("employeeEmail"));
+        assertEquals(FixedServiceAppointment.validService.getServiceName(), responseBody.get(0).get("serviceName"));
+        assertEquals(FixedServiceAppointment.id1, responseBody.get(0).get("id"));
+    }
+
+    //6.a: Try getting all appointments at an invalid customer email
+    @Test
+    @Order(16)
+    public void testGetAllServiceAppointmentsWithInvalidCustomerEmail(){
+        ResponseEntity<String> response = client.getForEntity("/serviceAppointment/customer/invalid@email.invalid", String.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+        assertContains("There are no service appointments for customer invalid@email.invalid" , response.getBody());
+    }
+
+    //7: Modify the 0 appointment to have new valid parameters with same date and customer email
+    @Test
+    @Order(17)
+    public void testModifyAppointmentWithValidParameters(){
+        ServiceAppointmentRequestDto request = FixedServiceAppointment.createValidRequestDto();
+        request.setDate(FixedServiceAppointment.validDate2);
+        request.setStartTime(FixedServiceAppointment.validTime2);
+        request.setServiceName(FixedServiceAppointment.validService2.getServiceName());
+        request.setUserEmail(null);
+
+        HttpEntity<ServiceAppointmentRequestDto> requestEntity = new HttpEntity<>(request);
+        
+        ResponseEntity<ServiceAppointmentResponseDto> response = client.exchange("/serviceAppointment/"+FixedServiceAppointment.id1, HttpMethod.PUT, requestEntity , ServiceAppointmentResponseDto.class);
+        
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+
+        assertEquals(FixedServiceAppointment.validDate2, response.getBody().getDate());
+        assertEquals(FixedServiceAppointment.validTime2, response.getBody().getStartTime());
+        assertEquals(findEndTime(FixedServiceAppointment.validTime2.toLocalTime(), FixedServiceAppointment.validService2), response.getBody().getEndTime());
+        assertEquals(FixedServiceAppointment.validMonthlyCustomer.getEmail(), response.getBody().getCustomerEmail());
+        assertEquals(null, response.getBody().getEmployeeEmail());
+        assertEquals(FixedServiceAppointment.validService2.getServiceName(), response.getBody().getServiceName());
+        assertEquals(FixedServiceAppointment.id1, response.getBody().getId());
+    }
+
+    //7.a : Try modifying a service appointment with null parameters
+    @Test
+    @Order(18)
+    public void testModifyAppointmentWithNullParameters(){
+        ServiceAppointmentRequestDto request = new ServiceAppointmentRequestDto();
+
+        HttpEntity<ServiceAppointmentRequestDto> requestEntity = new HttpEntity<>(request);
+        
+        ResponseEntity<String> response = client.exchange("/serviceAppointment/"+FixedServiceAppointment.id1, HttpMethod.PUT, requestEntity , String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        assertContains("Cannot have an empty date." , response.getBody());
+        assertContains("Cannot have an empty start time." , response.getBody());
+        assertContains("Cannot have an empty service name." , response.getBody());
+    }
 
     private void assertContains(String expected, String actual) {
 		String assertionMessage = String.format("Error message ('%s') contains '%s'.", actual, expected);
