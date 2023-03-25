@@ -23,6 +23,10 @@ public class OwnerService {
     @Autowired
     OwnerRepository ownerRepository;
 
+    /**
+     *
+     * @return
+     */
     @Transactional
     public Iterable<Owner> getAllOwners() {
         Iterable<Owner> owners = ownerRepository.findAll();
@@ -31,6 +35,11 @@ public class OwnerService {
             throw new PLMSException(HttpStatus.NOT_FOUND, "There are no owners in the system");
         return ownerRepository.findAll(); }
 
+    /**
+     *
+     * @param email
+     * @return
+     */
     @Transactional
     public Owner getOwnerByEmail(String email) {
         Owner owner = ownerRepository.findOwnerByEmail(email);
@@ -40,6 +49,11 @@ public class OwnerService {
         return owner;
     }
 
+    /**
+     *
+     * @param owner
+     * @return
+     */
     @Transactional
     public Owner updateOwnerAccount(Owner owner)
     {
@@ -50,6 +64,11 @@ public class OwnerService {
 
     }
 
+    /**
+     *
+     * @param owner
+     * @return
+     */
     @Transactional
 	public Owner createOwnerAccount(Owner owner) {
         // Register the owner account into database

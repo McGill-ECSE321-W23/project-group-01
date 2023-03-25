@@ -14,9 +14,14 @@ import java.util.ArrayList;
 @Service
 public class MonthlyCustomerService {
 
+
     @Autowired
     MonthlyCustomerRepository monthlyCustomerRepository;
 
+    /**
+     *
+     * @return
+     */
     @Transactional
     public Iterable<MonthlyCustomer> getAllMonthlyCustomers() {
         ArrayList<MonthlyCustomer> arrayList = (ArrayList<MonthlyCustomer>) monthlyCustomerRepository.findAll();
@@ -24,6 +29,11 @@ public class MonthlyCustomerService {
             throw new PLMSException(HttpStatus.NOT_FOUND, "There are no monthly customers in the system");
         return monthlyCustomerRepository.findAll(); }
 
+    /**
+     *
+     * @param email
+     * @return
+     */
     @Transactional
     public MonthlyCustomer getMonthlyCustomerByEmail(String email) {
         MonthlyCustomer monthlyCustomer = monthlyCustomerRepository.findMonthlyCustomerByEmail(email);
@@ -33,6 +43,11 @@ public class MonthlyCustomerService {
         return monthlyCustomer;
     }
 
+    /**
+     *
+     * @param monthlyCustomer
+     * @return
+     */
     @Transactional
     public MonthlyCustomer updateMonthlyCustomer(MonthlyCustomer monthlyCustomer)
     {
@@ -42,6 +57,11 @@ public class MonthlyCustomerService {
         return monthlyCustomerRepository.save(customer);
     }
 
+    /**
+     *
+     * @param monthlyCustomer
+     * @return
+     */
     @Transactional
     public MonthlyCustomer createMonthlyCustomerAccount(MonthlyCustomer monthlyCustomer) {
         // Create the account

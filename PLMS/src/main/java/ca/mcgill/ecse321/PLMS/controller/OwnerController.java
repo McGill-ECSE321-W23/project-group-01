@@ -23,7 +23,6 @@ public class OwnerController {
      * Returns a list of all owners
      * @return all owners
      */
-
     @GetMapping("/owners")
     public Iterable<OwnerResponseDto> getAllOwners() {
         return StreamSupport.stream(ownerService.getAllOwners().spliterator(), false).map(OwnerResponseDto::new).collect(Collectors.toList());
@@ -34,7 +33,6 @@ public class OwnerController {
      * Pass in an arguments by using /owner={email}
      * @return the owner with Email, Password, Name
      */
-
     @GetMapping(value = {"/owner", "/owner/"})
     public ResponseEntity<OwnerResponseDto> getOwnerByEmail(@RequestParam String email) {
         return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(ownerService.getOwnerByEmail(email)), HttpStatus.OK);
@@ -45,7 +43,6 @@ public class OwnerController {
      *
      * @return the dto response of the new owner
      */
-
     @PostMapping("/owner/create")
     public ResponseEntity<OwnerResponseDto> createOwner(@Valid @RequestBody OwnerRequestDto ownerRequest)
     {
@@ -54,6 +51,11 @@ public class OwnerController {
         return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(owner), HttpStatus.CREATED); //3. You mask the model by returning a Response
     }
 
+    /**
+     *
+     * @param ownerRequest
+     * @return
+     */
     @PutMapping("/owner/update")
     public ResponseEntity<OwnerResponseDto> updateOwner(@Valid @RequestBody OwnerRequestDto ownerRequest) {
 

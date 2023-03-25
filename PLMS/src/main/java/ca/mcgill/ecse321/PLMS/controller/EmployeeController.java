@@ -24,7 +24,6 @@ public class EmployeeController {
      * Returns a list of all Employees
      * @return all Employees
      */
-
     @GetMapping("/employees")
     public Iterable<EmployeeResponseDto> getAllEmployees() {
         return StreamSupport.stream(employeeService.getAllEmployees().spliterator(), false).map(EmployeeResponseDto::new).collect(Collectors.toList());
@@ -35,7 +34,6 @@ public class EmployeeController {
      * Pass in an arguments by using /Employee={email}
      * @return the Employee with Email, Password, Name
      */
-
     @GetMapping(value = {"/employee", "/employee/"})
     public ResponseEntity<EmployeeResponseDto> getEmployeeByEmail(@RequestParam String email) {
         return new ResponseEntity<EmployeeResponseDto>(new EmployeeResponseDto(employeeService.getEmployeeByEmail(email)), HttpStatus.OK);
@@ -46,7 +44,6 @@ public class EmployeeController {
      *
      * @return the dto response of the new Employee
      */
-
     @PostMapping("/employee/create")
     public ResponseEntity<EmployeeResponseDto> createEmployee(@Valid @RequestBody EmployeeRequestDto EmployeeRequest)
     {
@@ -56,8 +53,11 @@ public class EmployeeController {
         return new ResponseEntity<EmployeeResponseDto>(responseBody, HttpStatus.CREATED); //3. You mask the model by returning a Response
     }
 
-
-
+    /**
+     *
+     * @param employeeRequest
+     * @return
+     */
     @PutMapping(value = {"/employee/update"})
     public ResponseEntity<EmployeeResponseDto> updateEmployee(@Valid @RequestBody EmployeeRequestDto employeeRequest)
     {

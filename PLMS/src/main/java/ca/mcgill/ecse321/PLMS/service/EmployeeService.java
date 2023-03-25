@@ -16,12 +16,22 @@ public class EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    /**
+     *
+     * @return
+     */
     @Transactional
     public Iterable<Employee> getAllEmployees(){
         ArrayList<Employee> arrayList = (ArrayList<Employee>) employeeRepository.findAll();
         if (arrayList.isEmpty())
             throw new PLMSException(HttpStatus.NOT_FOUND, "There are no employees in the system");
         return employeeRepository.findAll(); }
+
+    /**
+     *
+     * @param email
+     * @return
+     */
 
     @Transactional
     public Employee getEmployeeByEmail(String email) {
@@ -31,6 +41,13 @@ public class EmployeeService {
         }
         return employee;
     }
+
+
+    /**
+     *
+     * @param employee
+     * @return
+     */
 
     @Transactional
     public Employee updateEmployee(Employee employee)
@@ -45,6 +62,12 @@ public class EmployeeService {
         return employeeRepository.save(e);
     }
 
+    /**
+     *
+     * @param employee - employee to create
+     * @return -
+     */
+
     @Transactional
     public Employee createEmployeeAccount(Employee employee) {
         if(employee.getHourlyWage() <= 0)
@@ -55,6 +78,10 @@ public class EmployeeService {
             throw new PLMSException(HttpStatus.CONFLICT, "Employee account with this email already exists");
     }
 
+    /**
+     *
+     * @param email
+     */
     @Transactional
     public void deleteEmployeeAccount(String email) {
         employeeRepository.delete(getEmployeeByEmail(email));
