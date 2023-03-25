@@ -639,4 +639,13 @@ public class ServiceAppointmentServiceTests {
 		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
 		assertEquals("There are no service appointments for customer " + mEmail, e.getMessage());
   }
+
+  @Test
+  public void testInvalidUpdate(){
+    when(serviceAppointmentRepository.findServiceAppointmentById(10)).thenReturn(null);
+    PLMSException e = assertThrows(PLMSException.class,
+				() -> serviceAppointmentService.updateServiceAppointment(new ServiceAppointment(), 10));
+		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+		assertEquals("Service appointment is not found.", e.getMessage());
+  }
 }
