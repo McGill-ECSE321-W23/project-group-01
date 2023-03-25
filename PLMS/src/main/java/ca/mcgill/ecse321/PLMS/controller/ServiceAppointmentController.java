@@ -145,8 +145,7 @@ public class ServiceAppointmentController {
         Service service = serviceService.getServiceByServiceName(serviceAppointmentRequestDto.getServiceName());
         
         MonthlyCustomer monthlyCustomer = null;
-        if(serviceAppointmentRequestDto.getUserEmail() != null) monthlyCustomer = monthlyCustomerService.getMonthlyCustomerByEmail(serviceAppointmentRequestDto.getUserEmail());
-
+        
         ServiceAppointment serviceAppointment = serviceAppointmentRequestDto.toModel(service, monthlyCustomer);
         serviceAppointment = serviceAppointmentService.updateServiceAppointment(serviceAppointment, id);
         ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
