@@ -29,8 +29,8 @@ public class OwnerController {
     }
 
     /**
-     * Returns the owner based on their Id
-     * Pass in an arguments by using /owner={email}
+     * Returns the owner based on their Email
+     * @param email - Pass in the email argument by using /owner=?{email}
      * @return the owner with Email, Password, Name
      */
     @GetMapping(value = {"/owner", "/owner/"})
@@ -40,7 +40,7 @@ public class OwnerController {
 
     /**
      * Creates a new owner
-     *
+     * @param ownerRequest - Pass in the new owner request using JSON
      * @return the dto response of the new owner
      */
     @PostMapping("/owner/create")
@@ -52,9 +52,9 @@ public class OwnerController {
     }
 
     /**
-     *
-     * @param ownerRequest
-     * @return
+     * Updates an existing owner
+     * @param ownerRequest - Pass in the updated owner request using JSON
+     * @return the dto response of the updated owner
      */
     @PutMapping("/owner/update")
     public ResponseEntity<OwnerResponseDto> updateOwner(@Valid @RequestBody OwnerRequestDto ownerRequest) {

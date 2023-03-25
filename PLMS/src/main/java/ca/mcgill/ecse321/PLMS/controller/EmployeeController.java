@@ -30,8 +30,8 @@ public class EmployeeController {
     }
 
     /**
-     * Returns the Employee based on their Id
-     * Pass in an arguments by using /Employee={email}
+     * Returns the Employee based on their Email
+     * @param email - Pass in the email argument by using /employee={?email}
      * @return the Employee with Email, Password, Name
      */
     @GetMapping(value = {"/employee", "/employee/"})
@@ -41,7 +41,7 @@ public class EmployeeController {
 
     /**
      * Creates a new Employee
-     *
+     * @param EmployeeRequest - Pass in a employee dto using a JSON request
      * @return the dto response of the new Employee
      */
     @PostMapping("/employee/create")
@@ -54,9 +54,9 @@ public class EmployeeController {
     }
 
     /**
-     *
-     * @param employeeRequest
-     * @return
+     * Updates an existing employee
+     * @param employeeRequest - Pass in the monthly customer dto using a JSON request
+     * @return the dto response of the updated Employee
      */
     @PutMapping(value = {"/employee/update"})
     public ResponseEntity<EmployeeResponseDto> updateEmployee(@Valid @RequestBody EmployeeRequestDto employeeRequest)
@@ -67,7 +67,11 @@ public class EmployeeController {
 
     }
 
-
+    /**
+     * Deletes an existing employee
+     *
+     * @param email - email of an existing email
+     */
     @DeleteMapping("/employee/delete/{email}")
     public void deleteEmployee(@PathVariable String email) {
         employeeService.deleteEmployeeAccount(email);

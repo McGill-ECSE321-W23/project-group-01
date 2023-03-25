@@ -22,7 +22,6 @@ public class MonthlyCustomerController {
      * Returns a list of all MonthlyCustomers
      * @return all MonthlyCustomers
      */
-
     @GetMapping("/customers")
     public Iterable<MonthlyCustomerResponseDto> getAllMonthlyCustomers() {
         return StreamSupport.stream(monthlyCustomerService.getAllMonthlyCustomers().spliterator(), false).map(MonthlyCustomerResponseDto::new).collect(Collectors.toList());
@@ -30,10 +29,9 @@ public class MonthlyCustomerController {
 
     /**
      * Returns the MonthlyCustomer based on their Id
-     * Pass in an arguments by using /MonthlyCustomer={email}
+     * @param email - Pass in the email argument by using  /MonthlyCustomer=?{email}
      * @return the MonthlyCustomer with Email, Password, Name
      */
-
     @GetMapping(value = {"/customer", "/customer/"})
     public ResponseEntity<MonthlyCustomerResponseDto> getMonthlyCustomerByEmail(@RequestParam String email) {
         return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(monthlyCustomerService.getMonthlyCustomerByEmail(email)), HttpStatus.OK);
@@ -41,10 +39,9 @@ public class MonthlyCustomerController {
 
     /**
      * Creates a new MonthlyCustomer
-     *
+     * @param MonthlyCustomerRequest - Pass in a monthly customer dto using a JSON request
      * @return the dto response of the new MonthlyCustomer
      */
-
     @PostMapping("/customer/create")
     public ResponseEntity<MonthlyCustomerResponseDto> createMonthlyCustomer(@Valid @RequestBody MonthlyCustomerRequestDto MonthlyCustomerRequest)
     {
@@ -53,6 +50,11 @@ public class MonthlyCustomerController {
         return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(MonthlyCustomer), HttpStatus.CREATED); //3. You mask the model by returning a Response
     }
 
+    /**
+     * Updates an existing MonthlyCustomer
+     * @param monthlyCustomerRequest - Pass in the monthly customer dto using a JSON request
+     * @return the dto response of the updated MonthlyCustomer
+     */
     @PutMapping("/customer/update")
     public ResponseEntity<MonthlyCustomerResponseDto> updateMonthlyCustomer(@Valid @RequestBody MonthlyCustomerRequestDto monthlyCustomerRequest)
     {
