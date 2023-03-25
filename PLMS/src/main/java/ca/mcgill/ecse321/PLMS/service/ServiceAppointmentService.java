@@ -239,6 +239,40 @@ public class ServiceAppointmentService {
     return appointment;
   }
 
+  @Transactional
+  public ServiceAppointment updateEmployeeEmailServiceAppointment(Employee employee, int id){
+    // first calculate the end time of the service appointment by using the length of the appointment
+    ServiceAppointment updatedAppointment = serviceAppointmentRepo.findServiceAppointmentById(id);
+    if (updatedAppointment == null){
+      throw new PLMSException(HttpStatus.NOT_FOUND, "Service appointment is not found.");
+    }
+
+    updatedAppointment.setEmployee(employee);
+
+    // we randomly assign employees, if there are any.
+    updatedAppointment.setEmployee(checkForConflictInEmployeeScheedule(updatedAppointment));
+    ServiceAppointment appointment = serviceAppointmentRepo.save(updatedAppointment);
+    return appointment;
+  }
+
+  public Employee checkForConflictInEmployeeScheedule(ServiceAppointment appointment){
+    
+    ArrayList<ServiceAppointment> allAppts = (ArrayList<ServiceAppointment>) serviceAppointmentRepo.findAll();
+    
+    // get all the appointments for the current employee
+    ArrayList<ServiceAppointment> appointmentsForEmployee = new ArrayList<>();
+    for(ServiceAppointment appt : allAppts){
+      if(appt.getEmployee() != null && appt.getEmployee().getEmail().equals(appointment.getEmployee().getEmail())) appointmentsForEmployee.add(appt);
+    }
+    // now check for scheduling conflicts in all of their appointments
+    boolean hasConflictingAppointment = false;
+    for(ServiceAppointment appt : appointmentsForEmployee){
+      hasConflictingAppointment = isConflicting(appointment, appt);
+    }
+    if (!hasConflictingAppointment) return appointment.getEmployee();
+    throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot change the employee because requested employee already has an appointment during the time frame of this appointment.");
+  }
+
   /**
    * Method to find assigned employee to service appointment.
    * Employees are assigned based on prior scheduling conflicts. We also allow for 
