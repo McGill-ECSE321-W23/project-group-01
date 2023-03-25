@@ -43,7 +43,7 @@ public class EmployeeService {
 
     /**
      * Service method that updates the employee's information in the database
-     * @throws PLMSException - If emplooyee does nto exist
+     * @throws PLMSException - If employee does not exist
      */
     @Transactional
     public Employee updateEmployee(Employee employee)

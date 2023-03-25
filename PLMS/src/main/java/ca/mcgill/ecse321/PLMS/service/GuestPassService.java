@@ -174,9 +174,8 @@ public class GuestPassService {
     /**
      * Function for checking if a pass is active right at this point in time, given the start and end times
      * and date.
-     * @param date - date of the pass
-     * @param startTime - start time of the pass
-     * @param endTime - end time of the pass
+     * @param startDate - start date of the pass
+     * @param endDate - end date of the pass
      * @return true if the pass is currently active
      */
     public boolean isActiveRightNowMonthlyPass(LocalDate startDate, LocalDate endDate) {

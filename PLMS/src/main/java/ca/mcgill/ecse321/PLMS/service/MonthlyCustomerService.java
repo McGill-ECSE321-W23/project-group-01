@@ -19,8 +19,8 @@ public class MonthlyCustomerService {
     MonthlyCustomerRepository monthlyCustomerRepository;
 
     /**
-     *
-     * @return
+     * Service method to fetch all existing monthly customers in the database
+     * @throws PLMSException - if no monthly customers exist in the system
      */
     @Transactional
     public Iterable<MonthlyCustomer> getAllMonthlyCustomers() {
@@ -30,9 +30,8 @@ public class MonthlyCustomerService {
         return monthlyCustomerRepository.findAll(); }
 
     /**
-     *
-     * @param email
-     * @return
+     * Service method to fetch an existing monthly customer with a specific email from the database
+     * @throws PLMSException - If the monthly customer does not exist
      */
     @Transactional
     public MonthlyCustomer getMonthlyCustomerByEmail(String email) {
@@ -44,9 +43,8 @@ public class MonthlyCustomerService {
     }
 
     /**
-     *
-     * @param monthlyCustomer
-     * @return
+     * Service method that updates the monthly customer's information in the database
+     * @throws PLMSException - If monthly customer does not exist
      */
     @Transactional
     public MonthlyCustomer updateMonthlyCustomer(MonthlyCustomer monthlyCustomer)
@@ -58,9 +56,8 @@ public class MonthlyCustomerService {
     }
 
     /**
-     *
-     * @param monthlyCustomer
-     * @return
+     * Service method to store a created monthly customer in the database
+     * @throws PLMSException - If a monthly customer already exists
      */
     @Transactional
     public MonthlyCustomer createMonthlyCustomerAccount(MonthlyCustomer monthlyCustomer) {
@@ -71,6 +68,5 @@ public class MonthlyCustomerService {
             throw new PLMSException(HttpStatus.CONFLICT, "Account with this email already exists");
 
     }
-
 
 }

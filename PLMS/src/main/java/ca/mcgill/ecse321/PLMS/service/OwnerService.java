@@ -24,8 +24,8 @@ public class OwnerService {
     OwnerRepository ownerRepository;
 
     /**
-     *
-     * @return
+     * Service method to fetch all existing owners in the database
+     * @throws PLMSException - if no owners exist in the system
      */
     @Transactional
     public Iterable<Owner> getAllOwners() {
@@ -36,9 +36,8 @@ public class OwnerService {
         return ownerRepository.findAll(); }
 
     /**
-     *
-     * @param email
-     * @return
+     * Service method to fetch an existing owner with a specific email from the database
+     * @throws PLMSException - If the owner does not exist
      */
     @Transactional
     public Owner getOwnerByEmail(String email) {
@@ -50,9 +49,8 @@ public class OwnerService {
     }
 
     /**
-     *
-     * @param owner
-     * @return
+     * Service method that updates the owner's information in the database
+     * @throws PLMSException - If owner does not exist
      */
     @Transactional
     public Owner updateOwnerAccount(Owner owner)
@@ -65,9 +63,8 @@ public class OwnerService {
     }
 
     /**
-     *
-     * @param owner
-     * @return
+     * Service method to store a created owner in the database
+     * @throws PLMSException - If an owner already exists
      */
     @Transactional
 	public Owner createOwnerAccount(Owner owner) {
