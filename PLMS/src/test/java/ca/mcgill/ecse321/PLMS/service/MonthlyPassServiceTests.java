@@ -644,11 +644,66 @@ public class MonthlyPassServiceTests {
 
         when(MonthlyPassRepo.findAll()).thenReturn(monthlyPasses);
 
+        ArrayList<MonthlyPass> output = (ArrayList<MonthlyPass>) monthlyPassService.getMonthlyPassesByDate(Date.valueOf("2023-02-21"));
+        Iterator<MonthlyPass> i = output.iterator();
+        MonthlyPass outputMonthlyPass = i.next();
+        assertEquals(output.size(), 1);
+        assertEquals(outputMonthlyPass.getStartDate(), Date.valueOf("2023-02-21"));
+        assertEquals(outputMonthlyPass.getLicensePlate(), "123ABC123");
+
 
     }
 
     @Test
-    public void testGetInvalidMonthlyPassesByDate1(){
+    public void testGetInvalidMonthlyPassesByDate(){
+      double fee = 50.50;
+        String spotNumber = "A24";
+        String licensePlate = "123ABC123";
+        Date startDate = Date.valueOf("2023-02-21");
+        Date endDate = Date.valueOf("2023-03-20");
+        boolean isLarge = true;
+        String confirmationCode = "NeverGonnaGiveYouUp";
+        int id = 1;
+
+        double fee2 = 50.50;
+        String spotNumber2 = "A25";
+        String licensePlate2 = "123ABC124";
+        Date startDate2 = Date.valueOf("2023-02-22");
+        Date endDate2 = Date.valueOf("2023-03-21");
+        boolean isLarge2 = true;
+        String confirmationCode2 = "NeverGonnaGiveYouUp";
+        int id2 = 2;
+    
+    
+        String invalidEmail = "rick.roll@gmail.com";
+        
+        MonthlyPass monthlyPass = new MonthlyPass();
+        monthlyPass.setFee(fee);
+        monthlyPass.setSpotNumber(spotNumber);
+        monthlyPass.setConfirmationCode(confirmationCode);
+        monthlyPass.setIsLarge(isLarge);
+        monthlyPass.setStartDate(startDate);
+        monthlyPass.setEndDate(endDate);
+        monthlyPass.setLicensePlate(licensePlate);
+
+        MonthlyPass monthlyPass2 = new MonthlyPass();
+        monthlyPass2.setFee(fee2);
+        monthlyPass2.setSpotNumber(spotNumber2);
+        monthlyPass2.setConfirmationCode(confirmationCode2);
+        monthlyPass2.setIsLarge(isLarge2);
+        monthlyPass2.setStartDate(startDate2);
+        monthlyPass2.setEndDate(endDate2);
+        monthlyPass2.setLicensePlate(licensePlate2);
+
+        ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
+        monthlyPasses.add(monthlyPass1);
+        monthlyPasses.add(monthlyPass2);
+
+        when(MonthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+
+        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByDate(Date.valueOf("2023-02-20")));
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(), "There are no monthly passes for date " + Date.valueOf("2023-02-20"));
 
     }
 
