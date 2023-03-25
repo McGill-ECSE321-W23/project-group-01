@@ -255,7 +255,7 @@ public class FloorServiceTests {
     /**
      * Test to update a floor in our database
      */
-    public void updateValidFloor(){
+    public void testUpdateValidFloor(){
       // create mock floors
       final int floorNumber = 1;
 		  final int smallSpotCapacity = 70;
@@ -285,7 +285,7 @@ public class FloorServiceTests {
     /**
      * Attempt to update a floor that doesn't already exist in the DB.
      */
-    public void testInvalidUpdate(){
+    public void testInvalidUpdateFloor(){
       // create mock floors, with invalid small spot counter
       final int floorNumber = 1;
 		  final int smallSpotCapacity = 70;
