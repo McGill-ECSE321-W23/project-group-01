@@ -255,7 +255,7 @@ public class ServiceAppointmentServiceTests {
   /**
    * Test deleting an appointment that is not in the database  
    */ 
-  public void testInvalidDeletion(){
+  public void testInvalidAppointmentDeletion(){
     int id = 4;
     when(serviceAppointmentRepository.findById(id)).thenReturn(null);
     PLMSException e = assertThrows(PLMSException.class,
@@ -268,7 +268,7 @@ public class ServiceAppointmentServiceTests {
   /**
    * Test updating an appointment that's in the database
    */
-  public void testValidUpdate(){
+  public void testValidAppointmentUpdate(){
     // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
     String serviceName = "30 min Car Wash";
     int serviceCost = 30;
@@ -641,7 +641,7 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
-  public void testInvalidUpdate(){
+  public void testInvalidAppointmentUpdate(){
     when(serviceAppointmentRepository.findServiceAppointmentById(10)).thenReturn(null);
     PLMSException e = assertThrows(PLMSException.class,
 				() -> serviceAppointmentService.updateServiceAppointment(new ServiceAppointment(), 10));
