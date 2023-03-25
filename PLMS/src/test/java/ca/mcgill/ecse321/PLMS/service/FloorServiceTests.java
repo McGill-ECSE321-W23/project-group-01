@@ -81,7 +81,7 @@ public class FloorServiceTests {
       PLMSException e = assertThrows(PLMSException.class,
 				() -> floorService.getAllFloors());
 		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
-		assertEquals("There are no floors in the system", e.getMessage());
+		assertEquals("There are no floors in the system.", e.getMessage());
     }
 
     @Test

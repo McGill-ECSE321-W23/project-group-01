@@ -349,14 +349,12 @@ public class FloorIntegrationTests {
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
         //Test if the getter of all floors reads one less floor
-        ResponseEntity<List> getResponse = client.getForEntity("/floor", List.class);
+        ResponseEntity<String> getResponse = client.getForEntity("/floor", String.class);
 
-        assertEquals(HttpStatus.OK, getResponse.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, getResponse.getStatusCode());
         assertNotNull(getResponse.getBody());
-
-        List<Map<String, Object>> responseBody = getResponse.getBody();
         
-        assertEquals(responseBody.size(), 0);
+        assertEquals(getResponse.getBody(), "There are no floors in the system.");
     }
 
 

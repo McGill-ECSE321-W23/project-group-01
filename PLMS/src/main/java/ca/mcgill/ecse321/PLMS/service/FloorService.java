@@ -30,7 +30,7 @@ public class FloorService {
     public Iterable<Floor> getAllFloors(){
         ArrayList<Floor> arrayList = (ArrayList<Floor>) floorRepository.findAll();
         if (arrayList.isEmpty())
-            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no floors in the system");
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no floors in the system.");
        return arrayList;
     }
 
