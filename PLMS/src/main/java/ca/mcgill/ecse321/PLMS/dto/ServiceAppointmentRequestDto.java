@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.PLMS.dto;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 
@@ -33,7 +32,7 @@ public class ServiceAppointmentRequestDto {
      */
 	public ServiceAppointment toModel(Service service, MonthlyCustomer monthlyCustomer) {
 		ServiceAppointment s = new ServiceAppointment();
-		s.setDate(Date.valueOf(date));
+		s.setDate(date);
 		s.setStartTime(startTime);
 		s.setService(service);
         s.setCustomer(monthlyCustomer);

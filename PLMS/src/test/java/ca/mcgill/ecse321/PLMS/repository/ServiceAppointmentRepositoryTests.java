@@ -3,8 +3,8 @@ package ca.mcgill.ecse321.PLMS.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +48,7 @@ public class ServiceAppointmentRepositoryTests {
     public void testPersistAndLoadServiceAppointment(){
         //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
         //normal parameters
-        Date date = Date.valueOf("2023-02-21");
+        LocalDate date = LocalDate.of(2023,02,21);
         Time starTime = Time.valueOf("12:00:00");
         Time endTime = Time.valueOf("18:00:00");
 

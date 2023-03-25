@@ -4,6 +4,7 @@ package ca.mcgill.ecse321.PLMS.model;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -26,7 +27,7 @@ public class ServiceAppointment
   //------------------------
 
   //ServiceAppointment Attributes
-  private Date date;
+  private LocalDate date;
   private Time startTime;
   private Time endTime;
   @Id
@@ -48,14 +49,14 @@ public class ServiceAppointment
    * @param startTime - start time of the appointment
    * @param endTime - end time of the appointment
    */
-  public ServiceAppointment(Date date, Time startTime, Time endTime, Service service){
+  public ServiceAppointment(LocalDate date, Time startTime, Time endTime, Service service){
     this.date = date;
     this.startTime = startTime;
     this.endTime = endTime;
     this.service = service;
   }
 
-  public ServiceAppointment(Date date, Time startTime, Time endTime, Service service, Employee employee, MonthlyCustomer customer){
+  public ServiceAppointment(LocalDate date, Time startTime, Time endTime, Service service, Employee employee, MonthlyCustomer customer){
     this.date = date;
     this.startTime = startTime;
     this.endTime = endTime;
@@ -73,7 +74,7 @@ public class ServiceAppointment
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------
 
-  public boolean setDate(Date aDate)
+  public boolean setDate(LocalDate aDate)
   {
     boolean wasSet = false;
     date = aDate;
@@ -105,7 +106,7 @@ public class ServiceAppointment
     return wasSet;
   }
 
-  public Date getDate()
+  public LocalDate getDate()
   {
     return date;
   }

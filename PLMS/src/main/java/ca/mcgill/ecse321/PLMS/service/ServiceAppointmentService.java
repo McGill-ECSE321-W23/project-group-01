@@ -1,7 +1,7 @@
 package ca.mcgill.ecse321.PLMS.service;
 
-import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -114,11 +114,11 @@ public class ServiceAppointmentService {
    * @return all appointments on that date, if there are any
    */
   @Transactional
-  public Iterable<ServiceAppointment> getAllServiceAppointmentsByDate(Date date){
+  public Iterable<ServiceAppointment> getAllServiceAppointmentsByDate(LocalDate date){
     // first find all the appointments
     // iterate over them and add them to a new iterable list
     // return that list
-    Iterable<ServiceAppointment> appointments = serviceAppointmentRepo.findAll();
+    Iterable<ServiceAppointment> appointments = getAllServiceAppointments();
     ArrayList<ServiceAppointment> appointmentsOnDate = new ArrayList<ServiceAppointment>();
     for(ServiceAppointment appt : appointments){
       if (date.equals(appt.getDate())){
@@ -140,7 +140,7 @@ public class ServiceAppointmentService {
    */
   @Transactional
   public Iterable<ServiceAppointment> getAllServiceAppointmentsByEmployee(String employeeEmail){
-    Iterable<ServiceAppointment> appointments = serviceAppointmentRepo.findAll();
+    Iterable<ServiceAppointment> appointments = getAllServiceAppointments();
     ArrayList<ServiceAppointment> appointmentsForEmployee = new ArrayList<ServiceAppointment>();
     for(ServiceAppointment appt : appointments){
       // check to see if employee is null
@@ -167,7 +167,7 @@ public class ServiceAppointmentService {
    */
   @Transactional
   public Iterable<ServiceAppointment> getAllServiceAppointmentsByMonthlyCustomer(String monthlyCustomerEmail){
-    Iterable<ServiceAppointment> appointments = serviceAppointmentRepo.findAll();
+    Iterable<ServiceAppointment> appointments = getAllServiceAppointments();
     ArrayList<ServiceAppointment> appointmentsForCustomer = new ArrayList<ServiceAppointment>();
     for(ServiceAppointment appt : appointments){
       // check to see if employee is null
@@ -225,6 +225,7 @@ public class ServiceAppointmentService {
     updatedAppointment.setEndTime(Time.valueOf(localEndTime));
     updatedAppointment.setDate(serviceAppointment.getDate());
     updatedAppointment.setId(id);
+    updatedAppointment.setService(serviceAppointment.getService());
     // check for the parking lot in the database, if it doesn't exist yet we cannot create the appointment
     ParkingLot lot = parkingLotAddedToDatabase();
 
@@ -279,13 +280,13 @@ public class ServiceAppointmentService {
    * @return
    */
   public boolean isConflicting(ServiceAppointment appt1, ServiceAppointment appt2) {
-    LocalDateTime start1 = LocalDateTime.of(appt1.getDate().toLocalDate(), appt1.getStartTime().toLocalTime());
-    LocalDateTime end1 = LocalDateTime.of(appt1.getDate().toLocalDate(), appt1.getEndTime().toLocalTime());
+    LocalDateTime start1 = LocalDateTime.of(appt1.getDate(), appt1.getStartTime().toLocalTime());
+    LocalDateTime end1 = LocalDateTime.of(appt1.getDate(), appt1.getEndTime().toLocalTime());
 
-    LocalDateTime start2 = LocalDateTime.of(appt1.getDate().toLocalDate(), appt1.getStartTime().toLocalTime());
-    LocalDateTime end2 = LocalDateTime.of(appt1.getDate().toLocalDate(), appt1.getEndTime().toLocalTime());
+    LocalDateTime start2 = LocalDateTime.of(appt2.getDate(), appt2.getStartTime().toLocalTime());
+    LocalDateTime end2 = LocalDateTime.of(appt2.getDate(), appt2.getEndTime().toLocalTime());
     
-    return start1.isBefore(end2) && end1.isAfter(start1) || (start2.isBefore(end1) && end2.isAfter(start2));
+    return start1.isBefore(end2) && end1.isAfter(start2) || (start2.isBefore(end1) && end2.isAfter(start1));
 }
   /**
    * Helper method to find the single parking lot object

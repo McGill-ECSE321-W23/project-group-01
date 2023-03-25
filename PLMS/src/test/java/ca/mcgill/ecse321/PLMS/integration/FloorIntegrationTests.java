@@ -288,7 +288,7 @@ public class FloorIntegrationTests {
 
         List<Map<String, Object>> responseBody = response.getBody();
         
-        assertEquals(responseBody.size(), 2);
+        assertEquals(2, responseBody.size());
         
         assertEquals(FixedValidFloor.floorNumber, responseBody.get(0).get("floorNumber"));
         assertEquals(FixedValidFloor.isMemberOnlyUpdated, responseBody.get(0).get("memberOnly"));
@@ -327,7 +327,7 @@ public class FloorIntegrationTests {
 
         List<Map<String, Object>> responseBody = getResponse.getBody();
         
-        assertEquals(responseBody.size(), 1);
+        assertEquals(1, responseBody.size());
     }
 
     @Test
@@ -354,7 +354,7 @@ public class FloorIntegrationTests {
         assertEquals(HttpStatus.NOT_FOUND, getResponse.getStatusCode());
         assertNotNull(getResponse.getBody());
         
-        assertEquals(getResponse.getBody(), "There are no floors in the system.");
+        assertEquals("There are no floors in the system.", getResponse.getBody());
     }
 
 
