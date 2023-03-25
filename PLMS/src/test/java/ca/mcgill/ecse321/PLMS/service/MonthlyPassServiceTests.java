@@ -24,6 +24,8 @@ import ca.mcgill.ecse321.PLMS.model.Floor;
 import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 
+import ca.mcgill.ecse321.PLMS.service.MonthlyPassService;
+
 import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyPassRepository;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
@@ -656,7 +658,7 @@ public class MonthlyPassServiceTests {
 
     @Test
     public void testGetInvalidMonthlyPassesByDate(){
-      double fee = 50.50;
+        double fee = 50.50;
         String spotNumber = "A24";
         String licensePlate = "123ABC123";
         Date startDate = Date.valueOf("2023-02-21");
@@ -707,6 +709,216 @@ public class MonthlyPassServiceTests {
 
     }
 
+    @Test
+    public void testCreateValidWithoutAccountMonthlyPass(){
+      double fee = 50.50;
+      String spotNumber = "A24";
+      String licensePlate = "123ABC123";
+      Date startDate = Date.valueOf("2023-02-21");
+      Date endDate = Date.valueOf("2023-03-20");
+      boolean isLarge = true;
+      String confirmationCode = "NeverGonnaGiveYouUp";
+      int id = 1;
+
+      Floor floor = new Floor();
+      floor.setFloorNumber(1);
+
+      MonthlyPass monthlyPass = new MonthlyPass();
+      monthlyPass.setFee(fee);
+      monthlyPass.setSpotNumber(spotNumber);
+      monthlyPass.setConfirmationCode(confirmationCode);
+      monthlyPass.setIsLarge(isLarge);
+      monthlyPass.setStartDate(startDate);
+      monthlyPass.setEndDate(endDate);
+      monthlyPass.setLicensePlate(licensePlate);
+      monthlyPass.setFloor(floor);
+
+      when(monthlyPassRepo.save(monthlyPass)).thenReturn(monthlyPass);
+
+      MonthlyPass output = monthlyPassService.createMonthlyPass(monthlyPass, 1 , 2);
+
+      assertNotNull(output);
+      assertEquals(monthlyPass, output);
+    }
+
+    @Test
+    public void testCreateValidWithAccountMonthlyPass(){
+      double fee = 50.50;
+      String spotNumber = "A24";
+      String licensePlate = "123ABC123";
+      boolean isLarge = true;
+      String confirmationCode = "NeverGonnaGiveYouUp";
+      int id = 1;
+
+      Floor floor = new Floor();
+      floor.setFloorNumber(1);
+
+      String email = "rick.roll@gmail.com";
+      String password = "intelliJLover123";
+      String name = "Samer Abdulkarim";
+      MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
+      monthlyCustomer.setEmail(email);
+      monthlyCustomer.setPassword(password);
+      monthlyCustomer.setName(name);
+
+      MonthlyPass monthlyPass = new MonthlyPass();
+      monthlyPass.setFee(fee);
+      monthlyPass.setSpotNumber(spotNumber);
+      monthlyPass.setConfirmationCode(confirmationCode);
+      monthlyPass.setIsLarge(isLarge);
+      monthlyPass.setLicensePlate(licensePlate);
+      monthlyPass.setCustomer(monthlyCustomer);
+
+      when(monthlyPassRepo.save(monthlyPass)).thenReturn(monthlyPass);
+
+      MonthlyPass output = monthlyPassService.createMonthlyPass(monthlyPass, 1, 2);
+
+      assertNotNull(output);
+      assertEquals(monthlyPass, output);
+    }
+
+    @Test
+    public void testCreateInvalidMonthlyPass1(){
+      double fee = 50.50;
+      String spotNumber = "A24";
+      String licensePlate = "123ABC123";
+      boolean isLarge = true;
+      String confirmationCode = "NeverGonnaGiveYouUp";
+      int id = 1;
+
+      Floor floor = new Floor();
+      floor.setFloorNumber(1);
+
+      MonthlyPass monthlyPass = new MonthlyPass();
+      monthlyPass.setFee(fee);
+      monthlyPass.setSpotNumber(spotNumber);
+      monthlyPass.setConfirmationCode(confirmationCode);
+      monthlyPass.setIsLarge(isLarge);
+      monthlyPass.setLicensePlate(licensePlate);
+
+      double fee2 = 50.50;
+      String spotNumber2 = "A25";
+      String licensePlate2 = "123ABC124";
+      boolean isLarge2 = false;
+      String confirmationCode2 = "NeverGonnaGiveYouUp2";
+      int id2 = 1;
+
+
+      MonthlyPass monthlyPass2 = new MonthlyPass();
+      monthlyPass2.setFee(fee2);
+      monthlyPass2.setSpotNumber(spotNumber2);
+      monthlyPass2.setConfirmationCode(confirmationCode2);
+      monthlyPass2.setIsLarge(isLarge2);
+      monthlyPass2.setLicensePlate(licensePlate2);
+
+
+      when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
+
+      PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass2, 1, 2));
+      assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+      assertEquals(e.getMessage(), "Monthly pass with id: 1 already exists.");  
+    }
+
+    @Test
+    public void testCreateInvalidMonthlyPass2(){
+
+      double fee = 50.50;
+      String spotNumber = "A24";
+      String licensePlate = "123ABC123";
+      boolean isLarge = true;
+      String confirmationCode = "NeverGonnaGiveYouUp";
+      int id = 1;
+
+      Floor floor = new Floor();
+      floor.setFloorNumber(1);
+
+
+      MonthlyPass monthlyPass = new MonthlyPass();
+      monthlyPass.setFee(fee);
+      monthlyPass.setSpotNumber(spotNumber);
+      monthlyPass.setConfirmationCode(confirmationCode);
+      monthlyPass.setIsLarge(isLarge);
+      monthlyPass.setLicensePlate(licensePlate);
+
+      when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
+      when(floorRepo.findFloorByFloorNumber(1)).thenReturn(null);
+
+      PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass, 1, 2));
+      assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+      assertEquals(e.getMessage(), "The floor with floor number 1 does not exist.");  
+    }
+
+    @Test
+    public void testCreateInvalidMonthlyPass3(){
+      double fee = 50.50;
+      String spotNumber = "A24";
+      String licensePlate = "123ABC123";
+      boolean isLarge = true;
+      String confirmationCode = "NeverGonnaGiveYouUp";
+      int id = 1;
+
+      Floor floor = new Floor();
+      floor.setFloorNumber(1);
+      floor.setIsMemberOnly(false);
+
+
+      MonthlyPass monthlyPass = new MonthlyPass();
+      monthlyPass.setFee(fee);
+      monthlyPass.setSpotNumber(spotNumber);
+      monthlyPass.setConfirmationCode(confirmationCode);
+      monthlyPass.setIsLarge(isLarge);
+      monthlyPass.setLicensePlate(licensePlate);
+
+      when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
+      when(floorRepo.findFloorByFloorNumber(1)).thenReturn(floor);
+
+      PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass, 1, 2));
+      assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+      assertEquals(e.getMessage(), "Floor 1 is reserved for guest passes only.");  
+    }
+
+    @Test
+    public void testCreateInvalidMonthlyPass4(){
+      double fee = 50.50;
+      String spotNumber = "A24";
+      String licensePlate = "123ABC123";
+      boolean isLarge = true;
+      String confirmationCode = "NeverGonnaGiveYouUp";
+      int id = 1;
+
+      Floor floor = new Floor();
+      floor.setFloorNumber(1);
+
+      double fee2 = 50.50;
+      String spotNumber2 = "A24";
+      String licensePlate2 = "123ABC124";
+      boolean isLarge2 = true;
+      String confirmationCode2 = "NeverGonnaGiveYouUp";
+      int id2 = 2;
+
+
+      MonthlyPass monthlyPass = new MonthlyPass();
+      monthlyPass.setFee(fee);
+      monthlyPass.setSpotNumber(spotNumber);
+      monthlyPass.setConfirmationCode(confirmationCode);
+      monthlyPass.setIsLarge(isLarge);
+      monthlyPass.setLicensePlate(licensePlate);
+
+      MonthlyPass monthlyPass2 = new MonthlyPass();
+      monthlyPass2.setFee(fee2);
+      monthlyPass2.setSpotNumber(spotNumber2);
+      monthlyPass2.setConfirmationCode(confirmationCode2);
+      monthlyPass2.setIsLarge(isLarge2);
+      monthlyPass2.setLicensePlate(licensePlate2);
+
+
+      when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
+      when(floorRepo.findFloorByFloorNumber(1)).thenReturn(floor);
+
+      PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass2, 1, 2));
+      assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+      assertEquals(e.getMessage(), "Spot A24 is currently occupied");  
+    }
 
 
 
