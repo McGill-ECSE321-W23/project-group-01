@@ -118,7 +118,7 @@ public class ServiceAppointmentService {
     // first find all the appointments
     // iterate over them and add them to a new iterable list
     // return that list
-    Iterable<ServiceAppointment> appointments = serviceAppointmentRepo.findAll();
+    Iterable<ServiceAppointment> appointments = getAllServiceAppointments();
     ArrayList<ServiceAppointment> appointmentsOnDate = new ArrayList<ServiceAppointment>();
     for(ServiceAppointment appt : appointments){
       if (date.equals(appt.getDate())){
@@ -140,7 +140,7 @@ public class ServiceAppointmentService {
    */
   @Transactional
   public Iterable<ServiceAppointment> getAllServiceAppointmentsByEmployee(String employeeEmail){
-    Iterable<ServiceAppointment> appointments = serviceAppointmentRepo.findAll();
+    Iterable<ServiceAppointment> appointments = getAllServiceAppointments();
     ArrayList<ServiceAppointment> appointmentsForEmployee = new ArrayList<ServiceAppointment>();
     for(ServiceAppointment appt : appointments){
       // check to see if employee is null
@@ -167,7 +167,7 @@ public class ServiceAppointmentService {
    */
   @Transactional
   public Iterable<ServiceAppointment> getAllServiceAppointmentsByMonthlyCustomer(String monthlyCustomerEmail){
-    Iterable<ServiceAppointment> appointments = serviceAppointmentRepo.findAll();
+    Iterable<ServiceAppointment> appointments = getAllServiceAppointments();
     ArrayList<ServiceAppointment> appointmentsForCustomer = new ArrayList<ServiceAppointment>();
     for(ServiceAppointment appt : appointments){
       // check to see if employee is null
