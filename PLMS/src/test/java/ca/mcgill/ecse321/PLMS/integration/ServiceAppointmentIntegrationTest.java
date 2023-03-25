@@ -324,23 +324,107 @@ public class ServiceAppointmentIntegrationTest {
         
         assertEquals(2, responseBody.size());
 
-        assertEquals(Date.valueOf(FixedServiceAppointment.validDate).toString(), responseBody.get(0).get("date").toString());
-        assertEquals(FixedServiceAppointment.validTime, responseBody.get(0).get("startTime"));
-        assertEquals(findEndTime(FixedServiceAppointment.validTime.toLocalTime(), FixedServiceAppointment.validService2), responseBody.get(0).get("endTime"));
+        assertEquals(FixedServiceAppointment.validDate.toString(), responseBody.get(0).get("date"));
+        assertEquals(FixedServiceAppointment.validTime.toString(), responseBody.get(0).get("startTime"));
+        assertEquals(findEndTime(FixedServiceAppointment.validTime.toLocalTime(), FixedServiceAppointment.validService).toString(), responseBody.get(0).get("endTime"));
         assertEquals(FixedServiceAppointment.validMonthlyCustomer.getEmail(), responseBody.get(0).get("customerEmail"));
         assertEquals(FixedServiceAppointment.validEmployee.getEmail(), responseBody.get(0).get("employeeEmail"));
         assertEquals(FixedServiceAppointment.validService.getServiceName(), responseBody.get(0).get("serviceName"));
         assertEquals(FixedServiceAppointment.id1, responseBody.get(0).get("id"));
 
-        assertEquals(Date.valueOf(FixedServiceAppointment.validDate).toString(), responseBody.get(1).get("date").toString());
-        assertEquals(FixedServiceAppointment.validTime, responseBody.get(1).get("startTime"));
-        assertEquals(findEndTime(FixedServiceAppointment.validTime.toLocalTime(), FixedServiceAppointment.validService2), responseBody.get(1).get("endTime"));
-        assertEquals(FixedServiceAppointment.validMonthlyCustomer.getEmail(), responseBody.get(1).get("customerEmail"));
+        assertEquals(FixedServiceAppointment.validDate2.toString(), responseBody.get(1).get("date"));
+        assertEquals(FixedServiceAppointment.validTime2.toString(), responseBody.get(1).get("startTime"));
+        assertEquals(findEndTime(FixedServiceAppointment.validTime2.toLocalTime(), FixedServiceAppointment.validService2).toString(), responseBody.get(1).get("endTime"));
+        assertEquals(null, responseBody.get(1).get("customerEmail"));
         assertEquals(FixedServiceAppointment.validEmployee.getEmail(), responseBody.get(1).get("employeeEmail"));
-        assertEquals(FixedServiceAppointment.validService.getServiceName(), responseBody.get(1).get("serviceName"));
-        assertEquals(FixedServiceAppointment.id1, responseBody.get(1).get("id"));
-
+        assertEquals(FixedServiceAppointment.validService2.getServiceName(), responseBody.get(1).get("serviceName"));
+        assertEquals(FixedServiceAppointment.id2, responseBody.get(1).get("id"));
     }
+
+    //4: Get all the appointment with a date
+    @Test
+    @Order(11)
+    public void testGetAllServiceAppointmentsWithDate(){
+        ResponseEntity<List> response = client.getForEntity("/serviceAppointment/date/"+FixedServiceAppointment.validDate.toString(), List.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+
+        List<Map<String, Object>> responseBody = response.getBody();
+        
+        assertEquals(1, responseBody.size());
+
+        assertEquals(FixedServiceAppointment.validDate.toString(), responseBody.get(0).get("date"));
+        assertEquals(FixedServiceAppointment.validTime.toString(), responseBody.get(0).get("startTime"));
+        assertEquals(findEndTime(FixedServiceAppointment.validTime.toLocalTime(), FixedServiceAppointment.validService).toString(), responseBody.get(0).get("endTime"));
+        assertEquals(FixedServiceAppointment.validMonthlyCustomer.getEmail(), responseBody.get(0).get("customerEmail"));
+        assertEquals(FixedServiceAppointment.validEmployee.getEmail(), responseBody.get(0).get("employeeEmail"));
+        assertEquals(FixedServiceAppointment.validService.getServiceName(), responseBody.get(0).get("serviceName"));
+        assertEquals(FixedServiceAppointment.id1, responseBody.get(0).get("id"));
+    }
+
+    //4.a: Try getting all appointments at an invalid date
+    @Test
+    @Order(12)
+    public void testGetAllServiceAppointmentsWithInvalidDate(){
+        ResponseEntity<String> response = client.getForEntity("/serviceAppointment/date/"+LocalDate.of(2000, 1, 1), String.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+        assertContains("There are no appointments on date " + LocalDate.of(2000, 1, 1), response.getBody());
+    }
+
+    //5: Get all the appointment with a employee email
+    @Test
+    @Order(13)
+    public void testGetAllServiceAppointmentsWithEmployeeEmail(){
+        ResponseEntity<List> response = client.getForEntity("/serviceAppointment/employee/"+FixedServiceAppointment.validEmployee.getEmail(), List.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+
+        List<Map<String, Object>> responseBody = response.getBody();
+        
+        assertEquals(2, responseBody.size());
+
+        assertEquals(FixedServiceAppointment.validDate.toString(), responseBody.get(0).get("date"));
+        assertEquals(FixedServiceAppointment.validTime.toString(), responseBody.get(0).get("startTime"));
+        assertEquals(findEndTime(FixedServiceAppointment.validTime.toLocalTime(), FixedServiceAppointment.validService).toString(), responseBody.get(0).get("endTime"));
+        assertEquals(FixedServiceAppointment.validMonthlyCustomer.getEmail(), responseBody.get(0).get("customerEmail"));
+        assertEquals(FixedServiceAppointment.validEmployee.getEmail(), responseBody.get(0).get("employeeEmail"));
+        assertEquals(FixedServiceAppointment.validService.getServiceName(), responseBody.get(0).get("serviceName"));
+        assertEquals(FixedServiceAppointment.id1, responseBody.get(0).get("id"));
+
+        assertEquals(FixedServiceAppointment.validDate2.toString(), responseBody.get(1).get("date"));
+        assertEquals(FixedServiceAppointment.validTime2.toString(), responseBody.get(1).get("startTime"));
+        assertEquals(findEndTime(FixedServiceAppointment.validTime2.toLocalTime(), FixedServiceAppointment.validService2).toString(), responseBody.get(1).get("endTime"));
+        assertEquals(null, responseBody.get(1).get("customerEmail"));
+        assertEquals(FixedServiceAppointment.validEmployee.getEmail(), responseBody.get(1).get("employeeEmail"));
+        assertEquals(FixedServiceAppointment.validService2.getServiceName(), responseBody.get(1).get("serviceName"));
+        assertEquals(FixedServiceAppointment.id2, responseBody.get(1).get("id"));
+    }
+
+    //5.a: Try getting all appointments at an invalid employee email
+    @Test
+    @Order(14)
+    public void testGetAllServiceAppointmentsWithInvalidEmployeeEmail(){
+        ResponseEntity<String> response = client.getForEntity("/serviceAppointment/employee/invalid@email.invalid", String.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+        assertContains("There are no service appointments for employee invalid@email.invalid" , response.getBody());
+    }
+
+    // //6: Get all the appointment with a customer email
+    // @Test
+    // @Order(15)
+    // public void testGetAllServiceAppointmentsWithCustomerEmail(){
+
+    // }
+
+    // //6.a: Try getting all appointments at an invalid customer email
+    // @Test
+    // @Order(16)
 
     private void assertContains(String expected, String actual) {
 		String assertionMessage = String.format("Error message ('%s') contains '%s'.", actual, expected);
