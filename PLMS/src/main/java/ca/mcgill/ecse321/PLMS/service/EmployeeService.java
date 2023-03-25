@@ -17,8 +17,8 @@ public class EmployeeService {
     EmployeeRepository employeeRepository;
 
     /**
-     *
-     * @return
+     * Service method to fetch all existing employees in the database
+     * @throws PLMSException - if no employees exist in the system
      */
     @Transactional
     public Iterable<Employee> getAllEmployees(){
@@ -28,11 +28,9 @@ public class EmployeeService {
         return employeeRepository.findAll(); }
 
     /**
-     *
-     * @param email
-     * @return
+     * Service method to fetch an existing employee with a specific email from the database
+     * @throws PLMSException - If employee does not exist
      */
-
     @Transactional
     public Employee getEmployeeByEmail(String email) {
         Employee employee = employeeRepository.findEmployeeByEmail(email);
@@ -44,11 +42,9 @@ public class EmployeeService {
 
 
     /**
-     *
-     * @param employee
-     * @return
+     * Service method that updates the employee's information in the database
+     * @throws PLMSException - If emplooyee does nto exist
      */
-
     @Transactional
     public Employee updateEmployee(Employee employee)
     {
@@ -63,11 +59,9 @@ public class EmployeeService {
     }
 
     /**
-     *
-     * @param employee - employee to create
-     * @return -
+     * Service method to store a created employee in the database
+     * @throws PLMSException - If an employee already exists
      */
-
     @Transactional
     public Employee createEmployeeAccount(Employee employee) {
         if(employee.getHourlyWage() <= 0)
@@ -79,8 +73,7 @@ public class EmployeeService {
     }
 
     /**
-     *
-     * @param email
+     * Service method to delete an employee from the database
      */
     @Transactional
     public void deleteEmployeeAccount(String email) {
