@@ -33,7 +33,7 @@ public class ServiceAppointmentRequestDto {
      */
 	public ServiceAppointment toModel(Service service, MonthlyCustomer monthlyCustomer) {
 		ServiceAppointment s = new ServiceAppointment();
-		s.setDate(Date.valueOf(date));
+		s.setDate(date);
 		s.setStartTime(startTime);
 		s.setService(service);
         s.setCustomer(monthlyCustomer);

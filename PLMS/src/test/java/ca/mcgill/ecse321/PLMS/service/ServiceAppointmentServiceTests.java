@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -57,7 +57,7 @@ public class ServiceAppointmentServiceTests {
     double serviceLengthInHours = 0.5;
     Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
     //normal parameters
-    Date date = Date.valueOf("2023-02-21");
+    LocalDate date = LocalDate.of(2023,02,21);
     Time startTime = Time.valueOf("12:00:00");
     Time endTime = Time.valueOf("18:00:00");
     ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
@@ -82,7 +82,7 @@ public class ServiceAppointmentServiceTests {
     double serviceLengthInHours = 0.5;
     Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
     //normal parameters
-    Date date = Date.valueOf("2023-02-21");
+    LocalDate date = LocalDate.of(2023,02,21);
     Time startTime = Time.valueOf("12:00:00");
     Time endTime = Time.valueOf("18:00:00");
     ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
@@ -120,7 +120,7 @@ public class ServiceAppointmentServiceTests {
     double serviceLengthInHours = 0.5;
     Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
     //normal parameters
-    Date date = Date.valueOf("2023-02-21");
+    LocalDate date = LocalDate.of(2023,02,21);
     Time startTime = Time.valueOf("12:00:00");
     Time endTime = Time.valueOf("12:45:00");
     // CHECK TO SEE THAT TIME CALCULATION IS CORRECT
@@ -200,7 +200,7 @@ public class ServiceAppointmentServiceTests {
     double serviceLengthInHours = 0.5;
     Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
     //normal parameters
-    Date date = Date.valueOf("2023-02-21");
+    LocalDate date = LocalDate.of(2023,02,21);
     Time startTime = Time.valueOf("12:00:00");
     Time endTime = Time.valueOf("18:00:00");
     Time endTime2 = Time.valueOf("12:30:00");
@@ -240,7 +240,7 @@ public class ServiceAppointmentServiceTests {
     int serviceCost = 30;
     double serviceLengthInHours = 0.5;
     Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
-    Date date = Date.valueOf("2023-02-21");
+    LocalDate date = LocalDate.of(2023,02,21);
     Time startTime = Time.valueOf("12:00:00");
     Time endTime = Time.valueOf("18:00:00");
     ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
@@ -275,8 +275,8 @@ public class ServiceAppointmentServiceTests {
     double serviceLengthInHours = 0.5;
     Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
     //normal parameters
-    Date firstDate = Date.valueOf("2023-02-21");
-    Date secondDate = Date.valueOf("2024-02-21");
+    LocalDate firstDate = LocalDate.of(2023,02,21);
+    LocalDate secondDate = LocalDate.of(2024,02,21);
     Time firstStartTime = Time.valueOf("18:00:00");
     Time firstEndTime = Time.valueOf("18:30:00");
     Time secondStartTime = Time.valueOf("12:00:00");
@@ -314,8 +314,8 @@ public class ServiceAppointmentServiceTests {
     int serviceCost = 30;
     double serviceLengthInHours = 0.5;
     Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
-    Date firstDate = Date.valueOf("2023-02-21");
-    Date secondDate = Date.valueOf("2024-02-21");
+    LocalDate firstDate = LocalDate.of(2023,02,21);
+    LocalDate secondDate = LocalDate.of(2024,02,21);
     Time firstStartTime = Time.valueOf("18:00:00");
     Time firstEndTime = Time.valueOf("18:30:00");
     Time secondStartTime = Time.valueOf("12:00:00");
@@ -353,11 +353,11 @@ public class ServiceAppointmentServiceTests {
    * Test getting appointments on a day for which there are no appointments scheduled
    */
   public void testGetAllAppointmentsOnInvalidDate(){
-    Date date = Date.valueOf("2023-02-21");
+    LocalDate date = LocalDate.of(2023,02,21);
     ArrayList<ServiceAppointment> testData = new ArrayList<ServiceAppointment>();
     when(serviceAppointmentRepository.findAll()).thenReturn((Iterable<ServiceAppointment>) testData);
     PLMSException e = assertThrows(PLMSException.class,
-				() -> serviceAppointmentService.getAllServiceAppointmentsByDate(Date.valueOf("2023-02-21")));
+				() -> serviceAppointmentService.getAllServiceAppointmentsByDate(LocalDate.of(2023,02,21)));
 		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
 		assertEquals("There are no appointments on date " + date, e.getMessage());
   }
@@ -373,7 +373,7 @@ public class ServiceAppointmentServiceTests {
     double serviceLengthInHours = 0.5;
     Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
     //normal parameters
-    Date date = Date.valueOf("2023-02-21");
+    LocalDate date = LocalDate.of(2023,02,21);
     Time startTime = Time.valueOf("12:00:00");
     Time endTime = Time.valueOf("12:30:00");
     String email = "jeff.jeff@jeff.com";
@@ -408,7 +408,7 @@ public class ServiceAppointmentServiceTests {
     double serviceLengthInHours = 0.5;
     Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
     //normal parameters
-    Date date = Date.valueOf("2023-02-21");
+    LocalDate date = LocalDate.of(2023,02,21);
     Time startTime = Time.valueOf("12:00:00");
     Time endTime = Time.valueOf("12:30:00");
     ServiceAppointment appt = new ServiceAppointment(date, startTime, endTime, service);
@@ -440,7 +440,7 @@ public class ServiceAppointmentServiceTests {
     int serviceCost = 30;
     double serviceLengthInHours = 0.5;
     Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
-    Date date = Date.valueOf("2023-02-21");
+    LocalDate date = LocalDate.of(2023,02,21);
     // before operating hours
     Time startTime = Time.valueOf("5:00:00");
     Time endTime = Time.valueOf("5:30:00");
@@ -471,7 +471,7 @@ public class ServiceAppointmentServiceTests {
     int serviceCost = 30;
     double serviceLengthInHours = 0.5;
     Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
-    Date date = Date.valueOf("2023-02-21");
+    LocalDate date = LocalDate.of(2023,02,21);
     // before operating hours
     Time startTime = Time.valueOf("23:00:00");
     Time endTime = Time.valueOf("23:30:00");
@@ -501,7 +501,7 @@ public class ServiceAppointmentServiceTests {
     int serviceCost = 30;
     double serviceLengthInHours = 2;
     Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
-    Date date = Date.valueOf("2023-02-21");
+    LocalDate date = LocalDate.of(2023,02,21);
     // before operating hours
     Time startTime = Time.valueOf("21:00:00");
     Time endTime = Time.valueOf("23:00:00");
@@ -528,8 +528,8 @@ public class ServiceAppointmentServiceTests {
     int serviceCost = 30;
     double serviceLengthInHours = 0.5;
     Service service = new Service(serviceName, serviceCost, serviceLengthInHours);
-    Date firstDate = Date.valueOf("2023-02-21");
-    Date secondDate = Date.valueOf("2023-02-21");
+    LocalDate firstDate = LocalDate.of(2023,02,21);
+    LocalDate secondDate = LocalDate.of(2023,02,21);
     Time firstStartTime = Time.valueOf("17:00:00");
     Time firstEndTime = Time.valueOf("17:30:00");
     Time secondStartTime = Time.valueOf("17:15:00");

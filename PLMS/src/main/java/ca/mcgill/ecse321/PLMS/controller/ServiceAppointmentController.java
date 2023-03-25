@@ -1,6 +1,6 @@
 package ca.mcgill.ecse321.PLMS.controller;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -76,7 +76,7 @@ public class ServiceAppointmentController {
        * @return The service appointments at the specified date.
        */
       @GetMapping("/serviceAppointment/date/{date}")
-      public Iterable<ServiceAppointmentResponseDto> getAllServiceAppointmentsByDate(@PathVariable Date date) {
+      public Iterable<ServiceAppointmentResponseDto> getAllServiceAppointmentsByDate(@PathVariable LocalDate date) {
         return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointmentsByDate(date).spliterator(), false)
         .map(s -> new ServiceAppointmentResponseDto(s))
         .collect(Collectors.toList());
