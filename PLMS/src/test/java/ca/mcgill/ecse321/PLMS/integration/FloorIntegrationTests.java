@@ -42,7 +42,6 @@ import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 @TestMethodOrder(OrderAnnotation.class)
 public class FloorIntegrationTests {
 
-    private FixedValidFloor fixedValidFloor;
     @Autowired
     private FloorRepository floorRepository;
     @Autowired
@@ -62,19 +61,15 @@ public class FloorIntegrationTests {
         public static final boolean isMemberOnly = false;
         public static final int largeSpotCapacity = 10;
         public static final int smallSpotCapacity = 10;
-        public static final int largeSpotCounter = 0;
-        public static final int smallSpotCounter = 0;
 
         public static final boolean isMemberOnlyUpdated = true;
         public static final int largeSpotCapacityUpdated = 30;
         public static final int smallSpotCapacityUpdated = 40;
-        public static final int largeSpotCounterUpdated = 4;
-        public static final int smallSpotCounterUpdated = 5;
 
         public static final int secondFloorNumber = 2;
 
         public static Floor createValidFloor(){
-            Floor validFloor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, smallSpotCounter, largeSpotCounter, isMemberOnly);
+            Floor validFloor = new Floor(floorNumber, largeSpotCapacity, smallSpotCapacity, isMemberOnly);
             return validFloor;
         }
         
@@ -98,11 +93,6 @@ public class FloorIntegrationTests {
     }
 
     @BeforeAll
-	public void setupFixedValidFloor() {
-		this.fixedValidFloor = new FixedValidFloor();
-	}
-
-    @BeforeAll
 	@AfterAll
 	public void clearDatabase() {
 		floorRepository.deleteAll();
@@ -113,7 +103,7 @@ public class FloorIntegrationTests {
 	@Order(0)
 	public void testValidCreateFloor() {
 
-        ParkingLot parkingLot = new ParkingLot(Time.valueOf("8:00:00"), Time.valueOf("20:00:00"), 15, 10, 250);
+        ParkingLot parkingLot = new ParkingLot(Time.valueOf("8:00:00"), Time.valueOf("20:00:00"), 15, 10, 250, 250);
         parkingLotRepository.save(parkingLot);
 
         Floor validFloor = FixedValidFloor.createValidFloor();
@@ -128,9 +118,6 @@ public class FloorIntegrationTests {
         assertEquals(FixedValidFloor.isMemberOnly, response.getBody().getMemberOnly());
         assertEquals(FixedValidFloor.largeSpotCapacity, response.getBody().getLargeSpotCapacity());
         assertEquals(FixedValidFloor.smallSpotCapacity, response.getBody().getSmallSpotCapacity());
-        //delete
-        assertEquals(0, response.getBody().getLargeSpotCounter());
-        assertEquals(0, response.getBody().getSmallSpotCounter());
     }
 
     @Test
@@ -147,9 +134,6 @@ public class FloorIntegrationTests {
         assertEquals(FixedValidFloor.isMemberOnly, response.getBody().getMemberOnly());
         assertEquals(FixedValidFloor.largeSpotCapacity, response.getBody().getLargeSpotCapacity());
         assertEquals(FixedValidFloor.smallSpotCapacity, response.getBody().getSmallSpotCapacity());
-        //delete
-        assertEquals(0, response.getBody().getLargeSpotCounter());
-        assertEquals(0, response.getBody().getSmallSpotCounter());
     }
 
     @Test
@@ -203,18 +187,6 @@ public class FloorIntegrationTests {
     @Order(5)
     public void testModifyFloorWithValidParameters(){
 
-        //delete
-        //change the counter to see if PUT changes the counter
-        int floorNumber = FixedValidFloor.floorNumber;
-        
-        Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
-        assertNotNull(floor);
-        floor.setLargeSpotCounter(FixedValidFloor.largeSpotCounterUpdated);
-        floor.setSmallSpotCounter(FixedValidFloor.smallSpotCounterUpdated);
-        floorRepository.save(floor);
-        //====================
-
-
         Floor validFloor = FixedValidFloor.createValidFloor();
         FloorRequestDto request = floorToFloorRequestDto(validFloor);
 
@@ -233,9 +205,6 @@ public class FloorIntegrationTests {
         assertEquals(FixedValidFloor.isMemberOnlyUpdated, response.getBody().getMemberOnly());
         assertEquals(FixedValidFloor.largeSpotCapacityUpdated, response.getBody().getLargeSpotCapacity());
         assertEquals(FixedValidFloor.smallSpotCapacityUpdated, response.getBody().getSmallSpotCapacity());
-        //delete
-        assertEquals(FixedValidFloor.largeSpotCounterUpdated, response.getBody().getLargeSpotCounter());
-        assertEquals(FixedValidFloor.smallSpotCounterUpdated, response.getBody().getSmallSpotCounter());
     }
 
     @Test
@@ -252,9 +221,6 @@ public class FloorIntegrationTests {
         assertEquals(FixedValidFloor.isMemberOnlyUpdated, response.getBody().getMemberOnly());
         assertEquals(FixedValidFloor.largeSpotCapacityUpdated, response.getBody().getLargeSpotCapacity());
         assertEquals(FixedValidFloor.smallSpotCapacityUpdated, response.getBody().getSmallSpotCapacity());
-        //delete
-        assertEquals(FixedValidFloor.largeSpotCounterUpdated, response.getBody().getLargeSpotCounter());
-        assertEquals(FixedValidFloor.smallSpotCounterUpdated, response.getBody().getSmallSpotCounter());
     }
 
     @Test
@@ -292,48 +258,6 @@ public class FloorIntegrationTests {
         assertContains("Cannot be a negative number of large parking spots on a floor." , response.getBody());
     }
 
-    //delete
-    @Test
-    @Order(9)
-    public void testModifyFloorWithInvalidSmallCapacity(){
-        Floor validFloor = FixedValidFloor.createValidFloor();
-        FloorRequestDto request = floorToFloorRequestDto(validFloor);
-
-        //This will force largeSpotCapacity to be valid
-        request.setLargeSpotCapacity(FixedValidFloor.largeSpotCounterUpdated+1);
-        //This will force smallSpotCapacity to be invalid
-        request.setSmallSpotCapacity(FixedValidFloor.smallSpotCounterUpdated-1);
-        request.setIsMemberOnly(FixedValidFloor.isMemberOnlyUpdated);
-
-        HttpEntity<FloorRequestDto> requestEntity = new HttpEntity<>(request);
-
-        ResponseEntity<String> response = client.exchange(createURLWithPort("/floor"), HttpMethod.PUT, requestEntity, String.class);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertContains("The small spots occupied exceeds the capacity." , response.getBody());
-    }
-
-    @Test
-    @Order(10)
-    public void testModifyFloorWithInvalidLargeCapacity(){
-        Floor validFloor = FixedValidFloor.createValidFloor();
-        FloorRequestDto request = floorToFloorRequestDto(validFloor);
-
-        //This will force largeSpotCapacity to be invalid
-        request.setLargeSpotCapacity(FixedValidFloor.largeSpotCounterUpdated-1);
-        //This will force smallSpotCapacity to be valid
-        request.setSmallSpotCapacity(FixedValidFloor.smallSpotCounterUpdated+1);
-        request.setIsMemberOnly(FixedValidFloor.isMemberOnlyUpdated);
-
-        HttpEntity<FloorRequestDto> requestEntity = new HttpEntity<>(request);
-
-        ResponseEntity<String> response = client.exchange(createURLWithPort("/floor"), HttpMethod.PUT, requestEntity, String.class);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertContains("The large spots occupied exceeds the capacity." , response.getBody());
-    }
-    //========================================
-
     @Test
     @Order(11)
     public void testCreateSecondValidFloor(){
@@ -351,9 +275,6 @@ public class FloorIntegrationTests {
         assertEquals(FixedValidFloor.isMemberOnly, response.getBody().getMemberOnly());
         assertEquals(FixedValidFloor.largeSpotCapacity, response.getBody().getLargeSpotCapacity());
         assertEquals(FixedValidFloor.smallSpotCapacity, response.getBody().getSmallSpotCapacity());
-        //delete
-        assertEquals(0, response.getBody().getLargeSpotCounter());
-        assertEquals(0, response.getBody().getSmallSpotCounter());
     }
 
     @Test
@@ -373,17 +294,11 @@ public class FloorIntegrationTests {
         assertEquals(FixedValidFloor.isMemberOnlyUpdated, responseBody.get(0).get("memberOnly"));
         assertEquals(FixedValidFloor.largeSpotCapacityUpdated, responseBody.get(0).get("largeSpotCapacity"));
         assertEquals(FixedValidFloor.smallSpotCapacityUpdated, responseBody.get(0).get("smallSpotCapacity"));
-        //delete
-        assertEquals(FixedValidFloor.largeSpotCounterUpdated, responseBody.get(0).get("largeSpotCounter"));
-        assertEquals(FixedValidFloor.smallSpotCounterUpdated, responseBody.get(0).get("smallSpotCounter"));
 
         assertEquals(FixedValidFloor.secondFloorNumber, responseBody.get(1).get("floorNumber"));
         assertEquals(FixedValidFloor.isMemberOnly, responseBody.get(1).get("memberOnly"));
         assertEquals(FixedValidFloor.largeSpotCapacity, responseBody.get(1).get("largeSpotCapacity"));
         assertEquals(FixedValidFloor.smallSpotCapacity, responseBody.get(1).get("smallSpotCapacity"));
-        //delete
-        assertEquals(0, responseBody.get(1).get("largeSpotCounter"));
-        assertEquals(0, responseBody.get(1).get("smallSpotCounter"));
     }
 
     @Test
