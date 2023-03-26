@@ -34,7 +34,7 @@ public class ParkingLotController {
 	}
 
     @PostMapping("/parkingLot/creation")
-	public ResponseEntity<ParkingLotResponseDto> createPerson(@Valid @RequestBody ParkingLotRequestDto parkingLotRequestDto) {
+	public ResponseEntity<ParkingLotResponseDto> createParkingLot(@Valid @RequestBody ParkingLotRequestDto parkingLotRequestDto) {
 		ParkingLot p = parkingLotRequestDto.toModel();
 		p = parkingLotService.createParkingLot(p);
 		ParkingLotResponseDto responseBody = new ParkingLotResponseDto(p);
