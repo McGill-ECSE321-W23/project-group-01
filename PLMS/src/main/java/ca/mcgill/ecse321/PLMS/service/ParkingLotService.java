@@ -18,17 +18,6 @@ public class ParkingLotService {
     @Autowired
     ParkingLotRepository parkingLotRepository;
 
-
-    // @Transactional
-    // public ParkingLot getParkingLotById(int id) {
-    //     ParkingLot parkingLot = parkingLotRepository.findParkingLotById(id) ;
-    //     if (parkingLot == null) {
-    //         throw new PLMSException(HttpStatus.NOT_FOUND, "Parking Lot non-existant");
-    //     }
-
-    //     return parkingLot;
-    // }
-
     @Transactional
     public ParkingLot getParkingLot() {
         List<ParkingLot> parkingLot = (ArrayList<ParkingLot>) parkingLotRepository.findAll();

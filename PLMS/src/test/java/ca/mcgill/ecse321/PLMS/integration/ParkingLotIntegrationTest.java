@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import org.apache.tomcat.util.http.parser.HttpParser;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -130,14 +131,65 @@ public class ParkingLotIntegrationTest {
 
     @Test
 	@Order(0)
-	public void testGetInvalidPerson() {
+	public void testGetInvalidParkingLot() {
 		ResponseEntity<String> response = client.getForEntity("/parkingLot", String.class);
 
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 		assertEquals("Parking Lot not found.", response.getBody());
 	}
 
-	@Test
+    @Test
+    @Order(2)
+    public void testCreateNullParkingLot() {
+        ParkingLotRequestDto request = new ParkingLotRequestDto();
+
+        ResponseEntity<String> response = client.postForEntity("/parkingLot/creation", request, String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertContains("Opening time must not be null.", response.getBody());
+        assertContains("Closing time must not be null.", response.getBody());
+        assertContains("Large spot fee must not be null.", response.getBody());
+        assertContains("Small spot fee must not be null.", response.getBody());
+        assertContains("Monthly flat fee must not be null.", response.getBody());
+    }
+
+    @Test
+    @Order(3)
+    public void testCreateInvalidParkingLot() {
+        ParkingLotRequestDto request = new ParkingLotRequestDto();
+        request.setClosingTime(new Time(5, 0, 0));
+        request.setOpeningTime(new Time(0, 0, 0));
+        request.setLargeSpotFee(-2.0);
+        request.setLargeSpotMonthlyFlatFee(-3.3);
+        request.setSmallSpotFee(-32.3);
+        request.setLargeSpotMonthlyFlatFee(-32.3);
+        request.setSmallSpotMonthlyFlatFee(-32.3);
+
+        ResponseEntity<String> response = client.postForEntity("/parkingLot/creation", request, String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertContains("Large spot fee must be non-negative.", response.getBody());
+        assertContains("Small spot fee must be non-negative.", response.getBody());
+        assertContains("Small spot monthly flat fee must be non-negative.", response.getBody());
+        assertContains("Large spot monthly flat fee must be non-negative.", response.getBody());
+    }
+
+    @Test
+    @Order(2)
+    public void testCreateInvalidClosingTimeParkingLot() {
+        ParkingLot request = new ParkingLot();
+        request.setClosingTime(new Time(5, 0, 0));
+        request.setOpeningTime(new Time(4, 0, 0));
+        request.setSmallSpotMonthlyFlatFee(6.0);
+        request.setLargeSpotMonthlyFlatFee(7.0);
+        request.setLargeSpotFee(8.0);
+        request.setSmallSpotFee(9.0);
+        ResponseEntity<String> response = client.postForEntity("/parkingLot/creation", request, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertContains(response.getBody(), "Opening time cannot be after closing time.");
+    }
+
+    @Test
 	@Order(1)
 	public void testCreateParkingLot() {
 
@@ -177,42 +229,6 @@ public class ParkingLotIntegrationTest {
         fixture.setLargeSpotFee(response.getBody().getLargeSpotFee());
         fixture.setSmallSpotMonthlyFlatFee(response.getBody().getSmallSpotMonthlyFlatFee());
         fixture.setLargeSpotMonthlyFlatFee(response.getBody().getLargeSpotMonthlyFlatFee());
-	}
-
-    @Test
-	@Order(2)
-	public void testCreateInvalidParkingLot() {
-		ParkingLotRequestDto request = new ParkingLotRequestDto();
-
-		ResponseEntity<String> response = client.postForEntity("/parkingLot/creation", request, String.class);
-
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-		assertContains("Opening time must not be null.", response.getBody());
-        assertContains("Closing time must not be null.", response.getBody());
-        assertContains("Large spot fee must not be null.", response.getBody());
-        assertContains("Small spot fee must not be null.", response.getBody());
-        assertContains("Monthly flat fee must not be null.", response.getBody());
-	}
-
-    @Test
-	@Order(3)
-	public void testCreateInvalidParkingLot2() {
-		ParkingLotRequestDto request = new ParkingLotRequestDto();
-        request.setClosingTime(new Time(5, 0, 0));
-        request.setOpeningTime(new Time(0, 0, 0));
-        request.setLargeSpotFee(-2.0);
-        request.setLargeSpotMonthlyFlatFee(-3.3);
-        request.setSmallSpotFee(-32.3);
-        request.setLargeSpotMonthlyFlatFee(-32.3);
-        request.setSmallSpotMonthlyFlatFee(-32.3);
-
-		ResponseEntity<String> response = client.postForEntity("/parkingLot/creation", request, String.class);
-
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-		assertContains("Large spot fee must be non-negative.", response.getBody());
-        assertContains("Small spot fee must be non-negative.", response.getBody());
-        assertContains("Small spot monthly flat fee must be non-negative.", response.getBody());
-        assertContains("Large spot monthly flat fee must be non-negative.", response.getBody());
 	}
 
     @Test
@@ -301,9 +317,9 @@ public class ParkingLotIntegrationTest {
         Time openingTime = new Time(2,0,0);
         Time closingTime = new Time(6, 0, 0);
         double largeSpotFee = -5.0;
-        double smallSpotFee = 6;
+        double smallSpotFee = -6.0;
         double smallSpotMonthlyFlatFee = -7.0;
-        double largeSpotMonthlyFlatFee = 10;
+        double largeSpotMonthlyFlatFee = -10.0;
 
 		ParkingLotRequestDto request = new ParkingLotRequestDto();
 		request.setOpeningTime(openingTime);
@@ -315,9 +331,12 @@ public class ParkingLotIntegrationTest {
 
 		HttpEntity<ParkingLotRequestDto> requestEntity = new HttpEntity<>(request);
 		ResponseEntity<String> response = client.exchange("/parkingLot/update", HttpMethod.PUT, requestEntity, String.class);
-
 		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-	}
+        assertContains("Large spot fee must be non-negative.", response.getBody());
+        assertContains("Small spot fee must be non-negative.", response.getBody());
+        assertContains("Small spot monthly flat fee must be non-negative.", response.getBody());
+        assertContains("Large spot monthly flat fee must be non-negative.", response.getBody());
+    }
 
 
 	private static void assertContains(String expected, String actual) {
