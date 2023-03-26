@@ -38,6 +38,7 @@ public class ParkingLotService {
     @Transactional
     public ParkingLot updateParkingLot(ParkingLot parkingLot)
     {   
+        validateOpeningClosingTime(parkingLot);
         ParkingLot p = getParkingLot();
         p.setClosingTime(parkingLot.getClosingTime());
         p.setOpeningTime(parkingLot.getOpeningTime());
@@ -45,7 +46,6 @@ public class ParkingLotService {
         p.setSmallSpotFee(parkingLot.getSmallSpotFee());
         p.setSmallSpotMonthlyFlatFee(parkingLot.getSmallSpotMonthlyFlatFee());
         p.setLargeSpotMonthlyFlatFee(parkingLot.getLargeSpotMonthlyFlatFee());
-        validateOpeningClosingTime(parkingLot);
         return parkingLotRepository.save(p);
     }
 

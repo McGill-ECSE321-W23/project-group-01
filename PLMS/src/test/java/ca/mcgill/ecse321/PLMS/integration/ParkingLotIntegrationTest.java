@@ -180,7 +180,7 @@ public class ParkingLotIntegrationTest {
     public void testCreateInvalidClosingTimeParkingLot() {
         ParkingLot request = new ParkingLot();
         request.setClosingTime(new Time(5, 0, 0));
-        request.setOpeningTime(new Time(4, 0, 0));
+        request.setOpeningTime(new Time(7, 0, 0));
         request.setSmallSpotMonthlyFlatFee(6.0);
         request.setLargeSpotMonthlyFlatFee(7.0);
         request.setLargeSpotFee(8.0);
@@ -346,10 +346,10 @@ public class ParkingLotIntegrationTest {
 
         Time openingTime = new Time(2,0,0);
         Time closingTime = new Time(2, 0, 0);
-        double largeSpotFee = -5.0;
-        double smallSpotFee = -6.0;
-        double smallSpotMonthlyFlatFee = -7.0;
-        double largeSpotMonthlyFlatFee = -10.0;
+        double largeSpotFee = 5.0;
+        double smallSpotFee = 6.0;
+        double smallSpotMonthlyFlatFee = 7.0;
+        double largeSpotMonthlyFlatFee = 10.0;
 
         ParkingLotRequestDto request = new ParkingLotRequestDto();
         request.setOpeningTime(openingTime);
