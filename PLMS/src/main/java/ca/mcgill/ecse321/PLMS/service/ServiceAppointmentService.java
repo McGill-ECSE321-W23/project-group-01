@@ -250,7 +250,7 @@ public class ServiceAppointmentService {
     updatedAppointment.setEmployee(employee);
 
     // we randomly assign employees, if there are any.
-    updatedAppointment.setEmployee(checkForConflictInEmployeeScheedule(updatedAppointment));
+    if (employee != null) updatedAppointment.setEmployee(checkForConflictInEmployeeScheedule(updatedAppointment));
     ServiceAppointment appointment = serviceAppointmentRepo.save(updatedAppointment);
     return appointment;
   }

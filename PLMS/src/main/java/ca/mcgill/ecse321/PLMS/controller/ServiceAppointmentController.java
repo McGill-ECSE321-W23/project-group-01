@@ -160,7 +160,7 @@ public class ServiceAppointmentController {
       @PutMapping("/serviceAppointment/employeeEmail/{id}")
       public ResponseEntity<ServiceAppointmentResponseDto> updateEmployeeEmailServiceAppointment(@PathVariable int id, @RequestParam String employeeEmail){
         Employee employee = null;
-        if(employeeEmail != null) employee = employeeService.getEmployeeByEmail(employeeEmail);
+        if(!employeeEmail.isEmpty()) employee = employeeService.getEmployeeByEmail(employeeEmail);
         
         ServiceAppointment serviceAppointment = serviceAppointmentService.updateEmployeeEmailServiceAppointment(employee, id);
         ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);

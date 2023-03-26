@@ -507,9 +507,30 @@ public class ServiceAppointmentIntegrationTest {
 
     }
 
-    //8
     @Test
     @Order(20)
+    public void testModifyAppointmentWithValidEmployeeEmail(){
+        ServiceAppointmentRequestDto request = new ServiceAppointmentRequestDto();
+
+        HttpEntity<ServiceAppointmentRequestDto> requestEntity = new HttpEntity<>(request);
+        
+        ResponseEntity<ServiceAppointmentResponseDto> response = client.exchange("/serviceAppointment/employeeEmail/"+FixedServiceAppointment.id1+"?employeeEmail=", HttpMethod.PUT, requestEntity , ServiceAppointmentResponseDto.class);
+        
+        assertEquals(HttpStatus.OK, response.getStatusCode(), response.getBody().toString());
+        assertNotNull(response.getBody());
+
+        assertEquals(FixedServiceAppointment.validDate2, response.getBody().getDate());
+        assertEquals(FixedServiceAppointment.validTime2, response.getBody().getStartTime());
+        assertEquals(findEndTime(FixedServiceAppointment.validTime2.toLocalTime(), FixedServiceAppointment.validService2), response.getBody().getEndTime());
+        assertEquals(FixedServiceAppointment.validMonthlyCustomer.getEmail(), response.getBody().getCustomerEmail());
+        assertEquals(null, response.getBody().getEmployeeEmail());
+        assertEquals(FixedServiceAppointment.validService2.getServiceName(), response.getBody().getServiceName());
+        assertEquals(FixedServiceAppointment.id1, response.getBody().getId());
+    }
+
+    //8
+    @Test
+    @Order(21)
     public void testDeleteFirstServiceAppointmentWithId() {
         HttpEntity<String> requestEntity = new HttpEntity<>(null);
         ResponseEntity<String> response = client.exchange("/serviceAppointment/" + FixedServiceAppointment.id1, HttpMethod.DELETE, requestEntity, String.class);
@@ -521,7 +542,7 @@ public class ServiceAppointmentIntegrationTest {
 
     //8.a
     @Test
-    @Order(21)
+    @Order(22)
     public void testDeleteDeletedFirstServiceAppointmentWithId() {
         HttpEntity<String> requestEntity = new HttpEntity<>(null);
         ResponseEntity<String> response = client.exchange("/serviceAppointment/" + FixedServiceAppointment.id1, HttpMethod.DELETE, requestEntity, String.class);
@@ -531,7 +552,7 @@ public class ServiceAppointmentIntegrationTest {
 
     //9
     @Test
-    @Order(22)
+    @Order(23)
     public void testDeleteSecondServiceAppointmentWithId() {
         HttpEntity<String> requestEntity = new HttpEntity<>(null);
         ResponseEntity<String> response = client.exchange("/serviceAppointment/" + FixedServiceAppointment.id2, HttpMethod.DELETE, requestEntity, String.class);
@@ -547,7 +568,7 @@ public class ServiceAppointmentIntegrationTest {
 
     //9.a
     @Test
-    @Order(23)
+    @Order(24)
     public void testCreatServiceAppointmentWithNoParkingLot() {
         parkingLotRepository.delete(FixedServiceAppointment.parkingLot);
 
@@ -562,7 +583,7 @@ public class ServiceAppointmentIntegrationTest {
 
     //9.b
     @Test
-    @Order(24)
+    @Order(25)
     public void testGetAllEmptyServiceAppointments() {
         ResponseEntity<String> response3 =  client.getForEntity("/serviceAppointment", String.class);
         assertEquals(HttpStatus.NOT_FOUND, response3.getStatusCode());
