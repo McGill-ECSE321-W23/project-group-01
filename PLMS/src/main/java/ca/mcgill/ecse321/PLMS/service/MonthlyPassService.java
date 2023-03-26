@@ -78,11 +78,13 @@ public class MonthlyPassService {
 
         // Get start date and find end date
         Date startDate = monthlyPass.getStartDate();
-        LocalDate localStartDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//        LocalDate localStartDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localStartDate = LocalDate.parse(startDate.toString());
         // Add months to LocalStartDate
-        LocalDate LocalEndDate = localStartDate.plusMonths(nrMonths);
+        LocalDate localEndDate = localStartDate.plusMonths(nrMonths);
         // Convert back to Date
-        Date endDate = (Date) Date.from(LocalEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+//        Date endDate = (Date) Date.from(LocalEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDate = Date.valueOf(localEndDate);
         monthlyPass.setEndDate(endDate);
 
         // Check if the spot is not occupied
@@ -172,18 +174,24 @@ public class MonthlyPassService {
     }
 
     public boolean isSpotOccupied(int floorNumber, String spotNumber, Date startDate, Date endDate) {
-        List<MonthlyPass> monthlyPasses = getMonthlyPassesByFloor(floorNumber); // get all monthly passes for the floor
-        for (MonthlyPass monthlyPass : monthlyPasses) {
-            if (monthlyPass.getSpotNumber().equals(spotNumber)){ // check if spot number matches
-                Date passStartDate = monthlyPass.getStartDate();
-                Date passEndDate = monthlyPass.getEndDate();
-                if (passStartDate.before(endDate) && passEndDate.after(startDate)) {
-                    // monthly pass overlaps with the specified date range
-                    return true;
+        try {
+            List<MonthlyPass> monthlyPasses = getMonthlyPassesByFloor(floorNumber); // get all monthly passes for the floor
+            for (MonthlyPass monthlyPass : monthlyPasses) {
+                if (monthlyPass.getSpotNumber().equals(spotNumber)) { // check if spot number matches
+                    Date passStartDate = monthlyPass.getStartDate();
+                    Date passEndDate = monthlyPass.getEndDate();
+                    if (passStartDate.before(endDate) && passEndDate.after(startDate)) {
+                        // monthly pass overlaps with the specified date range
+                        return true;
+                    }
                 }
             }
+            return false; // no overlapping monthly passes found
+
+        } catch (PLMSException e) { // In case no guest passes existed prior
+            return false;
         }
-        return false; // no overlapping monthly passes found
+
     }
 
 }
