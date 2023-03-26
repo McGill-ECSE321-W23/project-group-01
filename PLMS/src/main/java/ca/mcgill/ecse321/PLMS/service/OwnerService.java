@@ -11,6 +11,7 @@ import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Service class for the Account model objects in the database
@@ -22,13 +23,22 @@ public class OwnerService {
     @Autowired
     OwnerRepository ownerRepository;
 
+    /**
+     * Service method to fetch all existing owners in the database
+     * @throws PLMSException - if no owners exist in the system
+     */
     @Transactional
     public Iterable<Owner> getAllOwners() {
-        ArrayList<Owner> arrayList = (ArrayList<Owner>) ownerRepository.findAll();
-        if (arrayList.isEmpty())
-            throw new PLMSException(HttpStatus.NO_CONTENT, "There are no owners in the system");
+        Iterable<Owner> owners = ownerRepository.findAll();
+        Iterator<Owner> iterator = owners.iterator();
+        if (!iterator.hasNext())
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no owners in the system");
         return ownerRepository.findAll(); }
 
+    /**
+     * Service method to fetch an existing owner with a specific email from the database
+     * @throws PLMSException - If the owner does not exist
+     */
     @Transactional
     public Owner getOwnerByEmail(String email) {
         Owner owner = ownerRepository.findOwnerByEmail(email);
@@ -38,16 +48,24 @@ public class OwnerService {
         return owner;
     }
 
+    /**
+     * Service method that updates the owner's information in the database
+     * @throws PLMSException - If owner does not exist
+     */
     @Transactional
     public Owner updateOwnerAccount(Owner owner)
     {
         Owner o = getOwnerByEmail(owner.getEmail());
         o.setPassword(owner.getPassword());
-        o.setName(owner.getEmail());
+        o.setName(owner.getName());
         return ownerRepository.save(o);
 
     }
 
+    /**
+     * Service method to store a created owner in the database
+     * @throws PLMSException - If an owner already exists
+     */
     @Transactional
 	public Owner createOwnerAccount(Owner owner) {
         // Register the owner account into database

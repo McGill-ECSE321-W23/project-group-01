@@ -14,9 +14,14 @@ import java.util.ArrayList;
 @Service
 public class MonthlyCustomerService {
 
+
     @Autowired
     MonthlyCustomerRepository monthlyCustomerRepository;
 
+    /**
+     * Service method to fetch all existing monthly customers in the database
+     * @throws PLMSException - if no monthly customers exist in the system
+     */
     @Transactional
     public Iterable<MonthlyCustomer> getAllMonthlyCustomers() {
         ArrayList<MonthlyCustomer> arrayList = (ArrayList<MonthlyCustomer>) monthlyCustomerRepository.findAll();
@@ -24,6 +29,10 @@ public class MonthlyCustomerService {
             throw new PLMSException(HttpStatus.NOT_FOUND, "There are no monthly customers in the system");
         return monthlyCustomerRepository.findAll(); }
 
+    /**
+     * Service method to fetch an existing monthly customer with a specific email from the database
+     * @throws PLMSException - If the monthly customer does not exist
+     */
     @Transactional
     public MonthlyCustomer getMonthlyCustomerByEmail(String email) {
         MonthlyCustomer monthlyCustomer = monthlyCustomerRepository.findMonthlyCustomerByEmail(email);
@@ -33,6 +42,10 @@ public class MonthlyCustomerService {
         return monthlyCustomer;
     }
 
+    /**
+     * Service method that updates the monthly customer's information in the database
+     * @throws PLMSException - If monthly customer does not exist
+     */
     @Transactional
     public MonthlyCustomer updateMonthlyCustomer(MonthlyCustomer monthlyCustomer)
     {
@@ -42,6 +55,10 @@ public class MonthlyCustomerService {
         return monthlyCustomerRepository.save(customer);
     }
 
+    /**
+     * Service method to store a created monthly customer in the database
+     * @throws PLMSException - If a monthly customer already exists
+     */
     @Transactional
     public MonthlyCustomer createMonthlyCustomerAccount(MonthlyCustomer monthlyCustomer) {
         // Create the account
@@ -51,6 +68,5 @@ public class MonthlyCustomerService {
             throw new PLMSException(HttpStatus.CONFLICT, "Account with this email already exists");
 
     }
-
 
 }

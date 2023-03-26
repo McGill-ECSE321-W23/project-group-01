@@ -96,4 +96,9 @@ public class MonthlyPassRequestDto {
     public Integer getFloorNumber() {
         return floorNumber;
     }
+
+    public String getCustomerEmail(){
+        return this.customerEmail;
+    }
+
 }

@@ -2,8 +2,6 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
@@ -14,7 +12,6 @@ import java.util.Iterator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
@@ -40,7 +37,6 @@ public class GuestPassServiceTests {
   public void testGetValidGuestPass(){
     double fee = 50.50;
     String spotNumber = "A24";
-    String licensePlate = "123ABC123";
     Date date = Date.valueOf("2023-02-21");
     Time starTime = Time.valueOf("12:00:00");
     Time endTime = Time.valueOf("18:00:00");
@@ -76,53 +72,16 @@ public class GuestPassServiceTests {
 		assertEquals("Guest pass with id: " + invalidPassNumber + " does not exist.", e.getMessage());
   }
 
-  @Test
-    public void testInvalidDeleteGuestPass()
-    {
-        final int id = 42;
-        when(guestPassRepo.findGuestPassById(id)).thenReturn(null);
-        PLMSException e = assertThrows(PLMSException.class, () -> guestPassService.deleteGuestPassById(id));
-        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-        assertEquals(e.getMessage(), "Guest pass with id: " + id + " does not exist.");
-    }
-
-    @Test
-    public void testValidDeleteGuestPass()
-    {
-      double fee = 50.50;
-      String spotNumber = "A24";
-      String licensePlate = "123ABC123";
-      Date date = Date.valueOf("2023-02-21");
-      Time starTime = Time.valueOf("12:00:00");
-      Time endTime = Time.valueOf("18:00:00");
-      boolean isLarge = true;
-      String confirmationCode = "NeverGonnaGiveYouUp";
-      int id  = 1;
-      GuestPass guestPass = new GuestPass();
-      guestPass.setFee(fee);
-      guestPass.setSpotNumber(spotNumber);
-      guestPass.setConfirmationCode(confirmationCode);
-      guestPass.setIsLarge(isLarge);
-      guestPass.setDate(date);
-      guestPass.setStartTime(starTime);
-      guestPass.setEndTime(endTime);
-        when(guestPassRepo.findGuestPassById(id)).thenReturn(guestPass);
-
-        guestPassService.deleteGuestPassById(id);
-
-    }
 
     @Test
     public void testGetAllGuestPasses(){
       double fee = 50.50;
       String spotNumber = "A24";
-      String licensePlate = "123ABC123";
       Date date = Date.valueOf("2023-02-21");
       Time starTime = Time.valueOf("12:00:00");
       Time endTime = Time.valueOf("18:00:00");
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
-      int id  = 1;
       GuestPass guestPass = new GuestPass();
       guestPass.setFee(fee);
       guestPass.setSpotNumber(spotNumber);
@@ -148,13 +107,11 @@ public class GuestPassServiceTests {
     public void testGetGuestPassesByFloor(){
       double fee = 50.50;
       String spotNumber = "A24";
-      String licensePlate = "123ABC123";
       Date date = Date.valueOf("2023-02-21");
       Time starTime = Time.valueOf("12:00:00");
       Time endTime = Time.valueOf("18:00:00");
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
-      int id  = 1;
       GuestPass guestPass = new GuestPass();
       guestPass.setFee(fee);
       guestPass.setSpotNumber(spotNumber);
@@ -166,13 +123,11 @@ public class GuestPassServiceTests {
 
       double fee2 = 50.50;
       String spotNumber2 = "A24";
-      String licensePlate2 = "123ABC123";
       Date date2 = Date.valueOf("2023-02-21");
       Time starTime2 = Time.valueOf("12:00:00");
       Time endTime2 = Time.valueOf("18:00:00");
       boolean isLarge2 = true;
       String confirmationCode2 = "NeverGonnaGiveYouUp";
-      int id2  = 2;
       GuestPass guestPass2 = new GuestPass();
       guestPass2.setFee(fee2);
       guestPass2.setSpotNumber(spotNumber2);
@@ -215,13 +170,11 @@ public class GuestPassServiceTests {
       GuestPass guestPass2 = new GuestPass();
       double fee2 = 50.50;
       String spotNumber2 = "A24";
-      String licensePlate2 = "123ABC123";
       Date date2 = Date.valueOf("2023-02-21");
       Time starTime2 = Time.valueOf("12:00:00");
       Time endTime2 = Time.valueOf("18:00:00");
       boolean isLarge2 = true;
       String confirmationCode2 = "NeverGonnaGiveYouUp";
-      int id2  = 2;
       guestPass2.setFee(fee2);
       guestPass2.setSpotNumber(spotNumber2);
       guestPass2.setConfirmationCode(confirmationCode2);

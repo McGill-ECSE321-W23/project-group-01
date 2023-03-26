@@ -11,16 +11,13 @@ import ca.mcgill.ecse321.PLMS.repository.ServiceRepository;
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Service;
 
-//@org.springframework.stereotype.Service
 @org.springframework.stereotype.Service
 public class ServiceService {
 
-
-
     /*
    * Functionalities of the service service class
-   *
-   * 1) GET all services
+   * 
+   * 1) GET all services 
    * 2) GET service appointment by service name
    * 3) POST service
    * 4) DELETE service appointment by service name
@@ -117,5 +114,3 @@ public class ServiceService {
     }
 
 }
-
-

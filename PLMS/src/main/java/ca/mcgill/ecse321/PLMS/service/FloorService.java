@@ -30,7 +30,7 @@ public class FloorService {
     public Iterable<Floor> getAllFloors(){
         ArrayList<Floor> arrayList = (ArrayList<Floor>) floorRepository.findAll();
         if (arrayList.isEmpty())
-            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no floors in the system");
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no floors in the system.");
        return arrayList;
     }
 
@@ -59,10 +59,9 @@ public class FloorService {
 
         // check for the parking lot in the database, if it doesn't exist yet we cannot create the floor
         Iterable<ParkingLot> lots = parkingLotRepository.findAll();
-        if (lots == null){
-            throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot create floor since the parking lot has not been created");
+        if (lots == null || !lots.iterator().hasNext()){
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot create floor since the parking lot has not been created.");
         }
-
         ParkingLot lot = lots.iterator().next();
         floor.setParkingLot(lot);
 
@@ -81,6 +80,7 @@ public class FloorService {
         Floor existingFloor = getFloorByFloorNumber(floor.getFloorNumber());
 
         // update the properties of the existing Floor entity
+        existingFloor.setIsMemberOnly(floor.getIsMemberOnly());
         existingFloor.setLargeSpotCapacity(floor.getLargeSpotCapacity());
         existingFloor.setSmallSpotCapacity(floor.getSmallSpotCapacity());
         // save the changes to the database

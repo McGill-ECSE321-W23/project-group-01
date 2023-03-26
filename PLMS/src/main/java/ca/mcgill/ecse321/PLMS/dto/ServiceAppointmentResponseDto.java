@@ -2,13 +2,14 @@ package ca.mcgill.ecse321.PLMS.dto;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
 
 public class ServiceAppointmentResponseDto {
    
     private int id;
-    private Date date;
+    private LocalDate date;
     private Time startTime;
     private Time endTime;
 
@@ -35,7 +36,7 @@ public class ServiceAppointmentResponseDto {
         return id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -65,7 +66,7 @@ public class ServiceAppointmentResponseDto {
         this.id = id;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

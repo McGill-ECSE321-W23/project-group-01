@@ -5,10 +5,9 @@ import ca.mcgill.ecse321.PLMS.model.Floor;
 public class FloorResponseDto {
   // attributes
   private int floorNumber;
+  private boolean isMemberOnly;
   private int smallSpotCapacity;
   private int largeSpotCapacity;
-  private int smallSpotCounter;
-  private int largeSpotCounter;
 
   /**
    * Default constructor
@@ -22,10 +21,9 @@ public class FloorResponseDto {
    */
   public FloorResponseDto(Floor floor){
     this.floorNumber = floor.getFloorNumber();
+    this.isMemberOnly = floor.getIsMemberOnly();
     this.smallSpotCapacity = floor.getSmallSpotCapacity();
     this.largeSpotCapacity = floor.getLargeSpotCapacity();
-    this.smallSpotCounter = floor.getSmallSpotCounter();
-    this.largeSpotCounter = floor.getLargeSpotCounter();
   }
 
   // getters
@@ -34,26 +32,27 @@ public class FloorResponseDto {
     return this.floorNumber;
   }
 
-  public int getSmallCapacity(){
-    return this.smallSpotCapacity;
+  public boolean getMemberOnly(){
+    return this.isMemberOnly;
+  }
+
+  public int getSmallSpotCapacity() {
+      return smallSpotCapacity;
   }
 
   public int getLargeSpotCapacity(){
     return this.largeSpotCapacity;
   }
 
-  public int getSmallSpotCounter(){
-    return this.smallSpotCounter;
-  }
-
-  public int getLargeSpotCounter(){
-    return this.largeSpotCounter;
-  }
 
   // need to add setters to responses!
 
   public void setFloorNumber(int floorNumber){
     this.floorNumber = floorNumber;
+  }
+
+  public void setMemberOnly(boolean isMemberOnly) {
+      this.isMemberOnly = isMemberOnly;
   }
 
   public void setSmallSpotCapacity(int smallSpotCapacity){
@@ -64,13 +63,6 @@ public class FloorResponseDto {
     this.largeSpotCapacity = largeSpotCapacity;
   }
 
-  public void setSmallSpotCounter(int smallSpotCounter){
-    this.smallSpotCounter = smallSpotCounter;
-  }
-
-  public void setLargeSpotCounter(int largeSpotCounter){
-    this.largeSpotCounter = largeSpotCounter;
-  }
 
 
 }

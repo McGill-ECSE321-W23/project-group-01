@@ -69,6 +69,7 @@ public class GuestPassService {
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
         if (floor == null) {
             throw new PLMSException(HttpStatus.NOT_FOUND, "The floor with floor number " + floorNumber + " does not exist.");
+
         }
         ParkingLot parkingLot = floor.getParkingLot();
 
@@ -104,13 +105,12 @@ public class GuestPassService {
             throw new PLMSException(HttpStatus.BAD_REQUEST, "All spots of this size on floor " + floorNumber +" are occupied.");
         }
 
-        // Set fee and increment floor counter
+        // Set fee
         if (guestPass.getIsLarge()){
             guestPass.setFee(nrIncrements*parkingLot.getLargeSpotFee());
-            floor.setLargeSpotCounter(floor.getLargeSpotCounter() + 1);
         } else{
             guestPass.setFee(nrIncrements*parkingLot.getSmallSpotFee());
-            floor.setSmallSpotCounter(floor.getSmallSpotCounter() + 1);
+
         }
         // Create object
         guestPass = guestPassRepository.save(guestPass);
@@ -134,13 +134,15 @@ public class GuestPassService {
         int numberOfPasses = 0;
         // filter through the guest passes to find passes that are of the same size and same floor number
         for (GuestPass pass : guestPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowGuestPass(pass.getDate().toLocalDate(), pass.getStartTime().toLocalTime(), pass.getEndTime().toLocalTime())){
+
                 numberOfPasses += 1;
             }
         }
 
         for (MonthlyPass pass : monthlyPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(pass.getStartDate().toLocalDate(), pass.getEndDate().toLocalDate())){
+
                 numberOfPasses += 1;
             }
         }
@@ -161,7 +163,7 @@ public class GuestPassService {
      * @param endTime - end time of the pass
      * @return true if the pass is currently active
      */
-    public static boolean isActiveRightNow(LocalDate date, LocalTime startTime, LocalTime endTime) {
+    public boolean isActiveRightNowGuestPass(LocalDate date, LocalTime startTime, LocalTime endTime) {
         LocalDateTime start = LocalDateTime.of(date, startTime);
         LocalDateTime end = LocalDateTime.of(date, endTime);
         LocalDateTime now = LocalDateTime.now();
@@ -170,6 +172,20 @@ public class GuestPassService {
     }
 
     /**
+     * Function for checking if a pass is active right at this point in time, given the start and end times
+     * and date.
+     * @param startDate - start date of the pass
+     * @param endDate - end date of the pass
+     * @return true if the pass is currently active
+     */
+    public boolean isActiveRightNowMonthlyPass(LocalDate startDate, LocalDate endDate) {
+        LocalDate now = LocalDate.now();
+        
+        return now.isAfter(startDate) && now.isBefore(endDate);
+    }
+
+    /**
+
      * Service method that updates a guest pass object in the database
      */
     @Transactional
@@ -259,7 +275,8 @@ public class GuestPassService {
             if (guestPass.getSpotNumber().equals(spotNumber)){ // check if spot number matches
                 Time guestPassStartTime = guestPass.getStartTime();
                 Time guestPassEndTime = guestPass.getEndTime();
-                if (guestPassStartTime.before(endTime) && guestPassEndTime.after(startTime) || (startTime.before(guestPassEndTime) && endTime.after(guestPassStartTime))) {
+                if ((guestPassStartTime.before(endTime) && guestPassEndTime.after(startTime)) || (startTime.before(guestPassEndTime) && endTime.after(guestPassStartTime))) {
+
                     // guest pass overlaps with the specified time range
                     return true;
                 }

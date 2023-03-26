@@ -2,6 +2,10 @@ package ca.mcgill.ecse321.PLMS.model;
 
 
 import java.sql.Date;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 
 /**
@@ -25,6 +29,7 @@ public class MonthlyPass extends Pass
 
   //MonthlyPass Associations
   @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private MonthlyCustomer customer;
 
   //------------------------

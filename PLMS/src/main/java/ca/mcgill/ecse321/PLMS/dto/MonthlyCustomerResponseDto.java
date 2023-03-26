@@ -12,6 +12,7 @@ public class MonthlyCustomerResponseDto {
         this.name = monthlyCustomer.getName();
     }
 
+    public MonthlyCustomerResponseDto() {}
 
     public String getEmail()
     { return email; }
