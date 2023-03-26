@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.PLMS.service;
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.*;
 import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
+import ca.mcgill.ecse321.PLMS.repository.GuestPassRepository;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyPassRepository;
 import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class MonthlyPassService {
 
     @Autowired
     MonthlyPassRepository monthlyPassRepository;
+
+    @Autowired
+    GuestPassRepository guestPassRepository;
 
     @Autowired
     FloorRepository floorRepository;
@@ -60,10 +65,6 @@ public class MonthlyPassService {
      */
     @Transactional
     public MonthlyPass createMonthlyPass(MonthlyPass monthlyPass, int floorNumber, int nrMonths) {
-        // Check if the monthly pass already exists
-        if (monthlyPassRepository.findMonthlyPassById(monthlyPass.getId()) != null) {
-            throw new PLMSException(HttpStatus.BAD_REQUEST, "Monthly pass with id: " + monthlyPass.getId() + " already exists.");
-        }
         // Get the associated floor from floor number inputted into monthly pass
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
         if (floor == null) {
@@ -82,12 +83,18 @@ public class MonthlyPassService {
         // Add months to LocalStartDate
         LocalDate LocalEndDate = localStartDate.plusMonths(nrMonths);
         // Convert back to Date
-        Date endDate = (Date) Date.from(LocalEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        Date endDate = Date.valueOf(formatter.format(LocalEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
         monthlyPass.setEndDate(endDate);
 
         // Check if the spot is not occupied
         if (isSpotOccupied(floor.getFloorNumber(), monthlyPass.getSpotNumber(), monthlyPass.getStartDate(), endDate)) {
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Spot " + monthlyPass.getSpotNumber() + " is currently occupied");
+        }
+
+        // check to see if the capacity has been reached
+        if(hasExceededCapacity(floorNumber, monthlyPass.getIsLarge())){
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "All spots of this size on floor " + floorNumber +" are occupied.");
         }
 
 
@@ -103,6 +110,73 @@ public class MonthlyPassService {
         // Returned created object
         return monthlyPass;
     }
+
+    /**
+     * Helper method to check if we have exceeded capacity on a floor based
+     * on the number of guest passes and monthly passes on that floor
+     * @param floorNumber - number of the floor
+     * @param isLarge - size of the spot
+     * @return - true if we've reached capacity for those spots, false otherwise
+     */
+    public boolean hasExceededCapacity(int floorNumber, boolean isLarge){
+        // get all the passes
+        ArrayList<GuestPass> guestPasses = (ArrayList<GuestPass>) guestPassRepository.findAll();
+        ArrayList<MonthlyPass> monthlyPasses = (ArrayList<MonthlyPass>) monthlyPassRepository.findAll();
+        // number of passes on the floor
+        int numberOfPasses = 0;
+        // filter through the guest passes to find passes that are of the same size and same floor number
+        for (GuestPass pass : guestPasses){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowGuestPass(pass.getDate().toLocalDate(), pass.getStartTime().toLocalTime(), pass.getEndTime().toLocalTime())){
+
+                numberOfPasses += 1;
+            }
+        }
+
+        for (MonthlyPass pass : monthlyPasses){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(pass.getStartDate().toLocalDate(), pass.getEndDate().toLocalDate())){
+
+                numberOfPasses += 1;
+            }
+        }
+
+        Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
+        if(isLarge){
+            return numberOfPasses >= floor.getLargeSpotCapacity();
+        }else{
+            return numberOfPasses >= floor.getSmallSpotCapacity();
+        }
+    }
+
+    /**
+     * Function for checking if a pass is active right at this point in time, given the start and end times
+     * and date.
+     * @param date - date of the pass
+     * @param startTime - start time of the pass
+     * @param endTime - end time of the pass
+     * @return true if the pass is currently active
+     */
+    public boolean isActiveRightNowGuestPass(LocalDate date, LocalTime startTime, LocalTime endTime) {
+        LocalDateTime start = LocalDateTime.of(date, startTime);
+        LocalDateTime end = LocalDateTime.of(date, endTime);
+        LocalDateTime now = LocalDateTime.now();
+        
+        return now.isAfter(start) && now.isBefore(end);
+    }
+
+    /**
+     * Function for checking if a pass is active right at this point in time, given the start and end times
+     * and date.
+     * @param startDate - start date of the pass
+     * @param endDate - end date of the pass
+     * @return true if the pass is currently active
+     */
+    public boolean isActiveRightNowMonthlyPass(LocalDate startDate, LocalDate endDate) {
+        LocalDate now = LocalDate.now();
+        
+        return now.isAfter(startDate) && now.isBefore(endDate);
+    }
+
+
     public List<MonthlyPass> getMonthlyPassesByFloor(int floorNumber) {
         List<MonthlyPass> monthlyPasses = new ArrayList<>();
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
