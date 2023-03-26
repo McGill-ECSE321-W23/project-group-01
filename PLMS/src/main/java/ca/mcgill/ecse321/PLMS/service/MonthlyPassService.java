@@ -129,7 +129,7 @@ public class MonthlyPassService {
         monthlyPassRepository.delete(monthlyPass);
 
     }
-
+    @Transactional
     public List<MonthlyPass> getMonthlyPassesByMonthlyCustomer(String email) {
         List<MonthlyPass> monthlyPassesbyMonthlyCustomer  = new ArrayList<>();
         List<MonthlyPass> monthlyPasses = (List<MonthlyPass>) monthlyPassRepository.findAll();
@@ -145,7 +145,7 @@ public class MonthlyPassService {
         for (MonthlyPass monthlyPass : monthlyPasses) {
             // Check if the monthly pass belongs to the monthly customer
             if (monthlyPass.getCustomer().equals(monthlyCustomer)) {
-                monthlyPasses.add(monthlyPass);
+                monthlyPassesbyMonthlyCustomer.add(monthlyPass);
             }
         }
         if (monthlyPassesbyMonthlyCustomer.isEmpty()) {
@@ -153,7 +153,7 @@ public class MonthlyPassService {
             throw new PLMSException(HttpStatus.NOT_FOUND, "There are no monthly passes for " + monthlyCustomer.getEmail());
         }
 
-        return monthlyPasses;
+        return monthlyPassesbyMonthlyCustomer;
     }
 
     public List<MonthlyPass> getMonthlyPassesByDate(Date date) {

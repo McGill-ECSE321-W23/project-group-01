@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,6 +11,7 @@ import java.beans.Transient;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
 
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Floor;
 import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
+import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 
 import ca.mcgill.ecse321.PLMS.service.MonthlyPassService;
@@ -126,7 +129,7 @@ public class MonthlyPassServiceTests {
         final int invalidPassNumber = 42;
         when(monthlyPassRepo.findMonthlyPassById(invalidPassNumber)).thenReturn(null);
 
-        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.deleteMonthlyPassById(id));
+        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.deleteMonthlyPassById(invalidPassNumber));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
         assertEquals(e.getMessage(), "Monthly pass with id: " + invalidPassNumber + " does not exist.");
     }
@@ -236,13 +239,13 @@ public class MonthlyPassServiceTests {
         int id2 = 2;
         
         MonthlyPass monthlyPass2 = new MonthlyPass();
-        monthlyPass.setFee(fee);
-        monthlyPass.setSpotNumber(spotNumber);
-        monthlyPass.setConfirmationCode(confirmationCode);
-        monthlyPass.setIsLarge(isLarge);
-        monthlyPass.setStartDate(startDate);
-        monthlyPass.setEndDate(endDate);
-        monthlyPass.setLicensePlate(licensePlate);
+        monthlyPass2.setFee(fee2);
+        monthlyPass2.setSpotNumber(spotNumber2);
+        monthlyPass2.setConfirmationCode(confirmationCode2);
+        monthlyPass2.setIsLarge(isLarge2);
+        monthlyPass2.setStartDate(startDate2);
+        monthlyPass2.setEndDate(endDate2);
+        monthlyPass2.setLicensePlate(licensePlate2);
 
         ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
         monthlyPasses.add(monthlyPass);
@@ -254,15 +257,15 @@ public class MonthlyPassServiceTests {
         Iterator<MonthlyPass> i = output.iterator();
         MonthlyPass outputMonthlyPass = i.next();
         assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber);
-        assertEquals(outputMonthlyPass.getStartDate(), starDate);
+        assertEquals(outputMonthlyPass.getStartDate(), startDate);
         assertEquals(outputMonthlyPass.getEndDate(), endDate);
-        assertEquals(output.getCustomer(), monthlyCustomer);
+        assertEquals(outputMonthlyPass.getCustomer(), monthlyCustomer);
 
         outputMonthlyPass = i.next();
         assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber2);
-        assertEquals(outputMonthlyPass.getStartDate(), starDate2);
+        assertEquals(outputMonthlyPass.getStartDate(), startDate2);
         assertEquals(outputMonthlyPass.getEndDate(), endDate2);
-        assertEquals(output.getCustomer(), null);
+        assertEquals(outputMonthlyPass.getCustomer(), null);
 
     }
 
@@ -315,27 +318,26 @@ public class MonthlyPassServiceTests {
         monthlyPass2.setLicensePlate(licensePlate2);
         monthlyPass2.setCustomer(monthlyCustomer);
 
-        ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
-        monthlyPasses.add(monthlyPass1);
+        List<MonthlyPass> monthlyPasses = new ArrayList<>();
+        monthlyPasses.add(monthlyPass);
         monthlyPasses.add(monthlyPass2);
 
-        when(MonthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+        when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
         when(monthlyCustomerRepo.findMonthlyCustomerByEmail(email)).thenReturn(monthlyCustomer);
 
-        ArrayList<MonthlyPass> output = (ArrayList<MonthlyPass>) monthlyPassService.getMonthlyPassesByMonthlyCustomer(email);
-        Iterator<MonthlyPass> i = output.iterator();
-        MonthlyPass outputMonthlyPass = i.next();
+        List<MonthlyPass> output = monthlyPassService.getMonthlyPassesByMonthlyCustomer(email);
+        MonthlyPass outputMonthlyPass = output.get(0);
 
         assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber);
-        assertEquals(outputMonthlyPass.getStartDate(), starDate);
+        assertEquals(outputMonthlyPass.getStartDate(), startDate);
         assertEquals(outputMonthlyPass.getEndDate(), endDate);
-        assertEquals(output.getCustomer(), monthlyCustomer);
+        assertEquals(outputMonthlyPass.getCustomer(), monthlyCustomer);
 
-        outputMonthlyPass = i.next();
+        outputMonthlyPass = output.get(1);
         assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber2);
-        assertEquals(outputMonthlyPass.getStartDate(), starDate2);
+        assertEquals(outputMonthlyPass.getStartDate(), startDate2);
         assertEquals(outputMonthlyPass.getEndDate(), endDate2);
-        assertEquals(output.getCustomer(), monthlyCustomer);
+        assertEquals(outputMonthlyPass.getCustomer(), monthlyCustomer);
     }
 
     @Test
@@ -380,20 +382,29 @@ public class MonthlyPassServiceTests {
         monthlyPass2.setLicensePlate(licensePlate2);
 
         ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
-        monthlyPasses.add(monthlyPass1);
+        monthlyPasses.add(monthlyPass);
         monthlyPasses.add(monthlyPass2);
 
-        when(MonthlyPassRepo.findAll()).thenReturn(monthlyPasses);
-        when(monthlyCustomerRepo.findMonthlyCustomerByEmail(email)).thenReturn(null);
+        when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+        when(monthlyCustomerRepo.findMonthlyCustomerByEmail(invalidEmail)).thenReturn(null);
 
         
-        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByMonthlyCustomer(email));
+        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByMonthlyCustomer(invalidEmail));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-        assertEquals(e.getMessage(), "The account with email " + email + " does not exist.");
+        assertEquals(e.getMessage(), "The account with email " + invalidEmail + " does not exist.");
     }
 
     @Test
     public void testGetInvalidMonthlyPassesByMonthlyCustomer2(){
+
+        double fee = 50.50;
+        String spotNumber = "A24";
+        String licensePlate = "123ABC123";
+        Date startDate = Date.valueOf("2023-02-21");
+        Date endDate = Date.valueOf("2023-03-20");
+        boolean isLarge = true;
+        String confirmationCode = "NeverGonnaGiveYouUp";
+        int id = 1;
         
         String email = "rick.roll@gmail.com";
         String password = "intelliJLover123";
@@ -422,9 +433,9 @@ public class MonthlyPassServiceTests {
         monthlyPass.setCustomer(monthlyCustomer);
 
         ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
-        monthlyPasses.add(monthlyPass1);
+        monthlyPasses.add(monthlyPass);
 
-        when(MonthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+        when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
         when(monthlyCustomerRepo.findMonthlyCustomerByEmail(email2)).thenReturn(monthlyCustomer2);
 
         PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByMonthlyCustomer(email2));
@@ -436,6 +447,24 @@ public class MonthlyPassServiceTests {
     @Test
     public void testGetMonthlyPassesByFloor(){
       
+      double fee = 50.50;
+      String spotNumber = "A24";
+      String licensePlate = "123ABC123";
+      Date startDate = Date.valueOf("2023-02-21");
+      Date endDate = Date.valueOf("2023-03-20");
+      boolean isLarge = true;
+      String confirmationCode = "NeverGonnaGiveYouUp";
+      int id = 1;
+
+      double fee2 = 50.50;
+      String spotNumber2 = "A25";
+      String licensePlate2 = "123ABC124";
+      Date startDate2 = Date.valueOf("2023-02-22");
+      Date endDate2 = Date.valueOf("2023-03-21");
+      boolean isLarge2 = true;
+      String confirmationCode2 = "NeverGonnaGiveYouUp";
+      int id2 = 2;
+      
       String email = "rick.roll@gmail.com";
       String password = "intelliJLover123";
       String name = "Samer Abdulkarim";
@@ -443,7 +472,7 @@ public class MonthlyPassServiceTests {
       monthlyCustomer.setEmail(email);
       monthlyCustomer.setPassword(password);
       monthlyCustomer.setName(name);
-        
+      
       MonthlyPass monthlyPass = new MonthlyPass();
       monthlyPass.setFee(fee);
       monthlyPass.setSpotNumber(spotNumber);
@@ -527,10 +556,10 @@ public class MonthlyPassServiceTests {
         monthlyPass2.setLicensePlate(licensePlate2);
 
         ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
-        monthlyPasses.add(monthlyPass1);
+        monthlyPasses.add(monthlyPass);
         monthlyPasses.add(monthlyPass2);
 
-        when(MonthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+        when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
         when(floorRepo.findFloorByFloorNumber(1)).thenReturn(null);
 
         PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByFloor(1));
@@ -588,10 +617,10 @@ public class MonthlyPassServiceTests {
         monthlyPass2.setFloor(floor);
 
         ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
-        monthlyPasses.add(monthlyPass1);
+        monthlyPasses.add(monthlyPass);
         monthlyPasses.add(monthlyPass2);
 
-        when(MonthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+        when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
         when(floorRepo.findFloorByFloorNumber(2)).thenReturn(floor2);
 
         PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByFloor(2));
@@ -641,10 +670,10 @@ public class MonthlyPassServiceTests {
         monthlyPass2.setLicensePlate(licensePlate2);
 
         ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
-        monthlyPasses.add(monthlyPass1);
+        monthlyPasses.add(monthlyPass);
         monthlyPasses.add(monthlyPass2);
 
-        when(MonthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+        when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
 
         ArrayList<MonthlyPass> output = (ArrayList<MonthlyPass>) monthlyPassService.getMonthlyPassesByDate(Date.valueOf("2023-02-21"));
         Iterator<MonthlyPass> i = output.iterator();
@@ -698,10 +727,10 @@ public class MonthlyPassServiceTests {
         monthlyPass2.setLicensePlate(licensePlate2);
 
         ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
-        monthlyPasses.add(monthlyPass1);
+        monthlyPasses.add(monthlyPass);
         monthlyPasses.add(monthlyPass2);
 
-        when(MonthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+        when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
 
         PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByDate(Date.valueOf("2023-02-20")));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
@@ -715,13 +744,13 @@ public class MonthlyPassServiceTests {
       String spotNumber = "A24";
       String licensePlate = "123ABC123";
       Date startDate = Date.valueOf("2023-02-21");
-      Date endDate = Date.valueOf("2023-03-20");
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
       int id = 1;
 
       Floor floor = new Floor();
       floor.setFloorNumber(1);
+      floor.setIsMemberOnly(true);
 
       MonthlyPass monthlyPass = new MonthlyPass();
       monthlyPass.setFee(fee);
@@ -729,11 +758,11 @@ public class MonthlyPassServiceTests {
       monthlyPass.setConfirmationCode(confirmationCode);
       monthlyPass.setIsLarge(isLarge);
       monthlyPass.setStartDate(startDate);
-      monthlyPass.setEndDate(endDate);
       monthlyPass.setLicensePlate(licensePlate);
       monthlyPass.setFloor(floor);
 
       when(monthlyPassRepo.save(monthlyPass)).thenReturn(monthlyPass);
+      when(floorRepo.findFloorByFloorNumber(1)).thenReturn(floor);
 
       MonthlyPass output = monthlyPassService.createMonthlyPass(monthlyPass, 1 , 2);
 
@@ -746,12 +775,14 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
       String spotNumber = "A24";
       String licensePlate = "123ABC123";
+      Date startDate = Date.valueOf("2023-02-21");
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
       int id = 1;
 
       Floor floor = new Floor();
       floor.setFloorNumber(1);
+      floor.setIsMemberOnly(true);
 
       String email = "rick.roll@gmail.com";
       String password = "intelliJLover123";
@@ -768,8 +799,10 @@ public class MonthlyPassServiceTests {
       monthlyPass.setIsLarge(isLarge);
       monthlyPass.setLicensePlate(licensePlate);
       monthlyPass.setCustomer(monthlyCustomer);
+      monthlyPass.setStartDate(startDate);
 
       when(monthlyPassRepo.save(monthlyPass)).thenReturn(monthlyPass);
+      when(floorRepo.findFloorByFloorNumber(1)).thenReturn(floor);
 
       MonthlyPass output = monthlyPassService.createMonthlyPass(monthlyPass, 1, 2);
 
@@ -782,12 +815,14 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
       String spotNumber = "A24";
       String licensePlate = "123ABC123";
+      Date startDate = Date.valueOf("2023-02-21");
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
       int id = 1;
 
       Floor floor = new Floor();
       floor.setFloorNumber(1);
+      floor.setIsMemberOnly(true);
 
       MonthlyPass monthlyPass = new MonthlyPass();
       monthlyPass.setFee(fee);
@@ -795,10 +830,12 @@ public class MonthlyPassServiceTests {
       monthlyPass.setConfirmationCode(confirmationCode);
       monthlyPass.setIsLarge(isLarge);
       monthlyPass.setLicensePlate(licensePlate);
+      monthlyPass.setStartDate(startDate);
 
       double fee2 = 50.50;
       String spotNumber2 = "A25";
       String licensePlate2 = "123ABC124";
+      Date startDate2 = Date.valueOf("2023-02-22");
       boolean isLarge2 = false;
       String confirmationCode2 = "NeverGonnaGiveYouUp2";
       int id2 = 1;
@@ -810,9 +847,11 @@ public class MonthlyPassServiceTests {
       monthlyPass2.setConfirmationCode(confirmationCode2);
       monthlyPass2.setIsLarge(isLarge2);
       monthlyPass2.setLicensePlate(licensePlate2);
+      monthlyPass2.setStartDate(startDate2);
 
 
       when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
+      when(floorRepo.findFloorByFloorNumber(1)).thenReturn(floor);
 
       PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass2, 1, 2));
       assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
@@ -825,12 +864,10 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
       String spotNumber = "A24";
       String licensePlate = "123ABC123";
+      Date startDate = Date.valueOf("2023-02-21");
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
       int id = 1;
-
-      Floor floor = new Floor();
-      floor.setFloorNumber(1);
 
 
       MonthlyPass monthlyPass = new MonthlyPass();
@@ -839,6 +876,7 @@ public class MonthlyPassServiceTests {
       monthlyPass.setConfirmationCode(confirmationCode);
       monthlyPass.setIsLarge(isLarge);
       monthlyPass.setLicensePlate(licensePlate);
+      monthlyPass.setStartDate(startDate);
 
       when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
       when(floorRepo.findFloorByFloorNumber(1)).thenReturn(null);
@@ -853,6 +891,7 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
       String spotNumber = "A24";
       String licensePlate = "123ABC123";
+      Date startDate = Date.valueOf("2023-02-21");
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
       int id = 1;
@@ -868,6 +907,7 @@ public class MonthlyPassServiceTests {
       monthlyPass.setConfirmationCode(confirmationCode);
       monthlyPass.setIsLarge(isLarge);
       monthlyPass.setLicensePlate(licensePlate);
+      monthlyPass.setStartDate(startDate);
 
       when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
       when(floorRepo.findFloorByFloorNumber(1)).thenReturn(floor);
@@ -882,17 +922,23 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
       String spotNumber = "A24";
       String licensePlate = "123ABC123";
+      Date startDate = Date.valueOf("2023-02-21");
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
       int id = 1;
 
       Floor floor = new Floor();
       floor.setFloorNumber(1);
+      floor.setIsMemberOnly(true);
+
+      ParkingLot lot = new ParkingLot();
+      floor.setParkingLot(lot);
 
       double fee2 = 50.50;
       String spotNumber2 = "A24";
       String licensePlate2 = "123ABC124";
       boolean isLarge2 = true;
+      Date startDate2 = Date.valueOf("2023-02-21");
       String confirmationCode2 = "NeverGonnaGiveYouUp";
       int id2 = 2;
 
@@ -903,6 +949,7 @@ public class MonthlyPassServiceTests {
       monthlyPass.setConfirmationCode(confirmationCode);
       monthlyPass.setIsLarge(isLarge);
       monthlyPass.setLicensePlate(licensePlate);
+      monthlyPass.setStartDate(startDate);
 
       MonthlyPass monthlyPass2 = new MonthlyPass();
       monthlyPass2.setFee(fee2);
@@ -910,6 +957,7 @@ public class MonthlyPassServiceTests {
       monthlyPass2.setConfirmationCode(confirmationCode2);
       monthlyPass2.setIsLarge(isLarge2);
       monthlyPass2.setLicensePlate(licensePlate2);
+      monthlyPass2.setStartDate(startDate2);
 
 
       when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
