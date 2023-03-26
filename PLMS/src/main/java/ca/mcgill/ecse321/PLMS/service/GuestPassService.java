@@ -63,7 +63,7 @@ public class GuestPassService {
      * Service method to store the created guest pass object into the database
      */
     @Transactional
-    public GuestPass createGuestPass(GuestPass guestPass, int floorNumber, int nrIncrements) {
+    public GuestPass createGuestPass(GuestPass guestPass, int floorNumber, int nrIncrements, LocalDateTime currentTime) {
         //checks on the new object are made in the DTO
         // Get the associated floor from floor number inputted into guestPass
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
@@ -71,6 +71,7 @@ public class GuestPassService {
             throw new PLMSException(HttpStatus.NOT_FOUND, "The floor with floor number " + floorNumber + " does not exist.");
 
         }
+        guestPass.setFloor(floor);
         ParkingLot parkingLot = floor.getParkingLot();
 
         //Check if floor is a member only
@@ -79,7 +80,7 @@ public class GuestPassService {
         }
 
         // Extract start and end time
-        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime localDateTime = currentTime;
         Time startTime = Time.valueOf(localDateTime.toLocalTime());
         LocalDateTime localEndTime = localDateTime.plusMinutes(nrIncrements*15);
         Time endTime = Time.valueOf(localEndTime.toLocalTime());
@@ -98,7 +99,7 @@ public class GuestPassService {
         guestPass.setStartTime(startTime);
         guestPass.setEndTime(endTime);
         LocalDateTime localDate = LocalDateTime.now();
-        guestPass.setDate((Date) Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
+        guestPass.setDate(Date.valueOf(localDateTime.toLocalDate()));
 
         // check to see if we've exceed the floor capacity by booking this spot.
         if(hasExceededCapacity(floorNumber, guestPass.getIsLarge())){
@@ -271,18 +272,23 @@ public class GuestPassService {
 
 
     public boolean isSpotOccupied(int floorNumber, String spotNumber, Time startTime, Time endTime) {
-        List<GuestPass> guestPasses = getGuestPassesByFloor(floorNumber); // get all guest passes for the floor
-        for (GuestPass guestPass : guestPasses) {
-            if (guestPass.getSpotNumber().equals(spotNumber)){ // check if spot number matches
-                Time guestPassStartTime = guestPass.getStartTime();
-                Time guestPassEndTime = guestPass.getEndTime();
-                if ((guestPassStartTime.before(endTime) && guestPassEndTime.after(startTime)) || (startTime.before(guestPassEndTime) && endTime.after(guestPassStartTime))) {
+        try {
+            List<GuestPass> guestPasses = getGuestPassesByFloor(floorNumber); // get all guest passes for the floor
+            for (GuestPass guestPass : guestPasses) {
+                if (guestPass.getSpotNumber().equals(spotNumber)) { // check if spot number matches
+                    Time guestPassStartTime = guestPass.getStartTime();
+                    Time guestPassEndTime = guestPass.getEndTime();
+                    if ((guestPassStartTime.before(endTime) && guestPassEndTime.after(startTime)) || (startTime.before(guestPassEndTime) && endTime.after(guestPassStartTime))) {
 
-                    // guest pass overlaps with the specified time range
-                    return true;
+                        // guest pass overlaps with the specified time range
+                        return true;
+                    }
                 }
             }
+            return false; // guest pass not found
+
+        } catch (PLMSException e){ // In case no guest passes existed prior
+            return false;
         }
-        return false; // guest pass not found
     }
 }
