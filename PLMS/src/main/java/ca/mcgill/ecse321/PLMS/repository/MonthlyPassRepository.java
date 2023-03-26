@@ -22,5 +22,6 @@ public interface MonthlyPassRepository extends CrudRepository<MonthlyPass, Integ
      */
     public MonthlyPass findMonthlyPassById(int id);
 
+
 }
 
