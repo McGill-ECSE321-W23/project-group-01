@@ -177,7 +177,6 @@ public class GuestPassService {
     /**
      * Function for checking if a pass is active right at this point in time, given the start and end times
      * and date.
-     *
      * @param startDate - start date of the pass
      * @param endDate - end date of the pass
      * @return true if the pass is currently active

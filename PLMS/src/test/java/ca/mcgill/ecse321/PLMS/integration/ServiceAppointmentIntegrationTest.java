@@ -491,9 +491,47 @@ public class ServiceAppointmentIntegrationTest {
         assertContains("Cannot have an empty service name." , response.getBody());
     }
 
+    //10: Try modifying the appointment with invalid employee email
     @Test
     @Order(19)
-    public void deleteFirstServiceAppointmentWithId() {
+    public void testModifyAppointmentWithInvalidEmployeeEmail(){
+        ServiceAppointmentRequestDto request = new ServiceAppointmentRequestDto();
+
+        HttpEntity<ServiceAppointmentRequestDto> requestEntity = new HttpEntity<>(request);
+        
+        ResponseEntity<String> response = client.exchange("/serviceAppointment/employeeEmail/"+FixedServiceAppointment.id1+"?employeeEmail="+FixedServiceAppointment.validEmployee.getEmail(), HttpMethod.PUT, requestEntity , String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    
+        assertContains("Cannot change the employee because requested employee already has an appointment during the time frame of this appointment.", response.getBody());
+
+    }
+
+    @Test
+    @Order(20)
+    public void testModifyAppointmentWithValidEmployeeEmail(){
+        ServiceAppointmentRequestDto request = new ServiceAppointmentRequestDto();
+
+        HttpEntity<ServiceAppointmentRequestDto> requestEntity = new HttpEntity<>(request);
+        
+        ResponseEntity<ServiceAppointmentResponseDto> response = client.exchange("/serviceAppointment/employeeEmail/"+FixedServiceAppointment.id1+"?employeeEmail=", HttpMethod.PUT, requestEntity , ServiceAppointmentResponseDto.class);
+        
+        assertEquals(HttpStatus.OK, response.getStatusCode(), response.getBody().toString());
+        assertNotNull(response.getBody());
+
+        assertEquals(FixedServiceAppointment.validDate2, response.getBody().getDate());
+        assertEquals(FixedServiceAppointment.validTime2, response.getBody().getStartTime());
+        assertEquals(findEndTime(FixedServiceAppointment.validTime2.toLocalTime(), FixedServiceAppointment.validService2), response.getBody().getEndTime());
+        assertEquals(FixedServiceAppointment.validMonthlyCustomer.getEmail(), response.getBody().getCustomerEmail());
+        assertEquals(null, response.getBody().getEmployeeEmail());
+        assertEquals(FixedServiceAppointment.validService2.getServiceName(), response.getBody().getServiceName());
+        assertEquals(FixedServiceAppointment.id1, response.getBody().getId());
+    }
+
+    //8
+    @Test
+    @Order(21)
+    public void testDeleteFirstServiceAppointmentWithId() {
         HttpEntity<String> requestEntity = new HttpEntity<>(null);
         ResponseEntity<String> response = client.exchange("/serviceAppointment/" + FixedServiceAppointment.id1, HttpMethod.DELETE, requestEntity, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -502,18 +540,20 @@ public class ServiceAppointmentIntegrationTest {
         assertEquals(response2.getBody(),  "Service appointment with ID " + FixedServiceAppointment.id1 + " does not exist.");
     }
 
+    //8.a
     @Test
-    @Order(20)
-    public void deleteDeletedFirstServiceAppointmentWithId() {
+    @Order(22)
+    public void testDeleteDeletedFirstServiceAppointmentWithId() {
         HttpEntity<String> requestEntity = new HttpEntity<>(null);
         ResponseEntity<String> response = client.exchange("/serviceAppointment/" + FixedServiceAppointment.id1, HttpMethod.DELETE, requestEntity, String.class);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals(response.getBody(), "Service appointment with ID " + FixedServiceAppointment.id1 + " does not exist.");
     }
 
+    //9
     @Test
-    @Order(21)
-    public void deleteSecondServiceAppointmentWithId() {
+    @Order(23)
+    public void testDeleteSecondServiceAppointmentWithId() {
         HttpEntity<String> requestEntity = new HttpEntity<>(null);
         ResponseEntity<String> response = client.exchange("/serviceAppointment/" + FixedServiceAppointment.id2, HttpMethod.DELETE, requestEntity, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -526,9 +566,10 @@ public class ServiceAppointmentIntegrationTest {
         assertEquals(response3.getBody(),  "There are no service appointments in the system");
     }
 
+    //9.a
     @Test
-    @Order(22)
-    public void creatServiceAppointmentWithNoParkingLot() {
+    @Order(24)
+    public void testCreatServiceAppointmentWithNoParkingLot() {
         parkingLotRepository.delete(FixedServiceAppointment.parkingLot);
 
         ServiceAppointmentRequestDto request = FixedServiceAppointment.createValidRequestDto();
@@ -540,15 +581,16 @@ public class ServiceAppointmentIntegrationTest {
         assertContains("Cannot book appointment since the parking lot has not been created yet. Please try again at a later date.", response.getBody());
     }
 
-
+    //9.b
     @Test
-    @Order(23)
-    public void getAllEmptyServiceAppointments() {
+    @Order(25)
+    public void testGetAllEmptyServiceAppointments() {
         ResponseEntity<String> response3 =  client.getForEntity("/serviceAppointment", String.class);
         assertEquals(HttpStatus.NOT_FOUND, response3.getStatusCode());
         assertEquals(response3.getBody(),  "There are no service appointments in the system");
-
     }
+
+    
 
     private void assertContains(String expected, String actual) {
 		String assertionMessage = String.format("Error message ('%s') contains '%s'.", actual, expected);

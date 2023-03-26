@@ -13,13 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.PLMS.dto.ServiceAppointmentRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.ServiceAppointmentResponseDto;
+import ca.mcgill.ecse321.PLMS.model.Employee;
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.Service;
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
+import ca.mcgill.ecse321.PLMS.service.EmployeeService;
 import ca.mcgill.ecse321.PLMS.service.MonthlyCustomerService;
 import ca.mcgill.ecse321.PLMS.service.ServiceAppointmentService;
 import ca.mcgill.ecse321.PLMS.service.ServiceService;
@@ -32,6 +35,8 @@ public class ServiceAppointmentController {
     private ServiceAppointmentService serviceAppointmentService;
     @Autowired
     private ServiceService serviceService;
+    @Autowired
+    private EmployeeService employeeService;
     @Autowired
     private MonthlyCustomerService monthlyCustomerService;
 
@@ -151,10 +156,19 @@ public class ServiceAppointmentController {
         ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
         return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.OK);
       }
+
+      @PutMapping("/serviceAppointment/employeeEmail/{id}")
+      public ResponseEntity<ServiceAppointmentResponseDto> updateEmployeeEmailServiceAppointment(@PathVariable int id, @RequestParam String employeeEmail){
+        Employee employee = null;
+        if(!employeeEmail.isEmpty()) employee = employeeService.getEmployeeByEmail(employeeEmail);
+        
+        ServiceAppointment serviceAppointment = serviceAppointmentService.updateEmployeeEmailServiceAppointment(employee, id);
+        ServiceAppointmentResponseDto responseBody = new ServiceAppointmentResponseDto(serviceAppointment);
+        return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.OK);
+      }
       
       /**
        * Delete a service appointment
-       * 
        * 
        */
         @DeleteMapping("/serviceAppointment/{id}")
