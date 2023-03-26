@@ -185,7 +185,7 @@ public class GuestPassServiceTests {
   }
 
   @Test
-  public void testInvalidDeleteMonthlyPass()
+  public void testInvalidDeleteGuestPass()
   {
     final int invalidPassNumber = 42;
     when(guestPassRepo.findGuestPassById(invalidPassNumber)).thenReturn(null);
@@ -194,7 +194,47 @@ public class GuestPassServiceTests {
     assertEquals(e.getMessage(), "Guest pass with id: " + invalidPassNumber + " does not exist.");
   }
 
+  @Test
+  public void testGetGuestPassesByDate(){
 
+      Date Date1 = Date.valueOf("2023-02-21");
+      Date Date2 = Date.valueOf("2023-02-22");
+
+
+
+    guestPass1.setDate(Date1);
+    guestPass2.setDate(Date2);
+    ArrayList<GuestPass> guestPasses = new ArrayList<>();
+    guestPasses.add(guestPass1);
+    guestPasses.add(guestPass2);
+
+    when(guestPassRepo.findAll()).thenReturn(guestPasses);
+
+    ArrayList<GuestPass> output = (ArrayList<GuestPass>) guestPassService.getGuestPassesByDate(Date.valueOf("2023-02-21"));
+    Iterator<GuestPass> i = output.iterator();
+    GuestPass outputGuestPass = i.next();
+    assertEquals(output.size(), 1);
+    assertEquals(outputGuestPass.getDate(), Date.valueOf("2023-02-21"));
+    assertEquals(outputGuestPass.getSpotNumber(), spotNumber1);
+
+
+  }
+  @Test
+  public void testInvalidGetGuestPassesByDate() {
+    Date Date1 = Date.valueOf("2023-02-21");
+    Date Date2 = Date.valueOf("2023-02-22");
+
+    guestPass1.setDate(Date1);
+    guestPass2.setDate(Date2);
+    ArrayList<GuestPass> guestPasses = new ArrayList<>();
+    guestPasses.add(guestPass1);
+    guestPasses.add(guestPass2);
+    when(guestPassRepo.findAll()).thenReturn(guestPasses);
+    PLMSException e = assertThrows(PLMSException.class, () -> guestPassService.getGuestPassesByDate(Date.valueOf("2023-03-23")));
+    assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+    assertEquals(e.getMessage(), "There are no guest passes for date " + Date.valueOf("2023-03-23"));
+
+  }
   // Test case for start time after closing time
   @Test
   void testInvalidStartTimeAfterClosingTime() {
@@ -536,51 +576,6 @@ public class GuestPassServiceTests {
     assertEquals(e.getMessage(), "Spot " + spotNumber + " is currently occupied");
   }
 
-//  @Test
-//  void testCreateGuestPassExceededCapacity() {
-//    int floorNumber = 1;
-//    int nrIncrements = 4;
-//
-//    // Set opening and closing times
-//    Time openingTime = Time.valueOf("07:00:00");
-//    Time closingTime = Time.valueOf("22:00:00");
-//
-//    // Initialize parking lot
-//    ParkingLot parkingLot = new ParkingLot();
-//    parkingLot.setOpeningTime(openingTime);
-//    parkingLot.setClosingTime(closingTime);
-//
-//    // Initialize floor with capacity of 1
-//    Floor floor = new Floor();
-//    floor.setFloorNumber(floorNumber);
-//    floor.setSmallSpotCapacity(1);
-//    floor.setParkingLot(parkingLot);
-//    when(floorRepo.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
-//
-//    // Set spot as occupied
-//    GuestPass existingGuestPass = new GuestPass();
-//    existingGuestPass.setSpotNumber("A24");
-//    existingGuestPass.setStartTime(Time.valueOf("12:00:00"));
-//    existingGuestPass.setEndTime(Time.valueOf("14:00:00"));
-//    existingGuestPass.setFloor(floor);
-//
-//    ArrayList<GuestPass> guestPasses = new ArrayList<>();
-//    guestPasses.add(existingGuestPass);
-//    when(guestPassRepo.findAll()).thenReturn(guestPasses);
-//
-//    // Initialize new guest pass
-//    GuestPass guestPass = new GuestPass();
-//    guestPass.setSpotNumber("A25");
-//    guestPass.setIsLarge(false);
-//
-//    LocalDateTime currentTime = LocalDateTime.of(2023, 4, 1, 12, 0, 0);
-//
-//    PLMSException e = assertThrows(PLMSException.class, () -> guestPassService.createGuestPass(guestPass, floorNumber, nrIncrements, currentTime));
-////    assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
-//    assertEquals(e.getMessage(), "The capacity of floor " + floorNumber + " has been exceeded.");
-//
-//
-//  }
 
   @Test
   void testCreateGuestPassExceededCapacity() {

@@ -182,7 +182,7 @@ public class GuestPassService {
      * @param endDate - end date of the pass
      * @return true if the pass is currently active
      */
-    public boolean isActiveRightNowMonthlyPass(LocalDateTime currentTime, LocalDate startDate, LocalDate endDate) {
+    public boolean isActiveRightNowMonthlyPass(LocalDateTime currentTime,LocalDate startDate, LocalDate endDate) {
         LocalDate currentDate = currentTime.toLocalDate();
         return (currentDate.isEqual(startDate) || currentDate.isAfter(startDate)) && (currentDate.isEqual(endDate)|| currentDate.isBefore(endDate)) ;
     }
@@ -191,18 +191,18 @@ public class GuestPassService {
 
      * Service method that updates a guest pass object in the database
      */
-    @Transactional
-    public GuestPass updateGuestPass(GuestPass guestPass) {
-        //check if the guest pass exists (the guest pass has to exist to edit it)
-        GuestPass existingGuestPass = getGuestPassById(guestPass.getId());
-
-        // update the properties of the existing GuestPass entity
-        existingGuestPass.setStartTime(guestPass.getStartTime());
-        existingGuestPass.setEndTime(guestPass.getEndTime());
-        // save the changes to the database
-        existingGuestPass = guestPassRepository.save(existingGuestPass);
-        return existingGuestPass;
-    }
+//    @Transactional
+//    public GuestPass updateGuestPass(GuestPass guestPass) {
+//        //check if the guest pass exists (the guest pass has to exist to edit it)
+//        GuestPass existingGuestPass = getGuestPassById(guestPass.getId());
+//
+//        // update the properties of the existing GuestPass entity
+//        existingGuestPass.setStartTime(guestPass.getStartTime());
+//        existingGuestPass.setEndTime(guestPass.getEndTime());
+//        // save the changes to the database
+//        existingGuestPass = guestPassRepository.save(existingGuestPass);
+//        return existingGuestPass;
+//    }
 
     /**
      * Service method that deletes the guest pass with guest pass id guestPassId from the database
