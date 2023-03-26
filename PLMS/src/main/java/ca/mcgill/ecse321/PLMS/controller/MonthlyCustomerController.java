@@ -22,38 +22,40 @@ public class MonthlyCustomerController {
      * Returns a list of all MonthlyCustomers
      * @return all MonthlyCustomers
      */
-
-    @GetMapping("/monthly/all")
+    @GetMapping("/customers")
     public Iterable<MonthlyCustomerResponseDto> getAllMonthlyCustomers() {
         return StreamSupport.stream(monthlyCustomerService.getAllMonthlyCustomers().spliterator(), false).map(MonthlyCustomerResponseDto::new).collect(Collectors.toList());
     }
 
     /**
      * Returns the MonthlyCustomer based on their Id
-     * Pass in an arguments by using /MonthlyCustomer={email}
+     * @param email - Pass in the email argument by using  /MonthlyCustomer=?{email}
      * @return the MonthlyCustomer with Email, Password, Name
      */
-
-    @GetMapping(value = {"/monthly", "/monthly/"})
+    @GetMapping(value = {"/customer", "/customer/"})
     public ResponseEntity<MonthlyCustomerResponseDto> getMonthlyCustomerByEmail(@RequestParam String email) {
-        return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(monthlyCustomerService.getMonthlyCustomerByEmail(email)), HttpStatus.ACCEPTED);
+        return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(monthlyCustomerService.getMonthlyCustomerByEmail(email)), HttpStatus.OK);
     }
 
     /**
      * Creates a new MonthlyCustomer
-     *
+     * @param MonthlyCustomerRequest - Pass in a monthly customer dto using a JSON request
      * @return the dto response of the new MonthlyCustomer
      */
-
-    @PostMapping("/monthly/create")
+    @PostMapping("/customer/create")
     public ResponseEntity<MonthlyCustomerResponseDto> createMonthlyCustomer(@Valid @RequestBody MonthlyCustomerRequestDto MonthlyCustomerRequest)
     {
         MonthlyCustomer MonthlyCustomer = MonthlyCustomerRequest.toModel(); // 1. You pass in a request, validates the constraints, creates an MonthlyCustomer if they pass
         MonthlyCustomer =  monthlyCustomerService.createMonthlyCustomerAccount(MonthlyCustomer); // 2. You use the service class to check if it exists and save it
-        return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(MonthlyCustomer), HttpStatus.OK); //3. You mask the model by returning a Response
+        return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(MonthlyCustomer), HttpStatus.CREATED); //3. You mask the model by returning a Response
     }
 
-    @PutMapping("/monthly/update")
+    /**
+     * Updates an existing MonthlyCustomer
+     * @param monthlyCustomerRequest - Pass in the monthly customer dto using a JSON request
+     * @return the dto response of the updated MonthlyCustomer
+     */
+    @PutMapping("/customer/update")
     public ResponseEntity<MonthlyCustomerResponseDto> updateMonthlyCustomer(@Valid @RequestBody MonthlyCustomerRequestDto monthlyCustomerRequest)
     {
         MonthlyCustomer monthlyCustomer = monthlyCustomerRequest.toModel();
@@ -62,34 +64,6 @@ public class MonthlyCustomerController {
 
     }
 
-    @PutMapping(value = {"/monthly/{email}/{password}"})
-    public ResponseEntity<MonthlyCustomerResponseDto> updateMonthlyCustomerPassword(@PathVariable String email, @PathVariable String password)
-    {
-        MonthlyCustomer o = monthlyCustomerService.getMonthlyCustomerByEmail(email);
-        MonthlyCustomerRequestDto monthlyCustomerRequest = new MonthlyCustomerRequestDto();
-        monthlyCustomerRequest.setPassword(password);
-        monthlyCustomerRequest.setName(o.getName()); //Asked TA no need for validation
-        monthlyCustomerRequest.setEmail(email);
-        @Valid MonthlyCustomerRequestDto s = monthlyCustomerRequest;
-        MonthlyCustomer o_updated = monthlyCustomerRequest.toModel();
-        o_updated = monthlyCustomerService.updateMonthlyCustomer(o_updated);
-        return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(o_updated), HttpStatus.OK);
 
-    }
-
-    @PutMapping(value = {"/monthly/{email}/change/{name}"})
-    public ResponseEntity<MonthlyCustomerResponseDto> updateMonthlyCustomerName(@PathVariable String email, @PathVariable String name)
-    {
-        MonthlyCustomer o = monthlyCustomerService.getMonthlyCustomerByEmail(email);
-        MonthlyCustomerRequestDto MonthlyCustomerRequest = new MonthlyCustomerRequestDto();
-        MonthlyCustomerRequest.setPassword(o.getPassword());
-        MonthlyCustomerRequest.setName(name); //Asked TA no need for validation
-        MonthlyCustomerRequest.setEmail(email);
-        @Valid MonthlyCustomerRequestDto s = MonthlyCustomerRequest;
-        MonthlyCustomer o_updated = MonthlyCustomerRequest.toModel();
-        o_updated = monthlyCustomerService.updateMonthlyCustomer(o_updated);
-        return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(o_updated), HttpStatus.OK);
-
-    }
 
 }

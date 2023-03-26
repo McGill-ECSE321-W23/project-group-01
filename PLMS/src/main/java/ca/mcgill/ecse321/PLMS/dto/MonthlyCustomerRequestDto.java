@@ -4,18 +4,15 @@ import jakarta.validation.constraints.*;
 
 public class MonthlyCustomerRequestDto {
 
-    @NotNull
     @NotBlank(message = "Email cannot be blank.")
-    @Email
+    @Email(message = "Email must follow this format xxx@email.address")
     private String email;
 
-    @NotNull
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$%^&+=]).+$", message = "Password contains at least one uppercase, lowercase and special character [!@#$%^&+=]")
     @Size(min = 5, max = 13, message = "Password must have 5-13 character" )
     @NotBlank(message = "Password cannot be blank.")
     private String password;
 
-    @NotNull
     @Pattern(regexp = "^[a-zA-Z\s]+$", message = "Name can only have letters")
     @NotBlank(message = "Name cannot be blank.")
     private String name;
@@ -29,9 +26,20 @@ public class MonthlyCustomerRequestDto {
     public void setName(String aName)
     { this.name = aName; }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public MonthlyCustomer toModel() {
         return new MonthlyCustomer(email, password, name);
     }
-
 
 }

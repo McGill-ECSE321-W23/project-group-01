@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class PLMSExceptionHandler {
     @ExceptionHandler(PLMSException.class)
-    public ResponseEntity<String> handleEventRegistrationException(PLMSException e) {
+    public ResponseEntity<String> handlePLMSException(PLMSException e) {
         return new ResponseEntity<String>(e.getMessage(), e.getStatus());
     }
 
