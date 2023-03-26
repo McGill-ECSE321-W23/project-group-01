@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import org.apache.tomcat.util.http.parser.HttpParser;
@@ -139,7 +140,7 @@ public class ParkingLotIntegrationTest {
 	}
 
     @Test
-    @Order(2)
+    @Order(1)
     public void testCreateNullParkingLot() {
         ParkingLotRequestDto request = new ParkingLotRequestDto();
 
@@ -154,7 +155,7 @@ public class ParkingLotIntegrationTest {
     }
 
     @Test
-    @Order(3)
+    @Order(2)
     public void testCreateInvalidParkingLot() {
         ParkingLotRequestDto request = new ParkingLotRequestDto();
         request.setClosingTime(new Time(5, 0, 0));
@@ -175,7 +176,7 @@ public class ParkingLotIntegrationTest {
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     public void testCreateInvalidClosingTimeParkingLot() {
         ParkingLot request = new ParkingLot();
         request.setClosingTime(new Time(5, 0, 0));
@@ -190,7 +191,7 @@ public class ParkingLotIntegrationTest {
     }
 
     @Test
-	@Order(1)
+	@Order(4)
 	public void testCreateParkingLot() {
 
         Time openingTime = new Time(0,0,0);
@@ -232,7 +233,7 @@ public class ParkingLotIntegrationTest {
 	}
 
     @Test
-	@Order(4)
+	@Order(5)
 	public void testCreateAnotherParkingLot() {
 		ParkingLotRequestDto request = new ParkingLotRequestDto();
 
@@ -262,7 +263,7 @@ public class ParkingLotIntegrationTest {
 
 
 	@Test
-	@Order(5)
+	@Order(6)
 	public void testGetParkingLot() {
 		ResponseEntity<ParkingLotResponseDto> response = client.getForEntity("/parkingLot", ParkingLotResponseDto.class);
 
@@ -278,7 +279,7 @@ public class ParkingLotIntegrationTest {
 	}
 
     @Test
-	@Order(6)
+	@Order(7)
 	public void testUpdateParkingLot() {
 
         Time openingTime = new Time(2,0,0);
@@ -311,7 +312,7 @@ public class ParkingLotIntegrationTest {
 	}
 
     @Test
-	@Order(7)
+	@Order(8)
 	public void testInvalidUpdateParkingLot() {
 
         Time openingTime = new Time(2,0,0);
@@ -337,6 +338,33 @@ public class ParkingLotIntegrationTest {
         assertContains("Small spot monthly flat fee must be non-negative.", response.getBody());
         assertContains("Large spot monthly flat fee must be non-negative.", response.getBody());
     }
+
+
+    @Test
+    @Order(9)
+    public void testUpdateInvalidTimesParkingLot() {
+
+        Time openingTime = new Time(2,0,0);
+        Time closingTime = new Time(2, 0, 0);
+        double largeSpotFee = -5.0;
+        double smallSpotFee = -6.0;
+        double smallSpotMonthlyFlatFee = -7.0;
+        double largeSpotMonthlyFlatFee = -10.0;
+
+        ParkingLotRequestDto request = new ParkingLotRequestDto();
+        request.setOpeningTime(openingTime);
+        request.setClosingTime(closingTime);
+        request.setLargeSpotFee(largeSpotFee);
+        request.setSmallSpotFee(smallSpotFee);
+        request.setSmallSpotMonthlyFlatFee(smallSpotMonthlyFlatFee);
+        request.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
+
+        HttpEntity<ParkingLotRequestDto> requestEntity = new HttpEntity<>(request);
+        ResponseEntity<String> response = client.exchange("/parkingLot/update", HttpMethod.PUT, requestEntity, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertContains("Opening and closing times cannot be the same.", response.getBody());
+    }
+
 
 
 	private static void assertContains(String expected, String actual) {
