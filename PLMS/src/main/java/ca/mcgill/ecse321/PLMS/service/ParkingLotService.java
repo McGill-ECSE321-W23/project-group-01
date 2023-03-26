@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.PLMS.service;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,9 @@ public class ParkingLotService {
     }
 
     public void validateOpeningClosingTime(ParkingLot parkingLot){
-        int comparison = (parkingLot.getOpeningTime()).toLocalTime().compareTo((parkingLot.getClosingTime()).toLocalTime());
+        LocalTime closing = parkingLot.getClosingTime().toLocalTime();
+        LocalTime opening = parkingLot.getOpeningTime().toLocalTime();
+        int comparison = (opening).compareTo((parkingLot.getClosingTime()).toLocalTime());
         if (comparison == 0)
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Opening and closing times cannot be the same.");
         else if(comparison > 0)
