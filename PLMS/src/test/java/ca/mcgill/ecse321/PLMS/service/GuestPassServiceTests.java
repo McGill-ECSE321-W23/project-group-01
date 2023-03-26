@@ -232,16 +232,18 @@ public class GuestPassServiceTests {
     // Change local time to within operating hours
     LocalDateTime currentTime  = LocalDateTime.parse("2023-03-25T09:00:00");
     Time endTime = Time.valueOf("9:30:00");
+    when(guestPassRepo.save(guestPass)).thenReturn(guestPass);
 
     GuestPass createdGuestPass = guestPassService.createGuestPass(guestPass, floorNumber, nrIncrements, currentTime);
-
-    assertNotNull(createdGuestPass);
-    assertEquals(spotNumber1, guestPass.getSpotNumber());
-    assertEquals(smallCarFee*nrIncrements, guestPass.getFee());
-    assertEquals(endTime, guestPass.getEndTime());
-
     // check to see that we've actually saved the floor in the DB
     verify(guestPassRepo, times(1)).save(guestPass);
+
+    assertNotNull(createdGuestPass);
+    assertEquals(spotNumber1, createdGuestPass.getSpotNumber());
+    assertEquals(smallCarFee*nrIncrements, createdGuestPass.getFee());
+    assertEquals(endTime, createdGuestPass.getEndTime());
+
+
 
 
   }

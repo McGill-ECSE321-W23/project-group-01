@@ -114,7 +114,9 @@ public class GuestPassService {
 
         }
         // Create object
-        guestPass = guestPassRepository.save(guestPass);
+
+        guestPass =  guestPassRepository.save(guestPass);
+
 
         // Returned created object
         return guestPass;

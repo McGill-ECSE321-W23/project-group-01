@@ -116,6 +116,7 @@ public class FloorServiceTests {
       parkingLot.setSmallSpotMonthlyFlatFee(smallSpotMonthlyFlatFee);
       parkingLot.setLargeSpotMonthlyFlatFee(largeSpotMonthlyFlatFee);
       parkingLot.setId(id);
+
       // The parking lot repo should return a single parking lot
       when(parkingLotRepository.findAll()).thenReturn(Collections.singletonList(parkingLot));
       when(floorRepository.save(floor)).thenReturn(floor);
