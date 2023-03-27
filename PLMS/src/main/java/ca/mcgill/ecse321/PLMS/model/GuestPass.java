@@ -26,6 +26,15 @@ public class GuestPass extends Pass
   private Time startTime;
   private Time endTime;
 
+  public GuestPass() {
+  }
+
+  public GuestPass(Floor floor, String spotNumber, String licensePlate, boolean isLarge, Date date, Time startTime, Time endTime) {
+    super(floor, spotNumber, licensePlate, isLarge);
+    this.date = date;
+    this.startTime = startTime;
+    this.endTime = endTime;
+  }
 
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
