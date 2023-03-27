@@ -171,7 +171,6 @@ public class GuestPassService {
         LocalDateTime start = LocalDateTime.of(date, startTime);
         LocalDateTime end = LocalDateTime.of(date, endTime);
         return currentTime.isBefore(end) && guestPassEndTime.isAfter(start);
-//        return (currentTime.isEqual(start) || currentTime.isAfter(start)) && (currentTime.isEqual(end)|| currentTime.isBefore(end)) ;
     }
 
     /**
@@ -185,23 +184,6 @@ public class GuestPassService {
         LocalDate currentDate = currentTime.toLocalDate();
         return (currentDate.isEqual(startDate) || currentDate.isAfter(startDate)) && (currentDate.isEqual(endDate)|| currentDate.isBefore(endDate)) ;
     }
-
-    /**
-
-     * Service method that updates a guest pass object in the database
-     */
-//    @Transactional
-//    public GuestPass updateGuestPass(GuestPass guestPass) {
-//        //check if the guest pass exists (the guest pass has to exist to edit it)
-//        GuestPass existingGuestPass = getGuestPassById(guestPass.getId());
-//
-//        // update the properties of the existing GuestPass entity
-//        existingGuestPass.setStartTime(guestPass.getStartTime());
-//        existingGuestPass.setEndTime(guestPass.getEndTime());
-//        // save the changes to the database
-//        existingGuestPass = guestPassRepository.save(existingGuestPass);
-//        return existingGuestPass;
-//    }
 
     /**
      * Service method that deletes the guest pass with guest pass id guestPassId from the database
