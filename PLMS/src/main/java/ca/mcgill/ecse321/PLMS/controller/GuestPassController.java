@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.PLMS.controller;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -85,7 +86,9 @@ public class GuestPassController {
         GuestPass guestPass = guestPassRequestDto.toModel();
         int floorNumber = guestPassRequestDto.getFloorNumber();
         int nrIncrements = guestPassRequestDto.getNumberOfFifteenMinuteIncrements();
-        guestPass = guestPassService.createGuestPass(guestPass, floorNumber, nrIncrements);
+        // Find local time here to make the tests time-independent
+        LocalDateTime currentTime = LocalDateTime.now();
+        guestPass = guestPassService.createGuestPass(guestPass, floorNumber, nrIncrements, currentTime);
         GuestPassResponseDto responseBody = new GuestPassResponseDto(guestPass);
         return new ResponseEntity<GuestPassResponseDto>(responseBody, HttpStatus.CREATED);
 

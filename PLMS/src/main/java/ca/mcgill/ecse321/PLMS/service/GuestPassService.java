@@ -5,6 +5,7 @@ import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
 import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +64,7 @@ public class GuestPassService {
      * Service method to store the created guest pass object into the database
      */
     @Transactional
-    public GuestPass createGuestPass(GuestPass guestPass, int floorNumber, int nrIncrements) {
+    public GuestPass createGuestPass(GuestPass guestPass, int floorNumber, int nrIncrements, LocalDateTime currentTime) {
         //checks on the new object are made in the DTO
         // Get the associated floor from floor number inputted into guestPass
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
@@ -71,24 +72,25 @@ public class GuestPassService {
             throw new PLMSException(HttpStatus.NOT_FOUND, "The floor with floor number " + floorNumber + " does not exist.");
 
         }
+        guestPass.setFloor(floor);
         ParkingLot parkingLot = floor.getParkingLot();
 
         //Check if floor is a member only
         if (floor.getIsMemberOnly()) {
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Floor " + floorNumber + " is reserved for monthly members");
         }
+        // Check if the spot is reserved for less than 12 hours
+        if (nrIncrements > 12*4){
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot reserve spot for more than 12 hours");
+        }
 
         // Extract start and end time
-        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime localDateTime = currentTime;
         Time startTime = Time.valueOf(localDateTime.toLocalTime());
         LocalDateTime localEndTime = localDateTime.plusMinutes(nrIncrements*15);
         Time endTime = Time.valueOf(localEndTime.toLocalTime());
         validateGuestPassHours(startTime, endTime, parkingLot.getOpeningTime(), parkingLot.getClosingTime());
 
-        // Check if the spot is reserved for less than 12 hours
-        if (nrIncrements > 12*4){
-            throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot reserve spot for more than 12 hours");
-        }
         // Check if spot is not occupied
         if (isSpotOccupied(floor.getFloorNumber(), guestPass.getSpotNumber(),startTime, endTime)){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Spot " + guestPass.getSpotNumber() + " is currently occupied");
@@ -98,10 +100,10 @@ public class GuestPassService {
         guestPass.setStartTime(startTime);
         guestPass.setEndTime(endTime);
         LocalDateTime localDate = LocalDateTime.now();
-        guestPass.setDate((Date) Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
+        guestPass.setDate(Date.valueOf(localDateTime.toLocalDate()));
 
         // check to see if we've exceed the floor capacity by booking this spot.
-        if(hasExceededCapacity(floorNumber, guestPass.getIsLarge())){
+        if(hasExceededCapacity(currentTime, localEndTime ,floorNumber, guestPass.getIsLarge())){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "All spots of this size on floor " + floorNumber +" are occupied.");
         }
 
@@ -113,7 +115,9 @@ public class GuestPassService {
 
         }
         // Create object
-        guestPass = guestPassRepository.save(guestPass);
+
+        guestPass =  guestPassRepository.save(guestPass);
+
 
         // Returned created object
         return guestPass;
@@ -126,7 +130,7 @@ public class GuestPassService {
      * @param isLarge - size of the spot
      * @return - true if we've reached capacity for those spots, false otherwise
      */
-    public boolean hasExceededCapacity(int floorNumber, boolean isLarge){
+    public boolean hasExceededCapacity(LocalDateTime currentTime, LocalDateTime endTime, int floorNumber, boolean isLarge){
         // get all the passes
         ArrayList<GuestPass> guestPasses = (ArrayList<GuestPass>) guestPassRepository.findAll();
         ArrayList<MonthlyPass> monthlyPasses = (ArrayList<MonthlyPass>) monthlyPassRepository.findAll();
@@ -134,14 +138,14 @@ public class GuestPassService {
         int numberOfPasses = 0;
         // filter through the guest passes to find passes that are of the same size and same floor number
         for (GuestPass pass : guestPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowGuestPass(pass.getDate().toLocalDate(), pass.getStartTime().toLocalTime(), pass.getEndTime().toLocalTime())){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowGuestPass(currentTime, endTime,pass.getDate().toLocalDate(), pass.getStartTime().toLocalTime(), pass.getEndTime().toLocalTime())){
 
                 numberOfPasses += 1;
             }
         }
 
         for (MonthlyPass pass : monthlyPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(pass.getStartDate().toLocalDate(), pass.getEndDate().toLocalDate())){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(currentTime, pass.getStartDate().toLocalDate(), pass.getEndDate().toLocalDate())){
 
                 numberOfPasses += 1;
             }
@@ -163,12 +167,10 @@ public class GuestPassService {
      * @param endTime - end time of the pass
      * @return true if the pass is currently active
      */
-    public boolean isActiveRightNowGuestPass(LocalDate date, LocalTime startTime, LocalTime endTime) {
+    public boolean isActiveRightNowGuestPass(LocalDateTime currentTime, LocalDateTime guestPassEndTime, LocalDate date, LocalTime startTime, LocalTime endTime) {
         LocalDateTime start = LocalDateTime.of(date, startTime);
         LocalDateTime end = LocalDateTime.of(date, endTime);
-        LocalDateTime now = LocalDateTime.now();
-        
-        return now.isAfter(start) && now.isBefore(end);
+        return currentTime.isBefore(end) && guestPassEndTime.isAfter(start);
     }
 
     /**
@@ -178,27 +180,9 @@ public class GuestPassService {
      * @param endDate - end date of the pass
      * @return true if the pass is currently active
      */
-    public boolean isActiveRightNowMonthlyPass(LocalDate startDate, LocalDate endDate) {
-        LocalDate now = LocalDate.now();
-        
-        return now.isAfter(startDate) && now.isBefore(endDate);
-    }
-
-    /**
-
-     * Service method that updates a guest pass object in the database
-     */
-    @Transactional
-    public GuestPass updateGuestPass(GuestPass guestPass) {
-        //check if the guest pass exists (the guest pass has to exist to edit it)
-        GuestPass existingGuestPass = getGuestPassById(guestPass.getId());
-
-        // update the properties of the existing GuestPass entity
-        existingGuestPass.setStartTime(guestPass.getStartTime());
-        existingGuestPass.setEndTime(guestPass.getEndTime());
-        // save the changes to the database
-        existingGuestPass = guestPassRepository.save(existingGuestPass);
-        return existingGuestPass;
+    public boolean isActiveRightNowMonthlyPass(LocalDateTime currentTime,LocalDate startDate, LocalDate endDate) {
+        LocalDate currentDate = currentTime.toLocalDate();
+        return (currentDate.isEqual(startDate) || currentDate.isAfter(startDate)) && (currentDate.isEqual(endDate)|| currentDate.isBefore(endDate)) ;
     }
 
     /**
@@ -251,7 +235,7 @@ public class GuestPassService {
         // check to see if start time is before the opening time
         int comparisonResult1 = startTime.compareTo(openingTime);
         if (comparisonResult1 < 0) {
-            throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot have an guest pass beginning before the lot opens.");
+            throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot have a guest pass beginning before the lot opens.");
         }
 
         // check to see if the start time is after the lot closes
@@ -270,18 +254,23 @@ public class GuestPassService {
 
 
     public boolean isSpotOccupied(int floorNumber, String spotNumber, Time startTime, Time endTime) {
-        List<GuestPass> guestPasses = getGuestPassesByFloor(floorNumber); // get all guest passes for the floor
-        for (GuestPass guestPass : guestPasses) {
-            if (guestPass.getSpotNumber().equals(spotNumber)){ // check if spot number matches
-                Time guestPassStartTime = guestPass.getStartTime();
-                Time guestPassEndTime = guestPass.getEndTime();
-                if ((guestPassStartTime.before(endTime) && guestPassEndTime.after(startTime)) || (startTime.before(guestPassEndTime) && endTime.after(guestPassStartTime))) {
+        try {
+            List<GuestPass> guestPasses = getGuestPassesByFloor(floorNumber); // get all guest passes for the floor
+            for (GuestPass guestPass : guestPasses) {
+                if (guestPass.getSpotNumber().equals(spotNumber)) { // check if spot number matches
+                    Time guestPassStartTime = guestPass.getStartTime();
+                    Time guestPassEndTime = guestPass.getEndTime();
+                    if ((guestPassStartTime.before(endTime) && guestPassEndTime.after(startTime))) {
 
-                    // guest pass overlaps with the specified time range
-                    return true;
+                        // guest pass overlaps with the specified time range
+                        return true;
+                    }
                 }
             }
+            return false; // guest pass not found
+
+        } catch (PLMSException e){ // In case no guest passes existed prior
+            return false;
         }
-        return false; // guest pass not found
     }
 }

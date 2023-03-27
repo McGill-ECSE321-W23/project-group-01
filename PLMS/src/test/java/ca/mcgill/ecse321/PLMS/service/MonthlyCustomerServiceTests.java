@@ -127,7 +127,7 @@ public class MonthlyCustomerServiceTests {
 
 
     @Test
-    public void testValidUpdateOwnerAccount()
+    public void testValidUpdateMonthlyCustomerAccount()
     {
         final String email = "john.doe@mcgill.ca";
         final String password = "JohnDoe2002";
@@ -147,7 +147,7 @@ public class MonthlyCustomerServiceTests {
     }
 
     @Test
-    public void testInvalidUpdateOwnerAccount()
+    public void testInvalidUpdateMonthlyCustomerAccount()
     {
         final String email = "john.doe@mcgill.ca";
         final String password = "JohnDoe2002";

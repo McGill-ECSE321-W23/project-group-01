@@ -36,7 +36,15 @@ public abstract class Pass
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Floor floor;
 
+  public Pass() {
+  }
 
+  public Pass(Floor floor, String spotNumber, String licensePlate, boolean isLarge) {
+    this.floor = floor;
+    this.spotNumber = spotNumber;
+    this.licensePlate = licensePlate;
+    this.isLarge = isLarge;
+  }
   //------------------------
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------
