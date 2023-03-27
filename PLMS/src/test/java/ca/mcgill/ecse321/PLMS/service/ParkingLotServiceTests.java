@@ -57,7 +57,7 @@ public class ParkingLotServiceTests {
     @Test
     public void testGetInvalidParkingLot(){
         PLMSException e = assertThrows(PLMSException.class, () -> parkingLotService.getParkingLot());
-        assertEquals(e.getMessage(), "Parking Lot not found");
+        assertEquals(e.getMessage(), "Parking Lot not found.");
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
     }
 

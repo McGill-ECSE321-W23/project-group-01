@@ -1,3 +1,4 @@
+
 package ca.mcgill.ecse321.PLMS.controller;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -14,20 +15,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.mcgill.ecse321.PLMS.dto.MonthlyPassRequestDto;
-import ca.mcgill.ecse321.PLMS.dto.MonthlyPassResponseDto;
+ import ca.mcgill.ecse321.PLMS.dto.MonthlyPassRequestDto;
+ import ca.mcgill.ecse321.PLMS.dto.MonthlyPassResponseDto;
 
 import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
 import ca.mcgill.ecse321.PLMS.service.MonthlyPassService;
 import jakarta.validation.Valid;
 
 
-@CrossOrigin(origins = "*")
-@RestController
-public class MonthlyPassController {
+ @CrossOrigin(origins = "*")
+ @RestController
+ public class MonthlyPassController {
 
-    @Autowired
-    private MonthlyPassService monthlyPassService;
+     @Autowired
+     private MonthlyPassService monthlyPassService;
 
     /**
      * Gets all monthly passes.
@@ -40,17 +41,17 @@ public class MonthlyPassController {
         MonthlyPassResponseDto(f)).collect(Collectors.toList());
     }
 
-    /**
-     * Gets a monthlypass by the monthlypass id
-     *
-     * @return monthlypass with id id
-     */
-    @GetMapping("/monthlypass/{id}")
-    public ResponseEntity<MonthlyPassResponseDto> getPassById(@PathVariable int id){
-    MonthlyPass monthlyPass = monthlyPassService.getMonthlyPassById(id);
-    MonthlyPassResponseDto responseBody = new MonthlyPassResponseDto(monthlyPass);
-    return new ResponseEntity<MonthlyPassResponseDto>(responseBody, HttpStatus.OK);
-    }
+     /**
+      * Gets a monthlypass by the monthlypass id
+      *
+      * @return monthlypass with id id
+      */
+     @GetMapping("/monthlypass/{id}")
+     public ResponseEntity<MonthlyPassResponseDto> getPassById(@PathVariable int id){
+     MonthlyPass monthlyPass = monthlyPassService.getMonthlyPassById(id);
+     MonthlyPassResponseDto responseBody = new MonthlyPassResponseDto(monthlyPass);
+     return new ResponseEntity<MonthlyPassResponseDto>(responseBody, HttpStatus.OK);
+     }
 
     /**
      * Gets all monthly passes at the floor floorNumber (inactive passes filtered out in service layer)
@@ -88,7 +89,7 @@ public class MonthlyPassController {
         MonthlyPassResponseDto responseBody = new MonthlyPassResponseDto(monthlyPass);
         return new ResponseEntity<MonthlyPassResponseDto>(responseBody, HttpStatus.CREATED);
 
-    }
+     }
 
 
-}
+ }
