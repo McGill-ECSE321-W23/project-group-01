@@ -113,7 +113,7 @@ public class EmployeeServiceTests {
     }
 
     @Test
-    public void testCreateInvalidByDuplicateEmailEmployeeAccount()
+    public void testCreateDuplicateEmailEmployeeAccount()
     {
         final String email = "john.doe@mcgill.ca";
         final String password = "JohnDoe2002";
@@ -151,7 +151,7 @@ public class EmployeeServiceTests {
     }
 
     @Test
-    public void testUpdateValidWageEmployeeAccount()
+    public void testUpdateValidEmployeeAccount()
     {
         final String email = "john.doe@mcgill.ca";
         final String password = "JohnDoe2002";
