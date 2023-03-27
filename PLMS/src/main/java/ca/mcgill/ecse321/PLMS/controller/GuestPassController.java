@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.PLMS.controller;
 
 import java.sql.Date;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,8 +20,6 @@ import ca.mcgill.ecse321.PLMS.dto.GuestPassResponseDto;
 import ca.mcgill.ecse321.PLMS.model.GuestPass;
 import ca.mcgill.ecse321.PLMS.service.GuestPassService;
 import jakarta.validation.Valid;
-
-import static java.util.Arrays.spliterator;
 
 
 @CrossOrigin(origins = "*")

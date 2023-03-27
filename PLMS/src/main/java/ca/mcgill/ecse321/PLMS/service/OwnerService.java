@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.PLMS.service;
 
-import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -9,8 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
-
-import java.util.ArrayList;
 import java.util.Iterator;
 
 /**

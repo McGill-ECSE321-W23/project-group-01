@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.PLMS.integration;
 
 import ca.mcgill.ecse321.PLMS.dto.EmployeeRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.EmployeeResponseDto;
-import ca.mcgill.ecse321.PLMS.model.Employee;
 import ca.mcgill.ecse321.PLMS.repository.EmployeeRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 

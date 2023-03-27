@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
-import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

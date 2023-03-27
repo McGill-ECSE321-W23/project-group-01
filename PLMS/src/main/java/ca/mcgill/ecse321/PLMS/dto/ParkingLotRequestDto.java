@@ -3,10 +3,8 @@ package ca.mcgill.ecse321.PLMS.dto;
 import java.sql.Time;
 
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
-import jakarta.validation.Constraint;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import org.hibernate.validator.internal.constraintvalidators.bv.number.sign.PositiveValidatorForDouble;
 
 public class ParkingLotRequestDto {
 

@@ -1,11 +1,6 @@
 package ca.mcgill.ecse321.PLMS.repository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import ca.mcgill.ecse321.PLMS.model.GuestPass;
-import org.springframework.data.repository.query.Param;
-
-import java.sql.Time;
-import java.util.List;
 
 /**
  * DAO class in the spring framework that acts as a link between the database and java application

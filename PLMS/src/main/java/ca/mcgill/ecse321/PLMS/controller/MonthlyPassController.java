@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
  import ca.mcgill.ecse321.PLMS.dto.MonthlyPassResponseDto;
 
 import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
-import ca.mcgill.ecse321.PLMS.service.MonthlyPassService;
 import jakarta.validation.Valid;
 
 

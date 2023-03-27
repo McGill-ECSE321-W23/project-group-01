@@ -5,12 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
-import org.apache.tomcat.util.http.parser.HttpParser;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -30,7 +26,6 @@ import org.springframework.http.ResponseEntity;
 
 import ca.mcgill.ecse321.PLMS.dto.ParkingLotRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.ParkingLotResponseDto;
-import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 
