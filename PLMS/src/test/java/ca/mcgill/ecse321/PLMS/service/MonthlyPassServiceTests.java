@@ -3,15 +3,11 @@ package ca.mcgill.ecse321.PLMS.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.beans.Transient;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
@@ -20,13 +16,11 @@ import ca.mcgill.ecse321.PLMS.model.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 
-import ca.mcgill.ecse321.PLMS.service.MonthlyPassService;
 
 import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
 import ca.mcgill.ecse321.PLMS.repository.GuestPassRepository;
@@ -211,7 +205,6 @@ public class MonthlyPassServiceTests {
         Date endDate = Date.valueOf("2023-03-20");
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
-        int id = 1;
     
     
         String email = "rick.roll@gmail.com";
@@ -239,7 +232,6 @@ public class MonthlyPassServiceTests {
         Date endDate2 = Date.valueOf("2023-03-21");
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
-        int id2 = 2;
         
         MonthlyPass monthlyPass2 = new MonthlyPass();
         monthlyPass2.setFee(fee2);
@@ -281,7 +273,6 @@ public class MonthlyPassServiceTests {
         Date endDate = Date.valueOf("2023-03-20");
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
-        int id = 1;
 
         double fee2 = 50.50;
         String spotNumber2 = "A25";
@@ -290,7 +281,6 @@ public class MonthlyPassServiceTests {
         Date endDate2 = Date.valueOf("2023-03-21");
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
-        int id2 = 2;
     
     
         String email = "rick.roll@gmail.com";
@@ -352,7 +342,6 @@ public class MonthlyPassServiceTests {
         Date endDate = Date.valueOf("2023-03-20");
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
-        int id = 1;
 
         double fee2 = 50.50;
         String spotNumber2 = "A25";
@@ -361,7 +350,6 @@ public class MonthlyPassServiceTests {
         Date endDate2 = Date.valueOf("2023-03-21");
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
-        int id2 = 2;
     
     
         String invalidEmail = "rick.roll@gmail.com";
@@ -407,7 +395,6 @@ public class MonthlyPassServiceTests {
         Date endDate = Date.valueOf("2023-03-20");
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
-        int id = 1;
         
         String email = "rick.roll@gmail.com";
         String password = "intelliJLover123";
@@ -457,7 +444,6 @@ public class MonthlyPassServiceTests {
       Date endDate = Date.valueOf("2023-03-20");
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
-      int id = 1;
 
       double fee2 = 50.50;
       String spotNumber2 = "A25";
@@ -466,7 +452,6 @@ public class MonthlyPassServiceTests {
       Date endDate2 = Date.valueOf("2023-03-21");
       boolean isLarge2 = true;
       String confirmationCode2 = "NeverGonnaGiveYouUp";
-      int id2 = 2;
       
       String email = "rick.roll@gmail.com";
       String password = "intelliJLover123";
@@ -527,7 +512,6 @@ public class MonthlyPassServiceTests {
         Date endDate = Date.valueOf("2023-03-20");
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
-        int id = 1;
 
         double fee2 = 50.50;
         String spotNumber2 = "A25";
@@ -536,7 +520,6 @@ public class MonthlyPassServiceTests {
         Date endDate2 = Date.valueOf("2023-03-21");
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
-        int id2 = 2;
     
     
         
@@ -580,7 +563,6 @@ public class MonthlyPassServiceTests {
         Date endDate = Date.valueOf("2023-03-20");
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
-        int id = 1;
 
         double fee2 = 50.50;
         String spotNumber2 = "A25";
@@ -589,7 +571,6 @@ public class MonthlyPassServiceTests {
         Date endDate2 = Date.valueOf("2023-03-21");
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
-        int id2 = 2;
     
     
         
@@ -640,7 +621,6 @@ public class MonthlyPassServiceTests {
         Date endDate = Date.valueOf("2023-03-20");
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
-        int id = 1;
 
         double fee2 = 50.50;
         String spotNumber2 = "A25";
@@ -649,10 +629,6 @@ public class MonthlyPassServiceTests {
         Date endDate2 = Date.valueOf("2023-03-21");
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
-        int id2 = 2;
-    
-    
-        String invalidEmail = "rick.roll@gmail.com";
         
         MonthlyPass monthlyPass = new MonthlyPass();
         monthlyPass.setFee(fee);
@@ -697,7 +673,6 @@ public class MonthlyPassServiceTests {
         Date endDate = Date.valueOf("2023-03-20");
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
-        int id = 1;
 
         double fee2 = 50.50;
         String spotNumber2 = "A25";
@@ -706,10 +681,6 @@ public class MonthlyPassServiceTests {
         Date endDate2 = Date.valueOf("2023-03-21");
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
-        int id2 = 2;
-    
-    
-        String invalidEmail = "rick.roll@gmail.com";
         
         MonthlyPass monthlyPass = new MonthlyPass();
         monthlyPass.setFee(fee);
@@ -749,7 +720,6 @@ public class MonthlyPassServiceTests {
       Date startDate = Date.valueOf("2023-02-21");
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
-      int id = 1;
 
       Floor floor = new Floor();
       floor.setFloorNumber(1);
@@ -787,7 +757,6 @@ public class MonthlyPassServiceTests {
       Date startDate = Date.valueOf("2023-02-21");
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
-      int id = 1;
 
       Floor floor = new Floor();
       floor.setFloorNumber(1);
@@ -909,7 +878,6 @@ public class MonthlyPassServiceTests {
       boolean isLarge2 = true;
       Date startDate2 = Date.valueOf("2023-02-21");
       String confirmationCode2 = "NeverGonnaGiveYouUp";
-      int id2 = 2;
 
 
       MonthlyPass monthlyPass = new MonthlyPass();
@@ -958,8 +926,6 @@ public class MonthlyPassServiceTests {
     int nrIncrements = 4;
     Date currentDate = Date.valueOf(LocalDate.of(2023, 4, 1));
     Date startDate2 = Date.valueOf(LocalDate.of(2020, 4, 1));
-
-    LocalDateTime currentTime = LocalDateTime.of(2023, 4, 1, 10, 0, 0);
     Time openingTime = Time.valueOf("07:00:00");
     Time closingTime = Time.valueOf("22:00:00");
 
@@ -1042,7 +1008,6 @@ public class MonthlyPassServiceTests {
     Date currentDate = Date.valueOf(LocalDate.of(2023, 4, 1));
     Date startDate2 = Date.valueOf(LocalDate.of(2020, 4, 1));
 
-    LocalDateTime currentTime = LocalDateTime.of(2023, 4, 1, 10, 0, 0);
     Time openingTime = Time.valueOf("07:00:00");
     Time closingTime = Time.valueOf("22:00:00");
 

@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 // Ensure the tests are run in the right order (e.g., POST before GET)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class EmployeeIntegrationTest {
+public class EmployeeIntegrationTests {
 
     private class EmployeeFixture {
         public String name = "John";

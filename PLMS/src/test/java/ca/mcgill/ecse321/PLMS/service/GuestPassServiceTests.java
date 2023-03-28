@@ -17,8 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
@@ -55,24 +53,20 @@ public class GuestPassServiceTests {
 
   @BeforeEach
   public void setUp(){
-    MockitoAnnotations.initMocks(this);
+    // MockitoAnnotations.initMocks(this);
 
-    final double fee1 = 50.50;
     spotNumber1 = "A24";
     date1 = Date.valueOf("2023-02-21");
     starTime1 = Time.valueOf("12:00:00");
     endTime1 = Time.valueOf("18:00:00");
     boolean isLarge1 = true;
-    final String confirmationCode1 = "NeverGonnaGiveYouUp";
     guestPass1 = new GuestPass(null, spotNumber1, null, isLarge1, date1, starTime1, endTime1);
 
-    final double fee2 = 50.50;
     spotNumber2 = "A38";
     final Date date2 = Date.valueOf("2023-02-21");
     starTime2 = Time.valueOf("14:00:00");
     endTime2 = Time.valueOf("19:00:00");
     boolean isLarge2 = true;
-    final String confirmationCode2 = "NeverGonnaGiveYouUp2";
     guestPass2 = new GuestPass(null, spotNumber2, null, isLarge2, date2, starTime2, endTime2);
 
   }
@@ -242,9 +236,6 @@ public class GuestPassServiceTests {
     Time closingTime = Time.valueOf("18:00:00");
     Time startTime = Time.valueOf("19:00:00");
     Time endTime = Time.valueOf("19:30:00");
-    int floorNumber = 1;
-    int nrIncrements = 2;
-    LocalDateTime currentTime = LocalDateTime.now();
 
     PLMSException e = assertThrows(PLMSException.class, () -> {
       guestPassService.validateGuestPassHours(startTime, endTime, openingTime, closingTime);
@@ -261,9 +252,6 @@ public class GuestPassServiceTests {
     Time closingTime = Time.valueOf("18:00:00");
     Time startTime = Time.valueOf("14:00:00");
     Time endTime = Time.valueOf("19:30:00");
-    int floorNumber = 1;
-    int nrIncrements = 2;
-    LocalDateTime currentTime = LocalDateTime.now();
 
     PLMSException e = assertThrows(PLMSException.class, () -> {
       guestPassService.validateGuestPassHours(startTime, endTime, openingTime, closingTime);
@@ -299,7 +287,6 @@ public class GuestPassServiceTests {
     // Initialize guest pass from dto
     GuestPass guestPass = new GuestPass();
     spotNumber1 = "A24";
-    String confirmationCode = "dead";
     boolean isLarge = false;
 
     guestPass.setSpotNumber("A24");
@@ -339,14 +326,12 @@ public class GuestPassServiceTests {
     // Initialize guest pass from dto
     GuestPass guestPass = new GuestPass();
     spotNumber1 = "A24";
-    String confirmationCode = "dead";
     boolean isLarge = false;
     guestPass.setSpotNumber("A24");
     guestPass.setIsLarge(isLarge);
 
     // Change local time to within operating hours
     LocalDateTime currentTime  = LocalDateTime.parse("2023-03-25T09:00:00");
-    Time endTime = Time.valueOf("9:30:00");
     when(guestPassRepo.save(guestPass)).thenReturn(guestPass);
 
 
@@ -429,9 +414,6 @@ public class GuestPassServiceTests {
     Time closingTime = Time.valueOf("18:00:00");
     Time startTime = Time.valueOf("07:00:00");
     Time endTime = Time.valueOf("07:30:00");
-    int floorNumber = 1;
-    int nrIncrements = 2;
-    LocalDateTime currentTime = LocalDateTime.now();
 
     PLMSException e = assertThrows(PLMSException.class, () -> {
       guestPassService.validateGuestPassHours(startTime, endTime, openingTime, closingTime);

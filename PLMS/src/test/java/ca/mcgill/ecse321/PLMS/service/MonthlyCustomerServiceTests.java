@@ -150,9 +150,6 @@ public class MonthlyCustomerServiceTests {
     public void testInvalidUpdateMonthlyCustomerAccount()
     {
         final String email = "john.doe@mcgill.ca";
-        final String password = "JohnDoe2002";
-        final String name = "John Doe";
-        final MonthlyCustomer john = new MonthlyCustomer(email, password, name);
         when(monthlyCustomerRepository.findMonthlyCustomerByEmail(email)).thenReturn(null);
 
 

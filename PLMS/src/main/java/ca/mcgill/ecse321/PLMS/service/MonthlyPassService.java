@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,12 +74,10 @@ public class MonthlyPassService {
 
         // Get start date and find end date
         Date startDate = monthlyPass.getStartDate();
-//        LocalDate localStartDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate localStartDate = LocalDate.parse(startDate.toString());
         // Add months to LocalStartDate
         LocalDate localEndDate = localStartDate.plusMonths(nrMonths);
         // Convert back to Date
-//        Date endDate = (Date) Date.from(LocalEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date endDate = Date.valueOf(localEndDate);
         monthlyPass.setEndDate(endDate);
 
@@ -222,6 +219,12 @@ public class MonthlyPassService {
         return monthlyPassesbyMonthlyCustomer;
     }
 
+    @Transactional
+    /**
+     * Return all of the monthly passes that are active on a given date.
+     * @param date - date we want to search for
+     * @return - all passes active on that date
+     */
     public List<MonthlyPass> getMonthlyPassesByDate(Date date) {
         List<MonthlyPass> monthlyPasses = (List<MonthlyPass>) monthlyPassRepository.findAll();
         List<MonthlyPass> monthlyPassesByDate = new ArrayList<>();

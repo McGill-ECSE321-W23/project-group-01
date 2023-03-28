@@ -5,7 +5,6 @@ import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
 import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,6 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,7 +97,6 @@ public class GuestPassService {
         // set start and end time
         guestPass.setStartTime(startTime);
         guestPass.setEndTime(endTime);
-        LocalDateTime localDate = LocalDateTime.now();
         guestPass.setDate(Date.valueOf(localDateTime.toLocalDate()));
 
         // check to see if we've exceed the floor capacity by booking this spot.
