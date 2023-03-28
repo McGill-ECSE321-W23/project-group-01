@@ -40,7 +40,11 @@ public class MonthlyPassService {
      */
     @Transactional
     public Iterable<MonthlyPass> getAllMonthlyPasses() {
-        return monthlyPassRepository.findAll();
+        ArrayList<MonthlyPass> arrayList = (ArrayList<MonthlyPass>) monthlyPassRepository.findAll();
+        if (arrayList.isEmpty()){
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no monthly passes in the system.");
+        }
+        return arrayList;
     }
 
     /**

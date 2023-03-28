@@ -43,7 +43,11 @@ public class GuestPassService {
      */
     @Transactional
     public Iterable<GuestPass> getAllGuestPasses() {
-        return guestPassRepository.findAll();
+        ArrayList<GuestPass> arrayList = (ArrayList<GuestPass>) guestPassRepository.findAll();
+        if (arrayList.isEmpty()){
+            throw new PLMSException(HttpStatus.NOT_FOUND, "There are no guest passes in the system.");
+        }
+        return arrayList;
     }
 
     /**

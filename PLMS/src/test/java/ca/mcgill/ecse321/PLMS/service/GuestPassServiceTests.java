@@ -83,6 +83,15 @@ public class GuestPassServiceTests {
   }
 
   @Test
+    public void testGetAllEmptyGuestPasses() {
+        ArrayList<GuestPass> passes = new ArrayList<GuestPass>();
+        when(guestPassRepo.findAll()).thenReturn(passes);
+        PLMSException e = assertThrows(PLMSException.class, () -> guestPassService.getAllGuestPasses());
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(),"There are no guest passes in the system." );
+    }
+
+  @Test
   public void testGetInvalidGuestPass(){
     final int invalidPassNumber = 42;
     when(guestPassRepo.findGuestPassById(invalidPassNumber)).thenReturn(null);
@@ -166,15 +175,10 @@ public class GuestPassServiceTests {
     }
 
   @Test
-  public void testValidDeleteGuessPass(){
+  public void testValidDeleteGuestPass(){
     int id = 1;
     when(guestPassRepo.findGuestPassById(id)).thenReturn(guestPass1);
     guestPassService.deleteGuestPassById(id);
-
-
-//    PLMSException e = assertThrows(PLMSException.class, () -> guestPassService.getGuestPassById(id));
-//    assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-//    assertEquals(e.getMessage(),   "Guest pass with id: " + id + " does not exist.");
 
   }
 

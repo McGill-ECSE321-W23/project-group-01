@@ -72,6 +72,15 @@ public class MonthlyPassServiceTests {
   }
 
   @Test
+    public void testGetAllEmptyMonthlyPasses() {
+        ArrayList<MonthlyPass> passes = new ArrayList<MonthlyPass>();
+        when(monthlyPassRepo.findAll()).thenReturn(passes);
+        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getAllMonthlyPasses());
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(),"There are no monthly passes in the system." );
+    }
+
+  @Test
   public void testGetValidWithAccountMonthlyPass(){
     double fee = 50.50;
     String spotNumber = "A24";

@@ -50,7 +50,7 @@ public class ServiceAppointmentController {
 
 
      /**
-      * Gets all service appointements
+      * Gets all booked service appointments
       * 
       * @return All service appointments
       */
@@ -62,9 +62,9 @@ public class ServiceAppointmentController {
       }
 
       /**
-       * Get service appointment by ID
+       * Get service appointment by its unique ID.
        * 
-       * @param id The id of the service appointement to look up.
+       * @param id - The id of the service appointement to look up.
        * @return The service appointement with the given id.
        */
       @GetMapping("/serviceAppointment/{id}")
@@ -90,7 +90,7 @@ public class ServiceAppointmentController {
       /**
        * Gets all service appointment related to a certain employee
        * 
-       * @param email The email of the employee you want to check for
+       * @param email - The email of the employee you want to check for
        * @return The service appointments related to the employee
        */
       @GetMapping("/serviceAppointment/employee/{email}")
