@@ -155,11 +155,23 @@ public class MonthlyPassIntegrationTests {
     @Test
     @Order(0)
     public void testCreateMonthlyPassNoAccount(){
-        ParkingLot parkingLot = new ParkingLot(Time.valueOf("8:00:00"), Time.valueOf("20:00:00"), 15, 10, 250, 250);
-        parkingLotRepository.save(parkingLot);
-        Floor validFloor = FixedValidFloor.createValidFloor();
-        validFloor.setParkingLot(parkingLot);
-        floorRepository.save(validFloor);
+        ParkingLotRequestDto lotrequest = new ParkingLotRequestDto();
+        lotrequest.setOpeningTime(Time.valueOf("8:00:00"));
+        lotrequest.setClosingTime(Time.valueOf("20:00:00"));
+        lotrequest.setLargeSpotFee(15.0);
+        lotrequest.setSmallSpotFee(10.0);
+        lotrequest.setSmallSpotMonthlyFlatFee(250.0);
+        lotrequest.setLargeSpotMonthlyFlatFee(250.0);
+
+        ResponseEntity<ParkingLotResponseDto> lotresponse = client.postForEntity("/parkingLot/creation", lotrequest, ParkingLotResponseDto.class);
+
+        FloorRequestDto floorRequest = new FloorRequestDto();
+        floorRequest.setFloorNumber(0);
+        floorRequest.setIsMemberOnly(true);
+        floorRequest.setLargeSpotCapacity(10);
+        floorRequest.setSmallSpotCapacity(10);
+
+       ResponseEntity<FloorResponseDto> floorResponse = client.postForEntity("/floor", floorRequest, FloorResponseDto.class);
 
         MonthlyPassRequestDto request = setRequest(monthlyPassFixture.spotNumber, monthlyPassFixture.confirmationCode,
                 monthlyPassFixture.licensePlate, monthlyPassFixture.numberOfMonths, monthlyPassFixture.startDate,
@@ -286,13 +298,19 @@ public class MonthlyPassIntegrationTests {
        request.setLicensePlate("12345678");
        request.setLarge(true);
        request.setNumberOfMonths(2);
-       request.setStartDate(Date.valueOf("2023-1-1").toLocalDate());
+       request.setStartDate(Date.valueOf("2024-1-1").toLocalDate());
        request.setFloorNumber(1);
        request.setCustomerEmail("samer.abdulkarim@gmail.com");
 
-    //    ParkingLotRequestDto lotrequest = new ParkingLotRequestDto();
-    //    client.postForEntity("/parkingLot/creation", lotrequest, ParkingLotResponseDto.class);
+       ParkingLotRequestDto lotrequest = new ParkingLotRequestDto();
+       lotrequest.setOpeningTime(Time.valueOf("8:00:00"));
+       lotrequest.setClosingTime(Time.valueOf("20:00:00"));
+       lotrequest.setLargeSpotFee(15.0);
+       lotrequest.setSmallSpotFee(10.0);
+       lotrequest.setSmallSpotMonthlyFlatFee(250.0);
+       lotrequest.setLargeSpotMonthlyFlatFee(250.0);
 
+       ResponseEntity<ParkingLotResponseDto> lotresponse = client.postForEntity("/parkingLot/creation", lotrequest, ParkingLotResponseDto.class);
 
        FloorRequestDto floorRequest = new FloorRequestDto();
        floorRequest.setFloorNumber(1);
@@ -306,45 +324,56 @@ public class MonthlyPassIntegrationTests {
        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
        assertContains("Floor 1 is reserved for guest passes only.", response.getBody());
    }
-//
-//    @Test
-//    @Order(8)
-//    public void testCreateInvalidSpotMonthlyPass() {
-//
-//        MonthlyPassRequestDto existingPass = new MonthlyPassRequestDto();
-//        existingPass.setSpotNumber("A24");
-//        existingPass.setConfirmationCode("NeverGonnaGiveYouUp");
-//        existingPass.setLicensePlate("12345679");
-//        existingPass.setLarge(false);
-//        existingPass.setNumberOfMonths(2);
-//        existingPass.setStartDate(Date.valueOf("2023-1-1").toLocalDate());
-//        existingPass.setFloorNumber(1);
-//        existingPass.setCustomerEmail("samer.abdulkarim@gmail.com");
-//
-//        MonthlyPassRequestDto request = new MonthlyPassRequestDto();
-//        request.setSpotNumber("A24");
-//        request.setConfirmationCode("NeverGonnaGiveYouUp");
-//        request.setLicensePlate("12345678");
-//        request.setLarge(true);
-//        request.setNumberOfMonths(2);
-//        request.setStartDate(Date.valueOf("2023-2-1").toLocalDate());
-//        request.setFloorNumber(1);
-//        request.setCustomerEmail("samer.abdulkarim@gmail.com");
-//
-//        ParkingLotRequestDto lotrequest = new ParkingLotRequestDto();
-//        client.postForEntity("/parkingLot/creation", lotrequest, ParkingLotResponseDto.class);
-//
-//        FloorRequestDto floorRequest = new FloorRequestDto();
-//        floorRequest.setFloorNumber(1);
-//        floorRequest.setIsMemberOnly(true);
-//
-//        client.postForEntity("/floor", floorRequest, FloorResponseDto.class);
-//
-//        ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
-//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-//        assertContains("Spot A24 is currently occupied", response.getBody());
-//    }
-//
+
+   @Test
+   @Order(8)
+   public void testCreateInvalidSpotMonthlyPass() {
+
+       MonthlyPassRequestDto existingPass = new MonthlyPassRequestDto();
+       existingPass.setSpotNumber("A24");
+       existingPass.setConfirmationCode("NeverGonnaGiveYouUp");
+       existingPass.setLicensePlate("12345679");
+       existingPass.setLarge(false);
+       existingPass.setNumberOfMonths(2);
+       existingPass.setStartDate(Date.valueOf("2024-1-1").toLocalDate());
+       existingPass.setFloorNumber(1);
+       existingPass.setCustomerEmail("samer.abdulkarim@gmail.com");
+
+       MonthlyPassRequestDto request = new MonthlyPassRequestDto();
+       request.setSpotNumber("A24");
+       request.setConfirmationCode("NeverGonnaGiveYouUp");
+       request.setLicensePlate("12345678");
+       request.setLarge(true);
+       request.setNumberOfMonths(2);
+       request.setStartDate(Date.valueOf("2024-2-1").toLocalDate());
+       request.setFloorNumber(1);
+       request.setCustomerEmail("samer.abdulkarim@gmail.com");
+
+       ParkingLotRequestDto lotrequest = new ParkingLotRequestDto();
+       lotrequest.setOpeningTime(Time.valueOf("8:00:00"));
+       lotrequest.setClosingTime(Time.valueOf("20:00:00"));
+       lotrequest.setLargeSpotFee(15.0);
+       lotrequest.setSmallSpotFee(10.0);
+       lotrequest.setSmallSpotMonthlyFlatFee(250.0);
+       lotrequest.setLargeSpotMonthlyFlatFee(250.0);
+
+       ResponseEntity<ParkingLotResponseDto> lotresponse = client.postForEntity("/parkingLot/creation", lotrequest, ParkingLotResponseDto.class);
+
+       FloorRequestDto floorRequest = new FloorRequestDto();
+       floorRequest.setFloorNumber(1);
+       floorRequest.setIsMemberOnly(true);
+       floorRequest.setLargeSpotCapacity(10);
+       floorRequest.setSmallSpotCapacity(10);
+
+       ResponseEntity<FloorResponseDto> floorResponse = client.postForEntity("/floor", floorRequest, FloorResponseDto.class);
+
+       ResponseEntity<MonthlyPassResponseDto> existingPassResponse =  client.postForEntity("/monthlypass", existingPass, MonthlyPassResponseDto.class);
+
+       ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
+       assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+       assertContains("Spot A24 is currently occupied", response.getBody());
+   }
+
 //    @Test
 //    @Order(9)
 //    public void testGetAllMonthlyPasses(){
