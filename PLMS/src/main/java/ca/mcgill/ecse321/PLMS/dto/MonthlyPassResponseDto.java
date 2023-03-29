@@ -25,6 +25,9 @@ public class MonthlyPassResponseDto {
      * @param monthlypass - monthlypass to turn into a transfer object
      */
 
+    public MonthlyPassResponseDto() {
+
+    }
     public MonthlyPassResponseDto(MonthlyPass monthlypass){
         this.id = monthlypass.getId();
         this.fee = monthlypass.getFee();
@@ -38,45 +41,43 @@ public class MonthlyPassResponseDto {
         this.endDate = monthlypass.getEndDate();
     }
 
-    public Double getFee(){
-        return this.fee;
+    public Integer getId() {
+        return id;
     }
 
-    public Integer getId(){
-        return this.id;
+    public Double getFee() {
+        return fee;
     }
 
-    public Boolean getIsLarge(){
-        return this.isLarge;
+    public String getSpotNumber() {
+        return spotNumber;
     }
 
-    public Date getStartDate(){
-        return this.startDate;
+    public String getConfirmationCode() {
+        return confirmationCode;
     }
 
-    public Date getEndDate(){
-        return this.endDate;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    public String getSpotNumber(){
-        return this.spotNumber;
+    public Boolean getLarge() {
+        return isLarge;
     }
 
-    public String getConfirmationCode(){
-        return this.confirmationCode;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public String getLicensePlate(){
-        return this.licensePlate;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public Integer getFloor(){
-        return this.floorNumber;
+    public Integer getFloorNumber() {
+        return floorNumber;
     }
 
-    public String getMonthlyCustomerEmail(){
-        return this.monthlyCustomerEmail;
+    public String getMonthlyCustomerEmail() {
+        return monthlyCustomerEmail;
     }
-
-
 }

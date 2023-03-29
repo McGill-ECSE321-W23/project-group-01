@@ -15,7 +15,7 @@ public class MonthlyPassRequestDto {
     @NotNull(message = "Cannot have an empty number of months.")
     @Min(value = 1, message = "Must enter a positive number of months.")
     private Integer numberOfMonths;
-    
+
 
     @NotNull(message = "Cannot have an empty spot number.")
     private String spotNumber;
@@ -55,37 +55,40 @@ public class MonthlyPassRequestDto {
         monthlypass.setConfirmationCode(this.confirmationCode);
         monthlypass.setLicensePlate(this.licensePlate);
         monthlypass.setIsLarge(this.isLarge);
+        monthlypass.setStartDate((java.sql.Date) this.startDate);
         return monthlypass;
     }
 
 
-    public void setSpotNumber(String spotNumber){
-        this.spotNumber = spotNumber;
-    }
-
-
-    public void setConfirmationCode(String confirmationCode){
-        this.confirmationCode = confirmationCode;
-    }
-
-
-    public void setLicensePlate(String licensePlate){
-        this.licensePlate = licensePlate;
-    }
-
-    public void setNumberOfMonths(Integer numberOfMonths){
+    public void setNumberOfMonths(Integer numberOfMonths) {
         this.numberOfMonths = numberOfMonths;
     }
 
-    public void setFloorNumber(Integer floorNumber){
+    public void setSpotNumber(String spotNumber) {
+        this.spotNumber = spotNumber;
+    }
+
+    public void setConfirmationCode(String confirmationCode) {
+        this.confirmationCode = confirmationCode;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public void setFloorNumber(Integer floorNumber) {
         this.floorNumber = floorNumber;
     }
 
-    public void setIsLarge(Boolean isLarge){
-        this.isLarge = isLarge;
+    public void setLarge(Boolean large) {
+        isLarge = large;
     }
 
-    public void setCustomerEmail(String customerEmail){
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
     }
 
@@ -93,12 +96,31 @@ public class MonthlyPassRequestDto {
         return numberOfMonths;
     }
 
+    public String getSpotNumber() {
+        return spotNumber;
+    }
+
+    public String getConfirmationCode() {
+        return confirmationCode;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
     public Integer getFloorNumber() {
         return floorNumber;
     }
 
-    public String getCustomerEmail(){
-        return this.customerEmail;
+    public Boolean getLarge() {
+        return isLarge;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
 }

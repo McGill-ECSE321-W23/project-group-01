@@ -102,6 +102,7 @@ public class MonthlyPassService {
         } else {
             monthlyPass.setFee(parkingLot.getSmallSpotFee() * nrMonths);
         }
+        monthlyPass.setFloor(floor);
         // Create object
         monthlyPass = monthlyPassRepository.save(monthlyPass);
 
@@ -223,12 +224,12 @@ public class MonthlyPassService {
         return monthlyPassesbyMonthlyCustomer;
     }
 
-    @Transactional
     /**
      * Return all of the monthly passes that are active on a given date.
      * @param date - date we want to search for
      * @return - all passes active on that date
      */
+    @Transactional
     public List<MonthlyPass> getMonthlyPassesByDate(Date date) {
         List<MonthlyPass> monthlyPasses = (List<MonthlyPass>) monthlyPassRepository.findAll();
         List<MonthlyPass> monthlyPassesByDate = new ArrayList<>();
@@ -243,6 +244,7 @@ public class MonthlyPassService {
         }
         return monthlyPassesByDate;
     }
+
 
     public boolean isSpotOccupied(int floorNumber, String spotNumber, Date startDate, Date endDate) {
         try {
