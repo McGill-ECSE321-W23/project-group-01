@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class ServiceRequestDto {
-    @NotNull
     @NotBlank(message = "Service name cannot be blank.")
     private String serviceName;
     @Min(value = 0, message = "Cost needs to be a number greater or equal to 0")
@@ -13,6 +12,18 @@ public class ServiceRequestDto {
     @Min(value = 0, message = "Length in hours needs to be a number greater or equal to 0.")
     private double lengthInHours;
 
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public double getLengthInHours() {
+        return lengthInHours;
+    }
+    
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
