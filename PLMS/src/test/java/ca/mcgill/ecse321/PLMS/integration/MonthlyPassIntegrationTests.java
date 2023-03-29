@@ -42,9 +42,9 @@ public class MonthlyPassIntegrationTests {
         public String confirmationCode = "NeverGonnaGiveYouUp";
         public String licensePlate = "12345678";
         public Boolean isLarge = true;
-        public LocalDate startDate =  Date.valueOf("2023-4-1").toLocalDate();
+        public LocalDate startDate =  Date.valueOf("2024-4-1").toLocalDate();
         public Integer numberOfMonths = 2;
-        public LocalDate endDate = Date.valueOf("2023-7-1").toLocalDate();
+        public LocalDate endDate = Date.valueOf("2024-7-1").toLocalDate();
         public Integer floorNumber = 0;
         public String monthlyCustomerEmail = "samer.abdulkarim@gmail.com";
 
@@ -190,7 +190,7 @@ public class MonthlyPassIntegrationTests {
         customerRequest.setPassword("Hello!");
         customerRequest.setName("Samer Abdulkarim");
 
-        ResponseEntity<MonthlyPassResponseDto> customerResponse = client.postForEntity("/customer/create", customerRequest, MonthlyPassResponseDto.class);
+        ResponseEntity<MonthlyCustomerResponseDto> customerResponse = client.postForEntity("/customer/create", customerRequest, MonthlyCustomerResponseDto.class);
 
         MonthlyPassRequestDto request = setRequest("A25", monthlyPassFixture.confirmationCode,
                 monthlyPassFixture.licensePlate, monthlyPassFixture.numberOfMonths, monthlyPassFixture.startDate,
@@ -320,6 +320,7 @@ public class MonthlyPassIntegrationTests {
 
        ResponseEntity<FloorResponseDto> floorResponse = client.postForEntity("/floor", floorRequest, FloorResponseDto.class);
 
+
        ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
        assertContains("Floor 1 is reserved for guest passes only.", response.getBody());
@@ -367,62 +368,94 @@ public class MonthlyPassIntegrationTests {
 
        ResponseEntity<FloorResponseDto> floorResponse = client.postForEntity("/floor", floorRequest, FloorResponseDto.class);
 
-       ResponseEntity<MonthlyPassResponseDto> existingPassResponse =  client.postForEntity("/monthlypass", existingPass, MonthlyPassResponseDto.class);
+       MonthlyCustomerRequestDto customerRequest = new MonthlyCustomerRequestDto();
+       customerRequest.setEmail("samer.abdulkarim@gmail.com");
+       customerRequest.setPassword("Hello!");
+       customerRequest.setName("Samer Abdulkarim");
+
+       ResponseEntity<MonthlyCustomerResponseDto> customerResponse = client.postForEntity("/customer/create", customerRequest, MonthlyCustomerResponseDto.class);
+
+       ResponseEntity<String> existingPassResponse =  client.postForEntity("/monthlypass", existingPass, String.class);
 
        ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
        assertContains("Spot A24 is currently occupied", response.getBody());
    }
 
-//    @Test
-//    @Order(9)
-//    public void testGetAllMonthlyPasses(){
-//        MonthlyPassRequestDto request = new MonthlyPassRequestDto();
-//        request.setSpotNumber(monthlyPassFixture.spotNumber);
-//        request.setConfirmationCode(monthlyPassFixture.confirmationCode);
-//        request.setLicensePlate(monthlyPassFixture.licensePlate);
-//        request.setLarge(monthlyPassFixture.isLarge);
-//        request.setNumberOfMonths(monthlyPassFixture.numberOfMonths);
-//        request.setStartDate(monthlyPassFixture.startDate);
-//        request.setFloorNumber(monthlyPassFixture.floorNumber);
-//        request.setCustomerEmail(monthlyPassFixture.monthlyCustomerEmail);
-//        ResponseEntity<MonthlyPassResponseDto> response =  client.postForEntity("/monthlypass", request, MonthlyPassResponseDto.class);
-//
-//        MonthlyPassRequestDto request2 = new MonthlyPassRequestDto();
-//        request2.setSpotNumber("A25");
-//        request2.setConfirmationCode("NeverGonnaGiveYouUp");
-//        request2.setLicensePlate("12345679");
-//        request2.setLarge(true);
-//        request2.setNumberOfMonths(2);
-//        request2.setStartDate(Date.valueOf("2023-2-1").toLocalDate());
-//        request2.setFloorNumber(1);
-//        request2.setCustomerEmail("samer.abdulkarim2@gmail.com");
-//        ResponseEntity<MonthlyPassResponseDto> response2 =  client.postForEntity("/monthlypass", request, MonthlyPassResponseDto.class);
-//
-//        ResponseEntity<List> response3 = client.getForEntity("/pass", List.class);
-//        assertEquals(HttpStatus.OK, response3.getStatusCode());
-//        assertNotNull(response3.getBody());
-//        List<Map<String, Object>> monthlyPasses = response3.getBody();
-//
-//        assertEquals(monthlyPasses.get(1).get("spotNumber"), "A25");
-//        assertEquals(monthlyPasses.get(1).get("confirmationCode"), "NeverGonnaGiveYouUp");
-//        assertEquals(monthlyPasses.get(1).get("licensePlate"), "12345679");
-//        assertEquals(monthlyPasses.get(1).get("isLarge"), true);
-//        assertEquals(monthlyPasses.get(1).get("numberOfMonths"), 2);
-//        assertEquals(monthlyPasses.get(1).get("startDate"), "2023-2-1");
-//        assertEquals(monthlyPasses.get(1).get("floorNumber"), 1);
-//        assertEquals(monthlyPasses.get(1).get("customerEmail"), "samer.abdulkarim2@gmail.com");
-//
-//        assertEquals(monthlyPasses.get(0).get("spotNumber"), monthlyPassFixture.spotNumber);
-//        assertEquals(monthlyPasses.get(0).get("spotNumber"), monthlyPassFixture.confirmationCode);
-//        assertEquals(monthlyPasses.get(0).get("licensePlate"), monthlyPassFixture.licensePlate);
-//        assertEquals(monthlyPasses.get(0).get("isLarge"), monthlyPassFixture.isLarge);
-//        assertEquals(monthlyPasses.get(0).get("numberOfMonths"), monthlyPassFixture.numberOfMonths);
-//        assertEquals(monthlyPasses.get(1).get("startDate"), monthlyPassFixture.startDate);
-//        assertEquals(monthlyPasses.get(1).get("floorNumber"), monthlyPassFixture.floorNumber);
-//        assertEquals(monthlyPasses.get(1).get("customerEmail"), monthlyPassFixture.monthlyCustomerEmail);
-//    }
-//
+   @Test
+   @Order(9)
+   public void testGetAllMonthlyPasses(){
+       MonthlyPassRequestDto request = new MonthlyPassRequestDto();
+       request.setSpotNumber(monthlyPassFixture.spotNumber);
+       request.setConfirmationCode(monthlyPassFixture.confirmationCode);
+       request.setLicensePlate(monthlyPassFixture.licensePlate);
+       request.setLarge(monthlyPassFixture.isLarge);
+       request.setNumberOfMonths(monthlyPassFixture.numberOfMonths);
+       request.setStartDate(monthlyPassFixture.startDate);
+       request.setFloorNumber(monthlyPassFixture.floorNumber);
+       request.setCustomerEmail(monthlyPassFixture.monthlyCustomerEmail);
+
+       ParkingLotRequestDto lotrequest = new ParkingLotRequestDto();
+       lotrequest.setOpeningTime(Time.valueOf("8:00:00"));
+       lotrequest.setClosingTime(Time.valueOf("20:00:00"));
+       lotrequest.setLargeSpotFee(15.0);
+       lotrequest.setSmallSpotFee(10.0);
+       lotrequest.setSmallSpotMonthlyFlatFee(250.0);
+       lotrequest.setLargeSpotMonthlyFlatFee(250.0);
+
+       ResponseEntity<ParkingLotResponseDto> lotresponse = client.postForEntity("/parkingLot/creation", lotrequest, ParkingLotResponseDto.class);
+
+       FloorRequestDto floorRequest = new FloorRequestDto();
+       floorRequest.setFloorNumber(0);
+       floorRequest.setIsMemberOnly(true);
+       floorRequest.setLargeSpotCapacity(10);
+       floorRequest.setSmallSpotCapacity(10);
+
+       ResponseEntity<FloorResponseDto> floorResponse = client.postForEntity("/floor", floorRequest, FloorResponseDto.class);
+
+       MonthlyCustomerRequestDto customerRequest = new MonthlyCustomerRequestDto();
+       customerRequest.setEmail("samer.abdulkarim@gmail.com");
+       customerRequest.setPassword("Hello!");
+       customerRequest.setName("Samer Abdulkarim");
+
+       ResponseEntity<MonthlyCustomerResponseDto> customerResponse = client.postForEntity("/customer/create", customerRequest, MonthlyCustomerResponseDto.class);
+       ResponseEntity<MonthlyPassResponseDto> response =  client.postForEntity("/monthlypass", request, MonthlyPassResponseDto.class);
+
+       MonthlyPassRequestDto request2 = new MonthlyPassRequestDto();
+       request2.setSpotNumber("A25");
+       request2.setConfirmationCode("NeverGonnaGiveYouUp");
+       request2.setLicensePlate("12345679");
+       request2.setLarge(true);
+       request2.setNumberOfMonths(2);
+       request2.setStartDate(Date.valueOf("2024-2-1").toLocalDate());
+       request2.setFloorNumber(0);
+       request2.setCustomerEmail("samer.abdulkarim@gmail.com");
+       ResponseEntity<String> response2 =  client.postForEntity("/monthlypass", request2, String.class);
+
+       ResponseEntity<List> response3 = client.getForEntity("/pass", List.class);
+       assertEquals(HttpStatus.OK, response3.getStatusCode());
+       assertNotNull(response3.getBody());
+       List<Map<String, Object>> monthlyPasses = response3.getBody();
+
+       assertEquals(monthlyPasses.get(1).get("spotNumber"), "A25");
+       assertEquals(monthlyPasses.get(1).get("confirmationCode"), "NeverGonnaGiveYouUp");
+       assertEquals(monthlyPasses.get(1).get("licensePlate"), "12345679");
+       assertEquals(monthlyPasses.get(1).get("isLarge"), true);
+       assertEquals(monthlyPasses.get(1).get("numberOfMonths"), 2);
+       assertEquals(monthlyPasses.get(1).get("startDate"), "2024-2-1");
+       assertEquals(monthlyPasses.get(1).get("floorNumber"), 0);
+       assertEquals(monthlyPasses.get(1).get("customerEmail"), "samer.abdulkarim@gmail.com");
+
+       assertEquals(monthlyPasses.get(0).get("spotNumber"), monthlyPassFixture.spotNumber);
+       assertEquals(monthlyPasses.get(0).get("spotNumber"), monthlyPassFixture.confirmationCode);
+       assertEquals(monthlyPasses.get(0).get("licensePlate"), monthlyPassFixture.licensePlate);
+       assertEquals(monthlyPasses.get(0).get("isLarge"), monthlyPassFixture.isLarge);
+       assertEquals(monthlyPasses.get(0).get("numberOfMonths"), monthlyPassFixture.numberOfMonths);
+       assertEquals(monthlyPasses.get(1).get("startDate"), monthlyPassFixture.startDate);
+       assertEquals(monthlyPasses.get(1).get("floorNumber"), monthlyPassFixture.floorNumber);
+       assertEquals(monthlyPasses.get(1).get("customerEmail"), monthlyPassFixture.monthlyCustomerEmail);
+   }
+
 //    @Test
 //    @Order(10)
 //    public void testGetMonthlyPassesByMonthlyCustomerInvalidCustomer(){
