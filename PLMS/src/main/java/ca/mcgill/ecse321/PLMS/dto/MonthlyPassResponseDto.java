@@ -28,7 +28,7 @@ public class MonthlyPassResponseDto {
     @Schema(example= "1", description = "Floor number where the spot is located at")
     private Integer floorNumber;
     @Schema(example= "user@email.com", description = "Email linked to the account of the customer")
-    private String monthlyCustomerEmail;
+    private String customerEmail;
 
     /**
      * Constructor for creating a monthlypass response transfer object by using the fields of 
@@ -46,7 +46,7 @@ public class MonthlyPassResponseDto {
         this.confirmationCode = monthlypass.getConfirmationCode();
         this.licensePlate = monthlypass.getLicensePlate();
         this.floorNumber = monthlypass.getFloor().getFloorNumber();
-        if (monthlypass.getCustomer() != null) this.monthlyCustomerEmail = monthlypass.getCustomer().getEmail();
+        if (monthlypass.getCustomer() != null) this.customerEmail = monthlypass.getCustomer().getEmail();
         this.isLarge = monthlypass.getIsLarge();
         this.startDate = monthlypass.getStartDate();
         this.endDate = monthlypass.getEndDate();
@@ -88,8 +88,8 @@ public class MonthlyPassResponseDto {
         return floorNumber;
     }
 
-    public String getMonthlyCustomerEmail() {
-        return monthlyCustomerEmail;
+    public String getCustomerEmail() {
+        return customerEmail;
     }
 
     public void setId(int id) {
@@ -128,7 +128,7 @@ public class MonthlyPassResponseDto {
         this.floorNumber = floorNumber;
     }
 
-    public void setMonthlyCustomerEmail(String monthlyCustomerEmail) {
-        this.monthlyCustomerEmail = monthlyCustomerEmail;
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
     }
 }
