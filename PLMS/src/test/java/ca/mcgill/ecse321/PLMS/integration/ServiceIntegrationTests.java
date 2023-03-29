@@ -195,9 +195,10 @@ public class ServiceIntegrationTests {
 
         HttpEntity<ServiceRequestDto> requestEntity = new HttpEntity<ServiceRequestDto>(request);
         ResponseEntity<String> response = client.exchange("/service/", HttpMethod.PUT, requestEntity , String.class);
-        assertContains(response.getBody(), "Length in hours needs to be a number greater or equal to 0.");
-        assertContains(response.getBody(), "Cost needs to be a number greater or equal to 0");
-        assertContains(response.getBody(), "Service name cannot be blank.");
+        assertContains( "Cost needs to be a number greater or equal to 0", response.getBody());
+        assertContains("Service name cannot be blank", response.getBody());
+        assertContains("Length in hours needs to be a number greater or equal to 0", response.getBody());
+
 
     }
 
