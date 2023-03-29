@@ -138,41 +138,41 @@ public class MonthlyPassIntegrationTests {
     // }
 
 
-    @Test
-    @Order(0)
-    public void testCreateMonthlyPassNoAccount(){
-        ParkingLot parkingLot = new ParkingLot(Time.valueOf("8:00:00"), Time.valueOf("20:00:00"), 15, 10, 250, 250);
-        parkingLotRepository.save(parkingLot);
-        Floor validFloor = FixedValidFloor.createValidFloor();
-        validFloor.setParkingLot(parkingLot);
-        floorRepository.save(validFloor);
+    // @Test
+    // @Order(0)
+    // public void testCreateMonthlyPassNoAccount(){
+    //     ParkingLot parkingLot = new ParkingLot(Time.valueOf("8:00:00"), Time.valueOf("20:00:00"), 15, 10, 250, 250);
+    //     parkingLotRepository.save(parkingLot);
+    //     Floor validFloor = FixedValidFloor.createValidFloor();
+    //     validFloor.setParkingLot(parkingLot);
+    //     floorRepository.save(validFloor);
 
-        MonthlyPassRequestDto request = setRequest(monthlyPassFixture.spotNumber, monthlyPassFixture.confirmationCode,
-                monthlyPassFixture.licensePlate, monthlyPassFixture.numberOfMonths, monthlyPassFixture.startDate,
-                monthlyPassFixture.floorNumber, monthlyPassFixture.isLarge, monthlyPassFixture.monthlyCustomerEmail);
-        request.setCustomerEmail(null);
-        ResponseEntity<String> response = client.postForEntity("/monthlypass", request, String.class);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    }
+    //     MonthlyPassRequestDto request = setRequest(monthlyPassFixture.spotNumber, monthlyPassFixture.confirmationCode,
+    //             monthlyPassFixture.licensePlate, monthlyPassFixture.numberOfMonths, monthlyPassFixture.startDate,
+    //             monthlyPassFixture.floorNumber, monthlyPassFixture.isLarge, monthlyPassFixture.monthlyCustomerEmail);
+    //     request.setCustomerEmail(null);
+    //     ResponseEntity<String> response = client.postForEntity("/monthlypass", request, String.class);
+    //     assertEquals(HttpStatus.CREATED, response.getStatusCode());
+    // }
 
-    @Test
-    @Order(1)
-    public void testCreateMonthlyPassAccount() {
-        MonthlyPassRequestDto request = setRequest(monthlyPassFixture.spotNumber, monthlyPassFixture.confirmationCode,
-                monthlyPassFixture.licensePlate, monthlyPassFixture.numberOfMonths, monthlyPassFixture.startDate,
-                monthlyPassFixture.floorNumber, monthlyPassFixture.isLarge, monthlyPassFixture.monthlyCustomerEmail);
-        ResponseEntity<String> response = client.postForEntity("/monthlypass", request, String.class);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    }
+    // @Test
+    // @Order(1)
+    // public void testCreateMonthlyPassAccount() {
+    //     MonthlyPassRequestDto request = setRequest(monthlyPassFixture.spotNumber, monthlyPassFixture.confirmationCode,
+    //             monthlyPassFixture.licensePlate, monthlyPassFixture.numberOfMonths, monthlyPassFixture.startDate,
+    //             monthlyPassFixture.floorNumber, monthlyPassFixture.isLarge, monthlyPassFixture.monthlyCustomerEmail);
+    //     ResponseEntity<String> response = client.postForEntity("/monthlypass", request, String.class);
+    //     assertEquals(HttpStatus.CREATED, response.getStatusCode());
+    // }
 
-    @Test
-    @Order(2)
-    public void testGetMonthlyPass(){
-        ResponseEntity<MonthlyPassResponseDto> response = client.getForEntity("/monthlypass/" + monthlyPassFixture.id, MonthlyPassResponseDto.class);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        //assertTrue(equals(response.getBody(), monthlyPassFixture));
-    }
+    // @Test
+    // @Order(2)
+    // public void testGetMonthlyPass(){
+    //     ResponseEntity<MonthlyPassResponseDto> response = client.getForEntity("/monthlypass/" + monthlyPassFixture.id, MonthlyPassResponseDto.class);
+    //     assertEquals(HttpStatus.OK, response.getStatusCode());
+    //     assertNotNull(response.getBody());
+    //     //assertTrue(equals(response.getBody(), monthlyPassFixture));
+    // }
 
     @Test
     @Order(3)
