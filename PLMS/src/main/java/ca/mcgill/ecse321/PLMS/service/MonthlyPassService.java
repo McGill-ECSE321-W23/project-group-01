@@ -128,7 +128,7 @@ public class MonthlyPassService {
         int numberOfPasses = 0;
         // filter through the guest passes to find passes that are of the same size and same floor number
         for (MonthlyPass pass : monthlyPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(newPassStartDate, newPassEndDate, pass.getStartDate(), pass.getEndDate())){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isOverlappingMonthlyPass(newPassStartDate, newPassEndDate, pass.getStartDate(), pass.getEndDate())){
 
                 numberOfPasses += 1;
             }
@@ -150,7 +150,7 @@ public class MonthlyPassService {
      * @param otherPassEndDate
      * @return
      */
-    public boolean isActiveRightNowMonthlyPass(LocalDate newPassStartDate, LocalDate newPassEndDate,LocalDate otherPassStartDate, LocalDate otherPassEndDate) {
+    public boolean isOverlappingMonthlyPass(LocalDate newPassStartDate, LocalDate newPassEndDate,LocalDate otherPassStartDate, LocalDate otherPassEndDate) {
         return (newPassStartDate.isBefore(otherPassEndDate) && newPassEndDate.isAfter(otherPassStartDate)) || (otherPassStartDate.isBefore(newPassEndDate) && otherPassEndDate.isAfter(newPassStartDate));
     }
 

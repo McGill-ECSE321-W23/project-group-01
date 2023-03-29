@@ -88,7 +88,7 @@ public class GuestPassService {
         validateGuestPassHours(startTime, endTime, parkingLot.getOpeningTime(), parkingLot.getClosingTime());
 
         // Check if spot is not occupied
-        if (isSpotOccupied(floor.getFloorNumber(), guestPass.getSpotNumber(),startTime, endTime)){
+        if (isSpotOccupied(floor.getFloorNumber(), guestPass.getSpotNumber(),startTime, endTime, localDateTime.toLocalDate())){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Spot " + guestPass.getSpotNumber() + " is currently occupied");
         }
 
@@ -109,8 +109,6 @@ public class GuestPassService {
             guestPass.setFee(nrIncrements*parkingLot.getSmallSpotFee());
 
         }
-        // Create object
-
         guestPass =  guestPassRepository.save(guestPass);
 
 
@@ -132,7 +130,7 @@ public class GuestPassService {
         int numberOfPasses = 0;
         // filter through the guest passes to find passes that are of the same size and same floor number
         for (GuestPass pass : guestPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowGuestPass(currentTime, endTime,pass.getDate(), pass.getStartTime().toLocalTime(), pass.getEndTime().toLocalTime())){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isOverlappingGuestPass(currentTime, endTime,pass.getDate(), pass.getStartTime().toLocalTime(), pass.getEndTime().toLocalTime())){
 
                 numberOfPasses += 1;
             }
@@ -154,7 +152,7 @@ public class GuestPassService {
      * @param endTime - end time of the pass
      * @return true if the pass is currently active
      */
-    public boolean isActiveRightNowGuestPass(LocalDateTime currentTime, LocalDateTime guestPassEndTime, LocalDate date, LocalTime startTime, LocalTime endTime) {
+    public boolean isOverlappingGuestPass(LocalDateTime currentTime, LocalDateTime guestPassEndTime, LocalDate date, LocalTime startTime, LocalTime endTime) {
         LocalDateTime start = LocalDateTime.of(date, startTime);
         LocalDateTime end = LocalDateTime.of(date, endTime);
         return currentTime.isBefore(end) && guestPassEndTime.isAfter(start);
@@ -229,14 +227,14 @@ public class GuestPassService {
     }
 
 
-    public boolean isSpotOccupied(int floorNumber, String spotNumber, Time startTime, Time endTime) {
+    public boolean isSpotOccupied(int floorNumber, String spotNumber, Time startTime, Time endTime, LocalDate date) {
         try {
             List<GuestPass> guestPasses = getGuestPassesByFloor(floorNumber); // get all guest passes for the floor
             for (GuestPass guestPass : guestPasses) {
                 if (guestPass.getSpotNumber().equals(spotNumber)) { // check if spot number matches
                     Time guestPassStartTime = guestPass.getStartTime();
                     Time guestPassEndTime = guestPass.getEndTime();
-                    if ((guestPassStartTime.before(endTime) && guestPassEndTime.after(startTime))) {
+                    if ((((guestPassStartTime.before(endTime) && guestPassEndTime.after(startTime))) || (startTime.before(guestPassEndTime) && endTime.after(guestPassStartTime))) && date.isEqual(guestPass.getDate())) {
 
                         // guest pass overlaps with the specified time range
                         return true;

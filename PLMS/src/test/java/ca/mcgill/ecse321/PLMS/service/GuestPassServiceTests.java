@@ -547,6 +547,7 @@ public class GuestPassServiceTests {
     guestPass1.setSpotNumber(spotNumber);
     guestPass1.setStartTime(Time.valueOf("10:15:00"));
     guestPass1.setEndTime(Time.valueOf("10:30:00"));
+    guestPass1.setDate(currentTime.toLocalDate());
 
     // Attempt to create GuestPass for a spot that is not available
     GuestPass guestPass = new GuestPass();
