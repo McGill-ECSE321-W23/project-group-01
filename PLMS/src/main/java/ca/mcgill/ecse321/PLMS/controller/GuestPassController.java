@@ -138,7 +138,7 @@ public class GuestPassController {
         @ApiResponse(responseCode = "404", description = "Guest pass with this id does not exist.", content = {@Content(mediaType = "String")})
     })
     @DeleteMapping("/guestPass/{id}")
-    public void deleteFloor(@PathVariable int id){
+    public void deleteGuestPass(@PathVariable int id){
         guestPassService.deleteGuestPassById(id);
     }
 
