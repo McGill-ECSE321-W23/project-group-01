@@ -36,7 +36,7 @@ public class GuestPassController {
      *
      * @return All guest passes.
      */
-    @GetMapping("/guestPass")
+    @GetMapping("/guestPass/")
     public Iterable<GuestPassResponseDto> getAllGuestPasses(){
         return StreamSupport.stream(guestPassService.getAllGuestPasses().spliterator(), false).map(f -> new
         GuestPassResponseDto(f)).collect(Collectors.toList());

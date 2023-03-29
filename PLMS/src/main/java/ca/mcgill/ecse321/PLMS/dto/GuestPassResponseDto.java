@@ -63,7 +63,7 @@ public class GuestPassResponseDto {
         return licensePlate;
     }
 
-    public boolean isLarge() {
+    public boolean getIsLarge() {
         return isLarge;
     }
 
@@ -103,7 +103,7 @@ public class GuestPassResponseDto {
         this.licensePlate = licensePlate;
     }
 
-    public void setLarge(boolean large) {
+    public void setIsLarge(boolean large) {
         isLarge = large;
     }
 
