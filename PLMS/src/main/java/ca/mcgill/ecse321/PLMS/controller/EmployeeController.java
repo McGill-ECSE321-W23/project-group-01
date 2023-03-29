@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -22,8 +25,13 @@ public class EmployeeController {
 
     /**
      * Returns a list of all Employees
+     * 
      * @return all Employees
      */
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "There are no employees in the system.", content = {@Content(mediaType = "String")})
+    })
     @GetMapping("/employees")
     public Iterable<EmployeeResponseDto> getAllEmployees() {
         return StreamSupport.stream(employeeService.getAllEmployees().spliterator(), false).map(EmployeeResponseDto::new).collect(Collectors.toList());
@@ -31,9 +39,14 @@ public class EmployeeController {
 
     /**
      * Returns the Employee based on their Email
+     * 
      * @param email - Pass in the email argument by using /employee={?email}
      * @return the Employee with Email, Password, Name
      */
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "Employee not found.", content = {@Content(mediaType = "String")})
+    })
     @GetMapping(value = {"/employee", "/employee/"})
     public ResponseEntity<EmployeeResponseDto> getEmployeeByEmail(@RequestParam String email) {
         return new ResponseEntity<EmployeeResponseDto>(new EmployeeResponseDto(employeeService.getEmployeeByEmail(email)), HttpStatus.OK);
@@ -41,9 +54,15 @@ public class EmployeeController {
 
     /**
      * Creates a new Employee
+     * 
      * @param EmployeeRequest - Pass in a employee dto using a JSON request
      * @return the dto response of the new Employee
      */
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "400", description = "Hourly wage must be positive.", content = {@Content(mediaType = "String")}),
+        @ApiResponse(responseCode = "409", description = "Employee account with this email already exists.", content = {@Content(mediaType = "String")})
+    })
     @PostMapping("/employee/create")
     public ResponseEntity<EmployeeResponseDto> createEmployee(@Valid @RequestBody EmployeeRequestDto EmployeeRequest)
     {
@@ -55,9 +74,15 @@ public class EmployeeController {
 
     /**
      * Updates an existing employee
+     * 
      * @param employeeRequest - Pass in the monthly customer dto using a JSON request
      * @return the dto response of the updated Employee
      */
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "400", description = "Hourly wage must be positive.", content = {@Content(mediaType = "String")}),
+        @ApiResponse(responseCode = "404", description = "Employee not found.", content = {@Content(mediaType = "String")})
+    })
     @PutMapping(value = {"/employee/update"})
     public ResponseEntity<EmployeeResponseDto> updateEmployee(@Valid @RequestBody EmployeeRequestDto employeeRequest)
     {
@@ -72,6 +97,10 @@ public class EmployeeController {
      *
      * @param email - email of an existing email
      */
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "Employee not found.", content = {@Content(mediaType = "String")})
+    })
     @DeleteMapping("/employee/delete/{email}")
     public void deleteEmployee(@PathVariable String email) {
         employeeService.deleteEmployeeAccount(email);

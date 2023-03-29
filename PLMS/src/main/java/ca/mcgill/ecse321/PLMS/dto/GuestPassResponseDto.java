@@ -5,20 +5,31 @@ import java.sql.Time;
 import java.time.LocalDate;
 
 import ca.mcgill.ecse321.PLMS.model.GuestPass;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 
 public class GuestPassResponseDto {
 
 
+    @Schema(example = "5", description = "The id of the guest pass")
     private int id;
+    @Schema(example= "1.25", description = "The fee assiated to the pass")
     private double fee;
+    @Schema(example= "A24", description = "The spot number")
     private String spotNumber;
+    @Schema(example= "JK95HO95T3", description = "Code that confirms the payment (will be null before payment)")
     private String confirmationCode;
+    @Schema(example= "T3ST41", description = "License plate of the car linked to this pass")
     private String licensePlate;
+    @Schema(example= "false", description = "Is the spot a spot that can hold large vehicles")
     private boolean isLarge;
+    @Schema(example= "2024-05-05", description = "Date of the pass")
     private LocalDate date;
-    private Time startTime;
+    @Schema(example= "15:00:00", description = "The starting time of the guest pass", implementation = String.class, format = "HH:mm:ss")
+    private Time startTime;    
+    @Schema(example= "17:00:00", description = "The time at which the guest pass ends", implementation = String.class, format = "HH:mm:ss")
     private Time endTime;
+    @Schema(example= "1", description = "Floor number where the spot is located at")
     private int floorNumber;
 
     /**

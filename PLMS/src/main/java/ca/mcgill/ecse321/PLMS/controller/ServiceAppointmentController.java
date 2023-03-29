@@ -138,7 +138,7 @@ public class ServiceAppointmentController {
         @ApiResponse(responseCode = "200"),
         @ApiResponse(responseCode = "404", description = "Service with this name is not found.", content = {@Content(mediaType = "String")}),
         @ApiResponse(responseCode = "400",
-        description = "Possible Errors:<br>- Cannot book appointment since the parking lot has not been created yet. Please try again at a later date.<br>- Cannot have an appointment beginning before the lot opens.<br>- Cannot have an appointment beginning after the lot closes.<br>- Cannot have an appointment ending after the lot closes.",
+        description = "Possible Errors: Cannot book appointment since the parking lot has not been created yet. Please try again at a later date. |OR| Cannot have an appointment beginning before the lot opens. |OR| Cannot have an appointment beginning after the lot closes. |OR| Cannot have an appointment ending after the lot closes.",
         content = {@Content(mediaType = "String")})})
       @PostMapping("/serviceAppointment")
       public ResponseEntity<ServiceAppointmentResponseDto> createServiceAppointment(@Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
@@ -159,14 +159,14 @@ public class ServiceAppointmentController {
        * Creates a new service appointment with the desired service, date, start time and end time
        * 
        * @param id Id of the the service appointment
-       * @param serviceAppointmentRequestDto Contains <b>service name</b> (String), <b>date</b> (Date format: YYYY-MM-DD), <b>start time</b> (Time format: HH:mm:ss) and an optional <b>user email</b> (String)
+       * @param serviceAppointmentRequestDto Contains service name (String), date (Date format: YYYY-MM-DD), start time (Time format: HH:mm:ss) and an optional user email (String)
        * @return The service appointment object created
        */
       @ApiResponses(value = {
         @ApiResponse(responseCode = "200"),
         @ApiResponse(responseCode = "404", description = "Service appointment is not found.", content = {@Content(mediaType = "String")}),
         @ApiResponse(responseCode = "400",
-        description = "Possible Errors:<br>- Cannot have an appointment beginning before the lot opens.<br>- Cannot have an appointment beginning after the lot closes.<br>- Cannot have an appointment ending after the lot closes.",
+        description = "Possible Errors:Cannot have an appointment beginning before the lot opens. |OR| Cannot have an appointment beginning after the lot closes. |OR| Cannot have an appointment ending after the lot closes.",
         content = {@Content(mediaType = "String")})})
       @PutMapping("/serviceAppointment/{id}")
       public ResponseEntity<ServiceAppointmentResponseDto> updateServiceAppointment(@PathVariable int id, @Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
@@ -190,7 +190,7 @@ public class ServiceAppointmentController {
        */
       @ApiResponses(value = {
         @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "404", description = "Possible Errors:<br>- Employee not found.<br>- Service appointment is not found.", content = {@Content(mediaType = "String")}),
+        @ApiResponse(responseCode = "404", description = "Possible Errors: Employee not found. |OR| Service appointment is not found.", content = {@Content(mediaType = "String")}),
         @ApiResponse(responseCode = "400", description = "Cannot change the employee because requested employee already has an appointment during the time frame of this appointment.", content = {@Content(mediaType = "String")})})
       @PutMapping("/serviceAppointment/employeeEmail/{id}")
       public ResponseEntity<ServiceAppointmentResponseDto> updateEmployeeEmailServiceAppointment(@PathVariable int id, @RequestParam String employeeEmail){

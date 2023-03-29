@@ -3,11 +3,11 @@ import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class MonthlyCustomerResponseDto {
-    @Schema(example= "owner@email.com", description = "Email linked to the account of the owner")
+    @Schema(example= "customer@email.com", description = "Email linked to the account of the customer")
     private String email;
-    @Schema(example= "Password1!", description = "Password linked to the account of the owner")
+    @Schema(example= "Password1!", description = "Password linked to the account of the customer")
     private String password;
-    @Schema(example= "owner", description = "Name of the owner")
+    @Schema(example= "customer", description = "Name of the customer")
     private String name;
 
     public MonthlyCustomerResponseDto(MonthlyCustomer monthlyCustomer) {
@@ -38,5 +38,4 @@ public class MonthlyCustomerResponseDto {
     public void setName(String name) {
         this.name = name;
     }
-
 }
