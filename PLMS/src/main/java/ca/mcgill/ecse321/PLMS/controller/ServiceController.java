@@ -46,7 +46,7 @@ public class ServiceController {
      * @return service with serviceName
      */
     @GetMapping("/service/{serviceName}")
-    public ResponseEntity<ServiceResponseDto> getServiceByServiceNumber(@PathVariable String serviceName){
+    public ResponseEntity<ServiceResponseDto> getServiceByServiceName(@PathVariable String serviceName){
         Service service = serviceService.getServiceByServiceName(serviceName);
         ServiceResponseDto responseBody = new ServiceResponseDto(service);
         return new ResponseEntity<ServiceResponseDto>(responseBody, HttpStatus.OK);
@@ -76,7 +76,7 @@ public class ServiceController {
         Service service = serviceDto.toModel();
         service = serviceService.updateService(service);
         ServiceResponseDto responseBody = new ServiceResponseDto(service);
-        return new ResponseEntity<ServiceResponseDto>(responseBody, HttpStatus.CREATED);
+        return new ResponseEntity<ServiceResponseDto>(responseBody, HttpStatus.OK);
     }
 
 

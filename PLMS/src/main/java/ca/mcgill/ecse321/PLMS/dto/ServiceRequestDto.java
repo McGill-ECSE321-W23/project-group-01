@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class ServiceRequestDto {
-    @NotNull
     @NotBlank(message = "Service name cannot be blank.")
     @Schema(example= "Wheel Replacement", description = "Name of the service", requiredMode = Schema.RequiredMode.REQUIRED)
     private String serviceName;
@@ -17,6 +16,18 @@ public class ServiceRequestDto {
     @Schema(example= "2.0", description = "The estimated amount of time it will take to perform the service", requiredMode = Schema.RequiredMode.REQUIRED)
     private double lengthInHours;
 
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public double getLengthInHours() {
+        return lengthInHours;
+    }
+    
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }

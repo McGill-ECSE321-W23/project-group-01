@@ -50,11 +50,13 @@ public class ServiceService {
     @jakarta.transaction.Transactional
     public Service updateService(Service service){
         //check if the service exists (the service has to exist to edit it)
-        Service existingService = getServiceByServiceName(service.getServiceName());
+        Service s = getServiceByServiceName(service.getServiceName());
+        s.setServiceName(service.getServiceName());
+        s.setCost(service.getCost());
+        s.setLengthInHours(service.getLengthInHours());
 
         // save the changes to the database
-        existingService = serviceRepository.save(existingService);
-        return existingService;
+        return serviceRepository.save(s);
     }
 
 

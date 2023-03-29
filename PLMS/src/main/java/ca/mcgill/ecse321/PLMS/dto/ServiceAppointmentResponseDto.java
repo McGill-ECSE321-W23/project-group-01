@@ -25,7 +25,7 @@ public class ServiceAppointmentResponseDto {
     @Schema(example= "Wheel Replacement", description = "Name of the service that will be performed during the service appointment")
     private String serviceName;
 
-    ServiceAppointmentResponseDto() {}
+    public ServiceAppointmentResponseDto() {}
 
     public ServiceAppointmentResponseDto(ServiceAppointment s){
         this.id = s.getId();

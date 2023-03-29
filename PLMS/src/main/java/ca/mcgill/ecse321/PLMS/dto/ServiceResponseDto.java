@@ -17,6 +17,7 @@ public class ServiceResponseDto {
         this.lengthInHours = service.getLengthInHours();
     }
 
+    public ServiceResponseDto(){}
     public String getServiceName() {
         return serviceName;
     }
@@ -27,5 +28,17 @@ public class ServiceResponseDto {
 
     public double getLengthInHours() {
         return lengthInHours;
+    }
+
+    public void setServiceName(String serviceName){
+        this.serviceName = serviceName;
+    }
+
+    public void setCost(double cost){
+        this.cost = cost;
+    }
+
+    public void setLengthInHours(double lengthInHours){
+        this.lengthInHours = lengthInHours;
     }
 }
