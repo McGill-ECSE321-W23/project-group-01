@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -321,6 +322,43 @@ public class GuestPassIntegrationTests {
     }
     @Test
     @Order(13)
+    public void testGetGuestPassesByDateNoPassesFound(){
+
+
+        ResponseEntity<String> response =  client.getForEntity("/guestPass/date/" + LocalDate.now().plusDays(96), String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertContains("There are no guest passes for date " + LocalDate.now().plusDays(96) , response.getBody());
+    }
+    @Test
+    @Order(14)
+    public void testGetGuestPassesByDate() {
+//        GuestPassRequestDto request = GuestPassFixture.createValidGuestPass();
+//        ResponseEntity<GuestPassResponseDto> response = client.postForEntity("/guestPass", request, GuestPassResponseDto.class);
+//
+//        GuestPassRequestDto request2 = GuestPassFixture.createValidGuestPass();
+//        request2.setSpotNumber(GuestPassFixture.spotNumber2);
+//        ResponseEntity<GuestPassResponseDto> response2 = client.postForEntity("/guestPass", request2, GuestPassResponseDto.class);
+
+
+        ResponseEntity<List> response3 = client.getForEntity("/guestPass/date/" + LocalDate.now(), List.class);
+        assertNotNull(response3.getBody());
+
+        assertEquals(HttpStatus.OK, response3.getStatusCode());
+        assertNotNull(response3.getBody());
+        List<Map<String, Object>> guestPasses = response3.getBody();
+
+        assertEquals(guestPasses.get(0).get("spotNumber"), GuestPassFixture.spotNumber);
+        assertEquals(guestPasses.get(0).get("confirmationCode"), GuestPassFixture.confirmationCode);
+        assertEquals(guestPasses.get(0).get("licensePlate"), GuestPassFixture.licensePlate);
+        assertEquals(guestPasses.get(0).get("isLarge"), GuestPassFixture.isLarge);
+        assertEquals(guestPasses.get(0).get("floorNumber"), GuestPassFixture.floorNumber);
+
+        assertEquals(guestPasses.get(1).get("spotNumber"), GuestPassFixture.spotNumber2);
+        assertEquals(guestPasses.get(1).get("floorNumber"), GuestPassFixture.floorNumber);
+
+    }
+    @Test
+    @Order(15)
     public void testDeleteFirstGuestPassWithId() {
         HttpEntity<String> requestEntity = new HttpEntity<>(null);
         ResponseEntity<String> response = client.exchange("/guestPass/" + guestPassFixture.id, HttpMethod.DELETE, requestEntity, String.class);
@@ -331,7 +369,7 @@ public class GuestPassIntegrationTests {
     }
 
     @Test
-    @Order(14)
+    @Order(16)
     public void testDeleteAgainGuestPassWithId() {
         HttpEntity<String> requestEntity = new HttpEntity<>(null);
         ResponseEntity<String> response = client.exchange("/guestPass/" + guestPassFixture.id, HttpMethod.DELETE, requestEntity, String.class);
