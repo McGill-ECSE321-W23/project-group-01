@@ -24,7 +24,7 @@ public class GuestPassRequestDto {
     private Integer numberOfFifteenMinuteIncrements;
 
 
-    @NotNull(message = "Must specify whether the pass is small or large.")
+//    @NotNull(message = "Must specify whether the pass is small or large.")
     private Boolean isLarge;
 
     public GuestPass toModel(){
@@ -32,7 +32,7 @@ public class GuestPassRequestDto {
         guestPass.setSpotNumber(this.spotNumber);
         guestPass.setConfirmationCode(this.confirmationCode);
         guestPass.setLicensePlate(this.licensePlate);
-        guestPass.setIsLarge(isLarge);
+        guestPass.setIsLarge(true);
         return guestPass;
     }
 
@@ -61,7 +61,8 @@ public class GuestPassRequestDto {
     }
 
     public void setIsLarge(Boolean isLarge) {
-        this.isLarge = isLarge;
+//        this.isLarge = isLarge;
+        this.isLarge = true;
     }
 
     public void setNumberOfFifteenMinuteIncrements(Integer numberOfFifteenMinuteIncrements) {

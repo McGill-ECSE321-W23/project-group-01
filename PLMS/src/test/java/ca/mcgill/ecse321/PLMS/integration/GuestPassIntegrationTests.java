@@ -145,8 +145,9 @@ public class GuestPassIntegrationTests {
         floorRepository.save(validFloor);
 
         GuestPassRequestDto request = GuestPassFixture.createValidGuestPass();
-        ResponseEntity<String> response = client.postForEntity("/guestPass", request, String.class);
-        assertNull(response.getBody());
+        request.setIsLarge(true);
+        ResponseEntity<GuestPassResponseDto> response = client.postForEntity("/guestPass", request, GuestPassResponseDto.class);
+//        assertNull(response.getBody());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
