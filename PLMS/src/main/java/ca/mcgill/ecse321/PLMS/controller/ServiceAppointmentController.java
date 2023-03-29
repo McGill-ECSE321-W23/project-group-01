@@ -26,6 +26,9 @@ import ca.mcgill.ecse321.PLMS.service.EmployeeService;
 import ca.mcgill.ecse321.PLMS.service.MonthlyCustomerService;
 import ca.mcgill.ecse321.PLMS.service.ServiceAppointmentService;
 import ca.mcgill.ecse321.PLMS.service.ServiceService;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
 @RestController
@@ -40,20 +43,16 @@ public class ServiceAppointmentController {
     @Autowired
     private MonthlyCustomerService monthlyCustomerService;
 
-    /**
-     *  GET/POST/DELETE Service Appointment by ID
-        GET All Service Appointments
-        GET service appointment by Date
-        GET service appointment by employee
-        GET service appointment by monthly customer
-     */
-
 
      /**
-      * Gets all booked service appointments
+      * Gets all upcoming and previously booked service appointments
       * 
       * @return All service appointments
       */
+      @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "There are no service appointments in the system.", content = {@Content(mediaType = "String")})
+      })
       @GetMapping("/serviceAppointment")
       public Iterable<ServiceAppointmentResponseDto> getAllServiceAppointments(){
         return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointments().spliterator(), false)
@@ -62,11 +61,15 @@ public class ServiceAppointmentController {
       }
 
       /**
-       * Get service appointment by its unique ID.
+       * Gets a service appointment by id
        * 
-       * @param id - The id of the service appointement to look up.
+       * @param id The id of the service appointement to look up.
        * @return The service appointement with the given id.
        */
+      @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "Service appointment with this ID does not exist.", content = {@Content(mediaType = "String")})
+      })
       @GetMapping("/serviceAppointment/{id}")
       public ResponseEntity<ServiceAppointmentResponseDto> getServiceAppointmentById(@PathVariable int id) {
         ServiceAppointment serviceAppointment = serviceAppointmentService.findServiceAppointmentById(id);
@@ -75,11 +78,15 @@ public class ServiceAppointmentController {
       }
 
       /**
-       * Gets all service appointment with in a date
+       * Gets all the service appointments scheduled on a date
        * 
        * @param date The date at which you want the find all the ServiceAppointments form: YYYY-MM-DD
        * @return The service appointments at the specified date.
        */
+      @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "There are no appointments on this date.", content = {@Content(mediaType = "String")})
+      })
       @GetMapping("/serviceAppointment/date/{date}")
       public Iterable<ServiceAppointmentResponseDto> getAllServiceAppointmentsByDate(@PathVariable LocalDate date) {
         return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointmentsByDate(date).spliterator(), false)
@@ -88,11 +95,15 @@ public class ServiceAppointmentController {
       }
 
       /**
-       * Gets all service appointment related to a certain employee
-       * 
-       * @param email - The email of the employee you want to check for
+       * Get all the service appointments assigned to an employee based on their account's email
+       *  
+       * @param email The email of the employee you want to check for
        * @return The service appointments related to the employee
        */
+      @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "There are no service appointments for this employee.", content = {@Content(mediaType = "String")})
+      })
       @GetMapping("/serviceAppointment/employee/{email}")
       public Iterable<ServiceAppointmentResponseDto> getServiceAppointmentByEmployee(@PathVariable String email) {
         return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointmentsByEmployee(email).spliterator(), false)
@@ -101,11 +112,15 @@ public class ServiceAppointmentController {
       }
 
       /**
-       * Gets all service appointment related to a certain customer
+       * Gets all the service appointments ever booked by a monthly customer
        * 
        * @param email The email of the employee you want to check for
        * @return The service appointments related to the employee
        */
+      @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "There are no service appointments for this customer.", content = {@Content(mediaType = "String")})
+      })
       @GetMapping("/serviceAppointment/customer/{email}")
       public Iterable<ServiceAppointmentResponseDto> getServiceAppointmentByCustomer(@PathVariable String email) {
         return StreamSupport.stream(serviceAppointmentService.getAllServiceAppointmentsByMonthlyCustomer(email).spliterator(), false)
@@ -116,11 +131,15 @@ public class ServiceAppointmentController {
       /**
        * Creates a new service appointment with the desired service, date, start time and end time
        * 
-       * @param serviceName The service name of the service given during the appointment
-       * @param date The date at which the service is going to be given
-       * @param startTime The time at which the appointment is going to start at
+       * @param serviceAppointmentRequestDto Contains <b>service name</b> (String), <b>date</b> (Date format: YYYY-MM-DD), <b>start time</b> (Time format: HH:mm:ss) and an optional <b>user email</b> (String)
        * @return The service appointment object created
        */
+      @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "Service with this name is not found.", content = {@Content(mediaType = "String")}),
+        @ApiResponse(responseCode = "400",
+        description = "Possible Errors:<br>- Cannot book appointment since the parking lot has not been created yet. Please try again at a later date.<br>- Cannot have an appointment beginning before the lot opens.<br>- Cannot have an appointment beginning after the lot closes.<br>- Cannot have an appointment ending after the lot closes.",
+        content = {@Content(mediaType = "String")})})
       @PostMapping("/serviceAppointment")
       public ResponseEntity<ServiceAppointmentResponseDto> createServiceAppointment(@Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
         //Converting 
@@ -139,11 +158,16 @@ public class ServiceAppointmentController {
       /**
        * Creates a new service appointment with the desired service, date, start time and end time
        * 
-       * @param serviceName The service name of the service given during the appointment
-       * @param date The date at which the service is going to be given
-       * @param startTime The time at which the appointment is going to start at
+       * @param id Id of the the service appointment
+       * @param serviceAppointmentRequestDto Contains <b>service name</b> (String), <b>date</b> (Date format: YYYY-MM-DD), <b>start time</b> (Time format: HH:mm:ss) and an optional <b>user email</b> (String)
        * @return The service appointment object created
        */
+      @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "Service appointment is not found.", content = {@Content(mediaType = "String")}),
+        @ApiResponse(responseCode = "400",
+        description = "Possible Errors:<br>- Cannot have an appointment beginning before the lot opens.<br>- Cannot have an appointment beginning after the lot closes.<br>- Cannot have an appointment ending after the lot closes.",
+        content = {@Content(mediaType = "String")})})
       @PutMapping("/serviceAppointment/{id}")
       public ResponseEntity<ServiceAppointmentResponseDto> updateServiceAppointment(@PathVariable int id, @Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
         //Converting 
@@ -157,6 +181,17 @@ public class ServiceAppointmentController {
         return new ResponseEntity<ServiceAppointmentResponseDto>(responseBody, HttpStatus.OK);
       }
 
+      /**
+       * Update the employee associated with a service appointment
+       * 
+       * @param id Id of the service appointment - this is a pathVariable
+       * @param employeeEmail The new employee email of the service appointment
+       * @return The updated service appointment
+       */
+      @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "Possible Errors:<br>- Employee not found.<br>- Service appointment is not found.", content = {@Content(mediaType = "String")}),
+        @ApiResponse(responseCode = "400", description = "Cannot change the employee because requested employee already has an appointment during the time frame of this appointment.", content = {@Content(mediaType = "String")})})
       @PutMapping("/serviceAppointment/employeeEmail/{id}")
       public ResponseEntity<ServiceAppointmentResponseDto> updateEmployeeEmailServiceAppointment(@PathVariable int id, @RequestParam String employeeEmail){
         Employee employee = null;
@@ -168,9 +203,13 @@ public class ServiceAppointmentController {
       }
       
       /**
-       * Delete a service appointment
+       * Deletes a service appointment based on id
        * 
+       * @param id Id of the service appointment that will be deleted
        */
+      @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Service appointment succefully deleted."),
+        @ApiResponse(responseCode = "404", description = "Service appointment with this ID does not exist.", content = {@Content(mediaType = "String")})})
         @DeleteMapping("/serviceAppointment/{id}")
         public void deleteServiceAppointment(@PathVariable int id){
           serviceAppointmentService.deleteServiceAppointmentById(id);
