@@ -28,7 +28,7 @@ Our software system can be run by executing, inside the PLMS folder, the "./grad
 | Evan Boyd | Software Developer  |  20  | 60 |
 | Samer Abdulkarim | Project Manager, Software Developer |  16 | 55 |
 | Emilien Taisne	| Documentation Manager, Software Developer  | 16 | 60 |
-| Walid Aissa	| Software Developer  | 16 | |
+| Walid Aissa	| Software Developer  | 16 | 44 |
 | Karim Al Sabbagh | Testing Lead, Software Developer  | 16  | 44 |
 | Karl Bridi	| Software Developer | 16 | 44 |
 
