@@ -184,8 +184,10 @@ public class MonthlyPassIntegrationTests {
                 monthlyPassFixture.licensePlate, monthlyPassFixture.numberOfMonths, monthlyPassFixture.startDate,
                 monthlyPassFixture.floorNumber, monthlyPassFixture.isLarge, "samer.abdulkarim@gmail.com");
 
-        ResponseEntity<String> response = client.postForEntity("/monthlypass", request, String.class);
+        ResponseEntity<MonthlyPassResponseDto> response = client.postForEntity("/monthlypass", request, MonthlyPassResponseDto.class);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getBody());
+        monthlyPassFixture.id =  response.getBody().getId();
     }
 
     @Test
