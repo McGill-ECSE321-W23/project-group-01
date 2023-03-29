@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.PLMS.dto;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,9 +22,9 @@ public class MonthlyPassResponseDto {
     @Schema(example= "false", description = "Is the spot a spot that can hold large vehicles")
     private Boolean isLarge;
     @Schema(example= "2024-05-05", description = "Start date of the pass")
-    private Date startDate;
+    private LocalDate startDate;
     @Schema(example= "2024-06-05", description = "End date of the pass")
-    private Date endDate;
+    private LocalDate endDate;
     @Schema(example= "1", description = "Floor number where the spot is located at")
     private Integer floorNumber;
     @Schema(example= "user@email.com", description = "Email linked to the account of the customer")
@@ -35,6 +36,9 @@ public class MonthlyPassResponseDto {
      * @param monthlypass - monthlypass to turn into a transfer object
      */
 
+    public MonthlyPassResponseDto() {
+
+    }
     public MonthlyPassResponseDto(MonthlyPass monthlypass){
         this.id = monthlypass.getId();
         this.fee = monthlypass.getFee();
@@ -47,46 +51,84 @@ public class MonthlyPassResponseDto {
         this.startDate = monthlypass.getStartDate();
         this.endDate = monthlypass.getEndDate();
     }
-
-    public Double getFee(){
-        return this.fee;
+    
+    public int getId() {
+        return id;
     }
 
-    public Integer getId(){
-        return this.id;
+    public double getFee() {
+        return fee;
     }
 
-    public Boolean getIsLarge(){
-        return this.isLarge;
+    public String getSpotNumber() {
+        return spotNumber;
     }
 
-    public Date getStartDate(){
-        return this.startDate;
+    public String getConfirmationCode() {
+        return confirmationCode;
     }
 
-    public Date getEndDate(){
-        return this.endDate;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    public String getSpotNumber(){
-        return this.spotNumber;
+    public boolean getLarge() {
+        return isLarge;
     }
 
-    public String getConfirmationCode(){
-        return this.confirmationCode;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public String getLicensePlate(){
-        return this.licensePlate;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public Integer getFloor(){
-        return this.floorNumber;
+    public int getFloorNumber() {
+        return floorNumber;
     }
 
-    public String getMonthlyCustomerEmail(){
-        return this.monthlyCustomerEmail;
+    public String getMonthlyCustomerEmail() {
+        return monthlyCustomerEmail;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public void setFee(double fee) {
+        this.fee = fee;
+    }
+
+    public void setSpotNumber(String spotNumber) {
+        this.spotNumber = spotNumber;
+    }
+
+    public void setConfirmationCode(String confirmationCode) {
+        this.confirmationCode = confirmationCode;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public void setLarge(boolean large) {
+        isLarge = large;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setFloorNumber(int floorNumber) {
+        this.floorNumber = floorNumber;
+    }
+
+    public void setMonthlyCustomerEmail(String monthlyCustomerEmail) {
+        this.monthlyCustomerEmail = monthlyCustomerEmail;
+    }
 }

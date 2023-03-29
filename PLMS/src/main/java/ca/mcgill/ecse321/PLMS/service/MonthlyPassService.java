@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +22,6 @@ public class MonthlyPassService {
     @Autowired
     MonthlyPassRepository monthlyPassRepository;
 
-    @Autowired
-    GuestPassRepository guestPassRepository;
 
     @Autowired
     FloorRepository floorRepository;
@@ -63,8 +60,10 @@ public class MonthlyPassService {
      * Service method to store the created monthly pass object into the database
      */
     @Transactional
-    public MonthlyPass createMonthlyPass(MonthlyPass monthlyPass, int floorNumber, int nrMonths) {
+    public MonthlyPass createMonthlyPass(MonthlyPass monthlyPass, int floorNumber, int nrMonths, String email) {
         // Get the associated floor from floor number inputted into monthly pass
+
+
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
         if (floor == null) {
             throw new PLMSException(HttpStatus.NOT_FOUND, "The floor with floor number " + floorNumber + " does not exist.");
@@ -77,22 +76,27 @@ public class MonthlyPassService {
         }
 
         // Get start date and find end date
-        Date startDate = monthlyPass.getStartDate();
-        LocalDate localStartDate = LocalDate.parse(startDate.toString());
-        // Add months to LocalStartDate
-        LocalDate localEndDate = localStartDate.plusMonths(nrMonths);
+        LocalDate startDate = monthlyPass.getStartDate();
+        LocalDate localEndDate = startDate.plusMonths(nrMonths);
         // Convert back to Date
-        Date endDate = Date.valueOf(localEndDate);
-        monthlyPass.setEndDate(endDate);
+        monthlyPass.setEndDate(localEndDate);
 
         // Check if the spot is not occupied
-        if (isSpotOccupied(floor.getFloorNumber(), monthlyPass.getSpotNumber(), monthlyPass.getStartDate(), endDate)) {
+        if (isSpotOccupied(floor.getFloorNumber(), monthlyPass.getSpotNumber(), monthlyPass.getStartDate(), localEndDate)) {
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Spot " + monthlyPass.getSpotNumber() + " is currently occupied");
         }
 
         // check to see if we've exceed the floor capacity by booking this spot.
-        if(hasExceededCapacity(localStartDate, localEndDate ,floorNumber, monthlyPass.getIsLarge())){
+        if(hasExceededCapacity(startDate, localEndDate ,floorNumber, monthlyPass.getIsLarge())){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "All spots of this size on floor " + floorNumber +" are occupied.");
+        }
+
+        if (email != null) {
+            MonthlyCustomer monthlyCustomer = monthlyCustomerRepository.findMonthlyCustomerByEmail(email);
+            if (monthlyCustomer == null)
+                throw new PLMSException(HttpStatus.NOT_FOUND, "There is no customer account associated with this email");
+            else
+                monthlyPass.setCustomer(monthlyCustomer);
         }
 
 
@@ -102,6 +106,7 @@ public class MonthlyPassService {
         } else {
             monthlyPass.setFee(parkingLot.getSmallSpotFee() * nrMonths);
         }
+        monthlyPass.setFloor(floor);
         // Create object
         monthlyPass = monthlyPassRepository.save(monthlyPass);
 
@@ -118,20 +123,12 @@ public class MonthlyPassService {
      */
     public boolean hasExceededCapacity(LocalDate newPassStartDate, LocalDate newPassEndDate, int floorNumber, boolean isLarge){
         // get all the passes
-        ArrayList<GuestPass> guestPasses = (ArrayList<GuestPass>) guestPassRepository.findAll();
         ArrayList<MonthlyPass> monthlyPasses = (ArrayList<MonthlyPass>) monthlyPassRepository.findAll();
         // number of passes on the floor
         int numberOfPasses = 0;
         // filter through the guest passes to find passes that are of the same size and same floor number
-        for (GuestPass pass : guestPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowGuestPass(newPassStartDate, newPassEndDate,pass.getDate().toLocalDate())){
-
-                numberOfPasses += 1;
-            }
-        }
-
         for (MonthlyPass pass : monthlyPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(newPassStartDate, newPassEndDate, pass.getStartDate().toLocalDate(), pass.getEndDate().toLocalDate())){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(newPassStartDate, newPassEndDate, pass.getStartDate(), pass.getEndDate())){
 
                 numberOfPasses += 1;
             }
@@ -146,18 +143,6 @@ public class MonthlyPassService {
     }
 
     /**
-     * Checks to see overlap between the newly created monthly pass
-     * and any guest pass.
-     * @param newPassStartDate
-     * @param newPassEndDate
-     * @param guestPassDate
-     * @return - true if there is time overlap
-     */
-    public boolean isActiveRightNowGuestPass(LocalDate newPassStartDate, LocalDate newPassEndDate, LocalDate guestPassDate) {
-        return guestPassDate.isBefore(newPassEndDate) && newPassEndDate.isAfter(newPassStartDate);
-    }
-
-    /**
      * Checks to see overlap between two monthly passes
      * @param newPassStartDate
      * @param newPassEndDate
@@ -169,7 +154,7 @@ public class MonthlyPassService {
         return (newPassStartDate.isBefore(otherPassEndDate) && newPassEndDate.isAfter(otherPassStartDate)) || (otherPassStartDate.isBefore(newPassEndDate) && otherPassEndDate.isAfter(newPassStartDate));
     }
 
-
+    @Transactional
     public List<MonthlyPass> getMonthlyPassesByFloor(int floorNumber) {
         List<MonthlyPass> monthlyPasses = new ArrayList<>();
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
@@ -229,7 +214,7 @@ public class MonthlyPassService {
      * @param date - date we want to search for
      * @return - all passes active on that date
      */
-    public List<MonthlyPass> getMonthlyPassesByDate(Date date) {
+    public List<MonthlyPass> getMonthlyPassesByDate(LocalDate date) {
         List<MonthlyPass> monthlyPasses = (List<MonthlyPass>) monthlyPassRepository.findAll();
         List<MonthlyPass> monthlyPassesByDate = new ArrayList<>();
         for (MonthlyPass monthlyPass : monthlyPasses) {
@@ -244,14 +229,14 @@ public class MonthlyPassService {
         return monthlyPassesByDate;
     }
 
-    public boolean isSpotOccupied(int floorNumber, String spotNumber, Date startDate, Date endDate) {
+    public boolean isSpotOccupied(int floorNumber, String spotNumber, LocalDate startDate, LocalDate endDate) {
         try {
             List<MonthlyPass> monthlyPasses = getMonthlyPassesByFloor(floorNumber); // get all monthly passes for the floor
             for (MonthlyPass monthlyPass : monthlyPasses) {
                 if (monthlyPass.getSpotNumber().equals(spotNumber)) { // check if spot number matches
-                    Date passStartDate = monthlyPass.getStartDate();
-                    Date passEndDate = monthlyPass.getEndDate();
-                    if (passStartDate.before(endDate) && passEndDate.after(startDate)) {
+                    LocalDate passStartDate = monthlyPass.getStartDate();
+                    LocalDate passEndDate = monthlyPass.getEndDate();
+                    if (passStartDate.isBefore(endDate) && passEndDate.isAfter(startDate)) {
                         // monthly pass overlaps with the specified date range
                         return true;
                     }

@@ -10,12 +10,9 @@ import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.GuestPass;
-import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
 import ca.mcgill.ecse321.PLMS.repository.GuestPassRepository;
-import ca.mcgill.ecse321.PLMS.repository.MonthlyPassRepository;
 import jakarta.transaction.Transactional;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,9 +25,6 @@ public class GuestPassService {
 
     @Autowired
     GuestPassRepository guestPassRepository;
-
-    @Autowired
-    MonthlyPassRepository monthlyPassRepository;
 
     @Autowired
     FloorRepository floorRepository;
@@ -101,7 +95,7 @@ public class GuestPassService {
         // set start and end time
         guestPass.setStartTime(startTime);
         guestPass.setEndTime(endTime);
-        guestPass.setDate(Date.valueOf(localDateTime.toLocalDate()));
+        guestPass.setDate(localDateTime.toLocalDate());
 
         // check to see if we've exceed the floor capacity by booking this spot.
         if(hasExceededCapacity(currentTime, localEndTime ,floorNumber, guestPass.getIsLarge())){
@@ -134,19 +128,11 @@ public class GuestPassService {
     public boolean hasExceededCapacity(LocalDateTime currentTime, LocalDateTime endTime, int floorNumber, boolean isLarge){
         // get all the passes
         ArrayList<GuestPass> guestPasses = (ArrayList<GuestPass>) guestPassRepository.findAll();
-        ArrayList<MonthlyPass> monthlyPasses = (ArrayList<MonthlyPass>) monthlyPassRepository.findAll();
         // number of passes on the floor
         int numberOfPasses = 0;
         // filter through the guest passes to find passes that are of the same size and same floor number
         for (GuestPass pass : guestPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowGuestPass(currentTime, endTime,pass.getDate().toLocalDate(), pass.getStartTime().toLocalTime(), pass.getEndTime().toLocalTime())){
-
-                numberOfPasses += 1;
-            }
-        }
-
-        for (MonthlyPass pass : monthlyPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(currentTime, pass.getStartDate().toLocalDate(), pass.getEndDate().toLocalDate())){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowGuestPass(currentTime, endTime,pass.getDate(), pass.getStartTime().toLocalTime(), pass.getEndTime().toLocalTime())){
 
                 numberOfPasses += 1;
             }
@@ -175,18 +161,6 @@ public class GuestPassService {
     }
 
     /**
-     * Function for checking if a pass is active right at this point in time, given the start and end times
-     * and date.
-     * @param startDate - start date of the pass
-     * @param endDate - end date of the pass
-     * @return true if the pass is currently active
-     */
-    public boolean isActiveRightNowMonthlyPass(LocalDateTime currentTime,LocalDate startDate, LocalDate endDate) {
-        LocalDate currentDate = currentTime.toLocalDate();
-        return (currentDate.isEqual(startDate) || currentDate.isAfter(startDate)) && (currentDate.isEqual(endDate)|| currentDate.isBefore(endDate)) ;
-    }
-
-    /**
      * Service method that deletes the guest pass with guest pass id guestPassId from the database
      */
     @Transactional
@@ -197,6 +171,7 @@ public class GuestPassService {
 
     }
 
+    @Transactional
     public List<GuestPass> getGuestPassesByFloor(int floorNumber) {
         List<GuestPass> guestPasses = new ArrayList<GuestPass>();
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
@@ -214,8 +189,8 @@ public class GuestPassService {
         return guestPasses;
     }
 
-
-    public List<GuestPass> getGuestPassesByDate(Date date) {
+    @Transactional
+    public List<GuestPass> getGuestPassesByDate(LocalDate date) {
         List<GuestPass> guestPasses = (List<GuestPass>) guestPassRepository.findAll();
         List<GuestPass> guestPassesByDate = new ArrayList<>();
         for (GuestPass guestPass : guestPasses) {

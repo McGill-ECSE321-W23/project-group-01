@@ -32,7 +32,7 @@ public class GuestPassRequestDto {
         guestPass.setSpotNumber(this.spotNumber);
         guestPass.setConfirmationCode(this.confirmationCode);
         guestPass.setLicensePlate(this.licensePlate);
-        guestPass.setIsLarge(isLarge);
+        guestPass.setIsLarge(this.isLarge);
         return guestPass;
     }
 
@@ -58,5 +58,29 @@ public class GuestPassRequestDto {
 
     public Integer getNumberOfFifteenMinuteIncrements() {
         return numberOfFifteenMinuteIncrements;
+    }
+
+    public void setIsLarge(Boolean isLarge) {
+        this.isLarge = isLarge;
+    }
+
+    public void setNumberOfFifteenMinuteIncrements(Integer numberOfFifteenMinuteIncrements) {
+        this.numberOfFifteenMinuteIncrements = numberOfFifteenMinuteIncrements;
+    }
+
+    public String getSpotNumber() {
+        return spotNumber;
+    }
+
+    public String getConfirmationCode() {
+        return confirmationCode;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public Boolean getIsLarge() {
+        return isLarge;
     }
 }

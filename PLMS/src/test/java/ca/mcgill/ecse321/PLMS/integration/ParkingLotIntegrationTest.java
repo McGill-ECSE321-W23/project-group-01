@@ -36,7 +36,7 @@ import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 @TestInstance(Lifecycle.PER_CLASS)
 // Ensure the tests are run in the right order (e.g., POST before GET)
 @TestMethodOrder(OrderAnnotation.class)
-public class ParkingLotIntegrationTests {
+public class ParkingLotIntegrationTest {
 
 	// Stores state to be shared between tests
 	private class TestFixture {

@@ -46,7 +46,7 @@ import ca.mcgill.ecse321.PLMS.repository.ServiceRepository;
 @TestInstance(Lifecycle.PER_CLASS)
 // Ensure the tests are run in the right order (e.g., POST before GET)
 @TestMethodOrder(OrderAnnotation.class)
-public class ServiceAppointmentIntegrationTests {
+public class ServiceAppointmentIntegrationTest {
     @Autowired
     private ServiceAppointmentRepository serviceAppointmentRepository;
     @Autowired
