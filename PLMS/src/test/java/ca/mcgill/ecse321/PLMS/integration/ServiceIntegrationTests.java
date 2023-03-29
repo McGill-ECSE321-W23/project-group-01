@@ -2,6 +2,9 @@ package ca.mcgill.ecse321.PLMS.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.net.URI;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -22,6 +26,7 @@ import ca.mcgill.ecse321.PLMS.dto.ServiceRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.ServiceResponseDto;
 import ca.mcgill.ecse321.PLMS.model.Service;
 import ca.mcgill.ecse321.PLMS.repository.ServiceRepository;
+import io.swagger.v3.oas.models.PathItem.HttpMethod;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 // Reuse the same class for all the tests (instead of creating a new class each time).
@@ -45,6 +50,9 @@ public class ServiceIntegrationTests {
         public static final String serviceName = "Car wash";
         public static final double cost = 17.5;
         public static final double lengthInHours = 0.5;
+
+        public static final double costUpdated = 15;
+        public static final double lengthInHoursUpdated = 1;
 
         public static Service createValidService(){
             Service validService = new Service(serviceName, cost, lengthInHours);
@@ -108,73 +116,70 @@ public class ServiceIntegrationTests {
 
     @Test
     @Order(2)
-    public void testCreateDuplicateFloor(){
+    public void testCreateDuplicateService(){
         // Attempt to create a service with a duplicate service name
         Service duplicatedService = FixedValidService.createValidService();
         ServiceRequestDto request = serviceToServiceRequestDto(duplicatedService);
 
-        ResponseEntity<String> response = client.postForEntity("/floor", request, String.class);
+        ResponseEntity<String> response = client.postForEntity("/service/create", request, String.class);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertContains("Floor with floor number: " + FixedValidFloor.floorNumber + " already exists." , response.getBody());
+        assertContains("Service with service name: " + FixedValidService.serviceName + " already exists.", response.getBody());
     }
 
-  //   @Test
-  //   @Order(3)
-  //   public void testCreateFloorWithNullParamaters(){
-  //       FloorRequestDto request = new FloorRequestDto();
 
-  //       ResponseEntity<String> response = client.postForEntity("/floor", request, String.class);
+    @Test
+    @Order(3)
+    public void testCreateServiceWithNullParamaters(){
+        ServiceRequestDto request = new ServiceRequestDto();
+        request.setLengthInHours(1.5);
+        request.setCost(1.5);
+        request.setServiceName("");
 
-  //       assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-  //       assertContains("Cannot have an empty floor number." , response.getBody());
-  //       assertContains("Cannot have an empty number of small spots on a floor." , response.getBody());
-  //       assertContains("Cannot have an empty number of large spots on a floor." , response.getBody());
-  //       assertContains("Member only must be true or false." , response.getBody());
-  //   }
+        ResponseEntity<String> response = client.postForEntity("/service/create", request, String.class);
 
-  //   @Test
-  //   @Order(4)
-  //   public void testCreateFloorWithNegativeParameters(){
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertContains("Service name cannot be blank." , response.getBody());
+    }
+
+    @Test
+    @Order(4)
+    public void testCreateFloorWithNegativeParameters(){
         
-  //       Floor validFloor = FixedValidFloor.createValidFloor();
-  //       FloorRequestDto request = floorToFloorRequestDto(validFloor);
+        Service validSerivce = FixedValidService.createValidService();
+        ServiceRequestDto request = serviceToServiceRequestDto(validSerivce);
 
-  //       request.setFloorNumber(-1);
-  //       request.setLargeSpotCapacity(-1);
-  //       request.setSmallSpotCapacity(-1);
+        request.setServiceName("Tire change");
+        request.setCost(-1);
+        request.setLengthInHours(-1);
 
-  //       ResponseEntity<String> response = client.postForEntity("/floor", request, String.class);
+        ResponseEntity<String> response = client.postForEntity("/service/create", request, String.class);
 
-  //       assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-  //       assertContains("The floor number must be a non negative number." , response.getBody());
-  //       assertContains("Cannot be a negative number of small parking spots on a floor." , response.getBody());
-  //       assertContains("Cannot be a negative number of large parking spots on a floor." , response.getBody());
-  //   }
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertContains("Cost needs to be a number greater or equal to 0" , response.getBody());
+        assertContains("Length in hours needs to be a number greater or equal to 0." , response.getBody());
+    }
 
-  //   @Test
-  //   @Order(5)
-  //   public void testModifyFloorWithValidParameters(){
+    @Test
+    @Order(5)
+    public void testModifyFloorWithValidParameters(){
 
-  //       Floor validFloor = FixedValidFloor.createValidFloor();
-  //       FloorRequestDto request = floorToFloorRequestDto(validFloor);
+        Service validService = FixedValidService.createValidService();
+        ServiceRequestDto request = serviceToServiceRequestDto(validService);
 
-  //       request.setLargeSpotCapacity(FixedValidFloor.largeSpotCapacityUpdated);
-  //       request.setSmallSpotCapacity(FixedValidFloor.smallSpotCapacityUpdated);
-  //       request.setIsMemberOnly(FixedValidFloor.isMemberOnlyUpdated);
+        request.setCost(FixedValidService.costUpdated);
+        request.setLengthInHours(FixedValidService.lengthInHoursUpdated);
 
-  //       HttpEntity<FloorRequestDto> requestEntity = new HttpEntity<>(request);
+        HttpEntity<ServiceRequestDto> requestEntity = new HttpEntity<ServiceRequestDto>(request);
 
-  //       ResponseEntity<FloorResponseDto> response = client.exchange(createURLWithPort("/floor"), HttpMethod.PUT, requestEntity, FloorResponseDto.class);
+        ResponseEntity<ServiceResponseDto> response = client.exchange(createURLWithPort("/service/"), HttpMethod.PUT, requestEntity, ServiceResponseDto.class);
 
-  //       assertEquals(HttpStatus.CREATED, response.getStatusCode());
-  //       assertNotNull(response.getBody());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getBody());
         
-  //       assertEquals(FixedValidFloor.floorNumber, response.getBody().getFloorNumber());
-  //       assertEquals(FixedValidFloor.isMemberOnlyUpdated, response.getBody().getMemberOnly());
-  //       assertEquals(FixedValidFloor.largeSpotCapacityUpdated, response.getBody().getLargeSpotCapacity());
-  //       assertEquals(FixedValidFloor.smallSpotCapacityUpdated, response.getBody().getSmallSpotCapacity());
-  //   }
+        assertEquals(FixedValidService.costUpdated, response.getBody().getCost());
+        assertEquals(FixedValidService.lengthInHoursUpdated, response.getBody().getLengthInHours());
+    }
 
   //   @Test
   //   @Order(6)
@@ -342,16 +347,20 @@ public class ServiceIntegrationTests {
   //       assertContains("Cannot create floor since the parking lot has not been created." , response.getBody());
   //   }
 
-  //   private void assertContains(String expected, String actual) {
-	// 	String assertionMessage = String.format("Error message ('%s') contains '%s'.", actual, expected);
-	// 	assertTrue(actual.contains(expected), assertionMessage);
-	// }
+    private URI createURLWithPort(String endpoint) {
+      return null;
+    }
 
-  //   private URI createURLWithPort(String endpoint){
-  //       String baseUrl = "http://localhost:" + port + endpoint;
-  //       URI uri = URI.create(baseUrl);
+    private void assertContains(String expected, String actual) {
+		String assertionMessage = String.format("Error message ('%s') contains '%s'.", actual, expected);
+		assertTrue(actual.contains(expected), assertionMessage);
+	}
 
-  //       return uri;
-  //   }
+  private URI createURLWithPort(String endpoint){
+    String baseUrl = "http://localhost:" + port + endpoint;
+    URI uri = URI.create(baseUrl);
+
+    return uri;
+}
 }
 

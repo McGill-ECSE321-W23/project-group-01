@@ -17,7 +17,7 @@ public class ServiceAppointmentResponseDto {
     private String employeeEmail;
     private String serviceName;
 
-    ServiceAppointmentResponseDto() {}
+    public ServiceAppointmentResponseDto() {}
 
     public ServiceAppointmentResponseDto(ServiceAppointment s){
         this.id = s.getId();
