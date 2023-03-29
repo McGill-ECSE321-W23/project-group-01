@@ -16,7 +16,6 @@ public class PLMSExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException e) {
-        // TODO: return a custom exception object with a list of errors instead of just a string?
         String message = "";
         for (FieldError fe : e.getBindingResult().getFieldErrors()) {
             message += fe.getDefaultMessage() + "\n";
@@ -26,7 +25,6 @@ public class PLMSExceptionHandler {
 
     @ExceptionHandler(PersistenceException.class)
     public ResponseEntity<String> handleIdException(MethodArgumentNotValidException e) {
-        // TODO: return a custom exception object with a list of errors instead of just a string?
         String message = "";
         for (FieldError fe : e.getBindingResult().getFieldErrors()) {
             message += fe.getDefaultMessage() + "\n";

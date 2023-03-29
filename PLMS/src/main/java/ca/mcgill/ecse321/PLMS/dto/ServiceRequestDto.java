@@ -3,7 +3,6 @@ import ca.mcgill.ecse321.PLMS.model.Service;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public class ServiceRequestDto {
     @NotBlank(message = "Service name cannot be blank.")

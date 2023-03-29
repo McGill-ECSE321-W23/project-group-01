@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.PLMS.dto;
 
 import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.Service;

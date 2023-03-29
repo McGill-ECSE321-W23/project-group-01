@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.PLMS.dto;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
