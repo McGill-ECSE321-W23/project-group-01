@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.PLMS.dto;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 import ca.mcgill.ecse321.PLMS.model.GuestPass;
 
@@ -15,7 +16,7 @@ public class GuestPassResponseDto {
     private String confirmationCode;
     private String licensePlate;
     private Boolean isLarge;
-    private Date date;
+    private LocalDate date;
     private Time startTime;
     private Time endTime;
     private Integer floorNumber;
@@ -51,7 +52,7 @@ public class GuestPassResponseDto {
         return this.isLarge;
     }
 
-    public Date getDate(){
+    public LocalDate getDate(){
         return this.date;
     }
 

@@ -668,7 +668,7 @@ public class MonthlyPassServiceTests {
         Iterator<MonthlyPass> i = output.iterator();
         MonthlyPass outputMonthlyPass = i.next();
         assertEquals(output.size(), 1);
-        assertEquals(outputMonthlyPass.getStartDate(), Date.valueOf("2023-02-21"));
+        assertEquals(outputMonthlyPass.getStartDate(), Date.valueOf("2023-02-21").toLocalDate());
         assertEquals(outputMonthlyPass.getLicensePlate(), "123ABC123");
 
 
@@ -753,7 +753,7 @@ public class MonthlyPassServiceTests {
       when(monthlyPassRepo.save(monthlyPass)).thenReturn(monthlyPass);
       when(floorRepo.findFloorByFloorNumber(1)).thenReturn(floor);
 
-      MonthlyPass output = monthlyPassService.createMonthlyPass(monthlyPass, 1 , 2);
+      MonthlyPass output = monthlyPassService.createMonthlyPass(monthlyPass, 1 , 2, null);
 
       assertNotNull(output);
       assertEquals(monthlyPass, output);
@@ -797,8 +797,9 @@ public class MonthlyPassServiceTests {
 
       when(monthlyPassRepo.save(monthlyPass)).thenReturn(monthlyPass);
       when(floorRepo.findFloorByFloorNumber(1)).thenReturn(floor);
+      when(monthlyCustomerRepo.findMonthlyCustomerByEmail(email)).thenReturn(monthlyCustomer);
 
-      MonthlyPass output = monthlyPassService.createMonthlyPass(monthlyPass, 1, 2);
+      MonthlyPass output = monthlyPassService.createMonthlyPass(monthlyPass, 1, 2, email);
 
       assertNotNull(output);
       assertEquals(monthlyPass, output);
@@ -827,7 +828,7 @@ public class MonthlyPassServiceTests {
       when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
       when(floorRepo.findFloorByFloorNumber(1)).thenReturn(null);
 
-      PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass, 1, 2));
+      PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass, 1, 2, null));
       assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
       assertEquals(e.getMessage(), "The floor with floor number 1 does not exist.");  
     }
@@ -858,7 +859,7 @@ public class MonthlyPassServiceTests {
       when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
       when(floorRepo.findFloorByFloorNumber(1)).thenReturn(floor);
 
-      PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass, 1, 2));
+      PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass, 1, 2, null));
       assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
       assertEquals(e.getMessage(), "Floor 1 is reserved for guest passes only.");  
     }
@@ -923,7 +924,7 @@ public class MonthlyPassServiceTests {
       when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
       when(floorRepo.findFloorByFloorNumber(1)).thenReturn(floor);
 
-      PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass2, 1, 2));
+      PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass2, 1, 2, null));
       assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
       assertEquals(e.getMessage(), "Spot A24 is currently occupied");  
     }
@@ -948,7 +949,7 @@ public class MonthlyPassServiceTests {
     Floor floor = new Floor();
     floor.setFloorNumber(floorNumber);
     floor.setParkingLot(parkingLot);
-    floor.setLargeSpotCapacity(2);
+    floor.setLargeSpotCapacity(1);
     floor.setIsMemberOnly(true);
     when(floorRepo.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
 
@@ -1002,7 +1003,7 @@ public class MonthlyPassServiceTests {
     monthlyPass3.setIsLarge(true);
     monthlyPass3.setStartDate(currentDate);
 
-    PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass3, floorNumber, nrIncrements));
+    PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass3, floorNumber, nrIncrements, null));
     assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
     assertEquals(e.getMessage(), "All spots of this size on floor " + floorNumber +" are occupied.");
   }
@@ -1030,7 +1031,7 @@ public class MonthlyPassServiceTests {
     Floor floor = new Floor();
     floor.setFloorNumber(floorNumber);
     floor.setParkingLot(parkingLot);
-    floor.setLargeSpotCapacity(2);
+    floor.setLargeSpotCapacity(1);
     floor.setIsMemberOnly(true);
     when(floorRepo.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
 
@@ -1084,7 +1085,7 @@ public class MonthlyPassServiceTests {
     monthlyPass3.setIsLarge(false);
     monthlyPass3.setStartDate(currentDate);
 
-    PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass3, floorNumber, nrIncrements));
+    PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.createMonthlyPass(monthlyPass3, floorNumber, nrIncrements, null));
     assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
     assertEquals(e.getMessage(), "All spots of this size on floor " + floorNumber +" are occupied.");
   }

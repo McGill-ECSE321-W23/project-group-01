@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +22,6 @@ public class MonthlyPassService {
     @Autowired
     MonthlyPassRepository monthlyPassRepository;
 
-    @Autowired
-    GuestPassRepository guestPassRepository;
 
     @Autowired
     FloorRepository floorRepository;
@@ -126,18 +123,10 @@ public class MonthlyPassService {
      */
     public boolean hasExceededCapacity(LocalDate newPassStartDate, LocalDate newPassEndDate, int floorNumber, boolean isLarge){
         // get all the passes
-        ArrayList<GuestPass> guestPasses = (ArrayList<GuestPass>) guestPassRepository.findAll();
         ArrayList<MonthlyPass> monthlyPasses = (ArrayList<MonthlyPass>) monthlyPassRepository.findAll();
         // number of passes on the floor
         int numberOfPasses = 0;
         // filter through the guest passes to find passes that are of the same size and same floor number
-        for (GuestPass pass : guestPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowGuestPass(newPassStartDate, newPassEndDate,pass.getDate().toLocalDate())){
-
-                numberOfPasses += 1;
-            }
-        }
-
         for (MonthlyPass pass : monthlyPasses){
             if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(newPassStartDate, newPassEndDate, pass.getStartDate(), pass.getEndDate())){
 
@@ -154,18 +143,6 @@ public class MonthlyPassService {
     }
 
     /**
-     * Checks to see overlap between the newly created monthly pass
-     * and any guest pass.
-     * @param newPassStartDate
-     * @param newPassEndDate
-     * @param guestPassDate
-     * @return - true if there is time overlap
-     */
-    public boolean isActiveRightNowGuestPass(LocalDate newPassStartDate, LocalDate newPassEndDate, LocalDate guestPassDate) {
-        return guestPassDate.isBefore(newPassEndDate) && newPassEndDate.isAfter(newPassStartDate);
-    }
-
-    /**
      * Checks to see overlap between two monthly passes
      * @param newPassStartDate
      * @param newPassEndDate
@@ -177,7 +154,7 @@ public class MonthlyPassService {
         return (newPassStartDate.isBefore(otherPassEndDate) && newPassEndDate.isAfter(otherPassStartDate)) || (otherPassStartDate.isBefore(newPassEndDate) && otherPassEndDate.isAfter(newPassStartDate));
     }
 
-
+    @Transactional
     public List<MonthlyPass> getMonthlyPassesByFloor(int floorNumber) {
         List<MonthlyPass> monthlyPasses = new ArrayList<>();
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);

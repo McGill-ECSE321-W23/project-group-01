@@ -4,6 +4,8 @@ package ca.mcgill.ecse321.PLMS.model;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 
 /**
@@ -22,14 +24,14 @@ public class GuestPass extends Pass
   //------------------------
 
   //GuestPass Attributes
-  private Date date;
+  private LocalDate date;
   private Time startTime;
   private Time endTime;
 
   public GuestPass() {
   }
 
-  public GuestPass(Floor floor, String spotNumber, String licensePlate, boolean isLarge, Date date, Time startTime, Time endTime) {
+  public GuestPass(Floor floor, String spotNumber, String licensePlate, boolean isLarge, LocalDate date, Time startTime, Time endTime) {
     super(floor, spotNumber, licensePlate, isLarge);
     this.date = date;
     this.startTime = startTime;
@@ -40,7 +42,7 @@ public class GuestPass extends Pass
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------
 
-  public boolean setDate(Date aDate)
+  public boolean setDate(LocalDate aDate)
   {
     boolean wasSet = false; //first push
     date = aDate;
@@ -65,7 +67,7 @@ public class GuestPass extends Pass
   }
 
 
-  public Date getDate()
+  public LocalDate getDate()
   {
     return date;
   }
@@ -81,16 +83,5 @@ public class GuestPass extends Pass
   }
 
 
- /**
- * toString() helper method
- * Helpful for debugging
- */
-  public String toString()
-  {
-    return super.toString() + "["+
-            "isLarge" + ":" + getIsLarge()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "startTime" + "=" + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "endTime" + "=" + (getEndTime() != null ? !getEndTime().equals(this)  ? getEndTime().toString().replaceAll("  ","    ") : "this" : "null");
-  }
+
 }

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;import static org.a
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +47,7 @@ public class GuestPassRepositoryTests {
         double fee = 50.50;
         String spotNumber = "A24";
         String licensePlate = "123ABC123";
-        Date date = Date.valueOf("2023-02-21");
+        LocalDate date = Date.valueOf("2023-02-21").toLocalDate();
         Time starTime = Time.valueOf("12:00:00");
         Time endTime = Time.valueOf("18:00:00");
         boolean isLarge = true;

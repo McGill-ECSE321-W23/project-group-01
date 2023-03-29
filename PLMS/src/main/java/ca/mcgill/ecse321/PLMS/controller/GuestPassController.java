@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.PLMS.controller;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -70,7 +71,7 @@ public class GuestPassController {
      * @return GuestPassResponseDto of guest passes with date date
      */
     @GetMapping("/guestPass/date/{date}")
-    public Iterable<GuestPassResponseDto> getGuestPassesByDate(@PathVariable Date date){
+    public Iterable<GuestPassResponseDto> getGuestPassesByDate(@PathVariable LocalDate date){
         return StreamSupport.stream(guestPassService.getGuestPassesByDate(date).spliterator(), false).map(f -> new
         GuestPassResponseDto((GuestPass) f)).collect(Collectors.toList());
     }
