@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.PLMS.model;
 
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -24,8 +25,8 @@ public class MonthlyPass extends Pass
   //------------------------
 
   //MonthlyPass Attributes
-  private Date startDate;
-  private Date endDate;
+  private LocalDate startDate;
+  private LocalDate endDate;
 
   //MonthlyPass Associations
   @ManyToOne
@@ -36,7 +37,7 @@ public class MonthlyPass extends Pass
   // INTERFACE CONSISTING OF GETTERS AND SETTERS
   //------------------------
 
-  public boolean setStartDate(Date aStartDate)
+  public boolean setStartDate(LocalDate aStartDate)
   {
     boolean wasSet = false;
     startDate = aStartDate;
@@ -44,7 +45,7 @@ public class MonthlyPass extends Pass
     return wasSet;
   }
 
-  public boolean setEndDate(Date aEndDate)
+  public boolean setEndDate(LocalDate aEndDate)
   {
     boolean wasSet = false;
     endDate = aEndDate;
@@ -52,12 +53,12 @@ public class MonthlyPass extends Pass
     return wasSet;
   }
 
-  public Date getStartDate()
+  public LocalDate getStartDate()
   {
     return startDate;
   }
 
-  public Date getEndDate()
+  public LocalDate getEndDate()
   {
     return endDate;
   }
@@ -79,17 +80,5 @@ public class MonthlyPass extends Pass
     customer = aNewCustomer;
     wasSet = true;
     return wasSet;
-  }
-
- /**
- * toString() helper method
- * Helpful for debugging
- */
-  public String toString()
-  {
-    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "startDate" + "=" + (getStartDate() != null ? !getStartDate().equals(this)  ? getStartDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "endDate" + "=" + (getEndDate() != null ? !getEndDate().equals(this)  ? getEndDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null");
   }
 }

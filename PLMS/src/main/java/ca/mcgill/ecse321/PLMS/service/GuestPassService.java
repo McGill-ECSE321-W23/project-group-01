@@ -146,7 +146,7 @@ public class GuestPassService {
         }
 
         for (MonthlyPass pass : monthlyPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(currentTime, pass.getStartDate().toLocalDate(), pass.getEndDate().toLocalDate())){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(currentTime, pass.getStartDate(), pass.getEndDate())){
 
                 numberOfPasses += 1;
             }

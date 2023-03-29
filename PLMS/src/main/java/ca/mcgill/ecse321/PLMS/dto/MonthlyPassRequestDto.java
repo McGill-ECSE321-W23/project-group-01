@@ -6,6 +6,7 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -34,7 +35,7 @@ public class MonthlyPassRequestDto {
 
     @NotNull(message = "Start date cannot be null")
     @FutureOrPresent(message = "Start date must be equal or greater than current date")
-    private Date startDate;
+    private LocalDate startDate;
 
 
     // this is allowed to be null, as you don't need an account to register
@@ -55,7 +56,7 @@ public class MonthlyPassRequestDto {
         monthlypass.setConfirmationCode(this.confirmationCode);
         monthlypass.setLicensePlate(this.licensePlate);
         monthlypass.setIsLarge(this.isLarge);
-        monthlypass.setStartDate((java.sql.Date) this.startDate);
+        monthlypass.setStartDate(this.startDate);
         return monthlypass;
     }
 
@@ -84,7 +85,7 @@ public class MonthlyPassRequestDto {
         isLarge = large;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
@@ -116,7 +117,7 @@ public class MonthlyPassRequestDto {
         return isLarge;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 

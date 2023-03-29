@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,8 +38,8 @@ public class MonthlyPassRepositoryTests {
     @Test
     public void testPersistAndLoadMonthlyPass(){
         //=-=-=-=-=-=- Create MonthlyPass -=-=-=-=-=-=//
-        Date startDate = Date.valueOf("2023-02-21");
-        Date endDate = Date.valueOf("2023-04-21");
+        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+        LocalDate endDate = Date.valueOf("2023-04-21").toLocalDate();
 
         MonthlyPass monthlyPass = new MonthlyPass();
 

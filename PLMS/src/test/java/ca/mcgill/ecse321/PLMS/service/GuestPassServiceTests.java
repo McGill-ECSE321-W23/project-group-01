@@ -609,7 +609,7 @@ public class GuestPassServiceTests {
     monthlyPass1.setIsLarge(true);
     monthlyPass1.setFloor(floor);
     monthlyPass1.setStartDate(currentDate);
-    Date endDate1 = Date.valueOf(LocalDate.of(2024, 4, 1));
+    LocalDate endDate1 = Date.valueOf(LocalDate.of(2024, 4, 1)).toLocalDate();
     monthlyPass1.setEndDate(endDate1);
 
     // inactive monthly pass
@@ -617,7 +617,7 @@ public class GuestPassServiceTests {
     monthlyPass2.setSpotNumber("A25");
     monthlyPass2.setIsLarge(true);
     monthlyPass2.setFloor(floor);
-    Date endDate2 = Date.valueOf(LocalDate.of(2020, 5, 1));
+    LocalDate endDate2 = Date.valueOf(LocalDate.of(2020, 5, 1)).toLocalDate();
     monthlyPass2.setStartDate(startDate2);
     monthlyPass2.setEndDate(endDate2);
 

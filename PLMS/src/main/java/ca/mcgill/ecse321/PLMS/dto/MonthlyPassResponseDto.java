@@ -8,15 +8,15 @@ import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
 public class MonthlyPassResponseDto {
 
 
-    private Integer id;
-    private Double fee;
+    private int id;
+    private double fee;
     private String spotNumber;
     private String confirmationCode;
     private String licensePlate;
-    private Boolean isLarge;
-    private Date startDate;
-    private Date endDate;
-    private Integer floorNumber;
+    private boolean isLarge;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private int floorNumber;
     private String monthlyCustomerEmail;
 
     /**
@@ -41,11 +41,11 @@ public class MonthlyPassResponseDto {
         this.endDate = monthlypass.getEndDate();
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public Double getFee() {
+    public double getFee() {
         return fee;
     }
 
@@ -61,19 +61,19 @@ public class MonthlyPassResponseDto {
         return licensePlate;
     }
 
-    public Boolean getLarge() {
+    public boolean getLarge() {
         return isLarge;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public Integer getFloorNumber() {
+    public int getFloorNumber() {
         return floorNumber;
     }
 

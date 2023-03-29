@@ -77,21 +77,18 @@ public class MonthlyPassService {
         }
 
         // Get start date and find end date
-        Date startDate = monthlyPass.getStartDate();
-        LocalDate localStartDate = LocalDate.parse(startDate.toString());
-        // Add months to LocalStartDate
-        LocalDate localEndDate = localStartDate.plusMonths(nrMonths);
+        LocalDate startDate = monthlyPass.getStartDate();
+        LocalDate localEndDate = startDate.plusMonths(nrMonths);
         // Convert back to Date
-        Date endDate = Date.valueOf(localEndDate);
-        monthlyPass.setEndDate(endDate);
+        monthlyPass.setEndDate(localEndDate);
 
         // Check if the spot is not occupied
-        if (isSpotOccupied(floor.getFloorNumber(), monthlyPass.getSpotNumber(), monthlyPass.getStartDate(), endDate)) {
+        if (isSpotOccupied(floor.getFloorNumber(), monthlyPass.getSpotNumber(), monthlyPass.getStartDate(), localEndDate)) {
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Spot " + monthlyPass.getSpotNumber() + " is currently occupied");
         }
 
         // check to see if we've exceed the floor capacity by booking this spot.
-        if(hasExceededCapacity(localStartDate, localEndDate ,floorNumber, monthlyPass.getIsLarge())){
+        if(hasExceededCapacity(startDate, localEndDate ,floorNumber, monthlyPass.getIsLarge())){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "All spots of this size on floor " + floorNumber +" are occupied.");
         }
 
@@ -102,7 +99,6 @@ public class MonthlyPassService {
         } else {
             monthlyPass.setFee(parkingLot.getSmallSpotFee() * nrMonths);
         }
-        monthlyPass.setFloor(floor);
         // Create object
         monthlyPass = monthlyPassRepository.save(monthlyPass);
 
@@ -132,7 +128,7 @@ public class MonthlyPassService {
         }
 
         for (MonthlyPass pass : monthlyPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(newPassStartDate, newPassEndDate, pass.getStartDate().toLocalDate(), pass.getEndDate().toLocalDate())){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(newPassStartDate, newPassEndDate, pass.getStartDate(), pass.getEndDate())){
 
                 numberOfPasses += 1;
             }
@@ -224,13 +220,13 @@ public class MonthlyPassService {
         return monthlyPassesbyMonthlyCustomer;
     }
 
+    @Transactional
     /**
      * Return all of the monthly passes that are active on a given date.
      * @param date - date we want to search for
      * @return - all passes active on that date
      */
-    @Transactional
-    public List<MonthlyPass> getMonthlyPassesByDate(Date date) {
+    public List<MonthlyPass> getMonthlyPassesByDate(LocalDate date) {
         List<MonthlyPass> monthlyPasses = (List<MonthlyPass>) monthlyPassRepository.findAll();
         List<MonthlyPass> monthlyPassesByDate = new ArrayList<>();
         for (MonthlyPass monthlyPass : monthlyPasses) {
@@ -245,14 +241,13 @@ public class MonthlyPassService {
         return monthlyPassesByDate;
     }
 
-
     public boolean isSpotOccupied(int floorNumber, String spotNumber, Date startDate, Date endDate) {
         try {
             List<MonthlyPass> monthlyPasses = getMonthlyPassesByFloor(floorNumber); // get all monthly passes for the floor
             for (MonthlyPass monthlyPass : monthlyPasses) {
                 if (monthlyPass.getSpotNumber().equals(spotNumber)) { // check if spot number matches
-                    Date passStartDate = monthlyPass.getStartDate();
-                    Date passEndDate = monthlyPass.getEndDate();
+                    LocalDate passStartDate = monthlyPass.getStartDate();
+                    LocalDate passEndDate = monthlyPass.getEndDate();
                     if (passStartDate.before(endDate) && passEndDate.after(startDate)) {
                         // monthly pass overlaps with the specified date range
                         return true;
