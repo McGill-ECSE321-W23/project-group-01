@@ -454,63 +454,63 @@ public class MonthlyPassIntegrationTests {
        assertEquals(monthlyPasses.get(1).get("monthlyCustomerEmail"), monthlyPassFixture.monthlyCustomerEmail);
    }
 
-//    @Test
-//    @Order(10)
-//    public void testGetMonthlyPassesByMonthlyCustomerInvalidCustomer(){
-//
-//        ResponseEntity<String> response =  client.getForEntity("/monthlypass/customer?email=" + "thisis.awrongemail@gmail.com", String.class);
-//        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-//        assertContains("The account with email thisis.awrongemail@gmail.com does not exist.", response.getBody());
-//    }
-//
-//    @Test
-//    @Order(11)
-//    public void testGetMonthlyPassesByMonthlyCustomerNoPassesFound(){
-//
-//        MonthlyCustomerRequestDto customerRequest = new MonthlyCustomerRequestDto();
-//        customerRequest.setEmail("has.nopass@gmail.com");
-//        customerRequest.setPassword("Hello!");
-//        customerRequest.setName("Evan");
-//
-//        client.postForEntity("/customer/create", customerRequest, MonthlyCustomerResponseDto.class);
-//
-//        ResponseEntity<String> response =  client.getForEntity("/monthlypass/customer?email=" + "has.nopass@gmail.com", String.class);
-//        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-//        assertContains("There are no monthly passes for has.nopass@gmail.com", response.getBody());
-//
-//    }
-//
-//    @Test
-//    @Order(12)
-//    public void testGetMonthlyPassesByMonthlyCustomer(){
-//
-//        MonthlyPassRequestDto request = new MonthlyPassRequestDto();
-//        request.setSpotNumber("A26");
-//        request.setConfirmationCode("NeverGonnaGiveYouUp");
-//        request.setLicensePlate("12345679");
-//        request.setLarge(true);
-//        request.setNumberOfMonths(2);
-//        request.setStartDate(Date.valueOf("2023-2-1").toLocalDate());
-//        request.setFloorNumber(1);
-//        request.setCustomerEmail("has.nopass@gmail.com");
-//
-//        client.postForEntity("/monthlypass", request, MonthlyPassResponseDto.class);
-//
-//        ResponseEntity<List> response =  client.getForEntity("/monthlypass/customer?email=" + "has.nopass@gmail.com", List.class);
-//        assertNotNull(response.getBody());
-//
-//        List<Map<String, Object>> monthlyPasses = response.getBody();
-//
-//        assertEquals(monthlyPasses.get(0).get("spotNumber"), "A26");
-//        assertEquals(monthlyPasses.get(0).get("confirmationCode"), "NeverGonnaGiveYouUp");
-//        assertEquals(monthlyPasses.get(0).get("licensePlate"), "12345679");
-//        assertEquals(monthlyPasses.get(0).get("isLarge"), true);
-//        assertEquals(monthlyPasses.get(0).get("numberOfMonths"), 2);
-//        assertEquals(monthlyPasses.get(1).get("startDate"), Date.valueOf("2023-2-1"));
-//        assertEquals(monthlyPasses.get(1).get("floorNumber"), 1);
-//        assertEquals(monthlyPasses.get(1).get("customerEmail"), "has.nopass@gmail.com");
-//    }
-//
+   @Test
+   @Order(10)
+   public void testGetMonthlyPassesByMonthlyCustomerInvalidCustomer(){
+
+       ResponseEntity<String> response =  client.getForEntity("/monthlypass/customer/" + "thisis.awrongemail@gmail.com", String.class);
+       assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+       assertContains("The account with email thisis.awrongemail@gmail.com does not exist.", response.getBody());
+   }
+
+   @Test
+   @Order(11)
+   public void testGetMonthlyPassesByMonthlyCustomerNoPassesFound(){
+
+       MonthlyCustomerRequestDto customerRequest = new MonthlyCustomerRequestDto();
+       customerRequest.setEmail("has.nopass@gmail.com");
+       customerRequest.setPassword("Hello!");
+       customerRequest.setName("Evan");
+
+       client.postForEntity("/customer/create", customerRequest, MonthlyCustomerResponseDto.class);
+
+       ResponseEntity<String> response =  client.getForEntity("/monthlypass/customer/" + "has.nopass@gmail.com", String.class);
+       assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+       assertContains("There are no monthly passes for has.nopass@gmail.com", response.getBody());
+
+   }
+
+   @Test
+   @Order(12)
+   public void testGetMonthlyPassesByMonthlyCustomer(){
+
+       MonthlyPassRequestDto request = new MonthlyPassRequestDto();
+       request.setSpotNumber("A26");
+       request.setConfirmationCode("NeverGonnaGiveYouUp");
+       request.setLicensePlate("12345679");
+       request.setLarge(true);
+       request.setNumberOfMonths(2);
+       request.setStartDate(Date.valueOf("2023-2-1").toLocalDate());
+       request.setFloorNumber(1);
+       request.setCustomerEmail("has.nopass@gmail.com");
+
+       client.postForEntity("/monthlypass", request, MonthlyPassResponseDto.class);
+
+       ResponseEntity<List> response =  client.getForEntity("/monthlypass/customer?email=" + "has.nopass@gmail.com", List.class);
+       assertNotNull(response.getBody());
+
+       List<Map<String, Object>> monthlyPasses = response.getBody();
+
+       assertEquals(monthlyPasses.get(0).get("spotNumber"), "A26");
+       assertEquals(monthlyPasses.get(0).get("confirmationCode"), "NeverGonnaGiveYouUp");
+       assertEquals(monthlyPasses.get(0).get("licensePlate"), "12345679");
+       assertEquals(monthlyPasses.get(0).get("isLarge"), true);
+       assertEquals(monthlyPasses.get(0).get("numberOfMonths"), 2);
+       assertEquals(monthlyPasses.get(1).get("startDate"), Date.valueOf("2023-2-1"));
+       assertEquals(monthlyPasses.get(1).get("floorNumber"), 1);
+       assertEquals(monthlyPasses.get(1).get("customerEmail"), "has.nopass@gmail.com");
+   }
+
 //    @Test
 //    @Order(13)
 //    public void testGetMonthlyPassesByFloorInvalidFloor(){
