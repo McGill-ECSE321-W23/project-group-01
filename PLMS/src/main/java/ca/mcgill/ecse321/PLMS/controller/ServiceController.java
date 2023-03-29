@@ -21,6 +21,8 @@ import ca.mcgill.ecse321.PLMS.service.ServiceService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 
 
@@ -35,8 +37,9 @@ public class ServiceController {
      * @return All services.
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "404", description = "There are no services in the system.", content = {@Content(mediaType = "String")})
+      @ApiResponse(responseCode = "200", description = "All services.", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = ServiceResponseDto.class)))}),
+      @ApiResponse(responseCode = "404", description = "There are no services in the system.", content = {@Content(mediaType = "String")})
       })
     @GetMapping("/service")
     public Iterable<ServiceResponseDto> getAllServices(){
@@ -104,7 +107,7 @@ public class ServiceController {
      * @param serviceName service name of the service to delete
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "Service succefully deleted."),
         @ApiResponse(responseCode = "404", description = "Service with this name does not exists.", content = {@Content(mediaType = "String")})
       })
     @DeleteMapping("/service/{serviceName}")

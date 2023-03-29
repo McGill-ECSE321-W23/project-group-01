@@ -29,6 +29,8 @@ import ca.mcgill.ecse321.PLMS.service.ServiceService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 
 @RestController
@@ -50,7 +52,8 @@ public class ServiceAppointmentController {
       * @return All service appointments
       */
       @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "All service appointments", content = {@Content( mediaType = "application/json",
+          array = @ArraySchema(schema = @Schema(implementation = ServiceAppointmentResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "There are no service appointments in the system.", content = {@Content(mediaType = "String")})
       })
       @GetMapping("/serviceAppointment")
@@ -84,7 +87,8 @@ public class ServiceAppointmentController {
        * @return The service appointments at the specified date.
        */
       @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "The service appointments at the specified date.", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = ServiceAppointmentResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "There are no appointments on this date.", content = {@Content(mediaType = "String")})
       })
       @GetMapping("/serviceAppointment/date/{date}")
@@ -101,7 +105,8 @@ public class ServiceAppointmentController {
        * @return The service appointments related to the employee
        */
       @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "The service appointments related to the employee.", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = ServiceAppointmentResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "There are no service appointments for this employee.", content = {@Content(mediaType = "String")})
       })
       @GetMapping("/serviceAppointment/employee/{email}")
@@ -114,11 +119,12 @@ public class ServiceAppointmentController {
       /**
        * Gets all the service appointments ever booked by a monthly customer
        * 
-       * @param email The email of the employee you want to check for
-       * @return The service appointments related to the employee
+       * @param email The email of the customer you want to check for
+       * @return The service appointments related to the customer
        */
       @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "The service appointments related to the customer.", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = ServiceAppointmentResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "There are no service appointments for this customer.", content = {@Content(mediaType = "String")})
       })
       @GetMapping("/serviceAppointment/customer/{email}")

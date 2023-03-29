@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -29,8 +31,9 @@ public class OwnerController {
      * @return all owners
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "404", description = "There are no owners in the system.", content = {@Content(mediaType = "String")})
+      @ApiResponse(responseCode = "200", description = "All services.", content = {@Content( mediaType = "application/json",
+      array = @ArraySchema(schema = @Schema(implementation = OwnerResponseDto.class)))}),
+      @ApiResponse(responseCode = "404", description = "There are no owners in the system.", content = {@Content(mediaType = "String")})
       })
     @GetMapping("/owners")
     public Iterable<OwnerResponseDto> getAllOwners() {
@@ -87,11 +90,5 @@ public class OwnerController {
         owner = ownerService.updateOwnerAccount(owner);
         return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(owner), HttpStatus.OK);
     }
-
-
-
-
-
-
 
 }

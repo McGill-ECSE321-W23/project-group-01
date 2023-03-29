@@ -25,6 +25,8 @@ import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 
 @CrossOrigin(origins = "*")
@@ -40,7 +42,8 @@ public class GuestPassController {
      * @return All guest passes.
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "All guest passes.", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = GuestPassResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "There are no guest passes in the system.", content = {@Content(mediaType = "String")})
     })
     @GetMapping("/guestPass/")
@@ -73,7 +76,8 @@ public class GuestPassController {
      * @return GuestPassResponseDto of guest passes with floor floorNumber
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "GuestPassResponseDto of guest passes with floor floorNumber.", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = GuestPassResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "Possible Errors: The floor with this floor number does not exist. |OR| There are no guest passes on this floor.", content = {@Content(mediaType = "String")})
     })
     @GetMapping("/guestPass/floor/{floorNumber}")
@@ -89,7 +93,8 @@ public class GuestPassController {
      * @return GuestPassResponseDto of guest passes with date date
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "GuestPassResponseDto of guest passes with date date.", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = GuestPassResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "There are no guest passes for this date.", content = {@Content(mediaType = "String")})
     })
     @GetMapping("/guestPass/date/{date}")
@@ -128,7 +133,7 @@ public class GuestPassController {
      * @param id id of the guest pass to delete
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "Guest pass succefully deleted."),
         @ApiResponse(responseCode = "404", description = "Guest pass with this id does not exist.", content = {@Content(mediaType = "String")})
     })
     @DeleteMapping("/guestPass/{id}")

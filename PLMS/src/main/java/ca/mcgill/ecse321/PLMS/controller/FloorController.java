@@ -21,6 +21,8 @@ import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 public class FloorController {
@@ -33,7 +35,8 @@ public class FloorController {
    * @return All floors.
    */
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "200"),
+    @ApiResponse(responseCode = "200", description = "All floors", content = {@Content( mediaType = "application/json",
+    array = @ArraySchema(schema = @Schema(implementation = FloorResponseDto.class)))}),
     @ApiResponse(responseCode = "404", description = "There are no floors in the system.", content = {@Content(mediaType = "String")})
   })
   @GetMapping("/floor")
@@ -101,7 +104,7 @@ public class FloorController {
    * @param floorNumber Floor number of the floor that will be deleted
    */
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "200"),
+    @ApiResponse(responseCode = "200", description = "Floor succefully deleted."),
     @ApiResponse(responseCode = "404", description = "Floor with this floor number does not exist.", content = {@Content(mediaType = "String")})
   })
   @DeleteMapping("/floor/{floorNumber}")

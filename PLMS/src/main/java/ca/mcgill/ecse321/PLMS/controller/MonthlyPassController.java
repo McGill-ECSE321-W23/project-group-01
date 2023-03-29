@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,7 +40,8 @@ import jakarta.validation.Valid;
      * @return MonthlyPassResponseDto of all monthly passes.
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "MonthlyPassResponseDto of all monthly passes.", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = MonthlyPassResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "There are no monthly passes in the system.", content = {@Content(mediaType = "String")})
     })
     @GetMapping("/pass")
@@ -71,7 +74,8 @@ import jakarta.validation.Valid;
      * @return MonthlyPassResponseDto of monthly passes with floor floorNumber
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "MonthlyPassResponseDto of monthly passes with floor floorNumber", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = MonthlyPassResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "Possible Errors: The floor with this floor number does not exist. |OR| There are no monthly passes on this floor.", content = {@Content(mediaType = "String")})
     })
     @GetMapping("/monthlypass/floor/{floorNumber}")
@@ -87,7 +91,8 @@ import jakarta.validation.Valid;
      * @return MonthlyPassResponseDto of monthly passes of monthly customer with email email
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "MonthlyPassResponseDto of monthly passes of monthly customer with email email", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = MonthlyPassResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "Possible Errors: The account with this email does not exist. |OR| There are no monthly passes linked to this email.", content = {@Content(mediaType = "String")})
     })
     @GetMapping("/monthlypass/customer/{email}")

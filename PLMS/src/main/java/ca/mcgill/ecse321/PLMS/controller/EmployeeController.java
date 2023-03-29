@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -29,7 +31,8 @@ public class EmployeeController {
      * @return all Employees
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "all Employees", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = EmployeeResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "There are no employees in the system.", content = {@Content(mediaType = "String")})
     })
     @GetMapping("/employees")
@@ -98,7 +101,7 @@ public class EmployeeController {
      * @param email - email of an existing email
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "Employee succefully deleted."),
         @ApiResponse(responseCode = "404", description = "Employee not found.", content = {@Content(mediaType = "String")})
     })
     @DeleteMapping("/employee/delete/{email}")
