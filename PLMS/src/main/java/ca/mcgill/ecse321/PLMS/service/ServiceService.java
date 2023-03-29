@@ -11,25 +11,20 @@ import ca.mcgill.ecse321.PLMS.repository.ServiceRepository;
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Service;
 
+/**
+ * Service class for all the business methods related to the service model class in the PLMS system
+ */
 @org.springframework.stereotype.Service
 public class ServiceService {
 
-    /*
-   * Functionalities of the service service class
-   * 
-   * 1) GET all services 
-   * 2) GET service appointment by service name
-   * 3) POST service
-   * 4) DELETE service appointment by service name
-   * 5) PUT service
-   */
-
     @Autowired
-    ServiceRepository serviceRepository;
+    ServiceRepository serviceRepository; // Repository from where the service objects are persisted
 
 
     /**
      * Service method to store the created service object into the database
+     * @param service instance to be persisted
+     * @return persisted instance if successful
      */
     @Transactional
     public Service createService(Service service){
@@ -46,8 +41,10 @@ public class ServiceService {
 
     /**
      * Service method that updates a floor object in the database
+     * @param service updated instance to be persisted
+     * @return persisted instance
      */
-    @jakarta.transaction.Transactional
+    @Transactional
     public Service updateService(Service service){
         //check if the service exists (the service has to exist to edit it)
         Service s = getServiceByServiceName(service.getServiceName());

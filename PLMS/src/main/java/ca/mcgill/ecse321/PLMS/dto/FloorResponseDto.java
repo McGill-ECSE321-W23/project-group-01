@@ -1,12 +1,17 @@
 package ca.mcgill.ecse321.PLMS.dto;
 
 import ca.mcgill.ecse321.PLMS.model.Floor;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class FloorResponseDto {
   // attributes
+  @Schema(example= "1", description = "Floor number of this floor")
   private int floorNumber;
+  @Schema(example= "false", description = "Is this floor reserved for members only")
   private boolean isMemberOnly;
+  @Schema(example= "50", description = "Number of small spots on this floor")
   private int smallSpotCapacity;
+  @Schema(example= "20", description = "Number of large spots on this floor")
   private int largeSpotCapacity;
 
   /**

@@ -29,8 +29,13 @@ import ca.mcgill.ecse321.PLMS.service.ServiceService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 
+/**
+ * Controller class related to endpoints for CRUD operations on the service appointments model class in the context of the PLMS system
+ */
 @RestController
 public class ServiceAppointmentController {
     
@@ -50,7 +55,8 @@ public class ServiceAppointmentController {
       * @return All service appointments
       */
       @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "All service appointments", content = {@Content( mediaType = "application/json",
+          array = @ArraySchema(schema = @Schema(implementation = ServiceAppointmentResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "There are no service appointments in the system.", content = {@Content(mediaType = "String")})
       })
       @GetMapping("/serviceAppointment")
@@ -84,7 +90,8 @@ public class ServiceAppointmentController {
        * @return The service appointments at the specified date.
        */
       @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "The service appointments at the specified date.", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = ServiceAppointmentResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "There are no appointments on this date.", content = {@Content(mediaType = "String")})
       })
       @GetMapping("/serviceAppointment/date/{date}")
@@ -101,7 +108,8 @@ public class ServiceAppointmentController {
        * @return The service appointments related to the employee
        */
       @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "The service appointments related to the employee.", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = ServiceAppointmentResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "There are no service appointments for this employee.", content = {@Content(mediaType = "String")})
       })
       @GetMapping("/serviceAppointment/employee/{email}")
@@ -114,11 +122,12 @@ public class ServiceAppointmentController {
       /**
        * Gets all the service appointments ever booked by a monthly customer
        * 
-       * @param email The email of the employee you want to check for
-       * @return The service appointments related to the employee
+       * @param email The email of the customer you want to check for
+       * @return The service appointments related to the customer
        */
       @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "200", description = "The service appointments related to the customer.", content = {@Content( mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = ServiceAppointmentResponseDto.class)))}),
         @ApiResponse(responseCode = "404", description = "There are no service appointments for this customer.", content = {@Content(mediaType = "String")})
       })
       @GetMapping("/serviceAppointment/customer/{email}")
@@ -138,7 +147,7 @@ public class ServiceAppointmentController {
         @ApiResponse(responseCode = "200"),
         @ApiResponse(responseCode = "404", description = "Service with this name is not found.", content = {@Content(mediaType = "String")}),
         @ApiResponse(responseCode = "400",
-        description = "Possible Errors:<br>- Cannot book appointment since the parking lot has not been created yet. Please try again at a later date.<br>- Cannot have an appointment beginning before the lot opens.<br>- Cannot have an appointment beginning after the lot closes.<br>- Cannot have an appointment ending after the lot closes.",
+        description = "Possible Errors: Cannot book appointment since the parking lot has not been created yet. Please try again at a later date. |OR| Cannot have an appointment beginning before the lot opens. |OR| Cannot have an appointment beginning after the lot closes. |OR| Cannot have an appointment ending after the lot closes.",
         content = {@Content(mediaType = "String")})})
       @PostMapping("/serviceAppointment")
       public ResponseEntity<ServiceAppointmentResponseDto> createServiceAppointment(@Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
@@ -159,14 +168,14 @@ public class ServiceAppointmentController {
        * Creates a new service appointment with the desired service, date, start time and end time
        * 
        * @param id Id of the the service appointment
-       * @param serviceAppointmentRequestDto Contains <b>service name</b> (String), <b>date</b> (Date format: YYYY-MM-DD), <b>start time</b> (Time format: HH:mm:ss) and an optional <b>user email</b> (String)
+       * @param serviceAppointmentRequestDto Contains service name (String), date (Date format: YYYY-MM-DD), start time (Time format: HH:mm:ss) and an optional user email (String)
        * @return The service appointment object created
        */
       @ApiResponses(value = {
         @ApiResponse(responseCode = "200"),
         @ApiResponse(responseCode = "404", description = "Service appointment is not found.", content = {@Content(mediaType = "String")}),
         @ApiResponse(responseCode = "400",
-        description = "Possible Errors:<br>- Cannot have an appointment beginning before the lot opens.<br>- Cannot have an appointment beginning after the lot closes.<br>- Cannot have an appointment ending after the lot closes.",
+        description = "Possible Errors:Cannot have an appointment beginning before the lot opens. |OR| Cannot have an appointment beginning after the lot closes. |OR| Cannot have an appointment ending after the lot closes.",
         content = {@Content(mediaType = "String")})})
       @PutMapping("/serviceAppointment/{id}")
       public ResponseEntity<ServiceAppointmentResponseDto> updateServiceAppointment(@PathVariable int id, @Valid @RequestBody ServiceAppointmentRequestDto serviceAppointmentRequestDto){
@@ -190,7 +199,7 @@ public class ServiceAppointmentController {
        */
       @ApiResponses(value = {
         @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "404", description = "Possible Errors:<br>- Employee not found.<br>- Service appointment is not found.", content = {@Content(mediaType = "String")}),
+        @ApiResponse(responseCode = "404", description = "Possible Errors: Employee not found. |OR| Service appointment is not found.", content = {@Content(mediaType = "String")}),
         @ApiResponse(responseCode = "400", description = "Cannot change the employee because requested employee already has an appointment during the time frame of this appointment.", content = {@Content(mediaType = "String")})})
       @PutMapping("/serviceAppointment/employeeEmail/{id}")
       public ResponseEntity<ServiceAppointmentResponseDto> updateEmployeeEmailServiceAppointment(@PathVariable int id, @RequestParam String employeeEmail){

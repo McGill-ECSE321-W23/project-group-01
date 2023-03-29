@@ -20,20 +20,24 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for all the business methods related to the guest pass model class in the PLMS system
+ */
 @Service
 public class GuestPassService {
 
     @Autowired
-    GuestPassRepository guestPassRepository;
+    GuestPassRepository guestPassRepository; // Repository from where the guest pass objects are persisted
 
     @Autowired
-    FloorRepository floorRepository;
+    FloorRepository floorRepository; // Repository from where the floor objects are persisted
 
     @Autowired
-    ParkingLotRepository parkingLotRepository;
+    ParkingLotRepository parkingLotRepository; // Repository from where the parking lot objects are persisted
 
     /**
      * Service method to fetch all guest passes in the database
+     * @return the arraylist of guest passes
      */
     @Transactional
     public Iterable<GuestPass> getAllGuestPasses() {
@@ -46,6 +50,8 @@ public class GuestPassService {
 
     /**
      * Service method to fetch a guest pass with a specific guest pass id in the database
+     * @param guestPassId id of the pass that is requested from persistence layer
+     * @return the requested guest pass
      */
     @Transactional
     public GuestPass getGuestPassById(int guestPassId) {
@@ -58,6 +64,11 @@ public class GuestPassService {
 
     /**
      * Service method to store the created guest pass object into the database
+     * @param guestPass instance of the pass to be persisted
+     * @param floorNumber level of the floor on which the pass applies
+     * @param nrIncrements increments of 15 minutes indicating the duration of the pass
+     * @param currentTime time of purchase of the pass
+     * @return the newly created guest pass (if successful)
      */
     @Transactional
     public GuestPass createGuestPass(GuestPass guestPass, int floorNumber, int nrIncrements, LocalDateTime currentTime) {
@@ -160,6 +171,7 @@ public class GuestPassService {
 
     /**
      * Service method that deletes the guest pass with guest pass id guestPassId from the database
+     * @param guestPassId id of the pass to be deleted
      */
     @Transactional
     public void deleteGuestPassById(int guestPassId) {
@@ -169,6 +181,11 @@ public class GuestPassService {
 
     }
 
+    /**
+     * Service method that acquires a list of passes by floor
+     * @param floorNumber level of the floor we want to get the passes from
+     * @return an arraylist of the guest passes corresponding to the appropriate floor
+     */
     @Transactional
     public List<GuestPass> getGuestPassesByFloor(int floorNumber) {
         List<GuestPass> guestPasses = new ArrayList<GuestPass>();
@@ -187,6 +204,11 @@ public class GuestPassService {
         return guestPasses;
     }
 
+    /**
+     * Service that fetches the guest passes that were created in a certain day
+     * @param date day on which the passes were created
+     * @return a list containing guest passes created in the same day
+     */
     @Transactional
     public List<GuestPass> getGuestPassesByDate(LocalDate date) {
         List<GuestPass> guestPasses = (List<GuestPass>) guestPassRepository.findAll();
@@ -204,6 +226,13 @@ public class GuestPassService {
     }
 
 
+    /**
+     * Service method that validates the guest pass hours
+     * @param startTime time from which the pass is valid
+     * @param endTime end time for the validity of the pass
+     * @param openingTime opening time of the parking lot
+     * @param closingTime closing time of the parking lot
+     */
     public void validateGuestPassHours(Time startTime, Time endTime, Time openingTime, Time closingTime) {
 
         // check to see if start time is before the opening time
@@ -227,6 +256,15 @@ public class GuestPassService {
     }
 
 
+    /**
+     * Service method that indicates if a certain spot is occupied (so it can't be reserved by someone else in the same time)
+     * @param floorNumber level floor on which the spot is
+     * @param spotNumber number of the spot on the specified floor
+     * @param startTime time from which we want to see if the spot is occupated
+     * @param endTime end of the time interval for the spot's occupancy
+     * @param date day on which we want to check the occupancy of a spot
+     * @return whether or not the spot is occupied (true or false)
+     */
     public boolean isSpotOccupied(int floorNumber, String spotNumber, Time startTime, Time endTime, LocalDate date) {
         try {
             List<GuestPass> guestPasses = getGuestPassesByFloor(floorNumber); // get all guest passes for the floor

@@ -11,17 +11,17 @@ import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
 import java.util.Iterator;
 
 /**
- * Service class for the Account model objects in the database
- * @author Karl Bridi Soft. Eng. student
+ * Service class for all the business methods related to the owner account model class in the PLMS system
  */
 @Service
 public class OwnerService {
 
     @Autowired
-    OwnerRepository ownerRepository;
+    OwnerRepository ownerRepository; // Repository from where the owner account objects are persisted
 
     /**
      * Service method to fetch all existing owners in the database
+     * @return all the owners from persistence layer
      * @throws PLMSException - if no owners exist in the system
      */
     @Transactional
@@ -34,6 +34,8 @@ public class OwnerService {
 
     /**
      * Service method to fetch an existing owner with a specific email from the database
+     * @param email owner's email linked to their account
+     * @return the owner corresponding to the provided email
      * @throws PLMSException - If the owner does not exist
      */
     @Transactional
@@ -47,6 +49,8 @@ public class OwnerService {
 
     /**
      * Service method that updates the owner's information in the database
+     * @param owner updated instance of the owner
+     * @return the updated instance
      * @throws PLMSException - If owner does not exist
      */
     @Transactional
@@ -61,6 +65,8 @@ public class OwnerService {
 
     /**
      * Service method to store a created owner in the database
+     * @param owner instance to be persisted
+     * @return the persisted instance if successful
      * @throws PLMSException - If an owner already exists
      */
     @Transactional

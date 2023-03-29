@@ -19,26 +19,18 @@ import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 import ca.mcgill.ecse321.PLMS.repository.ServiceAppointmentRepository;
 import jakarta.transaction.Transactional;
 
+/**
+ * Service class for all the business methods related to the service appointment model class in the PLMS system
+ */
 @Service
 public class ServiceAppointmentService {
-  /*
-   * Functionalities of the service appointment controller class
-   * 
-   * 1) GET
-   * 2) GET all service appointments 
-   * 3) GET service appointment by Date
-   * 4) GET service appointments by assigned employee
-   * 5) GET service appointments by a monthly customer
-   * 6) POST service appointment
-   * 7) DELETE service appointment by ID
-   */
-  // going to definitely need to have a service appointment repository
+  
   @Autowired
-  ServiceAppointmentRepository serviceAppointmentRepo;
+  ServiceAppointmentRepository serviceAppointmentRepo; // Repository from where the service appointment objects are persisted
   @Autowired
-  ParkingLotRepository parkingLotRepository;
+  ParkingLotRepository parkingLotRepository; // Repository from where the parking lot objects are persisted
   @Autowired
-  EmployeeRepository employeeRepository;
+  EmployeeRepository employeeRepository; // Repository from where the employee account objects are persisted
 
   /**
    * Creates a service appointment. Checks for scheduling issues and assigns employee
@@ -81,7 +73,7 @@ public class ServiceAppointmentService {
 
   /**
    * Get all the service appointments in the entire database
-   * @return
+   * @return an arraylist of service appointments if successful
    */
   @Transactional
   public Iterable<ServiceAppointment> getAllServiceAppointments(){
@@ -186,7 +178,7 @@ public class ServiceAppointmentService {
 
   /**
    * Delete a service appointment by an id.
-   * @param id
+   * @param id id of the service appointment to be deleted
    */
   @Transactional
   public void deleteServiceAppointmentById(int id){
@@ -236,6 +228,12 @@ public class ServiceAppointmentService {
     return appointment;
   }
 
+  /**
+   * Service method to update the employee responsable for a service appointment
+   * @param employee new employee responsable fro the service appointment
+   * @param id service appointment's id
+   * @return instance of the updated service appointment
+   */
   @Transactional
   public ServiceAppointment updateEmployeeEmailServiceAppointment(Employee employee, int id){
     // first calculate the end time of the service appointment by using the length of the appointment
@@ -252,6 +250,11 @@ public class ServiceAppointmentService {
     return appointment;
   }
 
+  /**
+   * Service method to check for conflicts in employee schedule
+   * @param appointment appointment that is compared with the rest for overlapping checking
+   * @return
+   */
   public Employee checkForConflictInEmployeeScheedule(ServiceAppointment appointment){
     
     ArrayList<ServiceAppointment> allAppts = (ArrayList<ServiceAppointment>) serviceAppointmentRepo.findAll();
@@ -306,9 +309,9 @@ public class ServiceAppointmentService {
 
   /**
    * Function to check if two appointments have time overlap. Used for scheduling employees.
-   * @param appt1
-   * @param appt2
-   * @return
+   * @param appt1 first appointment
+   * @param appt2 second appointment
+   * @return whether or not there is a conflict between appointments
    */
   public boolean isConflicting(ServiceAppointment appt1, ServiceAppointment appt2) {
     LocalDateTime start1 = LocalDateTime.of(appt1.getDate(), appt1.getStartTime().toLocalTime());

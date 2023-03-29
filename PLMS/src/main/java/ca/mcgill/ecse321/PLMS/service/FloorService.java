@@ -14,17 +14,21 @@ import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
 import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 import jakarta.transaction.Transactional;
 
+/**
+ * Service class for all the business methods related to the floor model class in the PLMS system
+ */
 @Service
 public class FloorService {
 
     @Autowired
-    FloorRepository floorRepository;
+    FloorRepository floorRepository; // Repository from where the floor objects are persisted
 
     @Autowired
-    ParkingLotRepository parkingLotRepository;
+    ParkingLotRepository parkingLotRepository; // Repository from where the parking lot objects are persisted
 
     /**
      * Service method to fetch all floors in the database
+     * @return an arraylist of all the floor objects in the database
      */
     @Transactional
     public Iterable<Floor> getAllFloors(){
@@ -36,6 +40,8 @@ public class FloorService {
 
     /**
      * Service method to fetch a floor with a specific floor number in the database
+     * @param floorNumber denoting the level of the floor in the parking lot
+     * @return the floor instance corresponding to the number given as a parameter
      */
     @Transactional
     public Floor getFloorByFloorNumber(int floorNumber){
@@ -48,6 +54,8 @@ public class FloorService {
 
     /**
      * Service method to store the created floor object into the database
+     * @param floor the instance of the floor to be persisted
+     * @return the created floor instance
      */
     @Transactional
     public Floor createFloor(Floor floor){
@@ -73,6 +81,8 @@ public class FloorService {
 
     /**
      * Service method that updates a floor object in the database
+     * @param floor updated instance to be persisted
+     * @return old version of the floor that has been updated
      */
     @Transactional
     public Floor updateFloor(Floor floor){
@@ -90,6 +100,7 @@ public class FloorService {
 
     /**
      * Service method that deletes the floor with floor number floorNumber from the database
+     * @param floorNumber level number of the floor to be deleted
      */
     @Transactional
     public void deleteFloorByFloorNumber(int floorNumber){

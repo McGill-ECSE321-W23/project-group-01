@@ -10,11 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
+/**
+ * Service class for all the business methods related to the employee model class in the PLMS system
+ */
 @Service
 public class EmployeeService {
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    EmployeeRepository employeeRepository; // Repository from where the employee objects are persisted
 
     /**
      * Service method to fetch all existing employees in the database
@@ -29,6 +32,7 @@ public class EmployeeService {
 
     /**
      * Service method to fetch an existing employee with a specific email from the database
+     * @param email email of the employee
      * @throws PLMSException - If employee does not exist
      */
     @Transactional
@@ -43,6 +47,7 @@ public class EmployeeService {
 
     /**
      * Service method that updates the employee's information in the database
+     * @param employee updated instance of the employee to be persisted
      * @throws PLMSException - If employee does not exist
      */
     @Transactional
@@ -60,6 +65,7 @@ public class EmployeeService {
 
     /**
      * Service method to store a created employee in the database
+     * @param employee instance of the employee to be persisted
      * @throws PLMSException - If an employee already exists
      */
     @Transactional
@@ -74,6 +80,7 @@ public class EmployeeService {
 
     /**
      * Service method to delete an employee from the database
+     * @param email email of the employee to be deleted from persistence layer
      */
     @Transactional
     public void deleteEmployeeAccount(String email) {
