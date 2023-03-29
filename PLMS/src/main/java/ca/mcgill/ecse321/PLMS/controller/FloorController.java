@@ -24,6 +24,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+
+/**
+ * Controller class related to endpoints for CRUD operations on the floor model class in the context of the PLMS system
+ */
 @RestController
 public class FloorController {
   @Autowired

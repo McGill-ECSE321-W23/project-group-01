@@ -17,6 +17,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
+/**
+ * Controller class related to endpoints for CRUD operations on the parking lot class in the context of the PLMS system
+ */
 @RestController
 public class ParkingLotController {
 

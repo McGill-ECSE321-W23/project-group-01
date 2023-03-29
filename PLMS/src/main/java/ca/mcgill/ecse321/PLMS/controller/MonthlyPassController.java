@@ -26,7 +26,9 @@ import ca.mcgill.ecse321.PLMS.dto.MonthlyPassResponseDto;
 import ca.mcgill.ecse321.PLMS.model.MonthlyPass;
 import jakarta.validation.Valid;
 
-
+/**
+ * Controller class related to endpoints for CRUD operations on the monthly pass class in the context of the PLMS system
+ */
  @CrossOrigin(origins = "*")
  @RestController
  public class MonthlyPassController {
