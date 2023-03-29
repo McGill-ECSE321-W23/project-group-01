@@ -79,6 +79,19 @@ public class MonthlyPassIntegrationTests {
 
     }
 
+    private class FixedValidCustomer {
+
+        public static final String email = "samer.abdulkarim@gmail.com";
+        public static final String password = "IntelliJLover!";
+        public static final String name = "Samer Abdulkarim";
+
+        public static MonthlyCustomer createValidMonthlyCustomer(){
+            MonthlyCustomer validCustomer = new MonthlyCustomer(email, password, name);
+            return validCustomer;
+        }
+    }
+    
+
 
     private MonthlyPassFixture monthlyPassFixture;
 
@@ -108,6 +121,7 @@ public class MonthlyPassIntegrationTests {
         floorRepository.deleteAll();
         parkingLotRepository.deleteAll();
         monthlyPassRepository.deleteAll();
+        monthlyCustomerRepository.deleteAll();
     }
 
     private MonthlyPassRequestDto setRequest(String spotNumber, String confirmationCode,
@@ -151,16 +165,25 @@ public class MonthlyPassIntegrationTests {
                 monthlyPassFixture.licensePlate, monthlyPassFixture.numberOfMonths, monthlyPassFixture.startDate,
                 monthlyPassFixture.floorNumber, monthlyPassFixture.isLarge, monthlyPassFixture.monthlyCustomerEmail);
         request.setCustomerEmail(null);
-        ResponseEntity<String> response = client.postForEntity("/monthlypass", request, String.class);
+        ResponseEntity<MonthlyPassResponseDto> response = client.postForEntity("/monthlypass", request, MonthlyPassResponseDto.class);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
     @Order(1)
     public void testCreateMonthlyPassAccount() {
-        MonthlyPassRequestDto request = setRequest(monthlyPassFixture.spotNumber, monthlyPassFixture.confirmationCode,
+
+        MonthlyCustomerRequestDto customerRequest = new MonthlyCustomerRequestDto();
+        customerRequest.setEmail("samer.abdulkarim@gmail.com");
+        customerRequest.setPassword("Hello!");
+        customerRequest.setName("Samer Abdulkarim");
+
+        ResponseEntity<MonthlyPassResponseDto> customerResponse = client.postForEntity("/customer/create", customerRequest, MonthlyPassResponseDto.class);
+
+        MonthlyPassRequestDto request = setRequest("A25", monthlyPassFixture.confirmationCode,
                 monthlyPassFixture.licensePlate, monthlyPassFixture.numberOfMonths, monthlyPassFixture.startDate,
-                monthlyPassFixture.floorNumber, monthlyPassFixture.isLarge, monthlyPassFixture.monthlyCustomerEmail);
+                monthlyPassFixture.floorNumber, monthlyPassFixture.isLarge, "samer.abdulkarim@gmail.com");
+
         ResponseEntity<String> response = client.postForEntity("/monthlypass", request, String.class);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
@@ -488,10 +511,10 @@ public class MonthlyPassIntegrationTests {
 //
 //
 //
-//    private static void assertContains(String expected, String actual) {
-//        String assertionMessage = String.format("Error message ('%s') contains '%s'.", actual, expected);
-//        assertTrue(actual.contains(expected), assertionMessage);
-//    }
+    private static void assertContains(String expected, String actual) {
+        String assertionMessage = String.format("Error message ('%s') contains '%s'.", actual, expected);
+        assertTrue(actual.contains(expected), assertionMessage);
+   }
 //
 //
 
