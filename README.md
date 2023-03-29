@@ -26,11 +26,11 @@ Our software system can be run by executing, inside the PLMS folder, the "./grad
 | Team Member |	Team Roles | Individual efforts - Sprint 1 (in hours) | Individual efforts - Sprint 2 (in hours) |
 | --- | --- | --- | ---- |
 | Evan Boyd | Software Developer  |  20  | 60 |
-| Samer Abdulkarim | Project Manager, Software Developer |  16 | |
+| Samer Abdulkarim | Project Manager, Software Developer |  16 | 60 |
 | Emilien Taisne	| Documentation Manager, Software Developer  | 16 | |
 | Walid Aissa	| Software Developer  | 16 | |
 | Karim Al Sabbagh | Testing Lead, Software Developer  | 16  | |
-| Karl Bridi	| Software Developer | 16 | |
+| Karl Bridi	| Software Developer | 16 | 44 |
 
 ### Sprint 1 individual efforts: 
 
@@ -52,7 +52,7 @@ Our software system can be run by executing, inside the PLMS folder, the "./grad
 | Emilien Taisne | Floor and ServiceAppointment controller, DTO, and service classes. Unit and integration tests for Floor and ServiceAppointment classes. Restful API documentation. |  |
 | Walid Aissa | Service, Monthly Pass GuestPass controller, DTO, and service classes. Unit and integration tests for Service, Monthly Pass and GuestPass classes. |   |
 | Karim Al Sabbagh | Service, Monthly Pass GuestPass controller, DTO, and service classes. Unit and integration tests for Service, Monthly Pass and GuestPass classes.  |  |
-| Karl Bridi | MonthlyCustomer, Employee, Owner and Parking Lot controller, DTO, and service classes. Unit and integration tests for the MonthlyCustomer, Employee, Owner and Parking Lot classes. |  |
+| Karl Bridi | MonthlyCustomer, Employee, Owner and Parking Lot controller, DTO, and service classes. Unit and integration tests for the MonthlyCustomer, Employee, Owner and Parking Lot classes. | 44 |
 
  
 
