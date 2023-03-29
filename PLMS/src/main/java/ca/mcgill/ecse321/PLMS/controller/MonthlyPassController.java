@@ -83,8 +83,9 @@ import jakarta.validation.Valid;
     public ResponseEntity<MonthlyPassResponseDto> createMonthlyPass(@Valid @RequestBody MonthlyPassRequestDto monthlyPassRequestDto){
         int floorNumber = monthlyPassRequestDto.getFloorNumber();
         int nrMonths = monthlyPassRequestDto.getNumberOfMonths();
+        String email = monthlyPassRequestDto.getCustomerEmail();
         MonthlyPass monthlyPass = monthlyPassRequestDto.toModel();
-        monthlyPass = monthlyPassService.createMonthlyPass(monthlyPass, floorNumber, nrMonths);
+        monthlyPass = monthlyPassService.createMonthlyPass(monthlyPass, floorNumber, nrMonths, email);
         MonthlyPassResponseDto responseBody = new MonthlyPassResponseDto(monthlyPass);
         return new ResponseEntity<MonthlyPassResponseDto>(responseBody, HttpStatus.CREATED);
 

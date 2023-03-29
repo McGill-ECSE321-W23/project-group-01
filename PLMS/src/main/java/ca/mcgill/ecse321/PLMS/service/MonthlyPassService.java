@@ -63,8 +63,10 @@ public class MonthlyPassService {
      * Service method to store the created monthly pass object into the database
      */
     @Transactional
-    public MonthlyPass createMonthlyPass(MonthlyPass monthlyPass, int floorNumber, int nrMonths) {
+    public MonthlyPass createMonthlyPass(MonthlyPass monthlyPass, int floorNumber, int nrMonths, String email) {
         // Get the associated floor from floor number inputted into monthly pass
+
+
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);
         if (floor == null) {
             throw new PLMSException(HttpStatus.NOT_FOUND, "The floor with floor number " + floorNumber + " does not exist.");
@@ -90,6 +92,14 @@ public class MonthlyPassService {
         // check to see if we've exceed the floor capacity by booking this spot.
         if(hasExceededCapacity(startDate, localEndDate ,floorNumber, monthlyPass.getIsLarge())){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "All spots of this size on floor " + floorNumber +" are occupied.");
+        }
+
+        if (email != null) {
+            MonthlyCustomer monthlyCustomer = monthlyCustomerRepository.findMonthlyCustomerByEmail(email);
+            if (monthlyCustomer == null)
+                throw new PLMSException(HttpStatus.NOT_FOUND, "There is no customer account associated with this email");
+            else
+                monthlyPass.setCustomer(monthlyCustomer);
         }
 
 
