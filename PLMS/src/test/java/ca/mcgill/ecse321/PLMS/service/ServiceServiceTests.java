@@ -119,7 +119,7 @@ public class ServiceServiceTests {
     }
 
     @Test
-    public void testValidDelete()
+    public void testValidServiceDelete()
     {
         final String serviceName = "Car wash";
         final double fee = 35.5;
@@ -131,6 +131,33 @@ public class ServiceServiceTests {
         serviceService.deleteServiceByServiceName(serviceName);
         verify(serviceRepository).deleteById(serviceName);
 
+    }
+
+    @Test
+    public void testValidServiceUpdate(){
+        final String serviceName = "Car wash";
+        final double fee = 35.5;
+        final double lengthInHours = 1;
+        final Service serv = new Service(serviceName, fee, lengthInHours);
+
+        final Service serv2 = new Service(serviceName, 10, 0.5);
+        when(serviceRepository.findServiceByServiceName(serviceName)).thenReturn(serv);
+        when(serviceRepository.save(serv)).thenReturn(serv2);
+        Service updated = serviceService.updateService(serv2);
+        assertEquals(updated.getCost(), 10);
+        assertEquals(updated.getLengthInHours(), 0.5);
+    }
+
+    @Test
+    public void testInvalidServiceUpdate(){
+        final String serviceName = "Car wash";
+        final double fee = 35.5;
+        final double lengthInHours = 1;
+        final Service serv = new Service(serviceName, fee, lengthInHours);
+        when(serviceRepository.findServiceByServiceName(serviceName)).thenReturn(null);
+        PLMSException e = assertThrows(PLMSException.class, () -> serviceService.updateService(serv));
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(), "Service with name " + serviceName + " does not exists.");
     }
 
 }
