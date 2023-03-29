@@ -126,20 +126,12 @@ public class MonthlyPassService {
      */
     public boolean hasExceededCapacity(LocalDate newPassStartDate, LocalDate newPassEndDate, int floorNumber, boolean isLarge){
         // get all the passes
-        ArrayList<GuestPass> guestPasses = (ArrayList<GuestPass>) guestPassRepository.findAll();
         ArrayList<MonthlyPass> monthlyPasses = (ArrayList<MonthlyPass>) monthlyPassRepository.findAll();
         // number of passes on the floor
         int numberOfPasses = 0;
-        // filter through the guest passes to find passes that are of the same size and same floor number
-        for (GuestPass pass : guestPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowGuestPass(newPassStartDate, newPassEndDate,pass.getDate().toLocalDate())){
-
-                numberOfPasses += 1;
-            }
-        }
 
         for (MonthlyPass pass : monthlyPasses){
-            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isActiveRightNowMonthlyPass(newPassStartDate, newPassEndDate, pass.getStartDate(), pass.getEndDate())){
+            if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isOverlappingMonthlyPass(newPassStartDate, newPassEndDate, pass.getStartDate(), pass.getEndDate())){
 
                 numberOfPasses += 1;
             }
@@ -154,18 +146,6 @@ public class MonthlyPassService {
     }
 
     /**
-     * Checks to see overlap between the newly created monthly pass
-     * and any guest pass.
-     * @param newPassStartDate
-     * @param newPassEndDate
-     * @param guestPassDate
-     * @return - true if there is time overlap
-     */
-    public boolean isActiveRightNowGuestPass(LocalDate newPassStartDate, LocalDate newPassEndDate, LocalDate guestPassDate) {
-        return guestPassDate.isBefore(newPassEndDate) && newPassEndDate.isAfter(newPassStartDate);
-    }
-
-    /**
      * Checks to see overlap between two monthly passes
      * @param newPassStartDate
      * @param newPassEndDate
@@ -173,7 +153,7 @@ public class MonthlyPassService {
      * @param otherPassEndDate
      * @return
      */
-    public boolean isActiveRightNowMonthlyPass(LocalDate newPassStartDate, LocalDate newPassEndDate,LocalDate otherPassStartDate, LocalDate otherPassEndDate) {
+    public boolean isOverlappingMonthlyPass(LocalDate newPassStartDate, LocalDate newPassEndDate,LocalDate otherPassStartDate, LocalDate otherPassEndDate) {
         return (newPassStartDate.isBefore(otherPassEndDate) && newPassEndDate.isAfter(otherPassStartDate)) || (otherPassStartDate.isBefore(newPassEndDate) && otherPassEndDate.isAfter(newPassStartDate));
     }
 
@@ -194,19 +174,10 @@ public class MonthlyPassService {
         }
         return monthlyPasses;
     }
-    /**
-     * Service method that deletes the guest pass with guest pass id guestPassId from the database
-     */
-    @Transactional
-    public void deleteMonthlyPassById(int guestPassId) {
-        //Checks for non null are made in the method already
-        MonthlyPass monthlyPass = getMonthlyPassById(guestPassId);
-        monthlyPassRepository.delete(monthlyPass);
-
-    }
+    
     @Transactional
     public List<MonthlyPass> getMonthlyPassesByMonthlyCustomer(String email) {
-        List<MonthlyPass> monthlyPassesbyMonthlyCustomer  = new ArrayList<>();
+        List<MonthlyPass> monthlyPassesbyMonthlyCustomer  = new ArrayList<MonthlyPass>();
         List<MonthlyPass> monthlyPasses = (List<MonthlyPass>) monthlyPassRepository.findAll();
 
         MonthlyCustomer monthlyCustomer = monthlyCustomerRepository.findMonthlyCustomerByEmail(email);
@@ -219,9 +190,11 @@ public class MonthlyPassService {
         // Loop through all monthly passes in the system
         for (MonthlyPass monthlyPass : monthlyPasses) {
             // Check if the monthly pass belongs to the monthly customer
-            if (monthlyPass.getCustomer().equals(monthlyCustomer)) {
-                monthlyPassesbyMonthlyCustomer.add(monthlyPass);
-            }
+            if(monthlyPass.getCustomer() != null){
+                if (monthlyPass.getCustomer().equals(monthlyCustomer)) {
+                    monthlyPassesbyMonthlyCustomer.add(monthlyPass);
+                }
+            }  
         }
         if (monthlyPassesbyMonthlyCustomer.isEmpty()) {
             // null means monthlyPasses don't exist for that date, throw PLMS error
@@ -259,7 +232,7 @@ public class MonthlyPassService {
                 if (monthlyPass.getSpotNumber().equals(spotNumber)) { // check if spot number matches
                     LocalDate passStartDate = monthlyPass.getStartDate();
                     LocalDate passEndDate = monthlyPass.getEndDate();
-                    if (passStartDate.isBefore(endDate) && passEndDate.isAfter(startDate)) {
+                    if ((passStartDate.isBefore(endDate) && passEndDate.isAfter(startDate)) || startDate.isEqual(passStartDate) || (passEndDate.isEqual(endDate))) {
                         // monthly pass overlaps with the specified date range
                         return true;
                     }
