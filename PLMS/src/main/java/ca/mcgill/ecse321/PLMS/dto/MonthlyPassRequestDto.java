@@ -42,7 +42,7 @@ public class MonthlyPassRequestDto {
     @NotNull(message = "Start date cannot be null")
     @FutureOrPresent(message = "Start date must be equal or greater than current date")
   @Schema(example= "2024-05-05", description = "Start date of the pass", requiredMode = Schema.RequiredMode.REQUIRED)
-    private LocalDate startDate
+    private LocalDate startDate;
     
 
 
