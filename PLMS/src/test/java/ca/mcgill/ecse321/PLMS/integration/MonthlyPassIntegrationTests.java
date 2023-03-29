@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -41,9 +42,9 @@ public class MonthlyPassIntegrationTests {
         public String confirmationCode = "NeverGonnaGiveYouUp";
         public String licensePlate = "12345678";
         public Boolean isLarge = true;
-        public Date startDate =  Date.valueOf("2023-4-1");
+        public LocalDate startDate =  Date.valueOf("2023-4-1").toLocalDate();
         public Integer numberOfMonths = 2;
-        public Date endDate = Date.valueOf("2023-7-1");
+        public LocalDate endDate = Date.valueOf("2023-7-1").toLocalDate();
         public Integer floorNumber = 0;
         public String monthlyCustomerEmail = "samer.abdulkarim@gmail.com";
 
@@ -52,7 +53,7 @@ public class MonthlyPassIntegrationTests {
         public void setConfirmationCode(String confirmationCode){this.confirmationCode = confirmationCode;}
         public void setLicensePlate(String licensePlate){this.licensePlate = licensePlate;}
         public void setLarge(Boolean isLarge){this.isLarge = isLarge;}
-        public void setStartDate(Date startDate){this.startDate = startDate;}
+        public void setStartDate(LocalDate startDate){this.startDate = startDate;}
         public void setNumberOfMonths(Integer numberOfMonths){this.numberOfMonths = numberOfMonths;}
         public void setFloor(Integer floorNumber){this.floorNumber = floorNumber;}
         public void setMonthlyCustomerEmail(String monthlyCustomerEmail){this.monthlyCustomerEmail = monthlyCustomerEmail;}
@@ -112,7 +113,7 @@ public class MonthlyPassIntegrationTests {
     }
 
     private MonthlyPassRequestDto setRequest(String spotNumber, String confirmationCode,
-                                             String licensePlate, Integer numberOfMonths, Date startDate, Integer floorNumber, Boolean isLarge, String customerEmail) {
+                                             String licensePlate, Integer numberOfMonths, LocalDate startDate, Integer floorNumber, Boolean isLarge, String customerEmail) {
         ParkingLot parkingLot = new ParkingLot(Time.valueOf("8:00:00"), Time.valueOf("20:00:00"), 15, 10, 250, 250);
         MonthlyPassRequestDto request = new MonthlyPassRequestDto();
 
@@ -204,7 +205,7 @@ public class MonthlyPassIntegrationTests {
         request.setLicensePlate("12345678");
         request.setLarge(true);
         request.setNumberOfMonths(2);
-        request.setStartDate(Date.valueOf("2033-1-1"));
+        request.setStartDate(Date.valueOf("2033-1-1").toLocalDate());
         request.setFloorNumber(1);
         request.setCustomerEmail("samer.abdulkarim@gmail.com");
 
@@ -222,7 +223,7 @@ public class MonthlyPassIntegrationTests {
         request.setLicensePlate("12345678");
         request.setLarge(true);
         request.setNumberOfMonths(-2);
-        request.setStartDate(Date.valueOf("2023-1-1"));
+        request.setStartDate(Date.valueOf("2023-1-1").toLocalDate());
         request.setFloorNumber(1);
         request.setCustomerEmail("samer.abdulkarim@gmail.com");
 
@@ -240,7 +241,7 @@ public class MonthlyPassIntegrationTests {
         request.setLicensePlate("12345678");
         request.setLarge(true);
         request.setNumberOfMonths(2);
-        request.setStartDate(Date.valueOf("2023-1-1"));
+        request.setStartDate(Date.valueOf("2023-1-1").toLocalDate());
         request.setFloorNumber(1);
         request.setCustomerEmail("samer.abdulkarim@gmail.com");
 
@@ -258,7 +259,7 @@ public class MonthlyPassIntegrationTests {
         request.setLicensePlate("12345678");
         request.setLarge(true);
         request.setNumberOfMonths(2);
-        request.setStartDate(Date.valueOf("2023-1-1"));
+        request.setStartDate(Date.valueOf("2023-1-1").toLocalDate());
         request.setFloorNumber(1);
         request.setCustomerEmail("samer.abdulkarim@gmail.com");
 
@@ -287,7 +288,7 @@ public class MonthlyPassIntegrationTests {
         existingPass.setLicensePlate("12345679");
         existingPass.setLarge(false);
         existingPass.setNumberOfMonths(2);
-        existingPass.setStartDate(Date.valueOf("2023-1-1"));
+        existingPass.setStartDate(Date.valueOf("2023-1-1").toLocalDate());
         existingPass.setFloorNumber(1);
         existingPass.setCustomerEmail("samer.abdulkarim@gmail.com");
 
@@ -297,7 +298,7 @@ public class MonthlyPassIntegrationTests {
         request.setLicensePlate("12345678");
         request.setLarge(true);
         request.setNumberOfMonths(2);
-        request.setStartDate(Date.valueOf("2023-2-1"));
+        request.setStartDate(Date.valueOf("2023-2-1").toLocalDate());
         request.setFloorNumber(1);
         request.setCustomerEmail("samer.abdulkarim@gmail.com");
 
@@ -335,7 +336,7 @@ public class MonthlyPassIntegrationTests {
         request2.setLicensePlate("12345679");
         request2.setLarge(true);
         request2.setNumberOfMonths(2);
-        request2.setStartDate(Date.valueOf("2023-2-1"));
+        request2.setStartDate(Date.valueOf("2023-2-1").toLocalDate());
         request2.setFloorNumber(1);
         request2.setCustomerEmail("samer.abdulkarim2@gmail.com");
         ResponseEntity<MonthlyPassResponseDto> response2 =  client.postForEntity("/monthlypass", request, MonthlyPassResponseDto.class);
@@ -400,7 +401,7 @@ public class MonthlyPassIntegrationTests {
         request.setLicensePlate("12345679");
         request.setLarge(true);
         request.setNumberOfMonths(2);
-        request.setStartDate(Date.valueOf("2023-2-1"));
+        request.setStartDate(Date.valueOf("2023-2-1").toLocalDate());
         request.setFloorNumber(1);
         request.setCustomerEmail("has.nopass@gmail.com");
 

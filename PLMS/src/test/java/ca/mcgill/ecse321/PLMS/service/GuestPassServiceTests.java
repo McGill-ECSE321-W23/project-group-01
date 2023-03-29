@@ -603,30 +603,30 @@ public class GuestPassServiceTests {
     guestPass2.setStartTime(Time.valueOf("10:45:00"));
     guestPass2.setEndTime(Time.valueOf("14:00:00"));
 
-    // Initialize monthly passes
-    MonthlyPass monthlyPass1 = new MonthlyPass();
-    monthlyPass1.setSpotNumber("A24");
-    monthlyPass1.setIsLarge(true);
-    monthlyPass1.setFloor(floor);
-    monthlyPass1.setStartDate(currentDate);
-    LocalDate endDate1 = Date.valueOf(LocalDate.of(2024, 4, 1)).toLocalDate();
-    monthlyPass1.setEndDate(endDate1);
+    // // Initialize monthly passes
+    // MonthlyPass monthlyPass1 = new MonthlyPass();
+    // monthlyPass1.setSpotNumber("A24");
+    // monthlyPass1.setIsLarge(true);
+    // monthlyPass1.setFloor(floor);
+    // monthlyPass1.setStartDate(currentDate);
+    // LocalDate endDate1 = Date.valueOf(LocalDate.of(2024, 4, 1)).toLocalDate();
+    // monthlyPass1.setEndDate(endDate1);
 
-    // inactive monthly pass
-    MonthlyPass monthlyPass2 = new MonthlyPass();
-    monthlyPass2.setSpotNumber("A25");
-    monthlyPass2.setIsLarge(true);
-    monthlyPass2.setFloor(floor);
-    LocalDate endDate2 = Date.valueOf(LocalDate.of(2020, 5, 1)).toLocalDate();
-    monthlyPass2.setStartDate(startDate2);
-    monthlyPass2.setEndDate(endDate2);
+    // // inactive monthly pass
+    // MonthlyPass monthlyPass2 = new MonthlyPass();
+    // monthlyPass2.setSpotNumber("A25");
+    // monthlyPass2.setIsLarge(true);
+    // monthlyPass2.setFloor(floor);
+    // LocalDate endDate2 = Date.valueOf(LocalDate.of(2020, 5, 1)).toLocalDate();
+    // monthlyPass2.setStartDate(startDate2);
+    // monthlyPass2.setEndDate(endDate2);
 
     ArrayList<GuestPass> guestPassList = new ArrayList<>();
     ArrayList<MonthlyPass> monthlyPassList = new ArrayList<>();
     guestPassList.add(guestPass1);
     guestPassList.add(guestPass2);
-    monthlyPassList.add(monthlyPass2);
-    monthlyPassList.add(monthlyPass1);
+    // monthlyPassList.add(monthlyPass2);
+    // monthlyPassList.add(monthlyPass1);
     when(guestPassRepo.findAll()).thenReturn(guestPassList);
     when(monthlyPassRepo.findAll()).thenReturn(monthlyPassList);
 

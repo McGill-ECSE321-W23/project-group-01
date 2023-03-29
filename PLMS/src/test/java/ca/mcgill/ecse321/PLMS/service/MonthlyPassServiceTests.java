@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.PLMS.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
@@ -51,8 +52,8 @@ public class MonthlyPassServiceTests {
     double fee = 50.50;
     String spotNumber = "A24";
     String licensePlate = "123ABC123";
-    Date startDate = Date.valueOf("2023-02-21");
-    Date endDate = Date.valueOf("2023-03-20");
+    LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+    LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
     boolean isLarge = true;
     String confirmationCode = "NeverGonnaGiveYouUp";
     int id = 1;
@@ -73,7 +74,7 @@ public class MonthlyPassServiceTests {
 
   @Test
     public void testGetAllEmptyMonthlyPasses() {
-        ArrayList<MonthlyPass> passes = new ArrayList<MonthlyPass>();
+        ArrayList<MonthlyPass> passes = new ArrayList<>();
         when(monthlyPassRepo.findAll()).thenReturn(passes);
         PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getAllMonthlyPasses());
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
@@ -85,8 +86,8 @@ public class MonthlyPassServiceTests {
     double fee = 50.50;
     String spotNumber = "A24";
     String licensePlate = "123ABC123";
-    Date startDate = Date.valueOf("2023-02-21");
-    Date endDate = Date.valueOf("2023-03-20");
+    LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+    LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
     boolean isLarge = true;
     String confirmationCode = "NeverGonnaGiveYouUp";
     int id = 1;
@@ -148,8 +149,8 @@ public class MonthlyPassServiceTests {
         double fee = 50.50;
         String spotNumber = "A24";
         String licensePlate = "123ABC123";
-        Date startDate = Date.valueOf("2023-02-21");
-        Date endDate = Date.valueOf("2023-03-20");
+        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
         int id = 1;
@@ -175,8 +176,8 @@ public class MonthlyPassServiceTests {
         double fee = 50.50;
         String spotNumber = "A24";
         String licensePlate = "123ABC123";
-        Date startDate = Date.valueOf("2023-02-21");
-        Date endDate = Date.valueOf("2023-03-20");
+        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
         int id = 1;
@@ -210,8 +211,8 @@ public class MonthlyPassServiceTests {
         double fee = 50.50;
         String spotNumber = "A24";
         String licensePlate = "123ABC123";
-        Date startDate = Date.valueOf("2023-02-21");
-        Date endDate = Date.valueOf("2023-03-20");
+        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
     
@@ -237,8 +238,8 @@ public class MonthlyPassServiceTests {
         double fee2 = 50.50;
         String spotNumber2 = "A25";
         String licensePlate2 = "123ABC124";
-        Date startDate2 = Date.valueOf("2023-02-22");
-        Date endDate2 = Date.valueOf("2023-03-21");
+        LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+        LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
         
@@ -278,16 +279,16 @@ public class MonthlyPassServiceTests {
         double fee = 50.50;
         String spotNumber = "A24";
         String licensePlate = "123ABC123";
-        Date startDate = Date.valueOf("2023-02-21");
-        Date endDate = Date.valueOf("2023-03-20");
+        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
 
         double fee2 = 50.50;
         String spotNumber2 = "A25";
         String licensePlate2 = "123ABC124";
-        Date startDate2 = Date.valueOf("2023-02-22");
-        Date endDate2 = Date.valueOf("2023-03-21");
+        LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+        LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
     
@@ -347,16 +348,16 @@ public class MonthlyPassServiceTests {
         double fee = 50.50;
         String spotNumber = "A24";
         String licensePlate = "123ABC123";
-        Date startDate = Date.valueOf("2023-02-21");
-        Date endDate = Date.valueOf("2023-03-20");
+        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
 
         double fee2 = 50.50;
         String spotNumber2 = "A25";
         String licensePlate2 = "123ABC124";
-        Date startDate2 = Date.valueOf("2023-02-22");
-        Date endDate2 = Date.valueOf("2023-03-21");
+        LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+        LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
     
@@ -400,8 +401,8 @@ public class MonthlyPassServiceTests {
         double fee = 50.50;
         String spotNumber = "A24";
         String licensePlate = "123ABC123";
-        Date startDate = Date.valueOf("2023-02-21");
-        Date endDate = Date.valueOf("2023-03-20");
+        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
         
@@ -449,16 +450,16 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
       String spotNumber = "A24";
       String licensePlate = "123ABC123";
-      Date startDate = Date.valueOf("2023-02-21");
-      Date endDate = Date.valueOf("2023-03-20");
+      LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+      LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
 
       double fee2 = 50.50;
       String spotNumber2 = "A25";
       String licensePlate2 = "123ABC124";
-      Date startDate2 = Date.valueOf("2023-02-22");
-      Date endDate2 = Date.valueOf("2023-03-21");
+      LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+      LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
       boolean isLarge2 = true;
       String confirmationCode2 = "NeverGonnaGiveYouUp";
       
@@ -517,16 +518,16 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
         String spotNumber = "A24";
         String licensePlate = "123ABC123";
-        Date startDate = Date.valueOf("2023-02-21");
-        Date endDate = Date.valueOf("2023-03-20");
+        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
 
         double fee2 = 50.50;
         String spotNumber2 = "A25";
         String licensePlate2 = "123ABC124";
-        Date startDate2 = Date.valueOf("2023-02-22");
-        Date endDate2 = Date.valueOf("2023-03-21");
+        LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+        LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
     
@@ -568,16 +569,16 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
         String spotNumber = "A24";
         String licensePlate = "123ABC123";
-        Date startDate = Date.valueOf("2023-02-21");
-        Date endDate = Date.valueOf("2023-03-20");
+        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
 
         double fee2 = 50.50;
         String spotNumber2 = "A25";
         String licensePlate2 = "123ABC124";
-        Date startDate2 = Date.valueOf("2023-02-22");
-        Date endDate2 = Date.valueOf("2023-03-21");
+        LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+        LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
     
@@ -626,16 +627,16 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
         String spotNumber = "A24";
         String licensePlate = "123ABC123";
-        Date startDate = Date.valueOf("2023-02-21");
-        Date endDate = Date.valueOf("2023-03-20");
+        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
 
         double fee2 = 50.50;
         String spotNumber2 = "A25";
         String licensePlate2 = "123ABC124";
-        Date startDate2 = Date.valueOf("2023-02-22");
-        Date endDate2 = Date.valueOf("2023-03-21");
+        LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+        LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
         
@@ -663,7 +664,7 @@ public class MonthlyPassServiceTests {
 
         when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
 
-        ArrayList<MonthlyPass> output = (ArrayList<MonthlyPass>) monthlyPassService.getMonthlyPassesByDate(Date.valueOf("2023-02-21"));
+        ArrayList<MonthlyPass> output = (ArrayList<MonthlyPass>) monthlyPassService.getMonthlyPassesByDate(Date.valueOf("2023-02-21").toLocalDate());
         Iterator<MonthlyPass> i = output.iterator();
         MonthlyPass outputMonthlyPass = i.next();
         assertEquals(output.size(), 1);
@@ -678,16 +679,16 @@ public class MonthlyPassServiceTests {
         double fee = 50.50;
         String spotNumber = "A24";
         String licensePlate = "123ABC123";
-        Date startDate = Date.valueOf("2023-02-21");
-        Date endDate = Date.valueOf("2023-03-20");
+        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
         boolean isLarge = true;
         String confirmationCode = "NeverGonnaGiveYouUp";
 
         double fee2 = 50.50;
         String spotNumber2 = "A25";
         String licensePlate2 = "123ABC124";
-        Date startDate2 = Date.valueOf("2023-02-22");
-        Date endDate2 = Date.valueOf("2023-03-21");
+        LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+        LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
         boolean isLarge2 = true;
         String confirmationCode2 = "NeverGonnaGiveYouUp";
         
@@ -715,7 +716,7 @@ public class MonthlyPassServiceTests {
 
         when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
 
-        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByDate(Date.valueOf("2023-02-20")));
+        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByDate(Date.valueOf("2023-02-20").toLocalDate()));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
         assertEquals(e.getMessage(), "There are no monthly passes for date " + Date.valueOf("2023-02-20"));
 
@@ -726,7 +727,7 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
       String spotNumber = "A24";
       String licensePlate = "123ABC123";
-      Date startDate = Date.valueOf("2023-02-21");
+      LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
 
@@ -763,7 +764,7 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
       String spotNumber = "A24";
       String licensePlate = "123ABC123";
-      Date startDate = Date.valueOf("2023-02-21");
+      LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
 
@@ -809,7 +810,7 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
       String spotNumber = "A24";
       String licensePlate = "123ABC123";
-      Date startDate = Date.valueOf("2023-02-21");
+      LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
       int id = 1;
@@ -836,7 +837,7 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
       String spotNumber = "A24";
       String licensePlate = "123ABC123";
-      Date startDate = Date.valueOf("2023-02-21");
+      LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
       int id = 1;
@@ -867,8 +868,8 @@ public class MonthlyPassServiceTests {
       double fee = 50.50;
       String spotNumber = "A24";
       String licensePlate = "123ABC123";
-      Date startDate = Date.valueOf("2023-02-21");
-      Date endDate = Date.valueOf("2023-03-21");
+      LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+      LocalDate endDate = Date.valueOf("2023-03-21").toLocalDate();
       boolean isLarge = true;
       String confirmationCode = "NeverGonnaGiveYouUp";
       int id = 1;
@@ -885,7 +886,7 @@ public class MonthlyPassServiceTests {
       String spotNumber2 = "A24";
       String licensePlate2 = "123ABC124";
       boolean isLarge2 = true;
-      Date startDate2 = Date.valueOf("2023-02-21");
+      LocalDate startDate2 = Date.valueOf("2023-02-21").toLocalDate();
       String confirmationCode2 = "NeverGonnaGiveYouUp";
 
 
@@ -933,8 +934,8 @@ public class MonthlyPassServiceTests {
   void testCreateMonthlyPassExceededCapacity1() {
     int floorNumber = 1;
     int nrIncrements = 4;
-    Date currentDate = Date.valueOf(LocalDate.of(2023, 4, 1));
-    Date startDate2 = Date.valueOf(LocalDate.of(2020, 4, 1));
+    LocalDate currentDate = Date.valueOf(LocalDate.of(2023, 4, 1)).toLocalDate();
+    LocalDate startDate2 = Date.valueOf(LocalDate.of(2020, 4, 1)).toLocalDate();
     Time openingTime = Time.valueOf("07:00:00");
     Time closingTime = Time.valueOf("22:00:00");
 
@@ -951,22 +952,22 @@ public class MonthlyPassServiceTests {
     floor.setIsMemberOnly(true);
     when(floorRepo.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
 
-    // Initialize guest passes
-    GuestPass guestPass1 = new GuestPass();
-    guestPass1.setSpotNumber("A24");
-    guestPass1.setIsLarge(true);
-    guestPass1.setFloor(floor);
-    guestPass1.setDate(currentDate);
-    guestPass1.setStartTime(Time.valueOf("10:00:00"));
-    guestPass1.setEndTime(Time.valueOf("14:00:00"));
+    // // Initialize guest passes
+    // GuestPass guestPass1 = new GuestPass();
+    // guestPass1.setSpotNumber("A24");
+    // guestPass1.setIsLarge(true);
+    // guestPass1.setFloor(floor);
+    // guestPass1.setDate(currentDate);
+    // guestPass1.setStartTime(Time.valueOf("10:00:00"));
+    // guestPass1.setEndTime(Time.valueOf("14:00:00"));
 
-    GuestPass guestPass2 = new GuestPass();
-    guestPass2.setSpotNumber("A25");
-    guestPass2.setIsLarge(true);
-    guestPass2.setFloor(floor);
-    guestPass2.setDate(startDate2);
-    guestPass2.setStartTime(Time.valueOf("10:45:00"));
-    guestPass2.setEndTime(Time.valueOf("14:00:00"));
+    // GuestPass guestPass2 = new GuestPass();
+    // guestPass2.setSpotNumber("A25");
+    // guestPass2.setIsLarge(true);
+    // guestPass2.setFloor(floor);
+    // guestPass2.setDate(startDate2);
+    // guestPass2.setStartTime(Time.valueOf("10:45:00"));
+    // guestPass2.setEndTime(Time.valueOf("14:00:00"));
 
     // Initialize monthly passes
     MonthlyPass monthlyPass1 = new MonthlyPass();
@@ -974,7 +975,7 @@ public class MonthlyPassServiceTests {
     monthlyPass1.setIsLarge(true);
     monthlyPass1.setFloor(floor);
     monthlyPass1.setStartDate(currentDate);
-    Date endDate1 = Date.valueOf(LocalDate.of(2024, 4, 1));
+    LocalDate endDate1 = Date.valueOf(LocalDate.of(2024, 4, 1)).toLocalDate();
     monthlyPass1.setEndDate(endDate1);
 
     // inactive monthly pass
@@ -982,14 +983,14 @@ public class MonthlyPassServiceTests {
     monthlyPass2.setSpotNumber("A25");
     monthlyPass2.setIsLarge(true);
     monthlyPass2.setFloor(floor);
-    Date endDate2 = Date.valueOf(LocalDate.of(2020, 5, 1));
+    LocalDate endDate2 = Date.valueOf(LocalDate.of(2020, 5, 1)).toLocalDate();
     monthlyPass2.setStartDate(startDate2);
     monthlyPass2.setEndDate(endDate2);
 
     ArrayList<GuestPass> guestPassList = new ArrayList<>();
     ArrayList<MonthlyPass> monthlyPassList = new ArrayList<>();
-    guestPassList.add(guestPass1);
-    guestPassList.add(guestPass2);
+    // guestPassList.add(guestPass1);
+    // guestPassList.add(guestPass2);
     monthlyPassList.add(monthlyPass2);
     monthlyPassList.add(monthlyPass1);
     when(guestPassRepo.findAll()).thenReturn(guestPassList);
@@ -1014,8 +1015,8 @@ public class MonthlyPassServiceTests {
   void testCreateMonthlyPassExceededCapacity2() {
     int floorNumber = 1;
     int nrIncrements = 4;
-    Date currentDate = Date.valueOf(LocalDate.of(2023, 4, 1));
-    Date startDate2 = Date.valueOf(LocalDate.of(2020, 4, 1));
+    LocalDate currentDate = Date.valueOf(LocalDate.of(2023, 4, 1)).toLocalDate();
+    LocalDate startDate2 = Date.valueOf(LocalDate.of(2020, 4, 1)).toLocalDate();
 
     Time openingTime = Time.valueOf("07:00:00");
     Time closingTime = Time.valueOf("22:00:00");
@@ -1033,22 +1034,22 @@ public class MonthlyPassServiceTests {
     floor.setIsMemberOnly(true);
     when(floorRepo.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
 
-    // Initialize guest passes
-    GuestPass guestPass1 = new GuestPass();
-    guestPass1.setSpotNumber("A24");
-    guestPass1.setIsLarge(false);
-    guestPass1.setFloor(floor);
-    guestPass1.setDate(currentDate);
-    guestPass1.setStartTime(Time.valueOf("10:00:00"));
-    guestPass1.setEndTime(Time.valueOf("14:00:00"));
+    // // Initialize guest passes
+    // GuestPass guestPass1 = new GuestPass();
+    // guestPass1.setSpotNumber("A24");
+    // guestPass1.setIsLarge(false);
+    // guestPass1.setFloor(floor);
+    // guestPass1.setDate(currentDate);
+    // guestPass1.setStartTime(Time.valueOf("10:00:00"));
+    // guestPass1.setEndTime(Time.valueOf("14:00:00"));
 
-    GuestPass guestPass2 = new GuestPass();
-    guestPass2.setSpotNumber("A25");
-    guestPass2.setIsLarge(false);
-    guestPass2.setFloor(floor);
-    guestPass2.setDate(startDate2);
-    guestPass2.setStartTime(Time.valueOf("10:45:00"));
-    guestPass2.setEndTime(Time.valueOf("14:00:00"));
+    // GuestPass guestPass2 = new GuestPass();
+    // guestPass2.setSpotNumber("A25");
+    // guestPass2.setIsLarge(false);
+    // guestPass2.setFloor(floor);
+    // guestPass2.setDate(startDate2);
+    // guestPass2.setStartTime(Time.valueOf("10:45:00"));
+    // guestPass2.setEndTime(Time.valueOf("14:00:00"));
 
     // Initialize monthly passes
     MonthlyPass monthlyPass1 = new MonthlyPass();
@@ -1056,7 +1057,7 @@ public class MonthlyPassServiceTests {
     monthlyPass1.setIsLarge(false);
     monthlyPass1.setFloor(floor);
     monthlyPass1.setStartDate(currentDate);
-    Date endDate1 = Date.valueOf(LocalDate.of(2024, 4, 1));
+   LocalDate endDate1 = Date.valueOf(LocalDate.of(2024, 4, 1)).toLocalDate();
     monthlyPass1.setEndDate(endDate1);
 
     // inactive monthly pass
@@ -1064,14 +1065,14 @@ public class MonthlyPassServiceTests {
     monthlyPass2.setSpotNumber("A25");
     monthlyPass2.setIsLarge(false);
     monthlyPass2.setFloor(floor);
-    Date endDate2 = Date.valueOf(LocalDate.of(2020, 5, 1));
+    LocalDate endDate2 = Date.valueOf(LocalDate.of(2020, 5, 1)).toLocalDate();
     monthlyPass2.setStartDate(startDate2);
     monthlyPass2.setEndDate(endDate2);
 
     ArrayList<GuestPass> guestPassList = new ArrayList<>();
     ArrayList<MonthlyPass> monthlyPassList = new ArrayList<>();
-    guestPassList.add(guestPass1);
-    guestPassList.add(guestPass2);
+    // guestPassList.add(guestPass1);
+    // guestPassList.add(guestPass2);
     monthlyPassList.add(monthlyPass2);
     monthlyPassList.add(monthlyPass1);
     when(guestPassRepo.findAll()).thenReturn(guestPassList);

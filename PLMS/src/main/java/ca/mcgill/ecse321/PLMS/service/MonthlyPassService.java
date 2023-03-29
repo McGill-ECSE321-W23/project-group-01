@@ -99,6 +99,7 @@ public class MonthlyPassService {
         } else {
             monthlyPass.setFee(parkingLot.getSmallSpotFee() * nrMonths);
         }
+        monthlyPass.setFloor(floor);
         // Create object
         monthlyPass = monthlyPassRepository.save(monthlyPass);
 
@@ -241,14 +242,14 @@ public class MonthlyPassService {
         return monthlyPassesByDate;
     }
 
-    public boolean isSpotOccupied(int floorNumber, String spotNumber, Date startDate, Date endDate) {
+    public boolean isSpotOccupied(int floorNumber, String spotNumber, LocalDate startDate, LocalDate endDate) {
         try {
             List<MonthlyPass> monthlyPasses = getMonthlyPassesByFloor(floorNumber); // get all monthly passes for the floor
             for (MonthlyPass monthlyPass : monthlyPasses) {
                 if (monthlyPass.getSpotNumber().equals(spotNumber)) { // check if spot number matches
                     LocalDate passStartDate = monthlyPass.getStartDate();
                     LocalDate passEndDate = monthlyPass.getEndDate();
-                    if (passStartDate.before(endDate) && passEndDate.after(startDate)) {
+                    if (passStartDate.isBefore(endDate) && passEndDate.isAfter(startDate)) {
                         // monthly pass overlaps with the specified date range
                         return true;
                     }
