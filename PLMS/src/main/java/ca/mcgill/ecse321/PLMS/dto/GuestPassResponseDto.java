@@ -10,16 +10,16 @@ import ca.mcgill.ecse321.PLMS.model.GuestPass;
 public class GuestPassResponseDto {
 
 
-    private Integer id;
-    private Double fee;
+    private int id;
+    private double fee;
     private String spotNumber;
     private String confirmationCode;
     private String licensePlate;
-    private Boolean isLarge;
+    private boolean isLarge;
     private LocalDate date;
     private Time startTime;
     private Time endTime;
-    private Integer floorNumber;
+    private int floorNumber;
 
     /**
      * Constructor for creating a guestPass response transfer object by using the fields of 
@@ -40,44 +40,86 @@ public class GuestPassResponseDto {
         this.endTime = guestPass.getEndTime();
     }
 
-    public Double getFee(){
-        return this.fee;
+    public GuestPassResponseDto() {
     }
 
-    public Integer getId(){
-        return this.id;
+    public int getId() {
+        return id;
     }
 
-    public Boolean getIsLarge(){
-        return this.isLarge;
+    public double getFee() {
+        return fee;
     }
 
-    public LocalDate getDate(){
-        return this.date;
+    public String getSpotNumber() {
+        return spotNumber;
     }
 
-    public Time getStartTime(){
-        return this.startTime;
+    public String getConfirmationCode() {
+        return confirmationCode;
     }
 
-    public Time getEndTime(){
-        return this.endTime;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    public String getSpotNumber(){
-        return this.spotNumber;
+    public boolean isLarge() {
+        return isLarge;
     }
 
-    public String getConfirmationCode(){
-        return this.confirmationCode;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public String getLicensePlate(){
-        return this.licensePlate;
+    public Time getStartTime() {
+        return startTime;
     }
 
-    public Integer getFloor(){
-        return this.floorNumber;
+    public Time getEndTime() {
+        return endTime;
     }
 
+    public int getFloorNumber() {
+        return floorNumber;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFee(double fee) {
+        this.fee = fee;
+    }
+
+    public void setSpotNumber(String spotNumber) {
+        this.spotNumber = spotNumber;
+    }
+
+    public void setConfirmationCode(String confirmationCode) {
+        this.confirmationCode = confirmationCode;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public void setLarge(boolean large) {
+        isLarge = large;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setStartTime(Time startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(Time endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setFloorNumber(int floorNumber) {
+        this.floorNumber = floorNumber;
+    }
 }

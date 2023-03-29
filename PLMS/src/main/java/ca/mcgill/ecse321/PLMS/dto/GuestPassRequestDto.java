@@ -59,4 +59,28 @@ public class GuestPassRequestDto {
     public Integer getNumberOfFifteenMinuteIncrements() {
         return numberOfFifteenMinuteIncrements;
     }
+
+    public void setIsLarge(Boolean isLarge) {
+        this.isLarge = isLarge;
+    }
+
+    public void setNumberOfFifteenMinuteIncrements(Integer numberOfFifteenMinuteIncrements) {
+        this.numberOfFifteenMinuteIncrements = numberOfFifteenMinuteIncrements;
+    }
+
+    public String getSpotNumber() {
+        return spotNumber;
+    }
+
+    public String getConfirmationCode() {
+        return confirmationCode;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public Boolean getLarge() {
+        return isLarge;
+    }
 }
