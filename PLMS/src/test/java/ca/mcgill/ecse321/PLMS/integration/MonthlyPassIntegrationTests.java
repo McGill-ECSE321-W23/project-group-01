@@ -66,7 +66,7 @@ public class MonthlyPassIntegrationTests {
         public static final int largeSpotCapacity = 10;
         public static final int smallSpotCapacity = 10;
 
-        public static final boolean isMemberOnlyUpdated = true;
+        public static final boolean isMemberOnlyUpdated = false;
         public static final int largeSpotCapacityUpdated = 30;
         public static final int smallSpotCapacityUpdated = 40;
 
@@ -207,103 +207,105 @@ public class MonthlyPassIntegrationTests {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals(response.getBody(), "Monthly pass with id: " + invalidId + " does not exist.");
     }
-//
-//    @Test
-//    @Order(3)
-//    public void testCreateBlankMonthlyPass() {
-//        MonthlyPassRequestDto request = new MonthlyPassRequestDto();
-//        ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
-//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-//        assertContains("Cannot have an empty number of months.", response.getBody());
-//        assertContains("Cannot have an empty spot number.", response.getBody());
-//        assertContains("Cannot have an empty license plate.", response.getBody());
-//        assertContains("Cannot have an empty confirmation code.", response.getBody());
-//        assertContains("Cannot have an empty floor number.", response.getBody());
-//        assertContains("Must specify whether the pass is for a small or large car", response.getBody());
-//        assertContains("Start date cannot be null", response.getBody());
-//    }
-//
-//    @Test
-//    @Order(4)
-//    public void testCreateInvalidDateMonthlyPass() {
-//        MonthlyPassRequestDto request = new MonthlyPassRequestDto();
-//        request.setSpotNumber("A24");
-//        request.setConfirmationCode("NeverGonnaGiveYouUp");
-//        request.setLicensePlate("12345678");
-//        request.setLarge(true);
-//        request.setNumberOfMonths(2);
-//        request.setStartDate(Date.valueOf("2033-1-1").toLocalDate());
-//        request.setFloorNumber(1);
-//        request.setCustomerEmail("samer.abdulkarim@gmail.com");
-//
-//        ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
-//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-//        assertContains("Start date must be equal or greater than current date", response.getBody());
-//    }
-//
-//    @Test
-//    @Order(5)
-//    public void testCreateInvalidMonthsMonthlyPass() {
-//        MonthlyPassRequestDto request = new MonthlyPassRequestDto();
-//        request.setSpotNumber("A24");
-//        request.setConfirmationCode("NeverGonnaGiveYouUp");
-//        request.setLicensePlate("12345678");
-//        request.setLarge(true);
-//        request.setNumberOfMonths(-2);
-//        request.setStartDate(Date.valueOf("2023-1-1").toLocalDate());
-//        request.setFloorNumber(1);
-//        request.setCustomerEmail("samer.abdulkarim@gmail.com");
-//
-//        ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
-//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-//        assertContains("Must enter a positive number of months.", response.getBody());
-//    }
-//
-//    @Test
-//    @Order(6)
-//    public void testCreateInvalidFloorNumberMonthlyPass() {
-//        MonthlyPassRequestDto request = new MonthlyPassRequestDto();
-//        request.setSpotNumber("A24");
-//        request.setConfirmationCode("NeverGonnaGiveYouUp");
-//        request.setLicensePlate("12345678");
-//        request.setLarge(true);
-//        request.setNumberOfMonths(2);
-//        request.setStartDate(Date.valueOf("2023-1-1").toLocalDate());
-//        request.setFloorNumber(1);
-//        request.setCustomerEmail("samer.abdulkarim@gmail.com");
-//
-//        ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
-//        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-//        assertContains("The floor with floor number 1 does not exist.", response.getBody());
-//    }
-//
-//    @Test
-//    @Order(7)
-//    public void testCreateInvalidFloorTypeMonthlyPass() {
-//        MonthlyPassRequestDto request = new MonthlyPassRequestDto();
-//        request.setSpotNumber("A24");
-//        request.setConfirmationCode("NeverGonnaGiveYouUp");
-//        request.setLicensePlate("12345678");
-//        request.setLarge(true);
-//        request.setNumberOfMonths(2);
-//        request.setStartDate(Date.valueOf("2023-1-1").toLocalDate());
-//        request.setFloorNumber(1);
-//        request.setCustomerEmail("samer.abdulkarim@gmail.com");
-//
-//        ParkingLotRequestDto lotrequest = new ParkingLotRequestDto();
-//        client.postForEntity("/parkingLot/creation", lotrequest, ParkingLotResponseDto.class);
-//
-//
-//        FloorRequestDto floorRequest = new FloorRequestDto();
-//        floorRequest.setFloorNumber(1);
-//        floorRequest.setIsMemberOnly(false);
-//
-//        client.postForEntity("/floor", floorRequest, FloorResponseDto.class);
-//
-//        ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
-//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-//        assertContains("Floor 1 is reserved for guest passes only.", response.getBody());
-//    }
+
+   @Test
+   @Order(3)
+   public void testCreateBlankMonthlyPass() {
+       MonthlyPassRequestDto request = new MonthlyPassRequestDto();
+       ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
+       assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+       assertContains("Cannot have an empty number of months.", response.getBody());
+       assertContains("Cannot have an empty spot number.", response.getBody());
+       assertContains("Cannot have an empty license plate.", response.getBody());
+       assertContains("Cannot have an empty confirmation code.", response.getBody());
+       assertContains("Cannot have an empty floor number.", response.getBody());
+       assertContains("Must specify whether the pass is for a small or large car", response.getBody());
+       assertContains("Start date cannot be null", response.getBody());
+   }
+
+   @Test
+   @Order(4)
+   public void testCreateInvalidDateMonthlyPass() {
+       MonthlyPassRequestDto request = new MonthlyPassRequestDto();
+       request.setSpotNumber("A24");
+       request.setConfirmationCode("NeverGonnaGiveYouUp");
+       request.setLicensePlate("12345678");
+       request.setLarge(true);
+       request.setNumberOfMonths(2);
+       request.setStartDate(Date.valueOf("2023-1-1").toLocalDate());
+       request.setFloorNumber(0);
+       request.setCustomerEmail("samer.abdulkarim@gmail.com");
+
+       ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
+       assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+       assertContains("Start date must be equal or greater than current date", response.getBody());
+   }
+
+   @Test
+   @Order(5)
+   public void testCreateInvalidMonthsMonthlyPass() {
+       MonthlyPassRequestDto request = new MonthlyPassRequestDto();
+       request.setSpotNumber("A24");
+       request.setConfirmationCode("NeverGonnaGiveYouUp");
+       request.setLicensePlate("12345678");
+       request.setLarge(true);
+       request.setNumberOfMonths(-2);
+       request.setStartDate(Date.valueOf("2024-1-1").toLocalDate());
+       request.setFloorNumber(1);
+       request.setCustomerEmail("samer.abdulkarim@gmail.com");
+
+       ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
+       assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+       assertContains("Must enter a positive number of months.", response.getBody());
+   }
+
+   @Test
+   @Order(6)
+   public void testCreateInvalidFloorNumberMonthlyPass() {
+       MonthlyPassRequestDto request = new MonthlyPassRequestDto();
+       request.setSpotNumber("A24");
+       request.setConfirmationCode("NeverGonnaGiveYouUp");
+       request.setLicensePlate("12345678");
+       request.setLarge(true);
+       request.setNumberOfMonths(2);
+       request.setStartDate(Date.valueOf("2024-1-1").toLocalDate());
+       request.setFloorNumber(1);
+       request.setCustomerEmail("samer.abdulkarim@gmail.com");
+
+       ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
+       assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+       assertContains("The floor with floor number 1 does not exist.", response.getBody());
+   }
+
+   @Test
+   @Order(7)
+   public void testCreateInvalidFloorTypeMonthlyPass() {
+       MonthlyPassRequestDto request = new MonthlyPassRequestDto();
+       request.setSpotNumber("A24");
+       request.setConfirmationCode("NeverGonnaGiveYouUp");
+       request.setLicensePlate("12345678");
+       request.setLarge(true);
+       request.setNumberOfMonths(2);
+       request.setStartDate(Date.valueOf("2023-1-1").toLocalDate());
+       request.setFloorNumber(1);
+       request.setCustomerEmail("samer.abdulkarim@gmail.com");
+
+    //    ParkingLotRequestDto lotrequest = new ParkingLotRequestDto();
+    //    client.postForEntity("/parkingLot/creation", lotrequest, ParkingLotResponseDto.class);
+
+
+       FloorRequestDto floorRequest = new FloorRequestDto();
+       floorRequest.setFloorNumber(1);
+       floorRequest.setIsMemberOnly(false);
+       floorRequest.setLargeSpotCapacity(10);
+       floorRequest.setSmallSpotCapacity(10);
+
+       ResponseEntity<FloorResponseDto> floorResponse = client.postForEntity("/floor", floorRequest, FloorResponseDto.class);
+
+       ResponseEntity<String> response =  client.postForEntity("/monthlypass", request, String.class);
+       assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+       assertContains("Floor 1 is reserved for guest passes only.", response.getBody());
+   }
 //
 //    @Test
 //    @Order(8)
