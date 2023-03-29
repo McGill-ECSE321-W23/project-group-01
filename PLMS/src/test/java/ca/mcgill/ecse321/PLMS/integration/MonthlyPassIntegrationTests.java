@@ -484,31 +484,57 @@ public class MonthlyPassIntegrationTests {
    @Order(12)
    public void testGetMonthlyPassesByMonthlyCustomer(){
 
+        MonthlyCustomerRequestDto customerRequest = new MonthlyCustomerRequestDto();
+       customerRequest.setEmail("has.nopass@gmail.com");
+       customerRequest.setPassword("Hello!");
+       customerRequest.setName("Evan");
+
+       client.postForEntity("/customer/create", customerRequest, MonthlyCustomerResponseDto.class);
+
+        ParkingLotRequestDto lotrequest = new ParkingLotRequestDto();
+       lotrequest.setOpeningTime(Time.valueOf("8:00:00"));
+       lotrequest.setClosingTime(Time.valueOf("20:00:00"));
+       lotrequest.setLargeSpotFee(15.0);
+       lotrequest.setSmallSpotFee(10.0);
+       lotrequest.setSmallSpotMonthlyFlatFee(250.0);
+       lotrequest.setLargeSpotMonthlyFlatFee(250.0);
+
+       ResponseEntity<ParkingLotResponseDto> lotresponse = client.postForEntity("/parkingLot/creation", lotrequest, ParkingLotResponseDto.class);
+
+       FloorRequestDto floorRequest = new FloorRequestDto();
+       floorRequest.setFloorNumber(0);
+       floorRequest.setIsMemberOnly(true);
+       floorRequest.setLargeSpotCapacity(10);
+       floorRequest.setSmallSpotCapacity(10);
+
+       ResponseEntity<FloorResponseDto> floorResponse = client.postForEntity("/floor", floorRequest, FloorResponseDto.class);
+
        MonthlyPassRequestDto request = new MonthlyPassRequestDto();
        request.setSpotNumber("A26");
        request.setConfirmationCode("NeverGonnaGiveYouUp");
        request.setLicensePlate("12345679");
        request.setLarge(true);
        request.setNumberOfMonths(2);
-       request.setStartDate(Date.valueOf("2023-2-1").toLocalDate());
-       request.setFloorNumber(1);
+       request.setStartDate(Date.valueOf("2024-2-1").toLocalDate());
+       request.setFloorNumber(0);
        request.setCustomerEmail("has.nopass@gmail.com");
 
-       client.postForEntity("/monthlypass", request, MonthlyPassResponseDto.class);
+       ResponseEntity<String> passresponse = client.postForEntity("/monthlypass", request, String.class);
 
-       ResponseEntity<List> response =  client.getForEntity("/monthlypass/customer?email=" + "has.nopass@gmail.com", List.class);
+       ResponseEntity<List> response =  client.getForEntity("/monthlypass/customer/" + "has.nopass@gmail.com", List.class);
        assertNotNull(response.getBody());
 
        List<Map<String, Object>> monthlyPasses = response.getBody();
 
+       assertEquals(monthlyPasses.size(), 1);
+
        assertEquals(monthlyPasses.get(0).get("spotNumber"), "A26");
        assertEquals(monthlyPasses.get(0).get("confirmationCode"), "NeverGonnaGiveYouUp");
        assertEquals(monthlyPasses.get(0).get("licensePlate"), "12345679");
-       assertEquals(monthlyPasses.get(0).get("isLarge"), true);
-       assertEquals(monthlyPasses.get(0).get("numberOfMonths"), 2);
-       assertEquals(monthlyPasses.get(1).get("startDate"), Date.valueOf("2023-2-1"));
-       assertEquals(monthlyPasses.get(1).get("floorNumber"), 1);
-       assertEquals(monthlyPasses.get(1).get("customerEmail"), "has.nopass@gmail.com");
+       assertEquals(monthlyPasses.get(0).get("large"), true);
+       assertEquals(monthlyPasses.get(0).get("startDate"), "2024-02-01");
+       assertEquals(monthlyPasses.get(0).get("floorNumber"), 0);
+       assertEquals(monthlyPasses.get(0).get("monthlyCustomerEmail"), "has.nopass@gmail.com");
    }
 
 //    @Test
