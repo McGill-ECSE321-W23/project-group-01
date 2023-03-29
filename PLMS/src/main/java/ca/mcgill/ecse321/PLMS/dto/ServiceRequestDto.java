@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class ServiceRequestDto {
-    @NotNull
     @NotBlank(message = "Service name cannot be blank.")
     private String serviceName;
     @Min(value = 0, message = "Cost needs to be a number greater or equal to 0")

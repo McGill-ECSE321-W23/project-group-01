@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
 import ca.mcgill.ecse321.PLMS.dto.EmployeeResponseDto;
 import org.junit.jupiter.api.AfterAll;
@@ -163,7 +165,7 @@ public class ServiceIntegrationTests {
 
     @Test
     @Order(5)
-    public void testModifyFloorWithValidParameters(){
+    public void testModifyRequestWithValidParameters(){
 
         Service validService = FixedValidService.createValidService();
         ServiceRequestDto request = serviceToServiceRequestDto(validService);
@@ -173,13 +175,127 @@ public class ServiceIntegrationTests {
 
         HttpEntity<ServiceRequestDto> requestEntity = new HttpEntity<ServiceRequestDto>(request);
 
-        ResponseEntity<String> response = client.exchange("/service/", HttpMethod.PUT, requestEntity , String.class);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        ResponseEntity<ServiceResponseDto> response = client.exchange("/service/", HttpMethod.PUT, requestEntity , ServiceResponseDto.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         
-        //assertEquals(FixedValidService.costUpdated, response.getBody().getCost());
-        //assertEquals(FixedValidService.lengthInHoursUpdated, response.getBody().getLengthInHours());
+        assertEquals(FixedValidService.costUpdated, response.getBody().getCost());
+        assertEquals(FixedValidService.lengthInHoursUpdated, response.getBody().getLengthInHours());
     }
+
+    @Test
+    @Order(6)
+    public void testModifyRequestWithInvalidParameters(){
+        Service validService = FixedValidService.createValidService();
+        ServiceRequestDto request = serviceToServiceRequestDto(validService);
+
+        request.setCost(-12.0);
+        request.setLengthInHours(-13.0);
+        request.setServiceName("");
+
+        HttpEntity<ServiceRequestDto> requestEntity = new HttpEntity<ServiceRequestDto>(request);
+        ResponseEntity<String> response = client.exchange("/service/", HttpMethod.PUT, requestEntity , String.class);
+        assertContains(response.getBody(), "Length in hours needs to be a number greater or equal to 0.");
+        assertContains(response.getBody(), "Cost needs to be a number greater or equal to 0");
+        assertContains(response.getBody(), "Service name cannot be blank.");
+
+    }
+
+    @Test
+    @Order(7)
+    public void testUpdateServiceDoesNotExist(){
+        String serviceName = "DNE";
+        Service validService = FixedValidService.createValidService();
+        ServiceRequestDto request = serviceToServiceRequestDto(validService);
+        request.setServiceName(serviceName);
+
+        HttpEntity<ServiceRequestDto> requestEntity = new HttpEntity<ServiceRequestDto>(request);
+        ResponseEntity<String> response = client.exchange("/service/", HttpMethod.PUT, requestEntity , String.class);
+
+        assertEquals(response.getBody(), "Service with name " + serviceName + " does not exists.");
+        assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @Order(8)
+    public void testGetServiceDoesNotExist(){
+        String serviceName = "DNE";
+        Service validService = FixedValidService.createValidService();
+        ServiceRequestDto request = serviceToServiceRequestDto(validService);
+        request.setServiceName(serviceName);
+
+        HttpEntity<ServiceRequestDto> requestEntity = new HttpEntity<ServiceRequestDto>(request);
+        ResponseEntity<String> response = client.exchange("/service/", HttpMethod.PUT, requestEntity , String.class);
+        assertEquals(response.getBody(), "Service with name " + serviceName + " does not exists.");
+        assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
+    }
+
+
+    @Test
+    @Order(9)
+    public void testDeleteServiceDoesNotExist(){
+        String serviceName = "DNE";
+        HttpEntity<String> requestEntity = new HttpEntity<>(null);
+        ResponseEntity<String> response = client.exchange("/service/" + serviceName, HttpMethod.DELETE, requestEntity, String.class);
+        assertEquals(response.getBody(), "Service with name " + serviceName + " does not exists.");
+        assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @Order(10)
+    public void testDeleteValidService(){
+        String serviceName = FixedValidService.serviceName;
+        ResponseEntity<ServiceResponseDto> response = client.getForEntity("/service/" + serviceName, ServiceResponseDto.class);
+        assertNotNull(response.getBody());
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(null);
+        ResponseEntity<String> response1 = client.exchange("/service/" + serviceName, HttpMethod.DELETE, requestEntity, String.class);
+        assertEquals(response1.getStatusCode(), HttpStatus.OK);
+
+        ResponseEntity<String> response2 = client.getForEntity("/service/" + serviceName, String.class);
+        assertEquals(response2.getStatusCode(), HttpStatus.NOT_FOUND);
+        assertEquals(response2.getBody(),"Service with name " + serviceName + " does not exists." );
+
+    }
+
+    @Test
+    @Order(11)
+    public void testGetAllEmptyServices() {
+        ResponseEntity<String> response = client.getForEntity("/service", String.class);
+        assertEquals(response.getBody(), "There are no services in the system");
+        assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
+
+    }
+
+    @Test
+    @Order(12)
+    public void testGetAllServices() {
+        Service service = FixedValidService.createValidService();
+        ServiceRequestDto request = serviceToServiceRequestDto(service);
+        ServiceRequestDto request1 =  serviceToServiceRequestDto(service);
+        request1.setServiceName("Engine change");
+
+        ResponseEntity<ServiceResponseDto> response1 = client.postForEntity("/service/create", request, ServiceResponseDto.class);
+        ResponseEntity<ServiceResponseDto> response2 = client.postForEntity("/service/create", request1, ServiceResponseDto.class);
+
+        ResponseEntity<List> response = client.getForEntity("/service", List.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+
+        List<Map<String, Object>> services = response.getBody();
+        assertEquals(services.get(0).get("serviceName"), "Car wash");
+        assertEquals(services.get(0).get("cost"), 17.5);
+        assertEquals(services.get(0).get("lengthInHours"), 0.5);
+
+        assertEquals(services.get(1).get("serviceName"), "Engine change");
+        assertEquals(services.get(1).get("cost"), 17.5);
+        assertEquals(services.get(1).get("lengthInHours"), 0.5);
+
+    }
+
+
+
+
 
   //   @Test
   //   @Order(6)
