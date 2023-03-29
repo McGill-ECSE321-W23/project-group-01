@@ -26,10 +26,10 @@ Our software system can be run by executing, inside the PLMS folder, the "./grad
 | Team Member |	Team Roles | Individual efforts - Sprint 1 (in hours) | Individual efforts - Sprint 2 (in hours) |
 | --- | --- | --- | ---- |
 | Evan Boyd | Software Developer  |  20  | 60 |
-| Samer Abdulkarim | Project Manager, Software Developer |  16 | 60 |
-| Emilien Taisne	| Documentation Manager, Software Developer  | 16 | |
+| Samer Abdulkarim | Project Manager, Software Developer |  16 | 55 |
+| Emilien Taisne	| Documentation Manager, Software Developer  | 16 | 60 |
 | Walid Aissa	| Software Developer  | 16 | |
-| Karim Al Sabbagh | Testing Lead, Software Developer  | 16  | |
+| Karim Al Sabbagh | Testing Lead, Software Developer  | 16  | 44 |
 | Karl Bridi	| Software Developer | 16 | 44 |
 
 ### Sprint 1 individual efforts: 
