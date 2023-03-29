@@ -85,7 +85,6 @@ public class GuestPassController {
     @PostMapping("/guestPass")
     public ResponseEntity<GuestPassResponseDto> createGuestPass(@Valid @RequestBody GuestPassRequestDto guestPassRequestDto){
         GuestPass guestPass = guestPassRequestDto.toModel();
-        guestPass.setIsLarge(guestPassRequestDto.getLarge());
         int floorNumber = guestPassRequestDto.getFloorNumber();
         int nrIncrements = guestPassRequestDto.getNumberOfFifteenMinuteIncrements();
         // Find local time here to make the tests time-independent
