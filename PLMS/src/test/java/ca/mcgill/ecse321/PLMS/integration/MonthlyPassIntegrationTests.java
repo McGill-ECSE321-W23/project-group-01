@@ -537,70 +537,107 @@ public class MonthlyPassIntegrationTests {
        assertEquals(monthlyPasses.get(0).get("monthlyCustomerEmail"), "has.nopass@gmail.com");
    }
 
-//    @Test
-//    @Order(13)
-//    public void testGetMonthlyPassesByFloorInvalidFloor(){
-//
-//        ResponseEntity<String> response =  client.getForEntity("/monthlypass/floor?floorNumber=" + 3, String.class);
-//        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-//        assertContains("The floor with floor number 3 does not exist.", response.getBody());
-//    }
-//
-//    @Test
-//    @Order(14)
-//    public void testGetMonthlyPassesByFloorNoPassesFound(){
-//
-//
-//        ParkingLotRequestDto lotrequest = new ParkingLotRequestDto();
-//        client.postForEntity("/parkingLot/creation", lotrequest, ParkingLotResponseDto.class);
-//
-//        FloorRequestDto floorRequest = new FloorRequestDto();
-//        floorRequest.setFloorNumber(3);
-//        floorRequest.setIsMemberOnly(true);
-//        client.postForEntity("/floor", floorRequest, FloorResponseDto.class);
-//
-//        ResponseEntity<String> response =  client.getForEntity("/monthlypass/floor?floorNumber=" + 3, String.class);
-//        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-//        assertContains("There are no monthly passes on floor 3", response.getBody());
-//
-//    }
-//
-//    @Test
-//    @Order(14)
-//    public void testGetMonthlyPassesByFloor(){
-//
-//        MonthlyPassRequestDto request = new MonthlyPassRequestDto();
-//        request.setSpotNumber(monthlyPassFixture.spotNumber);
-//        request.setConfirmationCode(monthlyPassFixture.confirmationCode);
-//        request.setLicensePlate(monthlyPassFixture.licensePlate);
-//        request.setLarge(monthlyPassFixture.isLarge);
-//        request.setNumberOfMonths(monthlyPassFixture.numberOfMonths);
-//        request.setStartDate(monthlyPassFixture.startDate);
-//        request.setFloorNumber(3);
-//        request.setCustomerEmail(monthlyPassFixture.monthlyCustomerEmail);
-//
-//        client.postForEntity("/monthlypass", request, MonthlyPassResponseDto.class);
-//
-//        ResponseEntity<List> response =  client.getForEntity("/monthlypass/floor?floorNumber=" + 3, List.class);
-//        assertNotNull(response.getBody());
-//
-//        List<Map<String, Object>> monthlyPasses = response.getBody();
-//
-//        assertEquals(monthlyPasses.get(0).get("spotNumber"), monthlyPassFixture.spotNumber);
-//        assertEquals(monthlyPasses.get(0).get("confirmationCode"), monthlyPassFixture.confirmationCode);
-//        assertEquals(monthlyPasses.get(0).get("licensePlate"), monthlyPassFixture.licensePlate);
-//        assertEquals(monthlyPasses.get(0).get("isLarge"), monthlyPassFixture.isLarge);
-//        assertEquals(monthlyPasses.get(0).get("numberOfMonths"), monthlyPassFixture.numberOfMonths);
-//        assertEquals(monthlyPasses.get(1).get("startDate"), monthlyPassFixture.startDate);
-//        assertEquals(monthlyPasses.get(1).get("floorNumber"), 3);
-//        assertEquals(monthlyPasses.get(1).get("customerEmail"), monthlyPassFixture.monthlyCustomerEmail);
-//
-//
-//    }
-//
-//
-//
-//
+   @Test
+   @Order(13)
+   public void testGetMonthlyPassesByFloorInvalidFloor(){
+
+       ResponseEntity<String> response =  client.getForEntity("/monthlypass/floor/" + 3, String.class);
+       assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+       assertContains("The floor with floor number 3 does not exist.", response.getBody());
+   }
+
+   @Test
+   @Order(14)
+   public void testGetMonthlyPassesByFloorNoPassesFound(){
+
+
+    ParkingLotRequestDto lotrequest = new ParkingLotRequestDto();
+    lotrequest.setOpeningTime(Time.valueOf("8:00:00"));
+    lotrequest.setClosingTime(Time.valueOf("20:00:00"));
+    lotrequest.setLargeSpotFee(15.0);
+    lotrequest.setSmallSpotFee(10.0);
+    lotrequest.setSmallSpotMonthlyFlatFee(250.0);
+    lotrequest.setLargeSpotMonthlyFlatFee(250.0);
+
+    ResponseEntity<ParkingLotResponseDto> lotresponse = client.postForEntity("/parkingLot/creation", lotrequest, ParkingLotResponseDto.class);
+
+    FloorRequestDto floorRequest = new FloorRequestDto();
+    floorRequest.setFloorNumber(3);
+    floorRequest.setIsMemberOnly(true);
+    floorRequest.setLargeSpotCapacity(10);
+    floorRequest.setSmallSpotCapacity(10);
+
+    ResponseEntity<FloorResponseDto> floorResponse = client.postForEntity("/floor", floorRequest, FloorResponseDto.class);
+
+       ResponseEntity<String> response =  client.getForEntity("/monthlypass/floor/" + 3, String.class);
+       assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+       assertContains("There are no monthly passes on floor 3", response.getBody());
+
+   }
+
+   @Test
+   @Order(14)
+   public void testGetMonthlyPassesByFloor(){
+
+    MonthlyCustomerRequestDto customerRequest = new MonthlyCustomerRequestDto();
+    customerRequest.setEmail("has.nopass@gmail.com");
+    customerRequest.setPassword("Hello!");
+    customerRequest.setName("Evan");
+
+    client.postForEntity("/customer/create", customerRequest, MonthlyCustomerResponseDto.class);
+
+     ParkingLotRequestDto lotrequest = new ParkingLotRequestDto();
+    lotrequest.setOpeningTime(Time.valueOf("8:00:00"));
+    lotrequest.setClosingTime(Time.valueOf("20:00:00"));
+    lotrequest.setLargeSpotFee(15.0);
+    lotrequest.setSmallSpotFee(10.0);
+    lotrequest.setSmallSpotMonthlyFlatFee(250.0);
+    lotrequest.setLargeSpotMonthlyFlatFee(250.0);
+
+    ResponseEntity<ParkingLotResponseDto> lotresponse = client.postForEntity("/parkingLot/creation", lotrequest, ParkingLotResponseDto.class);
+
+    FloorRequestDto floorRequest = new FloorRequestDto();
+    floorRequest.setFloorNumber(3);
+    floorRequest.setIsMemberOnly(true);
+    floorRequest.setLargeSpotCapacity(10);
+    floorRequest.setSmallSpotCapacity(10);
+
+    ResponseEntity<FloorResponseDto> floorResponse = client.postForEntity("/floor", floorRequest, FloorResponseDto.class);
+
+    MonthlyPassRequestDto request = new MonthlyPassRequestDto();
+    request.setSpotNumber("A26");
+    request.setConfirmationCode("NeverGonnaGiveYouUp");
+    request.setLicensePlate("12345679");
+    request.setLarge(true);
+    request.setNumberOfMonths(2);
+    request.setStartDate(Date.valueOf("2024-2-1").toLocalDate());
+    request.setFloorNumber(3);
+    request.setCustomerEmail("has.nopass@gmail.com");
+
+
+       client.postForEntity("/monthlypass", request, MonthlyPassResponseDto.class);
+
+       ResponseEntity<List> response =  client.getForEntity("/monthlypass/floor/" + 3, List.class);
+       assertNotNull(response.getBody());
+
+       List<Map<String, Object>> monthlyPasses = response.getBody();
+
+       assertEquals(monthlyPasses.size(), 1);
+
+       assertEquals(monthlyPasses.get(0).get("spotNumber"), "A26");
+       assertEquals(monthlyPasses.get(0).get("confirmationCode"), "NeverGonnaGiveYouUp");
+       assertEquals(monthlyPasses.get(0).get("licensePlate"), "12345679");
+       assertEquals(monthlyPasses.get(0).get("large"), true);
+       assertEquals(monthlyPasses.get(0).get("startDate"), "2024-02-01");
+       assertEquals(monthlyPasses.get(0).get("floorNumber"), 3);
+       assertEquals(monthlyPasses.get(0).get("monthlyCustomerEmail"), "has.nopass@gmail.com");
+
+
+   }
+
+
+
+
     private static void assertContains(String expected, String actual) {
         String assertionMessage = String.format("Error message ('%s') contains '%s'.", actual, expected);
         assertTrue(actual.contains(expected), assertionMessage);
