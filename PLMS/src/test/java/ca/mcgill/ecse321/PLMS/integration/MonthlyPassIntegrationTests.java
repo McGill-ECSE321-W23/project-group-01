@@ -93,8 +93,6 @@ public class MonthlyPassIntegrationTests {
     @Autowired
     private GuestPassRepository guestPassRepository;
 
-    @Autowired
-    private MonthlyPassController controller;
 
     @Autowired
     private TestRestTemplate client;
@@ -155,8 +153,7 @@ public class MonthlyPassIntegrationTests {
                 monthlyPassFixture.licensePlate, monthlyPassFixture.numberOfMonths, monthlyPassFixture.startDate,
                 monthlyPassFixture.floorNumber, monthlyPassFixture.isLarge, monthlyPassFixture.monthlyCustomerEmail);
         request.setCustomerEmail(null);
-        ResponseEntity<MonthlyPassResponseDto> r = controller.createMonthlyPass(request);
-        ResponseEntity<MonthlyPassResponseDto> response = client.postForEntity("/monthlypass", request, MonthlyPassResponseDto.class);
+        ResponseEntity<String> response = client.postForEntity("/monthlypass", request, String.class);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         //assertNotNull(response.getBody());

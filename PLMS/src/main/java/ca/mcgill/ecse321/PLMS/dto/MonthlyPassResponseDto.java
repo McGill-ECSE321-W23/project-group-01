@@ -81,4 +81,44 @@ public class MonthlyPassResponseDto {
     public String getMonthlyCustomerEmail() {
         return monthlyCustomerEmail;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFee(double fee) {
+        this.fee = fee;
+    }
+
+    public void setSpotNumber(String spotNumber) {
+        this.spotNumber = spotNumber;
+    }
+
+    public void setConfirmationCode(String confirmationCode) {
+        this.confirmationCode = confirmationCode;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public void setLarge(boolean large) {
+        isLarge = large;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setFloorNumber(int floorNumber) {
+        this.floorNumber = floorNumber;
+    }
+
+    public void setMonthlyCustomerEmail(String monthlyCustomerEmail) {
+        this.monthlyCustomerEmail = monthlyCustomerEmail;
+    }
 }
