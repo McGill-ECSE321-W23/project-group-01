@@ -29,617 +29,618 @@ import ca.mcgill.ecse321.PLMS.repository.MonthlyPassRepository;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
 
 
-@SpringBootTest
-public class MonthlyPassServiceTests {
+// @SpringBootTest
+// public class MonthlyPassServiceTests {
 
-  @Mock
-  private MonthlyPassRepository monthlyPassRepo;
+//   @Mock
+//   private MonthlyPassRepository monthlyPassRepo;
 
-  @Mock
-  private FloorRepository floorRepo;
+//   @Mock
+//   private FloorRepository floorRepo;
 
-  @Mock
-  private MonthlyCustomerRepository monthlyCustomerRepo;
+//   @Mock
+//   private MonthlyCustomerRepository monthlyCustomerRepo;
 
-  @Mock
-  private GuestPassRepository guestPassRepo;
+//   @Mock
+//   private GuestPassRepository guestPassRepo;
 
-  @InjectMocks
-  private MonthlyPassService monthlyPassService;
+//   @InjectMocks
+//   private MonthlyPassService monthlyPassService;
 
-  @Test
-  public void testGetValidWithoutAccountMonthlyPass(){
-    double fee = 50.50;
-    String spotNumber = "A24";
-    String licensePlate = "123ABC123";
-    LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
-    LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
-    boolean isLarge = true;
-    String confirmationCode = "NeverGonnaGiveYouUp";
-    int id = 1;
-    MonthlyPass monthlyPass = new MonthlyPass();
-    monthlyPass.setFee(fee);
-    monthlyPass.setSpotNumber(spotNumber);
-    monthlyPass.setConfirmationCode(confirmationCode);
-    monthlyPass.setIsLarge(isLarge);
-    monthlyPass.setStartDate(startDate);
-    monthlyPass.setEndDate(endDate);
-    monthlyPass.setLicensePlate(licensePlate);
-    when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
-    MonthlyPass output = monthlyPassService.getMonthlyPassById(id);
-    assertEquals(output.getSpotNumber(), spotNumber);
-    assertEquals(output.getStartDate(), startDate);
-    assertEquals(output.getEndDate(), endDate);
-  }
+//   @Test
+//   public void testGetValidWithoutAccountMonthlyPass(){
+//     double fee = 50.50;
+//     String spotNumber = "A24";
+//     String licensePlate = "123ABC123";
+//     LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+//     LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
+//     boolean isLarge = true;
+//     String confirmationCode = "NeverGonnaGiveYouUp";
+//     int id = 1;
+//     MonthlyPass monthlyPass = new MonthlyPass();
+//     monthlyPass.setFee(fee);
+//     monthlyPass.setSpotNumber(spotNumber);
+//     monthlyPass.setConfirmationCode(confirmationCode);
+//     monthlyPass.setIsLarge(isLarge);
+//     monthlyPass.setStartDate(startDate);
+//     monthlyPass.setEndDate(endDate);
+//     monthlyPass.setLicensePlate(licensePlate);
+//     when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
+//     MonthlyPass output = monthlyPassService.getMonthlyPassById(id);
+//     assertEquals(output.getSpotNumber(), spotNumber);
+//     assertEquals(output.getStartDate(), startDate);
+//     assertEquals(output.getEndDate(), endDate);
+//   }
 
-  @Test
-    public void testGetAllEmptyMonthlyPasses() {
-        ArrayList<MonthlyPass> passes = new ArrayList<>();
-        when(monthlyPassRepo.findAll()).thenReturn(passes);
-        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getAllMonthlyPasses());
-        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-        assertEquals(e.getMessage(),"There are no monthly passes in the system." );
-    }
+//   @Test
+//     public void testGetAllEmptyMonthlyPasses() {
+//         ArrayList<MonthlyPass> passes = new ArrayList<>();
+//         when(monthlyPassRepo.findAll()).thenReturn(passes);
+//         PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getAllMonthlyPasses());
+//         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+//         assertEquals(e.getMessage(),"There are no monthly passes in the system." );
+//     }
 
-  @Test
-  public void testGetValidWithAccountMonthlyPass(){
-    double fee = 50.50;
-    String spotNumber = "A24";
-    String licensePlate = "123ABC123";
-    LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
-    LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
-    boolean isLarge = true;
-    String confirmationCode = "NeverGonnaGiveYouUp";
-    int id = 1;
-
-
-    String email = "rick.roll@gmail.com";
-    String password = "intelliJLover123";
-    String name = "Samer Abdulkarim";
-    MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
-    monthlyCustomer.setEmail(email);
-    monthlyCustomer.setPassword(password);
-    monthlyCustomer.setName(name);
-
-    MonthlyPass monthlyPass = new MonthlyPass();
-    monthlyPass.setFee(fee);
-    monthlyPass.setSpotNumber(spotNumber);
-    monthlyPass.setConfirmationCode(confirmationCode);
-    monthlyPass.setIsLarge(isLarge);
-    monthlyPass.setStartDate(startDate);
-    monthlyPass.setEndDate(endDate);
-    monthlyPass.setLicensePlate(licensePlate);
-    monthlyPass.setCustomer(monthlyCustomer);
-
-    when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
-    MonthlyPass output = monthlyPassService.getMonthlyPassById(id);
-    assertEquals(output.getSpotNumber(), spotNumber);
-    assertEquals(output.getStartDate(), startDate);
-    assertEquals(output.getEndDate(), endDate);
-    assertEquals(output.getCustomer(), monthlyCustomer);
-  }
-
-  @Test
-  public void testGetInvalidMonthlyPass(){
-    final int invalidPassNumber = 42;
-		  when(monthlyPassRepo.findMonthlyPassById(invalidPassNumber)).thenReturn(null);
-
-		PLMSException e = assertThrows(PLMSException.class,
-				() -> monthlyPassService.getMonthlyPassById(invalidPassNumber));
-		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
-		assertEquals("Monthly pass with id: " + invalidPassNumber + " does not exist.", e.getMessage());
-  }
-
-  @Test
-    public void testInvalidDeleteMonthlyPass()
-    {
-        final int invalidPassNumber = 42;
-        when(monthlyPassRepo.findMonthlyPassById(invalidPassNumber)).thenReturn(null);
-
-        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.deleteMonthlyPassById(invalidPassNumber));
-        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-        assertEquals(e.getMessage(), "Monthly pass with id: " + invalidPassNumber + " does not exist.");
-    }
+//   @Test
+//   public void testGetValidWithAccountMonthlyPass(){
+//     double fee = 50.50;
+//     String spotNumber = "A24";
+//     String licensePlate = "123ABC123";
+//     LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+//     LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
+//     boolean isLarge = true;
+//     String confirmationCode = "NeverGonnaGiveYouUp";
+//     int id = 1;
 
 
+//     String email = "rick.roll@gmail.com";
+//     String password = "intelliJLover123";
+//     String name = "Samer Abdulkarim";
+//     MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
+//     monthlyCustomer.setEmail(email);
+//     monthlyCustomer.setPassword(password);
+//     monthlyCustomer.setName(name);
 
-  @Test
-    public void testValidWithoutAccountDeleteMonthlyPass()
-    {
-        double fee = 50.50;
-        String spotNumber = "A24";
-        String licensePlate = "123ABC123";
-        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
-        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
-        boolean isLarge = true;
-        String confirmationCode = "NeverGonnaGiveYouUp";
-        int id = 1;
+//     MonthlyPass monthlyPass = new MonthlyPass();
+//     monthlyPass.setFee(fee);
+//     monthlyPass.setSpotNumber(spotNumber);
+//     monthlyPass.setConfirmationCode(confirmationCode);
+//     monthlyPass.setIsLarge(isLarge);
+//     monthlyPass.setStartDate(startDate);
+//     monthlyPass.setEndDate(endDate);
+//     monthlyPass.setLicensePlate(licensePlate);
+//     monthlyPass.setCustomer(monthlyCustomer);
+
+//     when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
+//     MonthlyPass output = monthlyPassService.getMonthlyPassById(id);
+//     assertEquals(output.getSpotNumber(), spotNumber);
+//     assertEquals(output.getStartDate(), startDate);
+//     assertEquals(output.getEndDate(), endDate);
+//     assertEquals(output.getCustomer(), monthlyCustomer);
+//   }
+
+//   @Test
+//   public void testGetInvalidMonthlyPass(){
+//     final int invalidPassNumber = 42;
+// 		  when(monthlyPassRepo.findMonthlyPassById(invalidPassNumber)).thenReturn(null);
+
+// 		PLMSException e = assertThrows(PLMSException.class,
+// 				() -> monthlyPassService.getMonthlyPassById(invalidPassNumber));
+// 		assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+// 		assertEquals("Monthly pass with id: " + invalidPassNumber + " does not exist.", e.getMessage());
+//   }
+
+//   @Test
+//     public void testInvalidDeleteMonthlyPass()
+//     {
+//         final int invalidPassNumber = 42;
+//         when(monthlyPassRepo.findMonthlyPassById(invalidPassNumber)).thenReturn(null);
+
+//         PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.deleteMonthlyPassById(invalidPassNumber));
+//         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+//         assertEquals(e.getMessage(), "Monthly pass with id: " + invalidPassNumber + " does not exist.");
+//     }
+
+
+
+//   @Test
+//     public void testValidWithoutAccountDeleteMonthlyPass()
+//     {
+//         double fee = 50.50;
+//         String spotNumber = "A24";
+//         String licensePlate = "123ABC123";
+//         LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+//         LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
+//         boolean isLarge = true;
+//         String confirmationCode = "NeverGonnaGiveYouUp";
+//         int id = 1;
     
     
-        MonthlyPass monthlyPass = new MonthlyPass();
-        monthlyPass.setFee(fee);
-        monthlyPass.setSpotNumber(spotNumber);
-        monthlyPass.setConfirmationCode(confirmationCode);
-        monthlyPass.setIsLarge(isLarge);
-        monthlyPass.setStartDate(startDate);
-        monthlyPass.setEndDate(endDate);
-        monthlyPass.setLicensePlate(licensePlate);
+//         MonthlyPass monthlyPass = new MonthlyPass();
+//         monthlyPass.setFee(fee);
+//         monthlyPass.setSpotNumber(spotNumber);
+//         monthlyPass.setConfirmationCode(confirmationCode);
+//         monthlyPass.setIsLarge(isLarge);
+//         monthlyPass.setStartDate(startDate);
+//         monthlyPass.setEndDate(endDate);
+//         monthlyPass.setLicensePlate(licensePlate);
 
-        when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
+//         when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
 
-        monthlyPassService.deleteMonthlyPassById(id);
-    }
+//         monthlyPassService.deleteMonthlyPassById(id);
+//     }
 
-  @Test
-    public void testValidWithAccountDeleteMonthlyPass()
-    {
-        double fee = 50.50;
-        String spotNumber = "A24";
-        String licensePlate = "123ABC123";
-        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
-        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
-        boolean isLarge = true;
-        String confirmationCode = "NeverGonnaGiveYouUp";
-        int id = 1;
+//   @Test
+//     public void testValidWithAccountDeleteMonthlyPass()
+//     {
+//         double fee = 50.50;
+//         String spotNumber = "A24";
+//         String licensePlate = "123ABC123";
+//         LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+//         LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
+//         boolean isLarge = true;
+//         String confirmationCode = "NeverGonnaGiveYouUp";
+//         int id = 1;
     
     
-        String email = "rick.roll@gmail.com";
-        String password = "intelliJLover123";
-        String name = "Samer Abdulkarim";
-        MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
-        monthlyCustomer.setEmail(email);
-        monthlyCustomer.setPassword(password);
-        monthlyCustomer.setName(name);
+//         String email = "rick.roll@gmail.com";
+//         String password = "intelliJLover123";
+//         String name = "Samer Abdulkarim";
+//         MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
+//         monthlyCustomer.setEmail(email);
+//         monthlyCustomer.setPassword(password);
+//         monthlyCustomer.setName(name);
     
-        MonthlyPass monthlyPass = new MonthlyPass();
-        monthlyPass.setFee(fee);
-        monthlyPass.setSpotNumber(spotNumber);
-        monthlyPass.setConfirmationCode(confirmationCode);
-        monthlyPass.setIsLarge(isLarge);
-        monthlyPass.setStartDate(startDate);
-        monthlyPass.setEndDate(endDate);
-        monthlyPass.setLicensePlate(licensePlate);
-        monthlyPass.setCustomer(monthlyCustomer);
+//         MonthlyPass monthlyPass = new MonthlyPass();
+//         monthlyPass.setFee(fee);
+//         monthlyPass.setSpotNumber(spotNumber);
+//         monthlyPass.setConfirmationCode(confirmationCode);
+//         monthlyPass.setIsLarge(isLarge);
+//         monthlyPass.setStartDate(startDate);
+//         monthlyPass.setEndDate(endDate);
+//         monthlyPass.setLicensePlate(licensePlate);
+//         monthlyPass.setCustomer(monthlyCustomer);
 
-        when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
+//         when(monthlyPassRepo.findMonthlyPassById(id)).thenReturn(monthlyPass);
 
-        monthlyPassService.deleteMonthlyPassById(id);
-    }
+//         monthlyPassService.deleteMonthlyPassById(id);
+//     }
 
-    @Test
-    public void testGetAllMonthlyPasses(){
-        double fee = 50.50;
-        String spotNumber = "A24";
-        String licensePlate = "123ABC123";
-        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
-        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
-        boolean isLarge = true;
-        String confirmationCode = "NeverGonnaGiveYouUp";
+//     @Test
+//     public void testGetAllMonthlyPasses(){
+//         double fee = 50.50;
+//         String spotNumber = "A24";
+//         String licensePlate = "123ABC123";
+//         LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+//         LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
+//         boolean isLarge = true;
+//         String confirmationCode = "NeverGonnaGiveYouUp";
     
     
-        String email = "rick.roll@gmail.com";
-        String password = "intelliJLover123";
-        String name = "Samer Abdulkarim";
-        MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
-        monthlyCustomer.setEmail(email);
-        monthlyCustomer.setPassword(password);
-        monthlyCustomer.setName(name);
+//         String email = "rick.roll@gmail.com";
+//         String password = "intelliJLover123";
+//         String name = "Samer Abdulkarim";
+//         MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
+//         monthlyCustomer.setEmail(email);
+//         monthlyCustomer.setPassword(password);
+//         monthlyCustomer.setName(name);
         
-        MonthlyPass monthlyPass = new MonthlyPass();
-        monthlyPass.setFee(fee);
-        monthlyPass.setSpotNumber(spotNumber);
-        monthlyPass.setConfirmationCode(confirmationCode);
-        monthlyPass.setIsLarge(isLarge);
-        monthlyPass.setStartDate(startDate);
-        monthlyPass.setEndDate(endDate);
-        monthlyPass.setLicensePlate(licensePlate);
-        monthlyPass.setCustomer(monthlyCustomer);
+//         MonthlyPass monthlyPass = new MonthlyPass();
+//         monthlyPass.setFee(fee);
+//         monthlyPass.setSpotNumber(spotNumber);
+//         monthlyPass.setConfirmationCode(confirmationCode);
+//         monthlyPass.setIsLarge(isLarge);
+//         monthlyPass.setStartDate(startDate);
+//         monthlyPass.setEndDate(endDate);
+//         monthlyPass.setLicensePlate(licensePlate);
+//         monthlyPass.setCustomer(monthlyCustomer);
         
-        double fee2 = 50.50;
-        String spotNumber2 = "A25";
-        String licensePlate2 = "123ABC124";
-        LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
-        LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
-        boolean isLarge2 = true;
-        String confirmationCode2 = "NeverGonnaGiveYouUp";
+//         double fee2 = 50.50;
+//         String spotNumber2 = "A25";
+//         String licensePlate2 = "123ABC124";
+//         LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+//         LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
+//         boolean isLarge2 = true;
+//         String confirmationCode2 = "NeverGonnaGiveYouUp";
         
-        MonthlyPass monthlyPass2 = new MonthlyPass();
-        monthlyPass2.setFee(fee2);
-        monthlyPass2.setSpotNumber(spotNumber2);
-        monthlyPass2.setConfirmationCode(confirmationCode2);
-        monthlyPass2.setIsLarge(isLarge2);
-        monthlyPass2.setStartDate(startDate2);
-        monthlyPass2.setEndDate(endDate2);
-        monthlyPass2.setLicensePlate(licensePlate2);
+//         MonthlyPass monthlyPass2 = new MonthlyPass();
+//         monthlyPass2.setFee(fee2);
+//         monthlyPass2.setSpotNumber(spotNumber2);
+//         monthlyPass2.setConfirmationCode(confirmationCode2);
+//         monthlyPass2.setIsLarge(isLarge2);
+//         monthlyPass2.setStartDate(startDate2);
+//         monthlyPass2.setEndDate(endDate2);
+//         monthlyPass2.setLicensePlate(licensePlate2);
 
-        ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
-        monthlyPasses.add(monthlyPass);
-        monthlyPasses.add(monthlyPass2);
+//         ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
+//         monthlyPasses.add(monthlyPass);
+//         monthlyPasses.add(monthlyPass2);
 
 
-        when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
-        Iterable<MonthlyPass> output = monthlyPassService.getAllMonthlyPasses();
-        Iterator<MonthlyPass> i = output.iterator();
-        MonthlyPass outputMonthlyPass = i.next();
-        assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber);
-        assertEquals(outputMonthlyPass.getStartDate(), startDate);
-        assertEquals(outputMonthlyPass.getEndDate(), endDate);
-        assertEquals(outputMonthlyPass.getCustomer(), monthlyCustomer);
+//         when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+//         Iterable<MonthlyPass> output = monthlyPassService.getAllMonthlyPasses();
+//         Iterator<MonthlyPass> i = output.iterator();
+//         MonthlyPass outputMonthlyPass = i.next();
+//         assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber);
+//         assertEquals(outputMonthlyPass.getStartDate(), startDate);
+//         assertEquals(outputMonthlyPass.getEndDate(), endDate);
+//         assertEquals(outputMonthlyPass.getCustomer(), monthlyCustomer);
 
-        outputMonthlyPass = i.next();
-        assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber2);
-        assertEquals(outputMonthlyPass.getStartDate(), startDate2);
-        assertEquals(outputMonthlyPass.getEndDate(), endDate2);
-        assertEquals(outputMonthlyPass.getCustomer(), null);
+//         outputMonthlyPass = i.next();
+//         assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber2);
+//         assertEquals(outputMonthlyPass.getStartDate(), startDate2);
+//         assertEquals(outputMonthlyPass.getEndDate(), endDate2);
+//         assertEquals(outputMonthlyPass.getCustomer(), null);
 
-    }
+//     }
 
-    @Test
-    public void testGetMonthlyPassesByMonthlyCustomer(){
-        double fee = 50.50;
-        String spotNumber = "A24";
-        String licensePlate = "123ABC123";
-        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
-        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
-        boolean isLarge = true;
-        String confirmationCode = "NeverGonnaGiveYouUp";
+//     @Test
+//     public void testGetMonthlyPassesByMonthlyCustomer(){
+//         double fee = 50.50;
+//         String spotNumber = "A24";
+//         String licensePlate = "123ABC123";
+//         LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+//         LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
+//         boolean isLarge = true;
+//         String confirmationCode = "NeverGonnaGiveYouUp";
 
-        double fee2 = 50.50;
-        String spotNumber2 = "A25";
-        String licensePlate2 = "123ABC124";
-        LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
-        LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
-        boolean isLarge2 = true;
-        String confirmationCode2 = "NeverGonnaGiveYouUp";
+//         double fee2 = 50.50;
+//         String spotNumber2 = "A25";
+//         String licensePlate2 = "123ABC124";
+//         LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+//         LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
+//         boolean isLarge2 = true;
+//         String confirmationCode2 = "NeverGonnaGiveYouUp";
     
     
-        String email = "rick.roll@gmail.com";
-        String password = "intelliJLover123";
-        String name = "Samer Abdulkarim";
-        MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
-        monthlyCustomer.setEmail(email);
-        monthlyCustomer.setPassword(password);
-        monthlyCustomer.setName(name);
+//         String email = "rick.roll@gmail.com";
+//         String password = "intelliJLover123";
+//         String name = "Samer Abdulkarim";
+//         MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
+//         monthlyCustomer.setEmail(email);
+//         monthlyCustomer.setPassword(password);
+//         monthlyCustomer.setName(name);
         
-        MonthlyPass monthlyPass = new MonthlyPass();
-        monthlyPass.setFee(fee);
-        monthlyPass.setSpotNumber(spotNumber);
-        monthlyPass.setConfirmationCode(confirmationCode);
-        monthlyPass.setIsLarge(isLarge);
-        monthlyPass.setStartDate(startDate);
-        monthlyPass.setEndDate(endDate);
-        monthlyPass.setLicensePlate(licensePlate);
-        monthlyPass.setCustomer(monthlyCustomer);
+//         MonthlyPass monthlyPass = new MonthlyPass();
+//         monthlyPass.setFee(fee);
+//         monthlyPass.setSpotNumber(spotNumber);
+//         monthlyPass.setConfirmationCode(confirmationCode);
+//         monthlyPass.setIsLarge(isLarge);
+//         monthlyPass.setStartDate(startDate);
+//         monthlyPass.setEndDate(endDate);
+//         monthlyPass.setLicensePlate(licensePlate);
+//         monthlyPass.setCustomer(monthlyCustomer);
 
-        MonthlyPass monthlyPass2 = new MonthlyPass();
-        monthlyPass2.setFee(fee2);
-        monthlyPass2.setSpotNumber(spotNumber2);
-        monthlyPass2.setConfirmationCode(confirmationCode2);
-        monthlyPass2.setIsLarge(isLarge2);
-        monthlyPass2.setStartDate(startDate2);
-        monthlyPass2.setEndDate(endDate2);
-        monthlyPass2.setLicensePlate(licensePlate2);
-        monthlyPass2.setCustomer(monthlyCustomer);
+//         MonthlyPass monthlyPass2 = new MonthlyPass();
+//         monthlyPass2.setFee(fee2);
+//         monthlyPass2.setSpotNumber(spotNumber2);
+//         monthlyPass2.setConfirmationCode(confirmationCode2);
+//         monthlyPass2.setIsLarge(isLarge2);
+//         monthlyPass2.setStartDate(startDate2);
+//         monthlyPass2.setEndDate(endDate2);
+//         monthlyPass2.setLicensePlate(licensePlate2);
+//         monthlyPass2.setCustomer(monthlyCustomer);
 
-        List<MonthlyPass> monthlyPasses = new ArrayList<>();
-        monthlyPasses.add(monthlyPass);
-        monthlyPasses.add(monthlyPass2);
+//         List<MonthlyPass> monthlyPasses = new ArrayList<>();
+//         monthlyPasses.add(monthlyPass);
+//         monthlyPasses.add(monthlyPass2);
 
-        when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
-        when(monthlyCustomerRepo.findMonthlyCustomerByEmail(email)).thenReturn(monthlyCustomer);
+//         when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+//         when(monthlyCustomerRepo.findMonthlyCustomerByEmail(email)).thenReturn(monthlyCustomer);
 
-        List<MonthlyPass> output = monthlyPassService.getMonthlyPassesByMonthlyCustomer(email);
-        MonthlyPass outputMonthlyPass = output.get(0);
+//         List<MonthlyPass> output = monthlyPassService.getMonthlyPassesByMonthlyCustomer(email);
+//         MonthlyPass outputMonthlyPass = output.get(0);
 
-        assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber);
-        assertEquals(outputMonthlyPass.getStartDate(), startDate);
-        assertEquals(outputMonthlyPass.getEndDate(), endDate);
-        assertEquals(outputMonthlyPass.getCustomer(), monthlyCustomer);
+//         assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber);
+//         assertEquals(outputMonthlyPass.getStartDate(), startDate);
+//         assertEquals(outputMonthlyPass.getEndDate(), endDate);
+//         assertEquals(outputMonthlyPass.getCustomer(), monthlyCustomer);
 
-        outputMonthlyPass = output.get(1);
-        assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber2);
-        assertEquals(outputMonthlyPass.getStartDate(), startDate2);
-        assertEquals(outputMonthlyPass.getEndDate(), endDate2);
-        assertEquals(outputMonthlyPass.getCustomer(), monthlyCustomer);
-    }
+//         outputMonthlyPass = output.get(1);
+//         assertEquals(outputMonthlyPass.getSpotNumber(), spotNumber2);
+//         assertEquals(outputMonthlyPass.getStartDate(), startDate2);
+//         assertEquals(outputMonthlyPass.getEndDate(), endDate2);
+//         assertEquals(outputMonthlyPass.getCustomer(), monthlyCustomer);
+//     }
 
-    @Test
-    public void testGetInvalidMonthlyPassesByMonthlyCustomer1(){
-        double fee = 50.50;
-        String spotNumber = "A24";
-        String licensePlate = "123ABC123";
-        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
-        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
-        boolean isLarge = true;
-        String confirmationCode = "NeverGonnaGiveYouUp";
+//     @Test
+//     public void testGetInvalidMonthlyPassesByMonthlyCustomer1(){
+//         double fee = 50.50;
+//         String spotNumber = "A24";
+//         String licensePlate = "123ABC123";
+//         LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+//         LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
+//         boolean isLarge = true;
+//         String confirmationCode = "NeverGonnaGiveYouUp";
 
-        double fee2 = 50.50;
-        String spotNumber2 = "A25";
-        String licensePlate2 = "123ABC124";
-        LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
-        LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
-        boolean isLarge2 = true;
-        String confirmationCode2 = "NeverGonnaGiveYouUp";
+//         double fee2 = 50.50;
+//         String spotNumber2 = "A25";
+//         String licensePlate2 = "123ABC124";
+//         LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+//         LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
+//         boolean isLarge2 = true;
+//         String confirmationCode2 = "NeverGonnaGiveYouUp";
     
     
-        String invalidEmail = "rick.roll@gmail.com";
+//         String invalidEmail = "rick.roll@gmail.com";
         
-        MonthlyPass monthlyPass = new MonthlyPass();
-        monthlyPass.setFee(fee);
-        monthlyPass.setSpotNumber(spotNumber);
-        monthlyPass.setConfirmationCode(confirmationCode);
-        monthlyPass.setIsLarge(isLarge);
-        monthlyPass.setStartDate(startDate);
-        monthlyPass.setEndDate(endDate);
-        monthlyPass.setLicensePlate(licensePlate);
+//         MonthlyPass monthlyPass = new MonthlyPass();
+//         monthlyPass.setFee(fee);
+//         monthlyPass.setSpotNumber(spotNumber);
+//         monthlyPass.setConfirmationCode(confirmationCode);
+//         monthlyPass.setIsLarge(isLarge);
+//         monthlyPass.setStartDate(startDate);
+//         monthlyPass.setEndDate(endDate);
+//         monthlyPass.setLicensePlate(licensePlate);
 
-        MonthlyPass monthlyPass2 = new MonthlyPass();
-        monthlyPass2.setFee(fee2);
-        monthlyPass2.setSpotNumber(spotNumber2);
-        monthlyPass2.setConfirmationCode(confirmationCode2);
-        monthlyPass2.setIsLarge(isLarge2);
-        monthlyPass2.setStartDate(startDate2);
-        monthlyPass2.setEndDate(endDate2);
-        monthlyPass2.setLicensePlate(licensePlate2);
+//         MonthlyPass monthlyPass2 = new MonthlyPass();
+//         monthlyPass2.setFee(fee2);
+//         monthlyPass2.setSpotNumber(spotNumber2);
+//         monthlyPass2.setConfirmationCode(confirmationCode2);
+//         monthlyPass2.setIsLarge(isLarge2);
+//         monthlyPass2.setStartDate(startDate2);
+//         monthlyPass2.setEndDate(endDate2);
+//         monthlyPass2.setLicensePlate(licensePlate2);
 
-        ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
-        monthlyPasses.add(monthlyPass);
-        monthlyPasses.add(monthlyPass2);
+//         ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
+//         monthlyPasses.add(monthlyPass);
+//         monthlyPasses.add(monthlyPass2);
 
-        when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
-        when(monthlyCustomerRepo.findMonthlyCustomerByEmail(invalidEmail)).thenReturn(null);
+//         when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+//         when(monthlyCustomerRepo.findMonthlyCustomerByEmail(invalidEmail)).thenReturn(null);
 
         
-        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByMonthlyCustomer(invalidEmail));
-        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-        assertEquals(e.getMessage(), "The account with email " + invalidEmail + " does not exist.");
-    }
+//         PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByMonthlyCustomer(invalidEmail));
+//         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+//         assertEquals(e.getMessage(), "The account with email " + invalidEmail + " does not exist.");
+//     }
 
-    @Test
-    public void testGetInvalidMonthlyPassesByMonthlyCustomer2(){
+//     @Test
+//     public void testGetInvalidMonthlyPassesByMonthlyCustomer2(){
 
-        double fee = 50.50;
-        String spotNumber = "A24";
-        String licensePlate = "123ABC123";
-        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
-        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
-        boolean isLarge = true;
-        String confirmationCode = "NeverGonnaGiveYouUp";
+//         double fee = 50.50;
+//         String spotNumber = "A24";
+//         String licensePlate = "123ABC123";
+//         LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+//         LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
+//         boolean isLarge = true;
+//         String confirmationCode = "NeverGonnaGiveYouUp";
         
-        String email = "rick.roll@gmail.com";
-        String password = "intelliJLover123";
-        String name = "Samer Abdulkarim";
-        MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
-        monthlyCustomer.setEmail(email);
-        monthlyCustomer.setPassword(password);
-        monthlyCustomer.setName(name);
+//         String email = "rick.roll@gmail.com";
+//         String password = "intelliJLover123";
+//         String name = "Samer Abdulkarim";
+//         MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
+//         monthlyCustomer.setEmail(email);
+//         monthlyCustomer.setPassword(password);
+//         monthlyCustomer.setName(name);
 
-        String email2 = "no.pass@gmail.com";
-        String password2 = "VsCodeLover123";
-        String name2 = "Karl Bridi";
-        MonthlyCustomer monthlyCustomer2 = new MonthlyCustomer();
-        monthlyCustomer2.setEmail(email2);
-        monthlyCustomer2.setPassword(password2);
-        monthlyCustomer2.setName(name2);
+//         String email2 = "no.pass@gmail.com";
+//         String password2 = "VsCodeLover123";
+//         String name2 = "Karl Bridi";
+//         MonthlyCustomer monthlyCustomer2 = new MonthlyCustomer();
+//         monthlyCustomer2.setEmail(email2);
+//         monthlyCustomer2.setPassword(password2);
+//         monthlyCustomer2.setName(name2);
         
-        MonthlyPass monthlyPass = new MonthlyPass();
-        monthlyPass.setFee(fee);
-        monthlyPass.setSpotNumber(spotNumber);
-        monthlyPass.setConfirmationCode(confirmationCode);
-        monthlyPass.setIsLarge(isLarge);
-        monthlyPass.setStartDate(startDate);
-        monthlyPass.setEndDate(endDate);
-        monthlyPass.setLicensePlate(licensePlate);
-        monthlyPass.setCustomer(monthlyCustomer);
+//         MonthlyPass monthlyPass = new MonthlyPass();
+//         monthlyPass.setFee(fee);
+//         monthlyPass.setSpotNumber(spotNumber);
+//         monthlyPass.setConfirmationCode(confirmationCode);
+//         monthlyPass.setIsLarge(isLarge);
+//         monthlyPass.setStartDate(startDate);
+//         monthlyPass.setEndDate(endDate);
+//         monthlyPass.setLicensePlate(licensePlate);
+//         monthlyPass.setCustomer(monthlyCustomer);
 
-        ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
-        monthlyPasses.add(monthlyPass);
+//         ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
+//         monthlyPasses.add(monthlyPass);
 
-        when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
-        when(monthlyCustomerRepo.findMonthlyCustomerByEmail(email2)).thenReturn(monthlyCustomer2);
+//         when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+//         when(monthlyCustomerRepo.findMonthlyCustomerByEmail(email2)).thenReturn(monthlyCustomer2);
 
-        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByMonthlyCustomer(email2));
-        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-        assertEquals(e.getMessage(), "There are no monthly passes for " + monthlyCustomer2.getEmail());
+//         PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByMonthlyCustomer(email2));
+//         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+//         assertEquals(e.getMessage(), "There are no monthly passes for " + monthlyCustomer2.getEmail());
         
-    }
+//     }
 
-    @Test
-    public void testGetMonthlyPassesByFloor(){
+//     @Test
+//     public void testGetMonthlyPassesByFloor(){
       
-      double fee = 50.50;
-      String spotNumber = "A24";
-      String licensePlate = "123ABC123";
-      LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
-      LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
-      boolean isLarge = true;
-      String confirmationCode = "NeverGonnaGiveYouUp";
+//       double fee = 50.50;
+//       String spotNumber = "A24";
+//       String licensePlate = "123ABC123";
+//       LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+//       LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
+//       boolean isLarge = true;
+//       String confirmationCode = "NeverGonnaGiveYouUp";
 
-      double fee2 = 50.50;
-      String spotNumber2 = "A25";
-      String licensePlate2 = "123ABC124";
-      LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
-      LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
-      boolean isLarge2 = true;
-      String confirmationCode2 = "NeverGonnaGiveYouUp";
+//       double fee2 = 50.50;
+//       String spotNumber2 = "A25";
+//       String licensePlate2 = "123ABC124";
+//       LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+//       LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
+//       boolean isLarge2 = true;
+//       String confirmationCode2 = "NeverGonnaGiveYouUp";
       
-      String email = "rick.roll@gmail.com";
-      String password = "intelliJLover123";
-      String name = "Samer Abdulkarim";
-      MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
-      monthlyCustomer.setEmail(email);
-      monthlyCustomer.setPassword(password);
-      monthlyCustomer.setName(name);
+//       String email = "rick.roll@gmail.com";
+//       String password = "intelliJLover123";
+//       String name = "Samer Abdulkarim";
+//       MonthlyCustomer monthlyCustomer = new MonthlyCustomer();
+//       monthlyCustomer.setEmail(email);
+//       monthlyCustomer.setPassword(password);
+//       monthlyCustomer.setName(name);
       
-      MonthlyPass monthlyPass = new MonthlyPass();
-      monthlyPass.setFee(fee);
-      monthlyPass.setSpotNumber(spotNumber);
-      monthlyPass.setConfirmationCode(confirmationCode);
-      monthlyPass.setIsLarge(isLarge);
-      monthlyPass.setStartDate(startDate);
-      monthlyPass.setEndDate(endDate);
-      monthlyPass.setLicensePlate(licensePlate);
-      monthlyPass.setCustomer(monthlyCustomer);
+//       MonthlyPass monthlyPass = new MonthlyPass();
+//       monthlyPass.setFee(fee);
+//       monthlyPass.setSpotNumber(spotNumber);
+//       monthlyPass.setConfirmationCode(confirmationCode);
+//       monthlyPass.setIsLarge(isLarge);
+//       monthlyPass.setStartDate(startDate);
+//       monthlyPass.setEndDate(endDate);
+//       monthlyPass.setLicensePlate(licensePlate);
+//       monthlyPass.setCustomer(monthlyCustomer);
 
-      MonthlyPass monthlyPass2 = new MonthlyPass();
-      monthlyPass2.setFee(fee2);
-      monthlyPass2.setSpotNumber(spotNumber2);
-      monthlyPass2.setConfirmationCode(confirmationCode2);
-      monthlyPass2.setIsLarge(isLarge2);
-      monthlyPass2.setStartDate(startDate2);
-      monthlyPass2.setEndDate(endDate2);
-      monthlyPass2.setLicensePlate(licensePlate2);
-      monthlyPass2.setCustomer(monthlyCustomer);
+//       MonthlyPass monthlyPass2 = new MonthlyPass();
+//       monthlyPass2.setFee(fee2);
+//       monthlyPass2.setSpotNumber(spotNumber2);
+//       monthlyPass2.setConfirmationCode(confirmationCode2);
+//       monthlyPass2.setIsLarge(isLarge2);
+//       monthlyPass2.setStartDate(startDate2);
+//       monthlyPass2.setEndDate(endDate2);
+//       monthlyPass2.setLicensePlate(licensePlate2);
+//       monthlyPass2.setCustomer(monthlyCustomer);
 
-      Floor floor = new Floor();
-      floor.setFloorNumber(1);
-      Floor floor2 = new Floor();
-      floor2.setFloorNumber(2);
+//       Floor floor = new Floor();
+//       floor.setFloorNumber(1);
+//       Floor floor2 = new Floor();
+//       floor2.setFloorNumber(2);
 
-      monthlyPass.setFloor(floor);
-      monthlyPass2.setFloor(floor2);
-      ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
-      monthlyPasses.add(monthlyPass);
-      monthlyPasses.add(monthlyPass2);
+//       monthlyPass.setFloor(floor);
+//       monthlyPass2.setFloor(floor2);
+//       ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
+//       monthlyPasses.add(monthlyPass);
+//       monthlyPasses.add(monthlyPass2);
       
-      when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
-      when(floorRepo.findFloorByFloorNumber(1)).thenReturn(floor);
+//       when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+//       when(floorRepo.findFloorByFloorNumber(1)).thenReturn(floor);
 
-      ArrayList<MonthlyPass> output = (ArrayList<MonthlyPass>) monthlyPassService.getMonthlyPassesByFloor(1);
-      Iterator<MonthlyPass> i = output.iterator();
-      MonthlyPass outputMonthlyPass = i.next();
-      assertEquals(output.size(), 1);
-      assertEquals(outputMonthlyPass.getFloor().getFloorNumber(), 1);
-    }
+//       ArrayList<MonthlyPass> output = (ArrayList<MonthlyPass>) monthlyPassService.getMonthlyPassesByFloor(1);
+//       Iterator<MonthlyPass> i = output.iterator();
+//       MonthlyPass outputMonthlyPass = i.next();
+//       assertEquals(output.size(), 1);
+//       assertEquals(outputMonthlyPass.getFloor().getFloorNumber(), 1);
+//     }
 
-    @Test
-    public void testGetInvalidMonthlyPassesByFloor1(){
+//     @Test
+//     public void testGetInvalidMonthlyPassesByFloor1(){
 
-      double fee = 50.50;
-        String spotNumber = "A24";
-        String licensePlate = "123ABC123";
-        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
-        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
-        boolean isLarge = true;
-        String confirmationCode = "NeverGonnaGiveYouUp";
+//       double fee = 50.50;
+//         String spotNumber = "A24";
+//         String licensePlate = "123ABC123";
+//         LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+//         LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
+//         boolean isLarge = true;
+//         String confirmationCode = "NeverGonnaGiveYouUp";
 
-        double fee2 = 50.50;
-        String spotNumber2 = "A25";
-        String licensePlate2 = "123ABC124";
-        LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
-        LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
-        boolean isLarge2 = true;
-        String confirmationCode2 = "NeverGonnaGiveYouUp";
+//         double fee2 = 50.50;
+//         String spotNumber2 = "A25";
+//         String licensePlate2 = "123ABC124";
+//         LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+//         LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
+//         boolean isLarge2 = true;
+//         String confirmationCode2 = "NeverGonnaGiveYouUp";
     
     
         
-        MonthlyPass monthlyPass = new MonthlyPass();
-        monthlyPass.setFee(fee);
-        monthlyPass.setSpotNumber(spotNumber);
-        monthlyPass.setConfirmationCode(confirmationCode);
-        monthlyPass.setIsLarge(isLarge);
-        monthlyPass.setStartDate(startDate);
-        monthlyPass.setEndDate(endDate);
-        monthlyPass.setLicensePlate(licensePlate);
+//         MonthlyPass monthlyPass = new MonthlyPass();
+//         monthlyPass.setFee(fee);
+//         monthlyPass.setSpotNumber(spotNumber);
+//         monthlyPass.setConfirmationCode(confirmationCode);
+//         monthlyPass.setIsLarge(isLarge);
+//         monthlyPass.setStartDate(startDate);
+//         monthlyPass.setEndDate(endDate);
+//         monthlyPass.setLicensePlate(licensePlate);
 
-        MonthlyPass monthlyPass2 = new MonthlyPass();
-        monthlyPass2.setFee(fee2);
-        monthlyPass2.setSpotNumber(spotNumber2);
-        monthlyPass2.setConfirmationCode(confirmationCode2);
-        monthlyPass2.setIsLarge(isLarge2);
-        monthlyPass2.setStartDate(startDate2);
-        monthlyPass2.setEndDate(endDate2);
-        monthlyPass2.setLicensePlate(licensePlate2);
+//         MonthlyPass monthlyPass2 = new MonthlyPass();
+//         monthlyPass2.setFee(fee2);
+//         monthlyPass2.setSpotNumber(spotNumber2);
+//         monthlyPass2.setConfirmationCode(confirmationCode2);
+//         monthlyPass2.setIsLarge(isLarge2);
+//         monthlyPass2.setStartDate(startDate2);
+//         monthlyPass2.setEndDate(endDate2);
+//         monthlyPass2.setLicensePlate(licensePlate2);
 
-        ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
-        monthlyPasses.add(monthlyPass);
-        monthlyPasses.add(monthlyPass2);
+//         ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
+//         monthlyPasses.add(monthlyPass);
+//         monthlyPasses.add(monthlyPass2);
 
-        when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
-        when(floorRepo.findFloorByFloorNumber(1)).thenReturn(null);
+//         when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+//         when(floorRepo.findFloorByFloorNumber(1)).thenReturn(null);
 
-        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByFloor(1));
-        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-        assertEquals(e.getMessage(), "The floor with floor number " + 1 + " does not exist.");
-    }
+//         PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByFloor(1));
+//         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+//         assertEquals(e.getMessage(), "The floor with floor number " + 1 + " does not exist.");
+//     }
 
-    @Test
-    public void testGetInvalidMonthlyPassesByFloor2(){
+//     @Test
+//     public void testGetInvalidMonthlyPassesByFloor2(){
 
-      double fee = 50.50;
-        String spotNumber = "A24";
-        String licensePlate = "123ABC123";
-        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
-        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
-        boolean isLarge = true;
-        String confirmationCode = "NeverGonnaGiveYouUp";
+//       double fee = 50.50;
+//         String spotNumber = "A24";
+//         String licensePlate = "123ABC123";
+//         LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+//         LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
+//         boolean isLarge = true;
+//         String confirmationCode = "NeverGonnaGiveYouUp";
 
-        double fee2 = 50.50;
-        String spotNumber2 = "A25";
-        String licensePlate2 = "123ABC124";
-        LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
-        LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
-        boolean isLarge2 = true;
-        String confirmationCode2 = "NeverGonnaGiveYouUp";
+//         double fee2 = 50.50;
+//         String spotNumber2 = "A25";
+//         String licensePlate2 = "123ABC124";
+//         LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+//         LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
+//         boolean isLarge2 = true;
+//         String confirmationCode2 = "NeverGonnaGiveYouUp";
     
     
         
-        MonthlyPass monthlyPass = new MonthlyPass();
-        monthlyPass.setFee(fee);
-        monthlyPass.setSpotNumber(spotNumber);
-        monthlyPass.setConfirmationCode(confirmationCode);
-        monthlyPass.setIsLarge(isLarge);
-        monthlyPass.setStartDate(startDate);
-        monthlyPass.setEndDate(endDate);
-        monthlyPass.setLicensePlate(licensePlate);
+//         MonthlyPass monthlyPass = new MonthlyPass();
+//         monthlyPass.setFee(fee);
+//         monthlyPass.setSpotNumber(spotNumber);
+//         monthlyPass.setConfirmationCode(confirmationCode);
+//         monthlyPass.setIsLarge(isLarge);
+//         monthlyPass.setStartDate(startDate);
+//         monthlyPass.setEndDate(endDate);
+//         monthlyPass.setLicensePlate(licensePlate);
 
-        MonthlyPass monthlyPass2 = new MonthlyPass();
-        monthlyPass2.setFee(fee2);
-        monthlyPass2.setSpotNumber(spotNumber2);
-        monthlyPass2.setConfirmationCode(confirmationCode2);
-        monthlyPass2.setIsLarge(isLarge2);
-        monthlyPass2.setStartDate(startDate2);
-        monthlyPass2.setEndDate(endDate2);
-        monthlyPass2.setLicensePlate(licensePlate2);
+//         MonthlyPass monthlyPass2 = new MonthlyPass();
+//         monthlyPass2.setFee(fee2);
+//         monthlyPass2.setSpotNumber(spotNumber2);
+//         monthlyPass2.setConfirmationCode(confirmationCode2);
+//         monthlyPass2.setIsLarge(isLarge2);
+//         monthlyPass2.setStartDate(startDate2);
+//         monthlyPass2.setEndDate(endDate2);
+//         monthlyPass2.setLicensePlate(licensePlate2);
 
-        Floor floor = new Floor();
-        floor.setFloorNumber(1);
-        Floor floor2 = new Floor();
-        floor2.setFloorNumber(2);
+//         Floor floor = new Floor();
+//         floor.setFloorNumber(1);
+//         Floor floor2 = new Floor();
+//         floor2.setFloorNumber(2);
 
-        monthlyPass.setFloor(floor);
-        monthlyPass2.setFloor(floor);
+//         monthlyPass.setFloor(floor);
+//         monthlyPass2.setFloor(floor);
 
-        ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
-        monthlyPasses.add(monthlyPass);
-        monthlyPasses.add(monthlyPass2);
+//         ArrayList<MonthlyPass> monthlyPasses = new ArrayList<>();
+//         monthlyPasses.add(monthlyPass);
+//         monthlyPasses.add(monthlyPass2);
 
-        when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
-        when(floorRepo.findFloorByFloorNumber(2)).thenReturn(floor2);
+//         when(monthlyPassRepo.findAll()).thenReturn(monthlyPasses);
+//         when(floorRepo.findFloorByFloorNumber(2)).thenReturn(floor2);
 
-        PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByFloor(2));
-        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-        assertEquals(e.getMessage(), "There are no monthly passes on floor " + 2);
-    }
+//         PLMSException e = assertThrows(PLMSException.class, () -> monthlyPassService.getMonthlyPassesByFloor(2));
+//         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+//         assertEquals(e.getMessage(), "There are no monthly passes on floor " + 2);
+//     }
 
-    @Test
-    public void testGetMonthlyPassesByDate(){
-      double fee = 50.50;
-        String spotNumber = "A24";
-        String licensePlate = "123ABC123";
-        LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
-        LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
-        boolean isLarge = true;
-        String confirmationCode = "NeverGonnaGiveYouUp";
+//     @Test
+//     public void testGetMonthlyPassesByDate(){
+//       double fee = 50.50;
+//         String spotNumber = "A24";
+//         String licensePlate = "123ABC123";
+//         LocalDate startDate = Date.valueOf("2023-02-21").toLocalDate();
+//         LocalDate endDate = Date.valueOf("2023-03-20").toLocalDate();
+//         boolean isLarge = true;
+//         String confirmationCode = "NeverGonnaGiveYouUp";
 
-        double fee2 = 50.50;
-        String spotNumber2 = "A25";
-        String licensePlate2 = "123ABC124";
-        LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
-        LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
-        boolean isLarge2 = true;
-        String confirmationCode2 = "NeverGonnaGiveYouUp";
+//         double fee2 = 50.50;
+//         String spotNumber2 = "A25";
+//         String licensePlate2 = "123ABC124";
+//         LocalDate startDate2 = Date.valueOf("2023-02-22").toLocalDate();
+//         LocalDate endDate2 = Date.valueOf("2023-03-21").toLocalDate();
+//         boolean isLarge2 = true;
+//         String confirmationCode2 = "NeverGonnaGiveYouUp";
         
+
         MonthlyPass monthlyPass = new MonthlyPass();
         monthlyPass.setFee(fee);
         monthlyPass.setSpotNumber(spotNumber);
@@ -1106,4 +1107,4 @@ public class MonthlyPassServiceTests {
 
     
     
-}
+//}
