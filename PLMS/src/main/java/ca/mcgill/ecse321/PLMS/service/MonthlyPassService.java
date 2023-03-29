@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +22,6 @@ public class MonthlyPassService {
     @Autowired
     MonthlyPassRepository monthlyPassRepository;
 
-    @Autowired
-    GuestPassRepository guestPassRepository;
 
     @Autowired
     FloorRepository floorRepository;
@@ -129,7 +126,6 @@ public class MonthlyPassService {
         ArrayList<MonthlyPass> monthlyPasses = (ArrayList<MonthlyPass>) monthlyPassRepository.findAll();
         // number of passes on the floor
         int numberOfPasses = 0;
-
         for (MonthlyPass pass : monthlyPasses){
             if(pass.getFloor().getFloorNumber() == floorNumber && pass.getIsLarge() == isLarge && isOverlappingMonthlyPass(newPassStartDate, newPassEndDate, pass.getStartDate(), pass.getEndDate())){
 
@@ -157,7 +153,7 @@ public class MonthlyPassService {
         return (newPassStartDate.isBefore(otherPassEndDate) && newPassEndDate.isAfter(otherPassStartDate)) || (otherPassStartDate.isBefore(newPassEndDate) && otherPassEndDate.isAfter(newPassStartDate));
     }
 
-
+    @Transactional
     public List<MonthlyPass> getMonthlyPassesByFloor(int floorNumber) {
         List<MonthlyPass> monthlyPasses = new ArrayList<>();
         Floor floor = floorRepository.findFloorByFloorNumber(floorNumber);

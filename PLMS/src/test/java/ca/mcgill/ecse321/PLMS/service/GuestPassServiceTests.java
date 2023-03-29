@@ -49,21 +49,21 @@ public class GuestPassServiceTests {
   private String spotNumber2;
   private Time starTime2;
   private Time endTime2;
-  private Date date1;
+  private LocalDate date1;
 
   @BeforeEach
   public void setUp(){
     // MockitoAnnotations.initMocks(this);
 
     spotNumber1 = "A24";
-    date1 = Date.valueOf("2023-02-21");
+    date1 = Date.valueOf("2023-02-21").toLocalDate();
     starTime1 = Time.valueOf("12:00:00");
     endTime1 = Time.valueOf("18:00:00");
     boolean isLarge1 = true;
     guestPass1 = new GuestPass(null, spotNumber1, null, isLarge1, date1, starTime1, endTime1);
 
     spotNumber2 = "A38";
-    final Date date2 = Date.valueOf("2023-02-21");
+    final LocalDate date2 = Date.valueOf("2023-02-21").toLocalDate();
     starTime2 = Time.valueOf("14:00:00");
     endTime2 = Time.valueOf("19:00:00");
     boolean isLarge2 = true;
@@ -195,8 +195,8 @@ public class GuestPassServiceTests {
   @Test
   public void testGetGuestPassesByDate(){
 
-      Date Date1 = Date.valueOf("2023-02-21");
-      Date Date2 = Date.valueOf("2023-02-22");
+      LocalDate Date1 = Date.valueOf("2023-02-21").toLocalDate();
+      LocalDate Date2 = Date.valueOf("2023-02-22").toLocalDate();
 
 
 
@@ -208,19 +208,19 @@ public class GuestPassServiceTests {
 
     when(guestPassRepo.findAll()).thenReturn(guestPasses);
 
-    ArrayList<GuestPass> output = (ArrayList<GuestPass>) guestPassService.getGuestPassesByDate(Date.valueOf("2023-02-21"));
+    ArrayList<GuestPass> output = (ArrayList<GuestPass>) guestPassService.getGuestPassesByDate(Date.valueOf("2023-02-21").toLocalDate());
     Iterator<GuestPass> i = output.iterator();
     GuestPass outputGuestPass = i.next();
     assertEquals(output.size(), 1);
-    assertEquals(outputGuestPass.getDate(), Date.valueOf("2023-02-21"));
+    assertEquals(outputGuestPass.getDate(), Date.valueOf("2023-02-21").toLocalDate());
     assertEquals(outputGuestPass.getSpotNumber(), spotNumber1);
 
 
   }
   @Test
   public void testInvalidGetGuestPassesByDate() {
-    Date Date1 = Date.valueOf("2023-02-21");
-    Date Date2 = Date.valueOf("2023-02-22");
+    LocalDate Date1 = Date.valueOf("2023-02-21").toLocalDate();
+    LocalDate Date2 = Date.valueOf("2023-02-22").toLocalDate();
 
     guestPass1.setDate(Date1);
     guestPass2.setDate(Date2);
@@ -228,7 +228,7 @@ public class GuestPassServiceTests {
     guestPasses.add(guestPass1);
     guestPasses.add(guestPass2);
     when(guestPassRepo.findAll()).thenReturn(guestPasses);
-    PLMSException e = assertThrows(PLMSException.class, () -> guestPassService.getGuestPassesByDate(Date.valueOf("2023-03-23")));
+    PLMSException e = assertThrows(PLMSException.class, () -> guestPassService.getGuestPassesByDate(Date.valueOf("2023-03-23").toLocalDate()));
     assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
     assertEquals(e.getMessage(), "There are no guest passes for date " + Date.valueOf("2023-03-23"));
 
@@ -567,8 +567,8 @@ public class GuestPassServiceTests {
   void testCreateGuestPassExceededCapacity() {
     int floorNumber = 1;
     int nrIncrements = 4;
-    Date currentDate = Date.valueOf(LocalDate.of(2023, 4, 1));
-    Date startDate2 = Date.valueOf(LocalDate.of(2020, 4, 1));
+    LocalDate currentDate = Date.valueOf(LocalDate.of(2023, 4, 1)).toLocalDate();
+    LocalDate startDate2 = Date.valueOf(LocalDate.of(2020, 4, 1)).toLocalDate();
 
     LocalDateTime currentTime = LocalDateTime.of(2023, 4, 1, 10, 0, 0);
     Time openingTime = Time.valueOf("07:00:00");
@@ -583,7 +583,7 @@ public class GuestPassServiceTests {
     Floor floor = new Floor();
     floor.setFloorNumber(floorNumber);
     floor.setParkingLot(parkingLot);
-    floor.setLargeSpotCapacity(2);
+    floor.setLargeSpotCapacity(1);
     when(floorRepo.findFloorByFloorNumber(floorNumber)).thenReturn(floor);
 
     // Initialize guest passes
@@ -604,22 +604,22 @@ public class GuestPassServiceTests {
     guestPass2.setEndTime(Time.valueOf("14:00:00"));
 
     // // Initialize monthly passes
-    // MonthlyPass monthlyPass1 = new MonthlyPass();
-    // monthlyPass1.setSpotNumber("A24");
-    // monthlyPass1.setIsLarge(true);
-    // monthlyPass1.setFloor(floor);
-    // monthlyPass1.setStartDate(currentDate);
-    // LocalDate endDate1 = Date.valueOf(LocalDate.of(2024, 4, 1)).toLocalDate();
-    // monthlyPass1.setEndDate(endDate1);
+    MonthlyPass monthlyPass1 = new MonthlyPass();
+    monthlyPass1.setSpotNumber("A24");
+    monthlyPass1.setIsLarge(true);
+    monthlyPass1.setFloor(floor);
+    monthlyPass1.setStartDate(currentDate);
+    LocalDate endDate1 = Date.valueOf(LocalDate.of(2024, 4, 1)).toLocalDate();
+    monthlyPass1.setEndDate(endDate1);
 
-    // // inactive monthly pass
-    // MonthlyPass monthlyPass2 = new MonthlyPass();
-    // monthlyPass2.setSpotNumber("A25");
-    // monthlyPass2.setIsLarge(true);
-    // monthlyPass2.setFloor(floor);
-    // LocalDate endDate2 = Date.valueOf(LocalDate.of(2020, 5, 1)).toLocalDate();
-    // monthlyPass2.setStartDate(startDate2);
-    // monthlyPass2.setEndDate(endDate2);
+    // inactive monthly pass
+    MonthlyPass monthlyPass2 = new MonthlyPass();
+    monthlyPass2.setSpotNumber("A25");
+    monthlyPass2.setIsLarge(true);
+    monthlyPass2.setFloor(floor);
+    LocalDate endDate2 = Date.valueOf(LocalDate.of(2020, 5, 1)).toLocalDate();
+    monthlyPass2.setStartDate(startDate2);
+    monthlyPass2.setEndDate(endDate2);
 
     ArrayList<GuestPass> guestPassList = new ArrayList<>();
     ArrayList<MonthlyPass> monthlyPassList = new ArrayList<>();

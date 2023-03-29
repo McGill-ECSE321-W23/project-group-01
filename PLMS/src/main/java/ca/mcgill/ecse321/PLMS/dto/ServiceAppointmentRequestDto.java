@@ -2,26 +2,34 @@ package ca.mcgill.ecse321.PLMS.dto;
 
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.model.Service;
 import ca.mcgill.ecse321.PLMS.model.ServiceAppointment;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
-
+import io.swagger.v3.oas.annotations.media.Schema;
+/**
+ * 
+ */
 public class ServiceAppointmentRequestDto {
 
     //=-=-=-=-=- jakarta validation of variables -=-=-=-=-=//
     @NotNull(message = "Cannot have an empty date.")
     @FutureOrPresent(message = "Date must be in the future.")
+    @Schema(example= "2024-05-05", description = "Date of the service appointment", requiredMode = Schema.RequiredMode.REQUIRED)
     private LocalDate date;
     
     @NotNull(message = "Cannot have an empty start time.")
+    @Schema(example= "15:00:00", description = "The starting time of the service appointment", requiredMode = Schema.RequiredMode.REQUIRED, implementation = String.class, format = "HH:mm:ss")
     private Time startTime;
 
     @NotNull(message = "Cannot have an empty service name.")
+    @Schema(example= "Wheel Replacement", description = "Name of the service that will be performed during the service appointment", requiredMode = Schema.RequiredMode.REQUIRED)
     private String serviceName;
 
+    @Schema(example= "user@email.com", description = "Email linked to the account of the customer (this is optional)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String userEmail;
     //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=//
 
