@@ -13,6 +13,18 @@ public class ServiceRequestDto {
     @Min(value = 0, message = "Length in hours needs to be a number greater or equal to 0.")
     private double lengthInHours;
 
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public double getLengthInHours() {
+        return lengthInHours;
+    }
+    
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
