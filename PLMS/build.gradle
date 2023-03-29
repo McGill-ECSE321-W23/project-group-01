@@ -38,3 +38,13 @@ tasks.named('test') {
 	// After running the tests, generate the coverage report 
 	finalizedBy jacocoTestReport
 }
+
+task integrationTest(type: Test){
+	// to see full test logging, please write command ./gradlew clean integrationTest
+	include '**/ca/mcgill/ecse321/PLMS/integration/*'
+	useJUnitPlatform()
+	testLogging {
+		exceptionFormat "full"
+		events "failed", "skipped", "passed"
+	}
+}

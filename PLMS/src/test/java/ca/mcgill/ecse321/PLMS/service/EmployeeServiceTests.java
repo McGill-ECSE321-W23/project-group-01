@@ -26,6 +26,9 @@ public class EmployeeServiceTests {
 
 
     @Test
+    /**
+     * Get all employees in the database
+     */
     public void testGetAllEmployees() {
         final String email = "john.doe@mcgill.ca";
         final String password = "JohnDoe2002";
@@ -54,6 +57,9 @@ public class EmployeeServiceTests {
     }
 
     @Test
+    /**
+     * Get all employees when the databse is empty
+     */
     public void testGetAllEmptyEmployees() {
         ArrayList<Employee> customers = new ArrayList<>();
         when(employeeRepository.findAll()).thenReturn(customers);
@@ -64,6 +70,9 @@ public class EmployeeServiceTests {
 
 
     @Test
+    /**
+     * Get an employee based on their email.
+     */
     public void testGetEmployeeByValidEmail()
     {
         final String email = "john.doe@mcgill.ca";
@@ -82,6 +91,9 @@ public class EmployeeServiceTests {
     }
 
     @Test
+    /**
+     * Get an employee who doesnt exist
+     */
     public void testGetEmployeeByInvalidEmail()
     {
         final String email = "jane.doe@mcgill.ca";
@@ -94,6 +106,9 @@ public class EmployeeServiceTests {
     }
 
     @Test
+    /**
+     * Create an employee.
+     */
     public void testCreateValidEmployeeAccount()
     {
         final String email = "john.doe@mcgill.ca";
@@ -113,6 +128,9 @@ public class EmployeeServiceTests {
     }
 
     @Test
+    /**
+     * Try to create an employee that already exists based on their email
+     */
     public void testCreateDuplicateEmailEmployeeAccount()
     {
         final String email = "john.doe@mcgill.ca";
@@ -136,6 +154,9 @@ public class EmployeeServiceTests {
     }
 
     @Test
+    /**
+     * Hourly wage needs be more than zero
+     */
     public void testCreateInvalidHourlyWageEmployeeAccount()
     {
         final String email = "john.doe@mcgill.ca";
@@ -151,6 +172,9 @@ public class EmployeeServiceTests {
     }
 
     @Test
+    /**
+     * Update an employee's account
+     */
     public void testUpdateValidEmployeeAccount()
     {
         final String email = "john.doe@mcgill.ca";
@@ -176,6 +200,9 @@ public class EmployeeServiceTests {
     }
 
     @Test
+    /**
+     * Updte with an invalid wage
+     */
     public void testUpdateInvalidWageEmployeeAccount()
     {
         final String email = "john.doe@mcgill.ca";
@@ -199,6 +226,9 @@ public class EmployeeServiceTests {
     }
 
     @Test
+    /**
+     * Update an employee that doesn't exist
+     */
     public void testUpdateInvalidEmailEmployeeAccount() {
         final String email = "john.doe@mcgill.ca";
         final String password = "JohnDoe2002";
@@ -215,6 +245,9 @@ public class EmployeeServiceTests {
     }
 
     @Test
+    /**
+     * Delete an employee account.
+     */
     public void testDeleteEmployeeAccount() {
         final String email = "john.doe@mcgill.ca";
         final String password = "JohnDoe2002";
@@ -231,6 +264,9 @@ public class EmployeeServiceTests {
     }
 
     @Test
+    /**
+     * Delete an employee that doesn't exist
+     */
     public void testInvalidDeleteEmployeeAccount() {
         final String email = "john.doe@mcgill.ca";
         final String password = "JohnDoe2002";

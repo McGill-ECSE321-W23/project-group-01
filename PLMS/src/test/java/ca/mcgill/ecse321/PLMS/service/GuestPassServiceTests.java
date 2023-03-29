@@ -72,6 +72,9 @@ public class GuestPassServiceTests {
   }
 
   @Test
+  /**
+   * Get a guest pass
+   */
   public void testGetValidGuestPass(){
 
     int id  = 1;
@@ -83,6 +86,9 @@ public class GuestPassServiceTests {
   }
 
   @Test
+  /**
+   * No guest passes in the database
+   */
     public void testGetAllEmptyGuestPasses() {
         ArrayList<GuestPass> passes = new ArrayList<GuestPass>();
         when(guestPassRepo.findAll()).thenReturn(passes);
@@ -92,6 +98,9 @@ public class GuestPassServiceTests {
     }
 
   @Test
+  /**
+   * Test getting a guest pass which doesn't exist
+   */
   public void testGetInvalidGuestPass(){
     final int invalidPassNumber = 42;
     when(guestPassRepo.findGuestPassById(invalidPassNumber)).thenReturn(null);
@@ -104,6 +113,9 @@ public class GuestPassServiceTests {
 
 
     @Test
+    /**
+     * Get all the guest passes from the database
+     */
     public void testGetAllGuestPasses(){
 
 
@@ -128,6 +140,9 @@ public class GuestPassServiceTests {
     }
 
     @Test
+    /**
+     * Get guest passes registered on a floor
+     */
     public void testGetGuestPassesByFloor(){
 
       Floor floor = new Floor();
@@ -152,6 +167,9 @@ public class GuestPassServiceTests {
     }
 
     @Test
+    /**
+     * Test getting passes on a floor that doesn't exist
+     */
     public void testGetAllGuestPassesByFloorInvalid1(){
       // test for the case in which there is no floor that exists with this number
       when(floorRepo.findFloorByFloorNumber(1)).thenReturn(null);
@@ -161,6 +179,9 @@ public class GuestPassServiceTests {
     }
 
     @Test
+    /**
+     * Get all passes on a floor where there are no passes.
+     */
     public void testGetAllGuestPassesByFloorInvalid2(){
       guestPass2.setFloor(null);
       ArrayList<GuestPass> guestPasses = new ArrayList<>();
@@ -175,6 +196,9 @@ public class GuestPassServiceTests {
     }
 
   @Test
+  /**
+   * Delete a guest pass
+   */
   public void testValidDeleteGuestPass(){
     int id = 1;
     when(guestPassRepo.findGuestPassById(id)).thenReturn(guestPass1);
@@ -183,6 +207,9 @@ public class GuestPassServiceTests {
   }
 
   @Test
+  /**
+   * Delete a pass which doesn't exist
+   */
   public void testInvalidDeleteGuestPass()
   {
     final int invalidPassNumber = 42;
@@ -193,6 +220,9 @@ public class GuestPassServiceTests {
   }
 
   @Test
+  /**
+   * Get all guest passes on a particular date.
+   */
   public void testGetGuestPassesByDate(){
 
       LocalDate Date1 = Date.valueOf("2023-02-21").toLocalDate();
@@ -218,6 +248,9 @@ public class GuestPassServiceTests {
 
   }
   @Test
+  /**
+   * Get guest passes on a date where there are no guest passes
+   */
   public void testInvalidGetGuestPassesByDate() {
     LocalDate Date1 = Date.valueOf("2023-02-21").toLocalDate();
     LocalDate Date2 = Date.valueOf("2023-02-22").toLocalDate();
@@ -233,7 +266,9 @@ public class GuestPassServiceTests {
     assertEquals(e.getMessage(), "There are no guest passes for date " + Date.valueOf("2023-03-23"));
 
   }
-  // Test case for start time after closing time
+  /**
+   * Test case for start time after closing time
+   */ 
   @Test
   void testInvalidStartTimeAfterClosingTime() {
     Time openingTime = Time.valueOf("08:00:00");
@@ -249,7 +284,9 @@ public class GuestPassServiceTests {
     assertEquals(e.getMessage(), "Cannot have a guest pass beginning after the lot closes.");
   }
 
-  // Test case for end time after closing time
+  /**
+   * / Test case for end time after closing time
+   */
   @Test
   void testInvalidEndTimeAfterClosingTime() {
     Time openingTime = Time.valueOf("08:00:00");
@@ -266,6 +303,9 @@ public class GuestPassServiceTests {
   }
 
   @Test
+  /**
+   * Create a guest pass
+   */
   public void testCreateValidGuestPass()
   {
     int floorNumber = 1;
@@ -313,6 +353,9 @@ public class GuestPassServiceTests {
   }
 
   @Test
+  /**
+   * Create a guest pass on a non existent floor
+   */
   public void testInvalidCreateGuestPassNonExistantFloor()
   {
     int floorNumber = 1;
@@ -347,6 +390,9 @@ public class GuestPassServiceTests {
   }
 
   @Test
+  /**
+   * Attempt to create a guest pass on a member only floor
+   */
   void testCreateGuestPassOnMemberOnlyFloor() {
     // create a guest pass object
     GuestPass guestPass = new GuestPass();
@@ -380,6 +426,9 @@ public class GuestPassServiceTests {
   }
 
   @Test
+  /**
+   * Exceed 12 hour max
+   */
   void testInvalidCreateGuestPassWithTooManyIncrements() {
     // parameters
     int floorNumber = 1;
@@ -428,6 +477,9 @@ public class GuestPassServiceTests {
   }
 
   @Test
+  /**
+   * Starting before lot opens
+   */
   void testCreateGuestPassInvalidStartTime1() {
     int floorNumber = 1;
     int nrIncrements = 4;
@@ -459,6 +511,9 @@ public class GuestPassServiceTests {
   }
 
   @Test
+  /**
+   * Spills over lot closing
+   */
   void testInvalidCreateGuestPassInvalidEndTime() {
     int floorNumber = 1;
     int nrIncrements = 5;
@@ -490,6 +545,9 @@ public class GuestPassServiceTests {
   }
 
   @Test
+  /**
+   * Booked after lot closes
+   */
   void testCreateGuestPassInvalidStartTime2() {
     int floorNumber = 1;
     int nrIncrements = 4;
@@ -520,6 +578,9 @@ public class GuestPassServiceTests {
     assertEquals(e.getMessage(), "Cannot have a guest pass beginning after the lot closes.");
   }
   @Test
+  /**
+   * Spot currently taken
+   */
   void testCreateGuestPassSpotNotAvailable() {
     int floorNumber = 1;
     int nrIncrements = 4;
@@ -565,6 +626,9 @@ public class GuestPassServiceTests {
 
 
   @Test
+  /**
+   * exceeded capacity on floor
+   */
   void testCreateGuestPassExceededCapacity() {
     int floorNumber = 1;
     int nrIncrements = 4;

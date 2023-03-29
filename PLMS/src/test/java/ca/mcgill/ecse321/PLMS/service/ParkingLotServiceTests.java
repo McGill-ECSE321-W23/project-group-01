@@ -37,6 +37,9 @@ public class ParkingLotServiceTests {
 
     
     @Test
+    /**
+     * Get the parking lot
+     */
     public void testGetValidParkingLot(){
       // set up a mock parkingLot to be used by parkinglot repo
       final Time openingTime = Time.valueOf("6:00:00");
@@ -63,6 +66,9 @@ public class ParkingLotServiceTests {
 
 
     @Test
+    /**
+     * Create a valid parking lot
+     */
     public void testCreateValidParkingLot(){
         // set up a mock parkingLot to be used by parkingLot repo
         final Time openingTime = Time.valueOf("6:00:00");
@@ -82,6 +88,9 @@ public class ParkingLotServiceTests {
     }
 
     @Test
+    /**
+     * Equal opening and closing times
+     */
     public void testCreateInvalidEqualTimesParkingLot(){
         // set up a mock parkingLot to be used by parkingLot repo
         final Time openingTime = Time.valueOf("6:00:00");
@@ -99,6 +108,9 @@ public class ParkingLotServiceTests {
     }
 
     @Test
+    /**
+     * Opening after closing time.
+     */
     public void testCreateInvalidTimesParkingLot() {
         // set up a mock parkingLot to be used by parkingLot repo
         final Time openingTime = Time.valueOf("22:00:00");
@@ -116,6 +128,9 @@ public class ParkingLotServiceTests {
     }
 
     @Test
+    /**
+     * Valid update
+     */
     public void testUpdateValidParkingLot() {
         final Time openingTime = Time.valueOf("6:00:00");
         final Time closingTime = Time.valueOf("22:00:00");
@@ -140,6 +155,9 @@ public class ParkingLotServiceTests {
     }
 
     @Test
+    /**
+     * equal times in the update
+     */
     public void testUpdateInvalidEqualTimesParkingLot() {
         final Time openingTime = Time.valueOf("6:00:00");
         final Time closingTime = Time.valueOf("22:00:00");
@@ -164,6 +182,9 @@ public class ParkingLotServiceTests {
     }
 
     @Test
+    /**
+     * Start time after closing time update.
+     */
     public void testUpdateInvalidTimesParkingLot() {
         final Time openingTime = Time.valueOf("6:00:00");
         final Time closingTime = Time.valueOf("22:00:00");

@@ -26,6 +26,9 @@ public class OwnerServiceTests {
 
 
     @Test
+    /**
+     * Get all owners of the parking lot
+     */
     public void testGetAllOwners() {
         final String email = "john.doe@mcgill.ca";
         final String password = "JohnDoe2002";
@@ -50,6 +53,9 @@ public class OwnerServiceTests {
     }
 
     @Test
+    /**
+     * No owners in db
+     */
     public void testGetAllEmptyOwners() {
         ArrayList<Owner> customers = new ArrayList<>();
         when(ownerRepository.findAll()).thenReturn(customers);
@@ -60,6 +66,9 @@ public class OwnerServiceTests {
 
 
     @Test
+    /**
+     * Get the owner by their email
+     */
     public void testGetOwnerByValidEmail()
     {
         final String email = "john.doe@mcgill.ca";
@@ -75,6 +84,9 @@ public class OwnerServiceTests {
     }
 
     @Test
+    /**
+     * Get an owner that doesn't exist
+     */
     public void testGetOwnerByInvalidEmail()
     {
         final String email = "jane.doe@mcgill.ca";
@@ -86,6 +98,9 @@ public class OwnerServiceTests {
     }
 
     @Test
+    /**
+     * Create a valid owner
+     */
     public void testCreateValidOwnerAccount()
     {
         final String email = "john.doe@mcgill.ca";
@@ -103,6 +118,9 @@ public class OwnerServiceTests {
     }
 
     @Test
+    /**
+     * Owner account has been registered before
+     */
     public void testCreateInvalidOwnerAccount()
     {
         final String email = "john.doe@mcgill.ca";
@@ -122,6 +140,9 @@ public class OwnerServiceTests {
     }
 
     @Test
+    /**
+     * Update owner that doesn't exist
+     */
     public void testInvalidUpdateOwnerAccount()
     {
         final String email = "john.doe@mcgill.ca";
@@ -136,6 +157,9 @@ public class OwnerServiceTests {
     }
 
     @Test
+    /**
+     * Valid update of owner account
+     */
     public void testValidUpdateOwnerAccount()
     {
         final String email = "john.doe@mcgill.ca";

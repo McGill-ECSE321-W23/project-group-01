@@ -539,6 +539,10 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Scheduling a service appointment when there is no employee available.
+   * We simply just schedule anyways, and employee can be assigned later.
+   */
   public void testCreateWithSchedulingConflict(){
     String serviceName = "30 min Car Wash";
     int serviceCost = 30;
@@ -583,6 +587,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Get all the appointments assigned to an employee
+   */
   public void testGetAllInvalidAppointmentsByEmployee(){
     // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
     String serviceName = "30 min Car Wash";
@@ -613,6 +620,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * No appointments for the customer
+   */
   public void testGetAllInvalidAppointmentsByMonthlyCustomer(){
     // //=-=-=-=-=-=- Create object -=-=-=-=-=-=//
     String serviceName = "30 min Car Wash";
@@ -641,6 +651,9 @@ public class ServiceAppointmentServiceTests {
   }
 
   @Test
+  /**
+   * Attempt to update an appointment that doesn't exist
+   */
   public void testInvalidAppointmentUpdate(){
     when(serviceAppointmentRepository.findServiceAppointmentById(10)).thenReturn(null);
     PLMSException e = assertThrows(PLMSException.class,

@@ -30,6 +30,9 @@ public class ServiceServiceTests {
 
    
     @Test
+    /** 
+     * Get all the services made by the owner
+     */
     public void testGetAllServices() {
         final String serviceName = "Car wash";
         final double fee = 35.5;
@@ -56,6 +59,9 @@ public class ServiceServiceTests {
     }
 
     @Test
+    /**
+     * get a service by its name
+     */
     public void testGetServiceByServiceName() {
         final String serviceName = "Car wash";
         final double fee = 35.5;
@@ -67,6 +73,9 @@ public class ServiceServiceTests {
     }
 
     @Test
+    /**
+     * get a service that doesn't exist
+     */
     public void testGetInvalidServiceByServiceName() {
         final String string = "hehe";
         when(serviceRepository.findAll()).thenReturn(null);
@@ -78,6 +87,9 @@ public class ServiceServiceTests {
 
 
     @Test
+    /**
+     * Valid creation of a service
+     */
     public void testCreateService()
     {
         final String serviceName = "Car wash";
@@ -94,6 +106,9 @@ public class ServiceServiceTests {
     }
 
     @Test
+    /**
+     * Delete a service that doesn't exist
+     */
     public void testInvalidDelete()
     {
         final String string = "hehe";
@@ -104,6 +119,9 @@ public class ServiceServiceTests {
     }
 
     @Test
+    /**
+     * Create a service that already exists
+     */
     public void testCreateInvalidService()
     {
         final String serviceName = "Car wash";
@@ -119,6 +137,9 @@ public class ServiceServiceTests {
     }
 
     @Test
+    /**
+     * Delete a service successfully
+     */
     public void testValidServiceDelete()
     {
         final String serviceName = "Car wash";
@@ -134,6 +155,9 @@ public class ServiceServiceTests {
     }
 
     @Test
+    /**
+     * Update a service successfully.
+     */
     public void testValidServiceUpdate(){
         final String serviceName = "Car wash";
         final double fee = 35.5;
@@ -149,6 +173,9 @@ public class ServiceServiceTests {
     }
 
     @Test
+    /**
+     * Update a service that doesn't exist
+     */
     public void testInvalidServiceUpdate(){
         final String serviceName = "Car wash";
         final double fee = 35.5;

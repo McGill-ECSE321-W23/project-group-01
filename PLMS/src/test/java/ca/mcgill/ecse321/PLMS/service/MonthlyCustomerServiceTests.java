@@ -28,6 +28,9 @@ public class MonthlyCustomerServiceTests {
 
 
     @Test
+    /**
+     * Get all the monthly customers in the db.
+     */
     public void testGetAllMonthlyCustomers() {
         final String email = "john.doe@mcgill.ca";
         final String password = "JohnDoe2002";
@@ -52,6 +55,9 @@ public class MonthlyCustomerServiceTests {
     }
 
     @Test
+    /**
+     * No customers
+     */
     public void testGetAllEmptyMonthlyCustomers() {
         ArrayList<MonthlyCustomer> customers = new ArrayList<>();
         when(monthlyCustomerRepository.findAll()).thenReturn(customers);
@@ -62,6 +68,9 @@ public class MonthlyCustomerServiceTests {
 
 
     @Test
+    /**
+     * Find customer by their email
+     */
     public void testGetMonthlyCustomerByValidEmail()
     {
         final String email = "john.doe@mcgill.ca";
@@ -77,6 +86,9 @@ public class MonthlyCustomerServiceTests {
     }
 
     @Test
+    /**
+     * Not in database when finding
+     */
     public void testGetMonthlyCustomerByInvalidEmail()
     {
         final String email = "jane.doe@mcgill.ca";
@@ -88,6 +100,9 @@ public class MonthlyCustomerServiceTests {
     }
 
     @Test
+    /**
+     * Valid creation of an account.
+     */
     public void testCreateValidMonthlyCustomerAccount()
     {
         final String email = "john.doe@mcgill.ca";
@@ -105,6 +120,9 @@ public class MonthlyCustomerServiceTests {
     }
 
     @Test
+    /**
+     * Create an account that already exists
+     */
     public void testCreateInvalidMonthlyCustomerAccount()
     {
         final String email = "john.doe@mcgill.ca";
@@ -127,6 +145,9 @@ public class MonthlyCustomerServiceTests {
 
 
     @Test
+    /**
+     * valid update of account details
+     */
     public void testValidUpdateMonthlyCustomerAccount()
     {
         final String email = "john.doe@mcgill.ca";
@@ -147,6 +168,9 @@ public class MonthlyCustomerServiceTests {
     }
 
     @Test
+    /**
+     * update customer that doesnt exist
+     */
     public void testInvalidUpdateMonthlyCustomerAccount()
     {
         final String email = "john.doe@mcgill.ca";

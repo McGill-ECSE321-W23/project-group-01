@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.PLMS.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
@@ -48,6 +47,9 @@ public class MonthlyPassServiceTests {
   private MonthlyPassService monthlyPassService;
 
   @Test
+  /**
+   * Get a valid monthly pass
+   */
   public void testGetValidWithoutAccountMonthlyPass(){
     double fee = 50.50;
     String spotNumber = "A24";
@@ -73,6 +75,9 @@ public class MonthlyPassServiceTests {
   }
 
   @Test
+  /**
+   * No monthly passes in the system
+   */
     public void testGetAllEmptyMonthlyPasses() {
         ArrayList<MonthlyPass> passes = new ArrayList<>();
         when(monthlyPassRepo.findAll()).thenReturn(passes);
@@ -82,6 +87,9 @@ public class MonthlyPassServiceTests {
     }
 
   @Test
+  /**
+   * Get a valid monthly pass associated with an account
+   */
   public void testGetValidWithAccountMonthlyPass(){
     double fee = 50.50;
     String spotNumber = "A24";
@@ -120,6 +128,9 @@ public class MonthlyPassServiceTests {
   }
 
   @Test
+  /**
+   * Get a invalid monthly pass
+   */
   public void testGetInvalidMonthlyPass(){
     final int invalidPassNumber = 42;
 		  when(monthlyPassRepo.findMonthlyPassById(invalidPassNumber)).thenReturn(null);
@@ -134,6 +145,9 @@ public class MonthlyPassServiceTests {
 
 
     @Test
+    /**
+     * Get all the monthly passes.
+     */
     public void testGetAllMonthlyPasses(){
         double fee = 50.50;
         String spotNumber = "A24";
@@ -202,6 +216,9 @@ public class MonthlyPassServiceTests {
     }
 
     @Test
+    /**
+     * Get the monthly passes for a customer
+     */
     public void testGetMonthlyPassesByMonthlyCustomer(){
         double fee = 50.50;
         String spotNumber = "A24";
@@ -271,6 +288,9 @@ public class MonthlyPassServiceTests {
     }
 
     @Test
+    /**
+     * No account in the system
+     */
     public void testGetInvalidMonthlyPassesByMonthlyCustomer1(){
         double fee = 50.50;
         String spotNumber = "A24";
@@ -323,6 +343,9 @@ public class MonthlyPassServiceTests {
     }
 
     @Test
+    /**
+     * No passes with the account
+     */
     public void testGetInvalidMonthlyPassesByMonthlyCustomer2(){
 
         double fee = 50.50;
@@ -372,6 +395,9 @@ public class MonthlyPassServiceTests {
     }
 
     @Test
+    /**
+     * Get all the monthly passes on a floor
+     */
     public void testGetMonthlyPassesByFloor(){
       
       double fee = 50.50;
@@ -440,6 +466,9 @@ public class MonthlyPassServiceTests {
     }
 
     @Test
+    /**
+     * 
+     */
     public void testGetInvalidMonthlyPassesByFloor1(){
 
       double fee = 50.50;
