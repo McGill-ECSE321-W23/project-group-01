@@ -17,6 +17,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+/**
+ * Controller class related to endpoints for CRUD operations on the owner model class in the context of the PLMS system
+ */
 @RestController
 public class OwnerController {
 

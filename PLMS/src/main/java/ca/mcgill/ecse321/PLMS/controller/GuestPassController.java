@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.PLMS.controller;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
@@ -26,7 +25,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-
+/**
+ * Controller class related to endpoints for CRUD operations on the guest pass model class in the context of the PLMS system
+ */
 @CrossOrigin(origins = "*")
 @RestController
 public class GuestPassController {
