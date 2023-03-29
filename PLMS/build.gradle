@@ -33,9 +33,7 @@ tasks.named('test') {
 	testLogging {
 		exceptionFormat "full"
 		events "failed", "skipped", "passed"
-	}
-
-	// After running the tests, generate the coverage report 
+	}// After running the tests, generate the coverage report
 	finalizedBy jacocoTestReport
 }
 

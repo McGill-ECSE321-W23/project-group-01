@@ -153,8 +153,8 @@ public class ParkingLotIntegrationTest {
     @Order(2)
     public void testCreateInvalidParkingLot() {
         ParkingLotRequestDto request = new ParkingLotRequestDto();
-        request.setClosingTime(new Time(5, 0, 0));
-        request.setOpeningTime(new Time(0, 0, 0));
+        request.setClosingTime(Time.valueOf("5:00:00"));
+        request.setOpeningTime(Time.valueOf("00:00:00"));
         request.setLargeSpotFee(-2.0);
         request.setLargeSpotMonthlyFlatFee(-3.3);
         request.setSmallSpotFee(-32.3);
@@ -174,8 +174,8 @@ public class ParkingLotIntegrationTest {
     @Order(3)
     public void testCreateInvalidClosingTimeParkingLot() {
         ParkingLot request = new ParkingLot();
-        request.setClosingTime(new Time(5, 0, 0));
-        request.setOpeningTime(new Time(7, 0, 0));
+        request.setClosingTime(Time.valueOf("5:00:00"));
+        request.setOpeningTime(Time.valueOf("7:00:00"));
         request.setSmallSpotMonthlyFlatFee(6.0);
         request.setLargeSpotMonthlyFlatFee(7.0);
         request.setLargeSpotFee(8.0);
@@ -189,8 +189,8 @@ public class ParkingLotIntegrationTest {
 	@Order(4)
 	public void testCreateParkingLot() {
 
-        Time openingTime = new Time(0,0,0);
-        Time closingTime = new Time(4, 0, 0);
+        Time openingTime = Time.valueOf("00:00:00");
+        Time closingTime = Time.valueOf("4:00:00");
         double largeSpotFee = 4;
         double smallSpotFee = 5;
         double smallSpotMonthlyFlatFee = 6;
@@ -232,8 +232,8 @@ public class ParkingLotIntegrationTest {
 	public void testCreateAnotherParkingLot() {
 		ParkingLotRequestDto request = new ParkingLotRequestDto();
 
-        Time openingTime = new Time(1,0,0);
-        Time closingTime = new Time(2, 0, 0);
+        Time openingTime = Time.valueOf("1:00:00");
+        Time closingTime = Time.valueOf("2:00:00");
         double largeSpotFee = 42;
         double smallSpotFee = 54;
         double smallSpotMonthlyFlatFee = 613;
@@ -277,8 +277,8 @@ public class ParkingLotIntegrationTest {
 	@Order(7)
 	public void testUpdateParkingLot() {
 
-        Time openingTime = new Time(2,0,0);
-        Time closingTime = new Time(6, 0, 0);
+        Time openingTime = Time.valueOf("2:00:00");
+        Time closingTime = Time.valueOf("6:00:00");
         double largeSpotFee = 5;
         double smallSpotFee = 6;
         double smallSpotMonthlyFlatFee = 7;
@@ -310,8 +310,8 @@ public class ParkingLotIntegrationTest {
 	@Order(8)
 	public void testInvalidUpdateParkingLot() {
 
-        Time openingTime = new Time(2,0,0);
-        Time closingTime = new Time(6, 0, 0);
+        Time openingTime = Time.valueOf("2:00:00");
+        Time closingTime = Time.valueOf("6:00:00");
         double largeSpotFee = -5.0;
         double smallSpotFee = -6.0;
         double smallSpotMonthlyFlatFee = -7.0;
@@ -339,10 +339,10 @@ public class ParkingLotIntegrationTest {
     @Order(9)
     public void testUpdateInvalidTimesParkingLot() {
 
-        Time openingTime = new Time(2,0,0);
-        Time closingTime = new Time(2, 0, 0);
+        Time openingTime = Time.valueOf("2:00:00");
+        Time closingTime = Time.valueOf("2:00:00");
         double largeSpotFee = 5.0;
-        double smallSpotFee = 6.0;
+        double smallSpotFee = 6.0; // <33333 thx man
         double smallSpotMonthlyFlatFee = 7.0;
         double largeSpotMonthlyFlatFee = 10.0;
 
