@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.PLMS.service;
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.*;
 import ca.mcgill.ecse321.PLMS.repository.FloorRepository;
-import ca.mcgill.ecse321.PLMS.repository.GuestPassRepository;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
 import ca.mcgill.ecse321.PLMS.repository.MonthlyPassRepository;
 import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
@@ -16,24 +15,27 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for all the business methods related to the monthly customer model class in the PLMS system
+ */
 @Service
 public class MonthlyPassService {
 
     @Autowired
-    MonthlyPassRepository monthlyPassRepository;
-
-
-    @Autowired
-    FloorRepository floorRepository;
+    MonthlyPassRepository monthlyPassRepository; // Repository from where the monthly pass objects are persisted
 
     @Autowired
-    ParkingLotRepository parkingLotRepository;
+    FloorRepository floorRepository; // Repository from where the floor objects are persisted
 
     @Autowired
-    MonthlyCustomerRepository monthlyCustomerRepository;
+    ParkingLotRepository parkingLotRepository; // Repository from where the parking lot objects are persisted
+
+    @Autowired
+    MonthlyCustomerRepository monthlyCustomerRepository; // Repository from where the monthly customer objects are persisted
 
     /**
      * Service method to fetch all monthly passes in the database
+     * @return an arraylist of monthly passes present in the database
      */
     @Transactional
     public Iterable<MonthlyPass> getAllMonthlyPasses() {
@@ -46,6 +48,8 @@ public class MonthlyPassService {
 
     /**
      * Service method to fetch a monthly pass with a specific id in the database
+     * @param monthlyPassId id of the monthly pass to be fetched
+     * @return monthly pass corresponding to the id passed in parameters
      */
     @Transactional
     public MonthlyPass getMonthlyPassById(int monthlyPassId) {
@@ -58,6 +62,11 @@ public class MonthlyPassService {
 
     /**
      * Service method to store the created monthly pass object into the database
+     * @param monthlyPass instance to be persisted
+     * @param floorNumber floor on which the monthly pass is activated
+     * @param nrMonths duration of the monthly pass
+     * @param email monthly customer's email that is purchasing the monthly pass
+     * @return
      */
     @Transactional
     public MonthlyPass createMonthlyPass(MonthlyPass monthlyPass, int floorNumber, int nrMonths, String email) {
@@ -143,16 +152,21 @@ public class MonthlyPassService {
 
     /**
      * Checks to see overlap between two monthly passes
-     * @param newPassStartDate
-     * @param newPassEndDate
-     * @param otherPassStartDate
-     * @param otherPassEndDate
-     * @return
+     * @param newPassStartDate first pass beginning
+     * @param newPassEndDate first pass ending
+     * @param otherPassStartDate second pass beginning
+     * @param otherPassEndDate second pass ending
+     * @return whether or not the passes overlap
      */
     public boolean isOverlappingMonthlyPass(LocalDate newPassStartDate, LocalDate newPassEndDate,LocalDate otherPassStartDate, LocalDate otherPassEndDate) {
         return (newPassStartDate.isBefore(otherPassEndDate) && newPassEndDate.isAfter(otherPassStartDate)) || (otherPassStartDate.isBefore(newPassEndDate) && otherPassEndDate.isAfter(newPassStartDate));
     }
 
+    /**
+     * Service method that returns monthly passes on a specified floor
+     * @param floorNumber level of the floor from which to fetch the monthly passes
+     * @return an arraylist of the monthly passes requested
+     */
     @Transactional
     public List<MonthlyPass> getMonthlyPassesByFloor(int floorNumber) {
         List<MonthlyPass> monthlyPasses = new ArrayList<>();
@@ -171,6 +185,11 @@ public class MonthlyPassService {
         return monthlyPasses;
     }
     
+    /**
+     * Service method that fetches the monthly passes of a monthly customer
+     * @param email monthly customer's email related to the account
+     * @return arraylist containing the requested monthly passes
+     */
     @Transactional
     public List<MonthlyPass> getMonthlyPassesByMonthlyCustomer(String email) {
         List<MonthlyPass> monthlyPassesbyMonthlyCustomer  = new ArrayList<MonthlyPass>();
@@ -200,12 +219,12 @@ public class MonthlyPassService {
         return monthlyPassesbyMonthlyCustomer;
     }
 
-    @Transactional
     /**
      * Return all of the monthly passes that are active on a given date.
      * @param date - date we want to search for
      * @return - all passes active on that date
      */
+    @Transactional
     public List<MonthlyPass> getMonthlyPassesByDate(LocalDate date) {
         List<MonthlyPass> monthlyPasses = (List<MonthlyPass>) monthlyPassRepository.findAll();
         List<MonthlyPass> monthlyPassesByDate = new ArrayList<>();
@@ -221,6 +240,14 @@ public class MonthlyPassService {
         return monthlyPassesByDate;
     }
 
+    /**
+     * Service method that determines if a certain spot is occupied for a period of time
+     * @param floorNumber level floor that is considered in the parking lot
+     * @param spotNumber number of the spot considered
+     * @param startDate start of the interval of time considered
+     * @param endDate end of the interval of time considered
+     * @return whether or not the spot is occupied for the specified interval of time
+     */
     public boolean isSpotOccupied(int floorNumber, String spotNumber, LocalDate startDate, LocalDate endDate) {
         try {
             List<MonthlyPass> monthlyPasses = getMonthlyPassesByFloor(floorNumber); // get all monthly passes for the floor

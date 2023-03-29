@@ -10,15 +10,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
+/**
+ * Service class for all the business methods related to the monthly customer model class in the PLMS system
+ */
 @Service
 public class MonthlyCustomerService {
 
 
     @Autowired
-    MonthlyCustomerRepository monthlyCustomerRepository;
+    MonthlyCustomerRepository monthlyCustomerRepository; // Repository from where the monthly customer objects are persisted
 
     /**
      * Service method to fetch all existing monthly customers in the database
+     * @return an arraylist of the monthly customers present in the database
      * @throws PLMSException - if no monthly customers exist in the system
      */
     @Transactional
@@ -30,6 +34,8 @@ public class MonthlyCustomerService {
 
     /**
      * Service method to fetch an existing monthly customer with a specific email from the database
+     * @param email email of the monthly customer we want to fetch
+     * @return the monthly customer requested
      * @throws PLMSException - If the monthly customer does not exist
      */
     @Transactional
@@ -43,6 +49,8 @@ public class MonthlyCustomerService {
 
     /**
      * Service method that updates the monthly customer's information in the database
+     * @param monthlyCustomer updated instance to persist
+     * @return updated instance
      * @throws PLMSException - If monthly customer does not exist
      */
     @Transactional
@@ -56,6 +64,8 @@ public class MonthlyCustomerService {
 
     /**
      * Service method to store a created monthly customer in the database
+     * @param monthlyCustomer instance to be persisted
+     * @return the newly persisted instance
      * @throws PLMSException - If a monthly customer already exists
      */
     @Transactional

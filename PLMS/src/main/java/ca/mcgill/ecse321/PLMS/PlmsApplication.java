@@ -11,6 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PlmsApplication {
 
+	/**
+	 * Main method, start point of the application
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(PlmsApplication.class, args);
 	}
