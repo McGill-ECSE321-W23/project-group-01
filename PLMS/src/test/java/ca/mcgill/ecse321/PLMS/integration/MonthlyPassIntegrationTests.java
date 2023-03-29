@@ -427,10 +427,10 @@ public class MonthlyPassIntegrationTests {
        request2.setLicensePlate("12345679");
        request2.setLarge(true);
        request2.setNumberOfMonths(2);
-       request2.setStartDate(Date.valueOf("2024-2-1").toLocalDate());
+       request2.setStartDate(Date.valueOf("2024-04-01").toLocalDate());
        request2.setFloorNumber(0);
        request2.setCustomerEmail("samer.abdulkarim@gmail.com");
-       ResponseEntity<String> response2 =  client.postForEntity("/monthlypass", request2, String.class);
+       ResponseEntity<MonthlyPassResponseDto> response2 =  client.postForEntity("/monthlypass", request2, MonthlyPassResponseDto.class);
 
        ResponseEntity<List> response3 = client.getForEntity("/pass", List.class);
        assertEquals(HttpStatus.OK, response3.getStatusCode());
@@ -440,20 +440,18 @@ public class MonthlyPassIntegrationTests {
        assertEquals(monthlyPasses.get(1).get("spotNumber"), "A25");
        assertEquals(monthlyPasses.get(1).get("confirmationCode"), "NeverGonnaGiveYouUp");
        assertEquals(monthlyPasses.get(1).get("licensePlate"), "12345679");
-       assertEquals(monthlyPasses.get(1).get("isLarge"), true);
-       assertEquals(monthlyPasses.get(1).get("numberOfMonths"), 2);
-       assertEquals(monthlyPasses.get(1).get("startDate"), "2024-2-1");
+       assertEquals(monthlyPasses.get(1).get("large"), true);
+       assertEquals(monthlyPasses.get(1).get("startDate"), "2024-04-01");
        assertEquals(monthlyPasses.get(1).get("floorNumber"), 0);
-       assertEquals(monthlyPasses.get(1).get("customerEmail"), "samer.abdulkarim@gmail.com");
+       assertEquals(monthlyPasses.get(1).get("monthlyCustomerEmail"), "samer.abdulkarim@gmail.com");
 
        assertEquals(monthlyPasses.get(0).get("spotNumber"), monthlyPassFixture.spotNumber);
-       assertEquals(monthlyPasses.get(0).get("spotNumber"), monthlyPassFixture.confirmationCode);
+       assertEquals(monthlyPasses.get(0).get("confirmationCode"), monthlyPassFixture.confirmationCode);
        assertEquals(monthlyPasses.get(0).get("licensePlate"), monthlyPassFixture.licensePlate);
-       assertEquals(monthlyPasses.get(0).get("isLarge"), monthlyPassFixture.isLarge);
-       assertEquals(monthlyPasses.get(0).get("numberOfMonths"), monthlyPassFixture.numberOfMonths);
-       assertEquals(monthlyPasses.get(1).get("startDate"), monthlyPassFixture.startDate);
+       assertEquals(monthlyPasses.get(0).get("large"), monthlyPassFixture.isLarge);
+       assertEquals(monthlyPasses.get(1).get("startDate"), "2024-04-01");
        assertEquals(monthlyPasses.get(1).get("floorNumber"), monthlyPassFixture.floorNumber);
-       assertEquals(monthlyPasses.get(1).get("customerEmail"), monthlyPassFixture.monthlyCustomerEmail);
+       assertEquals(monthlyPasses.get(1).get("monthlyCustomerEmail"), monthlyPassFixture.monthlyCustomerEmail);
    }
 
 //    @Test

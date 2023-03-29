@@ -113,7 +113,7 @@ public class MonthlyPassRequestDto {
         return floorNumber;
     }
 
-    public Boolean getLarge() {
+    public Boolean getIsLarge() {
         return isLarge;
     }
 
