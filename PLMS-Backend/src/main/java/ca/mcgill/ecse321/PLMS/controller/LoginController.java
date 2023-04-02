@@ -27,7 +27,7 @@ public class LoginController {
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping("/login/")
+    @GetMapping("/login")
     public ResponseEntity<?> getUser(@RequestBody AccountRequestDto accountRequest){
         if (accountRequest.getUser().equals("Owner"))
             return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(ownerService.getOwnerByEmailAndPassword(accountRequest.getEmail(), accountRequest.getPassword())), HttpStatus.OK);

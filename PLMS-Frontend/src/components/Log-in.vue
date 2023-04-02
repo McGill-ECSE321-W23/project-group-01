@@ -25,7 +25,7 @@
     </div>
 
     <!-- Submit button -->
-    <button v-bind:disabled="createUserButtonDisabled" @click="LoginUser()" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+    <button v-bind:disabled="createUserButtonDisabled" @click="getUser()" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
 
   </form>
 </template>
@@ -41,17 +41,24 @@ const axiosClient = axios.create({
 });
 
 export default {
-
   data() {
     return {
       UserEmail: document.getElementById("email").value,
       UserPassword: document.getElementById("password").value,
-      UserType: document.querySelector('input[name="user"]:checked').value
+      UserType: document.querySelector('input[name="user"]:checked').value,
+      errorMsg: ''
     };
   },
   methods: {
     getUser() {
-
+      const request =  {email: this.UserEmail, password: this.UserPassword, user: this.UserType};
+      axiosClient.get("/login/", request)
+      .then((response) => {
+        alert("Success now logged in as " + this.UserType)
+      })
+        .catch((err) => {
+          this.errorMsg = `Failed to login: ${err.response.data}`;
+        })
     }
 
   },
