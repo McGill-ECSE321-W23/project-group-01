@@ -5,32 +5,32 @@
       <!-- Email input -->
       <div class="form-signin">
         <label for="email">Email</label>
-        <input type="email" id="email" class="form-control" placeholder="john.doe@address.com"/>
+        <input v-model="email" type="email" id="email" class="form-control" placeholder="john.doe@address.com"/>
 
       </div>
 
       <!-- Password input -->
       <div class="form-signin">
         <label for="password">Password</label>
-        <input type="password" id="password" class="form-control" placeholder="*********"/>
+        <input v-model="password" type="password" id="password" class="form-control" placeholder="*********"/>
 
       </div>
 
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="user" id="owner" value="Owner">
+        <input v-model="user" class="form-check-input" type="radio" name="user" id="owner" value="Owner">
         <label class="form-check-label" for="owner">Owner</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="user" id="customer" value="Customer">
+        <input v-model="user" class="form-check-input" type="radio" name="user" id="customer" value="Customer">
         <label class="form-check-label" for="customer">Customer</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="user" id="employee" value="Employee">
+        <input v-model="user" class="form-check-input" type="radio" name="user" id="employee" value="Employee">
         <label class="form-check-label" for="employee">Employee</label>
       </div>
 
       <!-- Submit button -->
-      <button v-bind:disabled="createUserButtonDisabled" @click="getUser()" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+      <button @click="getUser()" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
 
   </div>
 </template>
@@ -69,17 +69,15 @@ export default {
         this.logged_user = response
       })
         .catch((err) => {
-          this.errorMsg = `Failed to login: ${err.response.data}`;
+          console.log(err)
+          this.errorMsg = err
         })
     }
 
   },
   computed: {
     createUserButtonDisabled() {
-      let email = document.getElementById("email").value;
-      let password = document.getElementById("password").value;
-      let type = document.querySelector('input[name="user"]:checked').value
-      return !email || !password || !type
+      return !this.email.trim() || !this.password.trim() || !this.user.trim()
     }
   }
 }
