@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <img class="img-fluid mt-5 mb-3"  width="50%" src="@/assets/logo-png.png">
 
-    <form style="margin-top: 5%">
+    <form style="margin-top: 2%">
       <!-- Email input -->
       <div class="form-outline mb-4">
           <label class="form-label" for="email">Email</label>
