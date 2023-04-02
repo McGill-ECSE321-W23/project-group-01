@@ -1,8 +1,10 @@
 <template>
   <div id="login">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-      <!-- Email input -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <img class="img-fluid" src="@/assets/logo-png.png">
+
+    <!-- Email input -->
       <div class="form-signin">
         <label for="email">Email</label>
         <input v-model="email" type="email" id="email" class="form-control" placeholder="john.doe@address.com"/>
@@ -30,7 +32,7 @@
       </div>
 
       <!-- Submit button -->
-      <button @click="getUser()" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+      <button v-bind:disabled="createUserButtonDisabled" @click="getUser()" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
 
   </div>
 </template>
