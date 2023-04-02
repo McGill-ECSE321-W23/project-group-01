@@ -10,32 +10,37 @@
           <label class="form-label" for="email">Email</label>
           <input v-model="email" type="email" id="email" class="form-control" style="width: 50%; margin-left: 25%" placeholder="john.doe@address.com"/>
 
-        </div>
+      </div>
+
 
         <!-- Password input -->
-        <div class="form-outline mb-4">
-          <label class="form-label" for="password">Password</label>
-          <input v-model="password" type="password" id="password" class="form-control"  style="width: 50%; margin-left: 25%" placeholder="*********"/>
+      <div class="form-outline mb-4">
+        <label class="form-label" for="password">Password</label>
+        <input v-model="password" type="password" id="password" class="form-control"  style="width: 50%; margin-left: 25%" placeholder="*********"/>
+      </div>
 
-        <div class="form-check form-check-inline">
-          <input v-model="user" class="form-check-input" type="radio" name="user" id="owner" value="Owner">
-          <label class="form-check-label" for="owner">Owner</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input v-model="user" class="form-check-input" type="radio" name="user" id="customer" value="Customer">
-          <label class="form-check-label" for="customer">Customer</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input v-model="user" class="form-check-input" type="radio" name="user" id="employee" value="Employee">
-          <label class="form-check-label" for="employee">Employee</label>
-        </div>
+      <div class="form-check form-check-inline">
+        <input v-model="user" class="form-check-input" type="radio" name="user" id="owner" value="Owner">
+        <label class="form-check-label" for="owner">Owner</label>
+      </div>
+
+      <div class="form-check form-check-inline">
+        <input v-model="user" class="form-check-input" type="radio" name="user" id="customer" value="Customer">
+        <label class="form-check-label" for="customer">Customer</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input v-model="user" class="form-check-input" type="radio" name="user" id="employee" value="Employee">
+        <label class="form-check-label" for="employee">Employee</label>
       </div>
     </form>
 
 
     <!-- Submit button -->
-      <button v-bind:disabled="createUserButtonDisabled" style="width: 50%; margin-left: 25%" @click="getUser()" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+    <button v-bind:disabled="createUserButtonDisabled" style="width: 50%; margin-top: 1%; margin-left: 25%" @click="getUser()" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
 
+    <div class="text-center">
+      <p>Not a customer? <a href="#!">Sign up</a></p>
+    </div>
   </div>
 </template>
 
