@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="login-page">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <form>
       <!-- Email input -->
@@ -44,6 +44,7 @@ const axiosClient = axios.create({
 });
 
 export default {
+  name: 'LoginUser',
   data() {
     return {
       UserEmail: document.getElementById("email").value,
