@@ -13,7 +13,7 @@ export default new Router({
       component: Hello
     },
     {
-      path: '/ParkingLotSettings',
+      path: '/parking-lot-settings',
       name: 'ParkingLotSettings',
       component: ParkingLotSettings
     }

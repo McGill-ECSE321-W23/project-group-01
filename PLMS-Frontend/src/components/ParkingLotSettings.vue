@@ -1,24 +1,46 @@
 <template>
-  <div id="home-page">
-    <h2 class="table-title">Users</h2>
-    <table>
+  <div id="settings">
+    <div id="parkinglot_settings">
+      <h2 class="parkinglot section title">Parking Lot Settings</h2>
+      <form>
+        <label for="opening">Opening Hours</label>
+        <input type="text" id="opening" v-model="newOpeningTime"> <br>
+        <label for="closing">Closing Hours</label>
+        <input type="text" id="closing" v-model="newClosingTime"> <br>
+        <label for="smallspot">Small spot Fee</label>
+        <input type="text" id="smallspot" v-model="newSmallSpotFee"> <br>
+        <label for="largespot">Large spot Fee</label>
+        <input type="text" id="largespot" v-model="newLargeSpotFee"> <br>
+        <label for="smallmonthly">Small spot monthly flat fee</label>
+        <input type="text" id="smallmonthly" v-model="newSmallSpotMonthlyFlatFee"> <br>
+        <label for="largemonthly">Large spot monthly flat fee</label>
+        <input type="text" id="largemonthly" v-model="newLargeSpotMonthlyFlatFee"> <br>
+      </form>
+    </div>
+    <button v-bind:disabled="createUserButtonDisabled" @click="createOrUpdateParkingLot()">Confirm</button>
+    <div id="floor_settings">
+      <h2 class="floor section title">Floor Settings</h2>
+      <table>
       <tr>
-        <th>Name</th>
-        <th>Creation date</th>
+        <th>Floor number</th>
+        <th>Small spot capacity</th>
+        <th>Large spot capacity</th>
+        <th>Member only</th>
       </tr>
-      <tr v-for="p in persons">
-        <td>{{ p.name }}</td>
-        <td>{{ p.creationDate }}</td>
+      <tr v-for="f in floors">
+        <td>{{ f.floorNumber }}</td>
+        <td>{{ f.smallSpotCapacity }}</td>
+        <td>{{ f.largeSpotCapacity }}</td>
       </tr>
+      <button v-bind:disabled="createUserButtonDisabled" @click="addFloor()">Add Floor</button>
       <!-- <tr>
         <td>John</td>
         <td>2023/03/31</td>
       </tr> -->
     </table>
+    </div>
     <h2>New User</h2>
-    <input type="text" placeholder="Name" v-model="newPersonName">
-    <input type="password" placeholder="Password" v-model="newPersonPassword">
-    <button v-bind:disabled="createUserButtonDisabled" @click="createUser()">Create</button>
+    
     <p class="error">{{ errorMsg }}</p>
   </div>
 </template>
@@ -31,38 +53,64 @@ const axiosClient = axios.create({
   baseURL: config.dev.backendBaseUrl
 });
 export default {
-  name: 'Home',
+  name: 'ParkingLotSettings',
   data() {
     return {
-      persons: [],
-      newPersonName: '',
-      newPersonPassword: '',
+      floors: [],
+      parkinglot: {},
+      newOpeningTime: '',
+      newClosingTime: '',
+      newLargeSpotFee: '',
+      newSmallSpotFee: '',
+      newSmallSpotMonthlyFlatFee: '',
+      newLargeSpotMonthlyFlatFee: '',
       errorMsg: '',
     };
   },
   created() {
-    axiosClient.get('/person')
+    axiosClient.get('/floor')
       .then((response) => {
-        this.persons = response.data;
+        this.floors = response.data;
       })
       .catch((err) => {
         this.errorMsg = err;
       })
+    axiosClient.get('/parkingLot')
+    .then((response) => {
+      this.parkinglot = response.data;
+      document.getElementById('opening').value = this.parkinglot.openingTime;
+      document.getElementById('closing').value = this.parkinglot.closingTime;
+      document.getElementById('smallspot').value = this.parkinglot.smallSpotFee;
+      document.getElementById('largespot').value = this.parkinglot.largeSpotFee;
+      document.getElementById('smallmonthly').value = this.parkinglot.smallSpotMonthlyFlatFee;
+      document.getElementById('largemonthly').value = this.parkinglot.largeSpotMonthlyFlatFee;
+    })
+    .catch((err) => {
+      this.errorMsg = err;
+    })
   },
   methods: {
-    createUser() {
-      if (this.newPersonName === 'C3PO') {
-        this.errorMsg = 'Droids are not allowed.';
-        return;
-      }
-      
-      const request = {name: this.newPersonName, password: this.newPersonPassword};
-      axiosClient.post('/person', request)
+    createOrUpdateParkingLot() {
+      const request = {openingTime: this.newOpeningTime, closingTime: this.newClosingTime, largeSpotFee: this.newLargeSpotFee, smallSpotFee: this.newSmallSpotFee, smallSpotMonthlyFlatFee: this.newSmallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee: this.newLargeSpotMonthlyFlatFee};
+      axiosClient.put('/parkingLot/update', request)
         .then((response) => {
-          const person = response.data;
-          this.persons.push(person);
-          this.newPersonName = '';
-          this.newPersonPassword = '';
+          const parkingLot = response.data;
+          this.errorMsg = '';
+        })
+        .catch((err) => {
+          if(err.response.data === "Parking Lot not found."){
+            this.createParkingLot(request);
+          } else if(typeof(err.response.data) === 'string'){
+            this.errorMsg = `${err.response.data}`;
+          } else{
+            this.errorMsg = `Opening and closing hours have to be of the format: 'hh:mm:ss'.`;
+          }
+        })
+    },
+    createParkingLot(request) {
+      axiosClient.post('/parkingLot/creation', request)
+        .then((response) => {
+          const parkingLot = response.data;
           this.errorMsg = '';
         })
         .catch((err) => {
@@ -72,7 +120,8 @@ export default {
   },
   computed: {
     createUserButtonDisabled() {
-      return !this.newPersonName.trim() || !this.newPersonPassword.trim();
+      //return !this.newPersonName.trim() || !this.newPersonPassword.trim();
+      return;
     }
   }
 }
@@ -92,4 +141,10 @@ td, th {
 .error {
   color: red;
 }
+
+label {
+        display: inline-block;
+        width: 150px;
+        text-align: right;
+      }
 </style>
