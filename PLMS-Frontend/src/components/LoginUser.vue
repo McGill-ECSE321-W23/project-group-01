@@ -1,38 +1,40 @@
 <template>
-  <div id="login">
+  <div class="login">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <img class="img-fluid" src="@/assets/logo-png.png">
+    <img class="img-fluid mt-5 mb-3"  width="50%" src="@/assets/logo-png.png">
 
-    <!-- Email input -->
-      <div class="form-signin">
-        <label for="email">Email</label>
-        <input v-model="email" type="email" id="email" class="form-control" placeholder="john.doe@address.com"/>
+    <form style="margin-top: 5%">
+      <!-- Email input -->
+      <div class="form-outline mb-4">
+          <label class="form-label" for="email">Email</label>
+          <input v-model="email" type="email" id="email" class="form-control" style="width: 50%; margin-left: 25%" placeholder="john.doe@address.com"/>
 
+        </div>
+
+        <!-- Password input -->
+        <div class="form-outline mb-4">
+          <label class="form-label" for="password">Password</label>
+          <input v-model="password" type="password" id="password" class="form-control"  style="width: 50%; margin-left: 25%" placeholder="*********"/>
+
+        <div class="form-check form-check-inline">
+          <input v-model="user" class="form-check-input" type="radio" name="user" id="owner" value="Owner">
+          <label class="form-check-label" for="owner">Owner</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input v-model="user" class="form-check-input" type="radio" name="user" id="customer" value="Customer">
+          <label class="form-check-label" for="customer">Customer</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input v-model="user" class="form-check-input" type="radio" name="user" id="employee" value="Employee">
+          <label class="form-check-label" for="employee">Employee</label>
+        </div>
       </div>
+    </form>
 
-      <!-- Password input -->
-      <div class="form-signin">
-        <label for="password">Password</label>
-        <input v-model="password" type="password" id="password" class="form-control" placeholder="*********"/>
 
-      </div>
-
-      <div class="form-check form-check-inline">
-        <input v-model="user" class="form-check-input" type="radio" name="user" id="owner" value="Owner">
-        <label class="form-check-label" for="owner">Owner</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input v-model="user" class="form-check-input" type="radio" name="user" id="customer" value="Customer">
-        <label class="form-check-label" for="customer">Customer</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input v-model="user" class="form-check-input" type="radio" name="user" id="employee" value="Employee">
-        <label class="form-check-label" for="employee">Employee</label>
-      </div>
-
-      <!-- Submit button -->
-      <button v-bind:disabled="createUserButtonDisabled" @click="getUser()" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+    <!-- Submit button -->
+      <button v-bind:disabled="createUserButtonDisabled" style="width: 50%; margin-left: 25%" @click="getUser()" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
 
   </div>
 </template>
@@ -86,5 +88,6 @@ export default {
 </script>
 
 <style>
+
 
 </style>
