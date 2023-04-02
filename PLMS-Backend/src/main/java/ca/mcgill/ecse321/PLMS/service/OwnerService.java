@@ -47,6 +47,15 @@ public class OwnerService {
         return owner;
     }
 
+    @Transactional
+    public Owner getOwnerByEmailAndPassword(String email, String password) {
+        Owner owner = getOwnerByEmail(email);
+        if (owner.getPassword().equals(password))
+            return owner;
+        else
+            throw new PLMSException(HttpStatus.NOT_FOUND, "Please enter the correct password");
+    }
+
     /**
      * Service method that updates the owner's information in the database
      * @param owner updated instance of the owner
