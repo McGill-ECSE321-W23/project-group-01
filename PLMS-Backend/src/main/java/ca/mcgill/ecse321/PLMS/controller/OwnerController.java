@@ -59,21 +59,6 @@ public class OwnerController {
     }
 
     /**
-     * Returns the owner based on their Email
-     *
-     * @param email Pass in the email argument by using /owner=?{email}
-     * @return the owner with Email, Password, Name
-     */
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "404", description = "Please enter the correct password", content = {@Content(mediaType = "String")})
-    })
-    @GetMapping(value = {"/owner/login/{email}"})
-    public ResponseEntity<OwnerResponseDto> getOwnerByEmailAndPassword(@PathVariable String email, @RequestParam String password) {
-        return new ResponseEntity<OwnerResponseDto>(new OwnerResponseDto(ownerService.getOwnerByEmailAndPassword(email, password)), HttpStatus.OK);
-    }
-
-    /**
      * Creates a new owner
      * 
      * @param ownerRequest Pass in the new owner request using JSON
