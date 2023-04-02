@@ -78,12 +78,12 @@ export default {
     axiosClient.get('/parkingLot')
     .then((response) => {
       this.parkinglot = response.data;
-      document.getElementById('opening').value = this.parkinglot.openingTime;
-      document.getElementById('closing').value = this.parkinglot.closingTime;
-      document.getElementById('smallspot').value = this.parkinglot.smallSpotFee;
-      document.getElementById('largespot').value = this.parkinglot.largeSpotFee;
-      document.getElementById('smallmonthly').value = this.parkinglot.smallSpotMonthlyFlatFee;
-      document.getElementById('largemonthly').value = this.parkinglot.largeSpotMonthlyFlatFee;
+      this.newOpeningTime = this.parkinglot.openingTime;
+      this.newClosingTime = this.parkinglot.closingTime;
+      this.newSmallSpotFee = this.parkinglot.smallSpotFee;
+      this.newLargeSpotFee = this.parkinglot.largeSpotFee;
+      this.newSmallSpotMonthlyFlatFee = this.parkinglot.smallSpotMonthlyFlatFee;
+      this.newLargeSpotMonthlyFlatFee = this.parkinglot.largeSpotMonthlyFlatFee;
     })
     .catch((err) => {
       this.errorMsg = err;
