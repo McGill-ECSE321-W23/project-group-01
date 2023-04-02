@@ -1,15 +1,19 @@
 <template>
-  <div id="login-page">
+  <div id="login">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <form>
+
       <!-- Email input -->
       <div class="form-signin">
+        <label for="email">Email</label>
         <input type="email" id="email" class="form-control" placeholder="john.doe@address.com"/>
+
       </div>
 
       <!-- Password input -->
       <div class="form-signin">
+        <label for="password">Password</label>
         <input type="password" id="password" class="form-control" placeholder="*********"/>
+
       </div>
 
       <div class="form-check form-check-inline">
@@ -28,7 +32,6 @@
       <!-- Submit button -->
       <button v-bind:disabled="createUserButtonDisabled" @click="getUser()" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
 
-    </form>
   </div>
 </template>
 
@@ -47,19 +50,22 @@ export default {
   name: 'LoginUser',
   data() {
     return {
-      UserEmail: document.getElementById("email").value,
-      UserPassword: document.getElementById("password").value,
-      UserType: document.querySelector('input[name="user"]:checked').value,
+      email: '',
+      password: '',
+      user: '',
       errorMsg: '',
       logged_user: []
     };
   },
   methods: {
     getUser() {
-      const request =  {email: this.UserEmail, password: this.UserPassword, user: this.UserType};
-      axiosClient.get("/login/", request)
+      this.email = document.getElementById("email").value;
+      this.password = document.getElementById("password").value;
+      this.user = document.querySelector('input[name="user"]:checked').value
+      const request =  {email: this.email, password: this.password, user: this.user};
+      axiosClient.post("/login", request)
       .then((response) => {
-        alert("Success now logged in as " + this.UserType)
+        alert("Success now logged in as " + this.user)
         this.logged_user = response
       })
         .catch((err) => {
@@ -70,12 +76,15 @@ export default {
   },
   computed: {
     createUserButtonDisabled() {
-      return !this.UserEmail.trim() || !this.UserPassword.trim() || !this.UserType.trim()
+      let email = document.getElementById("email").value;
+      let password = document.getElementById("password").value;
+      let type = document.querySelector('input[name="user"]:checked').value
+      return !email || !password || !type
     }
   }
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>
