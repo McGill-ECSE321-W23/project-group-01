@@ -65,7 +65,7 @@ export default {
         .then((response) => {
           alert("Your account with email " + this.email + " has been created successfully")
           this.logged_user = response
-          window.location.href = "https://www.example.com";
+          window.location.href = "http://localhost:8087/#/login-user";
 
         })
         .catch((err) => {
