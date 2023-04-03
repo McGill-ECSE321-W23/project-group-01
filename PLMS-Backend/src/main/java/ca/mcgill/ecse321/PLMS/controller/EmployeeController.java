@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -21,6 +22,7 @@ import java.util.stream.StreamSupport;
 /**
  * Controller class related to endpoints for CRUD operations on the employee model class in the context of the PLMS system
  */
+@CrossOrigin(origins="*")
 @RestController
 public class EmployeeController {
 
