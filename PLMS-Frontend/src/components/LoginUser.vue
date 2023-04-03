@@ -76,8 +76,8 @@ export default {
         this.logged_user = response;
       })
         .catch((err) => {
-          console.log(err);
-          this.errorMsg = err;
+          this.errorMsg = `Error: ${err.response.data}`;
+          alert(this.errorMsg)
         })
     }
 
