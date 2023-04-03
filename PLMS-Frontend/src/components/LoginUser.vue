@@ -71,12 +71,12 @@ export default {
       const request =  {email: this.email, password: this.password, user: this.user};
       axiosClient.get("/login", request)
       .then((response) => {
-        alert("Success now logged in as " + this.user)
-        this.logged_user = response
+        alert("Success now logged in as " + this.user);
+        this.logged_user = response;
       })
         .catch((err) => {
-          console.log(err)
-          this.errorMsg = err
+          console.log(err);
+          this.errorMsg = err;
         })
     }
 
