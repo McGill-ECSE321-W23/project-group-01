@@ -2,7 +2,7 @@
   <div class="signup">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <img class="img-fluid mt-5 mb-3"  width=30%" src="@/assets/logo-png.png">
+    <img class="img-fluid mt-5 mb-3"  width="30%" src="@/assets/logo-png.png">
 
     <form style="margin-top: 2%">
       <!-- Email input -->
@@ -24,7 +24,7 @@
       </div>
     </form>
 
-    <button v-bind:disabled="createUserButtonDisabled" style="width: 50%; margin-top: 1%; margin-left: 25%" @click="createUser()" type="button" class="btn btn-primary btn-block mb-4"> Sign in </button>
+    <button v-bind:disabled="createUserButtonDisabled" style="width: 50%; margin-top: 1%; margin-left: 25%" @click="createUser()" type="button" class="btn btn-primary btn-block mb-4"> Sign up </button>
 
     <div class="text-center">
       <p>Already have an account? <a href="http://localhost:8087/#/login-user">Login</a></p>
