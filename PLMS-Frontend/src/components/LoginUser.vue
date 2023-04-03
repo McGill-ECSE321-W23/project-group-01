@@ -39,8 +39,14 @@
     <button v-bind:disabled="createUserButtonDisabled" style="width: 50%; margin-top: 1%; margin-left: 25%" @click="getUser()" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
 
     <div class="text-center">
-      <p>Not a customer? <a href="http://localhost:8087/#/create-customer">Sign up</a></p>
-    </div>
+      <p>Don't have an account? </p>
+    </div> <a href="http://localhost:8087/#/create-customer">
+    <button style="background-color:lightskyblue; width: 20%; margin-top: 1%; margin-left: 40%;"  type="button" class="btn btn-primary btn-block mb-4">Sign up</button>
+  </a>
+    <a href="http://localhost:8087/#/">
+      <button style="background-color:lightskyblue; width: 20%; margin-top: 1%; margin-left: 40%;"  type="button" class="btn btn-primary btn-block mb-4">Continue as Guest</button>
+    </a>
+
   </div>
 </template>
 
