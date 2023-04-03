@@ -68,8 +68,9 @@ export default {
   },
   methods: {
     getUser() {
-      const request =  {email: this.email, password: this.password, user: this.user};
-      axiosClient.get("/login", request)
+      //const request =  {email: this.email, password: this.password, user: this.user};
+      //axiosClient("/login/", request) previously
+      axiosClient.get("/login/"+this.user+"?email="+this.email+"&password="+this.password)
       .then((response) => {
         alert("Success now logged in as " + this.user);
         this.logged_user = response;

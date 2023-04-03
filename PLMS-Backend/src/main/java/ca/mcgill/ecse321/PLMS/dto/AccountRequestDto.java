@@ -7,7 +7,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public class AccountRequestDto {
+public class AccountRequestDto //no longer needed
+{
 
     @NotBlank(message = "Email cannot be blank.")
     @Email(message = "Email must follow this format xxx@email.address")
