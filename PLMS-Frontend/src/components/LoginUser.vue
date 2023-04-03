@@ -39,7 +39,7 @@
     <button v-bind:disabled="createUserButtonDisabled" style="width: 50%; margin-top: 1%; margin-left: 25%" @click="getUser()" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
 
     <div class="text-center">
-      <p>Not a customer? <a href="#!">Sign up</a></p>
+      <p>Not a customer? <a href="http://localhost:8087/#/create-customer">Sign up</a></p>
     </div>
   </div>
 </template>
@@ -72,7 +72,7 @@ export default {
       this.password = document.getElementById("password").value;
       this.user = document.querySelector('input[name="user"]:checked').value
       const request =  {email: this.email, password: this.password, user: this.user};
-      axiosClient.post("/login", request)
+      axiosClient.get("/login", request)
       .then((response) => {
         alert("Success now logged in as " + this.user)
         this.logged_user = response
