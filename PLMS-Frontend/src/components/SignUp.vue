@@ -19,7 +19,7 @@
       </div>
 
       <div class="form-outline mb-4">
-        <label class="form-label" for="name">Email</label>
+        <label class="form-label" for="name">Name</label>
         <input v-model="name" type="text" id="name" class="form-control" style="width: 50%; margin-left: 25%" placeholder="John Doe"/>
       </div>
     </form>
@@ -65,6 +65,8 @@ export default {
         .then((response) => {
           alert("Your account with email " + this.email + " has been created successfully")
           this.logged_user = response
+          window.location.href = "https://www.example.com";
+
         })
         .catch((err) => {
           console.log(err)
