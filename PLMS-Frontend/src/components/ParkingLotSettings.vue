@@ -17,7 +17,7 @@
         <input type="text" id="largemonthly" v-model="newLargeSpotMonthlyFlatFee"> <br>
       </form>
     </div>
-    <button v-bind:disabled="createUserButtonDisabled" @click="createOrUpdateParkingLot()">Confirm</button>
+    <button v-bind:disabled="createParkingButtonDisabled" @click="createOrUpdateParkingLot()">Confirm</button><br>
     <div id="floor_settings">
       <h2 class="floor section title">Floor Settings</h2>
       <table>
@@ -31,15 +31,18 @@
         <td>{{ f.floorNumber }}</td>
         <td>{{ f.smallSpotCapacity }}</td>
         <td>{{ f.largeSpotCapacity }}</td>
+        <td>{{ f.memberOnly }}</td>
+        <td><button id="deletefloor" @click="deletefloor(f.floorNumber)">Delete</button></td>
       </tr>
-      <button v-bind:disabled="createUserButtonDisabled" @click="addFloor()">Add Floor</button>
-      <!-- <tr>
-        <td>John</td>
-        <td>2023/03/31</td>
-      </tr> -->
+      <tr>
+        <td><input type="text" id="floornumber" v-model="newFloorNumber"></td>
+        <td><input type="text" id="smallcapacity" v-model="newSmallSpotCapacity"></td>
+        <td><input type="text" id="largecapacity" v-model="newLargeSpotCapacity"></td>
+        <td><input type="checkbox" id="memberonly" v-model="newMemberOnly"></td>
+      </tr>
+      <button id="addfloor" @click="addFloor()">Add Floor</button>
     </table>
     </div>
-    <h2>New User</h2>
     
     <p class="error">{{ errorMsg }}</p>
   </div>
@@ -64,6 +67,10 @@ export default {
       newSmallSpotFee: '',
       newSmallSpotMonthlyFlatFee: '',
       newLargeSpotMonthlyFlatFee: '',
+      newFloorNumber: '',
+      newSmallSpotCapacity: '',
+      newLargeSpotCapacity: '',
+      newMemberOnly: false,
       errorMsg: '',
     };
   },
@@ -71,9 +78,10 @@ export default {
     axiosClient.get('/floor')
       .then((response) => {
         this.floors = response.data;
+        console.log(this.floors);
       })
       .catch((err) => {
-        this.errorMsg = err;
+        // this.errorMsg = err;
       })
     axiosClient.get('/parkingLot')
     .then((response) => {
@@ -86,7 +94,7 @@ export default {
       this.newLargeSpotMonthlyFlatFee = this.parkinglot.largeSpotMonthlyFlatFee;
     })
     .catch((err) => {
-      this.errorMsg = err;
+      // this.errorMsg = err;
     })
   },
   methods: {
@@ -116,12 +124,42 @@ export default {
         .catch((err) => {
           this.errorMsg = `Failed to create: ${err.response.data}`;
         })
+    },
+    addFloor(){
+      const request = {floorNumber: this.newFloorNumber, smallSpotCapacity: this.newSmallSpotCapacity, largeSpotCapacity: this.newLargeSpotCapacity, isMemberOnly: this.newMemberOnly};
+      axiosClient.post('/floor', request)
+        .then((response) => {
+          const floor = response.data;
+          this.floors.push(floor);
+          this.newFloorNumber = '';
+          this.newSmallSpotCapacity = '';
+          this.newLargeSpotCapacity = '';
+          this.newMemberOnly = false;
+          this.errorMsg = '';
+        })
+        .catch((err) => {
+          this.errorMsg = `Failed to create: ${err.response.data}`;
+        })
+    },
+    deletefloor(floorNumber){
+      axiosClient.delete(`/floor/${floorNumber}`)
+      .then((response) => {
+          const floor = response.data;
+          this.floors.push(floor);
+          this.newFloorNumber = '';
+          this.newSmallSpotCapacity = '';
+          this.newLargeSpotCapacity = '';
+          this.newMemberOnly = false;
+          this.errorMsg = '';
+        })
+        .catch((err) => {
+          this.errorMsg = `Failed to create: ${err.response.data}`;
+        })
     }
   },
   computed: {
-    createUserButtonDisabled() {
-      //return !this.newPersonName.trim() || !this.newPersonPassword.trim();
-      return;
+    createParkingButtonDisabled() {
+      return !this.newClosingTime.trim() || !this.newOpeningTime.trim();
     }
   }
 }
@@ -138,6 +176,7 @@ td, th {
   padding: 5%;
   align-items: stretch;
 }
+
 .error {
   color: red;
 }
