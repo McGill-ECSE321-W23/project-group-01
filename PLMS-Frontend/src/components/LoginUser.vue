@@ -68,9 +68,6 @@ export default {
   },
   methods: {
     getUser() {
-      this.email = document.getElementById("email").value;
-      this.password = document.getElementById("password").value;
-      this.user = document.querySelector('input[name="user"]:checked').value
       const request =  {email: this.email, password: this.password, user: this.user};
       axiosClient.get("/login", request)
       .then((response) => {
