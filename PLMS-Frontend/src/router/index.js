@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import LoginUser from "@/components/LoginUser";
 import SignUp from "@/components/SignUp";
+import OwnerViewAppointments from "@/components/OwnerViewAppointments"
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/create-customer',
       name: 'SignUp',
       component: SignUp
+    },
+    {
+      path: '/owner-view-appointments',
+      name : 'OwnerViewAppointments',
+      component: OwnerViewAppointments
     }
   ]
 })
