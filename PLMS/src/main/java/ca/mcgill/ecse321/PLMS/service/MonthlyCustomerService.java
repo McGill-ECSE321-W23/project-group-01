@@ -47,6 +47,15 @@ public class MonthlyCustomerService {
         return monthlyCustomer;
     }
 
+    @Transactional
+    public MonthlyCustomer getMonthlyCustomerByEmailAndPassword(String email, String password) {
+        MonthlyCustomer monthlyCustomer = getMonthlyCustomerByEmail(email);
+        if (monthlyCustomer.getPassword().equals(password))
+            return monthlyCustomer;
+        else
+            throw new PLMSException(HttpStatus.NOT_FOUND, "Please enter the correct password");
+    }
+
     /**
      * Service method that updates the monthly customer's information in the database
      * @param monthlyCustomer updated instance to persist
