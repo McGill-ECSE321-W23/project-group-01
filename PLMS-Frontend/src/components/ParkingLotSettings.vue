@@ -28,11 +28,12 @@
         <th>Member only</th>
       </tr>
       <tr v-for="f in floors">
-        <td>{{ f.floorNumber }}</td>
-        <td>{{ f.smallSpotCapacity }}</td>
-        <td>{{ f.largeSpotCapacity }}</td>
-        <td>{{ f.memberOnly }}</td>
+        <td :id="f.floorNumber">{{ f.floorNumber }}</td>
+        <td :id="`${f.floorNumber} 2`">{{ f.smallSpotCapacity }}</td>
+        <td :id="`${f.floorNumber} 3`">{{ f.largeSpotCapacity }}</td>
+        <td :id="`${f.floorNumber} 4`">{{ f.memberOnly }}</td>
         <td><button id="deletefloor" @click="deletefloor(f.floorNumber)">Delete</button></td>
+        <td><button :id="`editfloor ${f.floorNumber}`" @click="editfloor(f.floorNumber)">Edit</button></td>
       </tr>
       <tr>
         <td><input type="text" id="floornumber" v-model="newFloorNumber"></td>
@@ -144,17 +145,32 @@ export default {
     deletefloor(floorNumber){
       axiosClient.delete(`/floor/${floorNumber}`)
       .then((response) => {
-          const floor = response.data;
-          this.floors.push(floor);
-          this.newFloorNumber = '';
-          this.newSmallSpotCapacity = '';
-          this.newLargeSpotCapacity = '';
-          this.newMemberOnly = false;
+          this.errorMsg = '';
+          window.location.reload();
+        })
+        .catch((err) => {
+          this.errorMsg = `Failed to delete: ${err.response.data}`;
+        })
+    },
+    editfloor(floorNumber){
+      if (document.getElementById(`editfloor ${floorNumber}`).innerHTML === "Edit"){
+        document.getElementById(`editfloor ${floorNumber}`).innerHTML = "Save";
+        document.getElementById(`${floorNumber} 2`).innerHTML = `<input type="text" id="2 ${floorNumber}">`;
+        document.getElementById(`${floorNumber} 3`).innerHTML = `<input type="text" id="3 ${floorNumber}">`;
+        document.getElementById(`${floorNumber} 4`).innerHTML = `<input type="checkbox" id="4 ${floorNumber}">`;
+        
+      } else{
+        const request = {floorNumber: `${floorNumber}`, smallSpotCapacity:  document.getElementById(`2 ${floorNumber}`).value, largeSpotCapacity:  document.getElementById(`3 ${floorNumber}`).value, isMemberOnly:  document.getElementById(`4 ${floorNumber}`).checked};
+        axiosClient.put('/floor', request)
+        .then((response) => {
+          window.location.reload();
+          document.getElementById(`editfloor ${floorNumber}`).innerHTML = "Edit";
           this.errorMsg = '';
         })
         .catch((err) => {
-          this.errorMsg = `Failed to create: ${err.response.data}`;
+          this.errorMsg = `${err.response.data}`;
         })
+      }
     }
   },
   computed: {
