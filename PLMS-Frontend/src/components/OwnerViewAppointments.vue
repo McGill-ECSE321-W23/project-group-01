@@ -179,7 +179,8 @@ export default {
       findByEmployeeEmailInput: '',
       successMsgEditWithEmployeeEmail: '',
       errorMsgEditWithEmployeeEmail: '',
-      editByEmployeeEmailInput: ''
+      editByEmployeeEmailInput: '',
+      editByEmployeeEmailIdInput: ''
     }
   },
   created() {
@@ -241,23 +242,15 @@ export default {
     },
 
     updateServiceAppointmentWithNewEmployee() {
-      axiosClient.get(`/serviceAppointment/employeeEmail/${this.editByEmployeeEmailIdInput}"`, {
-        employeeEmail: this.editByEmployeeEmailInput
+      axiosClient.put(`/serviceAppointment/employeeEmail/${this.editByEmployeeEmailIdInput}?employeeEmail=${this.editByEmployeeEmailInput}`, {
+        employeeEmail: this.editByEmployeeEmailInput.value
       })
         .then(response => {
           this.successMsgEditWithEmployeeEmail = "Appointment updated successfully"
-          // get the index of the service appointment
-          const index = appointments.findIndex(appointment => appointment.id === editedAppointment.id);
-
-          // Remove the appointment from the list
-          appointments.splice(index, 1);
-
-          // Insert the updated appointment at the same index
-          appointments.splice(index, 0, editedAppointment);
         })
         .catch(error => {
           console.log(error.response.data);
-          this.errorMsgEmployee = error.response.data;
+          this.errorMsgEditWithEmployeeEmail = error.response.data;
         })
     }
   },
