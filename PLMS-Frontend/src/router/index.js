@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
+import Home from '@/components/Home'
 import LoginUser from "@/components/LoginUser";
 import SignUp from "@/components/SignUp";
 
@@ -13,6 +14,13 @@ export default new Router({
       name: 'Hello',
       component: Hello
     },
+
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home
+    },
+
     {
       path: '/login-user',
       name: 'LoginUser',
@@ -22,6 +30,14 @@ export default new Router({
       path: '/create-customer',
       name: 'SignUp',
       component: SignUp
+    },
+    {
+      path: '/product',
+      redirect: '/home'
+    },
+    {
+      path: '/pricing',
+      redirect: '/home'
     }
   ]
 })
