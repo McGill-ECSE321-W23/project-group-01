@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+
 import ca.mcgill.ecse321.PLMS.dto.ParkingLotRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.ParkingLotResponseDto;
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
