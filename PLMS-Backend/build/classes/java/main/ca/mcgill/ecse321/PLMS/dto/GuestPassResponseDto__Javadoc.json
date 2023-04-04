@@ -1,0 +1,1 @@
+{"doc":"","fields":[],"enumConstants":[],"methods":[],"constructors":[{"name":"<init>","paramTypes":["ca.mcgill.ecse321.PLMS.model.GuestPass"],"doc":" Constructor for creating a guestPass response transfer object by using the fields of \n a guestPass object.\n @param guestPass - guestPass to turn into a transfer object\n"}]}

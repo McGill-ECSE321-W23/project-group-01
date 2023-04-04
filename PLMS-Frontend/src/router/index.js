@@ -4,6 +4,8 @@ import Hello from '@/components/Hello'
 import Home from '@/components/Home'
 import LoginUser from "@/components/LoginUser";
 import SignUp from "@/components/SignUp";
+import ParkingLotSettings from '@/components/ParkingLotSettings'
+
 
 Vue.use(Router)
 
@@ -27,6 +29,11 @@ export default new Router({
       component: LoginUser
     },
     {
+      path: '/parking-lot-settings',
+      name: 'ParkingLotSettings',
+      component: ParkingLotSettings
+    },
+    {
       path: '/create-customer',
       name: 'SignUp',
       component: SignUp
@@ -39,5 +46,6 @@ export default new Router({
       path: '/pricing',
       redirect: '/home'
     }
+    
   ]
 })
