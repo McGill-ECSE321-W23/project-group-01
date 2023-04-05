@@ -4,8 +4,8 @@ import Hello from '@/components/Hello'
 import Home from '@/components/Home'
 import LoginUser from "@/components/LoginUser";
 import SignUp from "@/components/SignUp";
+import OwnerViewAppointments from "@/components/OwnerViewAppointments"
 import ParkingLotSettings from '@/components/ParkingLotSettings'
-
 
 Vue.use(Router)
 
@@ -39,6 +39,10 @@ export default new Router({
       component: SignUp
     },
     {
+      path: '/owner-view-appointments',
+      name : 'OwnerViewAppointments',
+      component: OwnerViewAppointments
+      
       path: '/product',
       redirect: '/home'
     },

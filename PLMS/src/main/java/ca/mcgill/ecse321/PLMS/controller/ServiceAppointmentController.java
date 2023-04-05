@@ -33,10 +33,16 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+
 /**
  * Controller class related to endpoints for CRUD operations on the service appointments model class in the context of the PLMS system
  */
 @RestController
+
+@CrossOrigin(origins="*")
+
 public class ServiceAppointmentController {
     
     @Autowired

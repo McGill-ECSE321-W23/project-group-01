@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-
 import ca.mcgill.ecse321.PLMS.dto.ParkingLotRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.ParkingLotResponseDto;
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
@@ -22,6 +21,7 @@ import jakarta.validation.Valid;
 /**
  * Controller class related to endpoints for CRUD operations on the parking lot class in the context of the PLMS system
  */
+ 
 @CrossOrigin(origins = "*")
 @RestController
 public class ParkingLotController {
