@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import ca.mcgill.ecse321.PLMS.dto.ServiceRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.ServiceResponseDto;
@@ -28,6 +29,7 @@ import jakarta.validation.Valid;
 /**
  * Controller class related to endpoints for CRUD operations on the service model class in the context of the PLMS system
  */
+@CrossOrigin(origins="*")
 @RestController
 public class ServiceController {
     @Autowired
