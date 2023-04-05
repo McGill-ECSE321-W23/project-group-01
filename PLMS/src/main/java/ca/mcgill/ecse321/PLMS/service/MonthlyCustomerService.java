@@ -55,7 +55,6 @@ public class MonthlyCustomerService {
         else
             throw new PLMSException(HttpStatus.NOT_FOUND, "Please enter the correct password");
     }
-
     /**
      * Service method that updates the monthly customer's information in the database
      * @param monthlyCustomer updated instance to persist

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
+import GeneralCreateGuestPass from '@/components/GeneralCreateGuestPass'
 import Home from '@/components/Home'
 import LoginUser from "@/components/LoginUser";
 import SignUp from "@/components/SignUp";
@@ -16,7 +17,11 @@ export default new Router({
       name: 'Hello',
       component: Hello
     },
-
+    {
+      path: '/createGuestPass',
+      name: 'GeneralCreateGuestPass',
+      component: GeneralCreateGuestPass
+    },
     {
       path: '/home',
       name: 'Home',
