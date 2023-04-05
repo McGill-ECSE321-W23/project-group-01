@@ -6,6 +6,7 @@ import Home from '@/components/Home'
 import LoginUser from "@/components/LoginUser";
 import SignUp from "@/components/SignUp";
 import OwnerViewAppointments from "@/components/OwnerViewAppointments"
+import OwnerViewServices from "@/components/OwnerViewServices"
 import ParkingLotSettings from '@/components/ParkingLotSettings'
 import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
 
@@ -56,6 +57,11 @@ export default new Router({
       
       path: '/product',
       redirect: '/home'
+    },
+    {
+      path: '/owner-view-services',
+      name : 'OwnerViewServices',
+      component: OwnerViewServices,
     },
     {
       path: '/pricing',
