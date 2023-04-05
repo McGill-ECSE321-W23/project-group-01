@@ -4,6 +4,7 @@ import Hello from '@/components/Hello'
 import LoginUser from "@/components/LoginUser";
 import SignUp from "@/components/SignUp";
 import OwnerViewAppointments from "@/components/OwnerViewAppointments"
+import GuestBookAppointment from "@/components/GuestBookAppointment"
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/owner-view-appointments',
       name : 'OwnerViewAppointments',
       component: OwnerViewAppointments
+    },
+    {
+      path: '/guest/book-appointment',
+      name : 'GuestBookAppointment',
+      component: GuestBookAppointment
     }
   ]
 })
