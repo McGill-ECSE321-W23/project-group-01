@@ -1,1 +1,0 @@
-{"doc":"","fields":[],"enumConstants":[],"methods":[],"constructors":[{"name":"<init>","paramTypes":[],"doc":" Default constructor\n"},{"name":"<init>","paramTypes":["ca.mcgill.ecse321.PLMS.model.Floor"],"doc":" Constructor for creating a floor transfer object by using the fields of \n a floor object.\n @param floor - floor to turn into a transfer object\n"}]}

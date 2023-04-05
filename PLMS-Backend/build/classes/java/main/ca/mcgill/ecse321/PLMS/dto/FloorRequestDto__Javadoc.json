@@ -1,1 +1,0 @@
-{"doc":"","fields":[],"enumConstants":[],"methods":[{"name":"toModel","paramTypes":[],"doc":" Method to construct a floor object from a floor request dto object\n @return floor object with all corresponding attributes\n"}],"constructors":[]}

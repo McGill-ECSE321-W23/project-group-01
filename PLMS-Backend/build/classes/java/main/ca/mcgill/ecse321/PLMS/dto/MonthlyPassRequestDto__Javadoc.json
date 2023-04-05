@@ -1,1 +1,0 @@
-{"doc":"","fields":[],"enumConstants":[],"methods":[{"name":"toModel","paramTypes":[],"doc":" Constructor for creating a monthly pass request transfer object by using the fields of \n a monthlypass object.\n"}],"constructors":[]}
