@@ -22,10 +22,19 @@
       </div>
     </nav>
 
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+      <img width="30%" src="../assets/user.png.png" style="margin-bottom: -5%">
+      <div class="col-md-5 p-lg-5 mx-auto my-5">
+        <h1 class="display-4 font-weight-light"> Hello! Welcome {{name}} </h1>
+        <p class="lead font-weight-normal">Please find a summary of all your upcoming service appointments and monthly passes!</p>
+      </div>
+    </div>
+
     <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-      <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
+      <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
         <div class="my-3 py-3">
           <h2 class="display-5" style="margin-top: -10%; margin-bottom: 5%">Service Appointments</h2>
+          <p class="lead"> For more information on your monthly pass either contact support or navigate to the Appointments page</p>
           <table class="table table-hover">
             <thead>
             <tr>
@@ -46,9 +55,11 @@
           </table>
         </div>
       </div>
+
       <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
         <div class="my-3 py-3">
-          <h2 class="display-5" style="margin-top: -10%; margin-bottom: 5%">Service Appointments</h2>
+          <h2 class="display-5" style="margin-top: -10%; margin-bottom: 5%">Monthly Passes</h2>
+          <p class="lead"> For more information on your monthly pass either contact support or navigate to the Passes page</p>
           <table class="table table-hover">
             <thead>
             <tr>
@@ -69,7 +80,7 @@
             </tr>
             </tbody>
           </table>
-        </div >
+        </div>
       </div>
     </div>
 
