@@ -60,7 +60,7 @@ export default new Router({
     {
       path: 'customer/:email',
       name: 'MonthlyCustomerHome',
-      component: MonthlyCustomerHome,
+      component: MonthlyCustomerHome, //
       props: true
 
     },
