@@ -19,4 +19,9 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+th, td{
+  border: black solid 1px;
+  padding: 5px;
+}
 </style>

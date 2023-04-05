@@ -15,8 +15,6 @@
           <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>Phone Number</th>
-            <th>Address</th>
           </tr>
         </thead>
         <tbody>
@@ -25,8 +23,6 @@
           @mouseout="handleRowHover(null)" :class="{ 'row-highlighted': customer === hoveredCustomer, 'row-selected': customer === selectedCustomer }">
             <td>{{ customer.name }}</td>
             <td>{{ customer.email }}</td>
-            <td>{{ customer.phone }}</td>
-            <td>{{ customer.address }}</td>
           </tr>
         </tbody>
       </table>
@@ -36,8 +32,6 @@
         <h2>Selected Customer</h2>
         <p>Name: {{ selectedCustomer.name }}</p>
         <p>Email: {{ selectedCustomer.email }}</p>
-        <p>Phone: {{ selectedCustomer.phone }}</p>
-        <p>Address: {{ selectedCustomer.address }}</p>
         <p>Passes:</p>
         <table v-if="selectedCustomer.passes">
           <thead>
