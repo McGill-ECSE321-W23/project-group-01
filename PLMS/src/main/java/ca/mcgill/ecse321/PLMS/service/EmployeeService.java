@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Employee;
+import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,6 @@ public class EmployeeService {
 
     @Autowired
     EmployeeRepository employeeRepository; // Repository from where the employee objects are persisted
-
     /**
      * Service method to fetch all existing employees in the database
      * @throws PLMSException - if no employees exist in the system
@@ -44,6 +44,14 @@ public class EmployeeService {
         return employee;
     }
 
+    @Transactional
+    public Employee getEmployeeByEmailAndPassword(String email, String password) {
+        Employee employee = getEmployeeByEmail(email);
+        if (employee.getPassword().equals(password))
+            return employee;
+        else
+            throw new PLMSException(HttpStatus.NOT_FOUND, "Please enter the correct password");
+    }
 
     /**
      * Service method that updates the employee's information in the database
