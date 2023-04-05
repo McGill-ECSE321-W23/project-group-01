@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import ca.mcgill.ecse321.PLMS.dto.FloorRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.FloorResponseDto;
 import ca.mcgill.ecse321.PLMS.model.Floor;
@@ -28,6 +29,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * Controller class related to endpoints for CRUD operations on the floor model class in the context of the PLMS system
  */
+@CrossOrigin(origins = "*")
 @RestController
 public class FloorController {
   @Autowired

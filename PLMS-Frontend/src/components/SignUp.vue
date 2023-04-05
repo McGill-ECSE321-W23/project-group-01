@@ -69,8 +69,9 @@ export default {
 
         })
         .catch((err) => {
-          console.log(err)
-          this.errorMsg = err
+          this.errorMsg = `Failed to create: ${err.response.data}`
+          alert(this.errorMsg)
+
         })
     }
 

@@ -1,0 +1,1 @@
+{"doc":"","fields":[],"enumConstants":[],"methods":[{"name":"toModel","paramTypes":["ca.mcgill.ecse321.PLMS.model.Service","ca.mcgill.ecse321.PLMS.model.MonthlyCustomer"],"doc":" Method to construct a serviceAppointment object from a serviceAppointment request dto object\n \n @return serviceAppointment object with all corresponding attributes\n"}],"constructors":[]}
