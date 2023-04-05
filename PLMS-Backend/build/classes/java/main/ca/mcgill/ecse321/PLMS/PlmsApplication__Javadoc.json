@@ -1,1 +1,0 @@
-{"doc":" Main Application class for the PLMS software system\n It's the class that activates the whole software system when run\n The PLMS software system implements the Spring framework\n","fields":[],"enumConstants":[],"methods":[{"name":"main","paramTypes":["java.lang.String[]"],"doc":" Main method, start point of the application\n"}],"constructors":[]}

@@ -1,1 +1,0 @@
-{"doc":"","fields":[],"enumConstants":[],"methods":[],"constructors":[{"name":"<init>","paramTypes":[],"doc":" Constructor for creating a monthlypass response transfer object by using the fields of \n a monthlypass object.\n @param monthlypass - monthlypass to turn into a transfer object\n"}]}

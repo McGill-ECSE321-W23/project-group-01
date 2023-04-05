@@ -41,7 +41,7 @@ export default new Router({
     {
       path: '/owner-view-appointments',
       name : 'OwnerViewAppointments',
-      component: OwnerViewAppointments
+      component: OwnerViewAppointments,
       
       path: '/product',
       redirect: '/home'
