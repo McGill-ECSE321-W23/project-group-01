@@ -9,6 +9,7 @@ import OwnerViewAppointments from "@/components/OwnerViewAppointments"
 import OwnerViewServices from "@/components/OwnerViewServices"
 import ParkingLotSettings from '@/components/ParkingLotSettings'
 import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
+import MonthlyCustomerHome from "../components/MonthlyCustomerHome"
 
 Vue.use(Router)
 
@@ -52,9 +53,18 @@ export default new Router({
     },
     {
       path: '/owner-view-appointments',
-      name : 'OwnerViewAppointments',
+      name: 'OwnerViewAppointments',
       component: OwnerViewAppointments,
-      
+    },
+
+    {
+      path: 'customer/:email',
+      name: 'MonthlyCustomerHome',
+      component: MonthlyCustomerHome,
+      props: true
+
+    },
+    {
       path: '/product',
       redirect: '/home'
     },
@@ -67,6 +77,6 @@ export default new Router({
       path: '/pricing',
       redirect: '/home'
     }
-    
+
   ]
 })
