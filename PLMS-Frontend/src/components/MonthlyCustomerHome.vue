@@ -124,7 +124,7 @@ export default {
       })
     axiosClient.get("/monthlypass/customer/"+this.email)
       .then(response => {
-        this.passes = response.data.passes
+        this.passes = response.data
       })
       .catch(error => {
         alert(error.data)
