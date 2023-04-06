@@ -9,8 +9,8 @@ import OwnerViewAppointments from "@/components/OwnerViewAppointments"
 import OwnerViewServices from "@/components/OwnerViewServices"
 import ParkingLotSettings from '@/components/ParkingLotSettings'
 import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
-import MonthlyCustomerHome from "../components/MonthlyCustomerHome"
-
+import MonthlyCustomerHome from "@/components/MonthlyCustomerHome"
+import MonthlyCustomerPasses from "@/components/MonthlyCustomerPasses";
 Vue.use(Router)
 
 export default new Router({
@@ -60,7 +60,14 @@ export default new Router({
     {
       path: 'customer/:email',
       name: 'MonthlyCustomerHome',
-      component: MonthlyCustomerHome, //
+      component: MonthlyCustomerHome,
+      props: true
+
+    },
+    {
+      path: 'customer/pass:email',
+      name: 'MonthlyCustomerPasses',
+      component: MonthlyCustomerPasses,
       props: true
 
     },
