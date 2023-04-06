@@ -31,13 +31,12 @@
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
       <label style="margin-right: 2%">Select an option</label>
       <div class="form-group" >
-        <select id="select" class="custom-select col-md-9" v-model="selectedPass" >
-          <option>Create a pass</option>
+        <label for="select">Current Monthly Passes</label>
+        <select id="select" class="custom-select col-md-9">
           <option v-for="pass in passes" :value="pass.id" :key="pass.id">{{pass.id}}</option>
         </select>
-        <button style="margin-left: 2%" class="btn btn-primary col-md-1" v-bind:disabled="selectUserButtonDisabled" @click="setValues()">Create</button>
 
-        <form id="form-update" style="display: none">
+        <form id="form-update" >
           <div class="form-row" style="margin-top: 3%">
             <div class="form-group col-md-6">
               <label >Months</label>
@@ -70,14 +69,13 @@
           </div>
           <div class="form-group">
             <div class="form-check">
-              <input class="form-check-input"  type="checkBox" id="isLarge" v-model="isLarge">
+              <input class="form-check-input"  type="checkBox" id="isLarge" v-model="this.isLarge">
               <label class="form-check-label" for="isLarge">
                 Large Spot
               </label>
             </div>
           </div>
-          <button id="create" style="display: none" type="submit" class="btn btn-primary">Create</button>
-          <button id="update" style="display: none" type="submit" v-bind:disabled="updateOrCreateUserButtonDisabled" @click="upda" class="btn btn-primary">Update</button>
+          <button id="create" type="submit" v-bind:disabled="createUserButtonDisabled" @click="createPass()" class="btn btn-primary">Create Pass</button>
 
         </form>
       </div>
@@ -145,7 +143,7 @@ export default {
       this.$router.push({name: 'MonthlyCustomerPasses', params: {email: this.email}})
     },
     createPass() {
-      const request = {numberOfMonths: this.numberOfMonths, spotNumber: this.spotNumber, confirmationCode: this.confirmationCodeCreation, licensePlate: this.licensePlate,
+      const request = {numberOfMonths: this.numberOfMonths, spotNumber: this.spotNumber, confirmationCode: this.confirmationCode, licensePlate: this.licensePlate,
         floorNumber: this.floorNumber, isLarge: document.getElementById(`isLarge`).checked, startDate: this.startDate, customerEmail: this.email};
       axiosClient.post("/customer/create", request)
         .then((response) => {
@@ -157,41 +155,11 @@ export default {
           alert(this.errorMsg)
         })
     },
-    setValues() {
-      document.getElementById("form-update").style.display = ""
-      if (document.getElementById("select").value !== "Nothing") {
-        this.selectedPass = document.getElementById("select").value
-        axiosClient.get("/monthlypass/" + this.selectedPass)
-        .then(response => {
-          const end1 = response.data.endDate
-          const end = new Date(end1);
-          const start1 = response.data.startDate
-          const start = new Date(start1);
-          let months = (end.getFullYear() - start.getFullYear())
-          months = months * 12
-          months= months + (end.getMonth() - start.getMonth());
-          document.getElementById("months").value = months
-          document.getElementById("spot").value = response.data.spotNumber
-          document.getElementById("confirmationCode").value = response.data.confirmationCode
-          document.getElementById("licensePlate").value = response.data.licensePlate
-          document.getElementById("floor").value = response.data.floorNumber
-          document.getElementById("isLarge").value = response.data.isLarge
-          document.getElementById("startDate").value = response.data.startDate
-          document.getElementById("update").display = ""
-          document.getElementById("update").style.display = ""
-        })
-      }
-    }
   },
-  updatePass() {
-
-  }
   computed: {
-    selectUserButtonDisabled() {
-      return !(this.selectedPass.trim());
-    },
-    updateOrCreateUserButtonDisabled() {
-      return !this.newPersonName.trim() || !this.newPersonPassword.trim();
+    createUserButtonDisabled() {
+      return !(this.numberOfMonths.trim()) || !this.spotNumber.trim() || !this.confirmationCode.trim() || !this.licensePlate.trim()
+        || !this.floorNumber.trim() || !this.isLarge.trim() || !this.startDate.trim();
     }
   }
 
