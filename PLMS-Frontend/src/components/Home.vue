@@ -13,7 +13,7 @@
     <link href="../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
+    <link href="/../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
 
   <nav class="site-header sticky-top py-1">
     <div class="container d-flex flex-column flex-md-row justify-content-between">

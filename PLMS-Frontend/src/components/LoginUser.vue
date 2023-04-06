@@ -7,13 +7,13 @@
     <form style="margin-top: 2%">
       <!-- Email input -->
       <div class="form-outline mb-4">
-          <label class="form-label" for="email">Email</label>
-          <input v-model="email" type="email" id="email" class="form-control" style="width: 50%; margin-left: 25%" placeholder="john.doe@address.com"/>
+        <label class="form-label" for="email">Email</label>
+        <input v-model="email" type="email" id="email" class="form-control" style="width: 50%; margin-left: 25%" placeholder="john.doe@address.com"/>
 
       </div>
 
 
-        <!-- Password input -->
+      <!-- Password input -->
       <div class="form-outline mb-4">
         <label class="form-label" for="password">Password</label>
         <input v-model="password" type="password" id="password" class="form-control"  style="width: 50%; margin-left: 25%" placeholder="*********"/>
@@ -77,10 +77,12 @@ export default {
       //const request =  {email: this.email, password: this.password, user: this.user};
       //axiosClient("/login/", request) previously
       axiosClient.get("/login/"+this.user+"?email="+this.email+"&password="+this.password)
-      .then((response) => {
-        alert("Success now logged in as " + this.user);
-        this.logged_user = response;
-      })
+        .then((response) => {
+          alert("Success now logged in as " + this.user);
+          this.logged_user = response;
+          if (this.user === "Customer")
+            this.$router.push({name: 'MonthlyCustomerHome', params: {email: this.email}})
+        })
         .catch((err) => {
           this.errorMsg = `Error: ${err.response.data}`;
           alert(this.errorMsg)
