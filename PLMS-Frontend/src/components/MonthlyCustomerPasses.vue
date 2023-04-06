@@ -29,56 +29,56 @@
     </nav>
 
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-      <div class="form-group">
-        <select class="custom-select" required>
-          <option value="">Open this select menu</option>
-          <option v-for="pass in passes" :key="pass.id">{{pass.id + pass.licensePlate}}</option>
+      <label style="margin-right: 2%">Select an option</label>
+      <div class="form-group" >
+        <select id="select" class="custom-select col-md-9" v-model="selectedPass" >
+          <option>Create a pass</option>
+          <option v-for="pass in passes" :value="pass.id" :key="pass.id">{{pass.id}}</option>
         </select>
-        <form>
+        <button style="margin-left: 2%" class="btn btn-primary col-md-1" v-bind:disabled="selectUserButtonDisabled" @click="setValues()">Create</button>
+
+        <form id="form-update" style="display: none">
           <div class="form-row" style="margin-top: 3%">
             <div class="form-group col-md-6">
-              <label for="inputEmail4">Email</label>
-              <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+              <label >Months</label>
+              <input v-model="this.numberOfMonths" class="form-control" id="months" placeholder="10" >
             </div>
             <div class="form-group col-md-6">
-              <label for="inputPassword4">Password</label>
-              <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+              <label for="spot">Spot Number</label>
+              <input type="text" v-model="this.spotNumber" class="form-control" id="spot" placeholder="A24">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputAddress">Address</label>
-            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            <label for="confirmationCode">Confirmation Code</label>
+            <input type="text" class="form-control" v-model="this.confirmationCode" id="confirmationCode" placeholder="JK95HO95T3">
           </div>
           <div class="form-group">
-            <label for="inputAddress2">Address 2</label>
-            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+            <label for="licensePlate">License Plate</label>
+            <input type="text" class="form-control" v-model="this.licensePlate" id="licensePlate" placeholder="T3ST41">
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="inputCity">City</label>
-              <input type="text" class="form-control" id="inputCity">
-            </div>
-            <div class="form-group col-md-4">
-              <label for="inputState">State</label>
-              <select id="inputState" class="form-control">
-                <option selected>Choose...</option>
-                <option>...</option>
+              <label for="floor">Floor Number</label>
+              <select id="floor" class="custom-select" required v-model="this.floorNumber">
+                <option v-for="floor in floors" :key="floor.floorNumber" :value="floor.floorNumber">{{floor.floorNumber}}</option>
               </select>
             </div>
-            <div class="form-group col-md-2">
-              <label for="inputZip">Zip</label>
-              <input type="text" class="form-control" id="inputZip">
+            <div class="form-group col-md-6">
+              <label for="startDate">Start Date</label>
+              <input type="text" class="form-control" v-model="this.startDate" id="startDate" placeholder="2024-05-05">
             </div>
           </div>
           <div class="form-group">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck">
-              <label class="form-check-label" for="gridCheck">
-                Check me out
+              <input class="form-check-input"  type="checkBox" id="isLarge" v-model="isLarge">
+              <label class="form-check-label" for="isLarge">
+                Large Spot
               </label>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary">Sign in</button>
+          <button id="create" style="display: none" type="submit" class="btn btn-primary">Create</button>
+          <button id="update" style="display: none" type="submit" v-bind:disabled="updateOrCreateUserButtonDisabled" @click="upda" class="btn btn-primary">Update</button>
+
         </form>
       </div>
     </div>
@@ -109,12 +109,29 @@ export default {
       name:'',
       password: '',
       passes: [],
+      floors: [],
+      spotNumber: '',
+      confirmationCode: '',
+      licensePlate: '',
+      floorNumber: '',
+      isLarge: '',
+      startDate: '',
+      numberOfMonths:'',
+      selectedPass: ''
     }
   },
   created() {
-    axiosClient.get("/monthlypass/customer/"+this.email)
+    axiosClient.get("/monthlypass/customer/" + this.email)
       .then(response => {
         this.passes = response.data
+      })
+      .catch(error => {
+        alert(error.data)
+      })
+
+    axiosClient.get("/floor")
+      .then(response => {
+        this.floors = response.data
       })
       .catch(error => {
         alert(error.data)
@@ -126,9 +143,58 @@ export default {
     },
     Reload() {
       this.$router.push({name: 'MonthlyCustomerPasses', params: {email: this.email}})
+    },
+    createPass() {
+      const request = {numberOfMonths: this.numberOfMonths, spotNumber: this.spotNumber, confirmationCode: this.confirmationCodeCreation, licensePlate: this.licensePlate,
+        floorNumber: this.floorNumber, isLarge: document.getElementById(`isLarge`).checked, startDate: this.startDate, customerEmail: this.email};
+      axiosClient.post("/customer/create", request)
+        .then((response) => {
+          alert("Your pass has been created successfully")
+          this.$router.push({name: 'MonthlyCustomerPasses', params: {email: this.email}})
+        })
+        .catch((err) => {
+          this.errorMsg = `Failed to create: ${err.response.data}`
+          alert(this.errorMsg)
+        })
+    },
+    setValues() {
+      document.getElementById("form-update").style.display = ""
+      if (document.getElementById("select").value !== "Nothing") {
+        this.selectedPass = document.getElementById("select").value
+        axiosClient.get("/monthlypass/" + this.selectedPass)
+        .then(response => {
+          const end1 = response.data.endDate
+          const end = new Date(end1);
+          const start1 = response.data.startDate
+          const start = new Date(start1);
+          let months = (end.getFullYear() - start.getFullYear())
+          months = months * 12
+          months= months + (end.getMonth() - start.getMonth());
+          document.getElementById("months").value = months
+          document.getElementById("spot").value = response.data.spotNumber
+          document.getElementById("confirmationCode").value = response.data.confirmationCode
+          document.getElementById("licensePlate").value = response.data.licensePlate
+          document.getElementById("floor").value = response.data.floorNumber
+          document.getElementById("isLarge").value = response.data.isLarge
+          document.getElementById("startDate").value = response.data.startDate
+          document.getElementById("update").display = ""
+          document.getElementById("update").style.display = ""
+        })
+      }
     }
+  },
+  updatePass() {
 
   }
+  computed: {
+    selectUserButtonDisabled() {
+      return !(this.selectedPass.trim());
+    },
+    updateOrCreateUserButtonDisabled() {
+      return !this.newPersonName.trim() || !this.newPersonPassword.trim();
+    }
+  }
+
 }
 </script>
 
