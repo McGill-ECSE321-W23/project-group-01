@@ -1,65 +1,144 @@
 <template>
-    <div>
+  <div>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../assets/logo-transparent-png.png">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/product/">
+    <link href="../../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
+    <nav class="site-header sticky-top py-1">
+      <div class="container d-flex flex-column flex-md-row justify-content-between">
+        <a class="py-2" href="#product">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
+            <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+          </svg>      </a>
+        <a class="py-2 d-none d-md-inline-block"  href="#">Manage Customer Accounts</a>
+        <a class="py-2 d-none d-md-inline-block"  href="#">Manage Employee Accounts</a>
+        <a class="py-2 d-none d-md-inline-block"  href="#">Manage Passes</a>
+        <a class="py-2 d-none d-md-inline-block" href="#">Manage Appointments</a>
+        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
+      </div>
+    </nav>
+      <div>
       <h1>Customer Information</h1>
   
       <form @submit.prevent="searchCustomer">
         <label for="email">Email:</label>
-        <input type="email" id="email" v-model="searchEmail">
+          <input type="email" id="email" v-model="searchEmail">
         <button type="submit">Search</button>
       </form>
       <p class="error">{{ gettingCustomerErrorMsg }}</p>
-  
-      <h2>All Customers</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(customer, index) in customers" :key="index" 
-          @click="handleRowClick(customer)" @mouseover="handleRowHover(customer)" 
-          @mouseout="handleRowHover(null)" :class="{ 'row-highlighted': customer === hoveredCustomer, 'row-selected': customer === selectedCustomer }">
-            <td>{{ customer.name }}</td>
-            <td>{{ customer.email }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="error">{{ gettingAllCustomerErrorMsg }}</p>
+      
 
-      <div v-if="selectedCustomer">
-        <h2>Selected Customer</h2>
-        <p>Name: {{ selectedCustomer.name }}</p>
-        <p>Email: {{ selectedCustomer.email }}</p>
-        <p>Passes:</p>
-        <table v-if="selectedCustomer.passes">
-          <thead>
-            <tr>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Floor Number</th>
-              <th>Spot Number</th>
-              <th>Large Spot</th>
-              <th>License Plate</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(pass, index) in selectedCustomer.passes" :key="index">
-              <td>{{ pass.startDate }}</td>
-              <td>{{ pass.endDate }}</td>
-              <td>{{ pass.floorNumber }}</td>
-              <td>{{ pass.spotNumber }}</td>
-              <td>{{ pass.large }}</td>
-              <td>{{ pass.licensePlate }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6">
+            <h2>All Customers</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(customer, index) in customers" :key="index" 
+                @click="handleRowClick(customer)" @mouseover="handleRowHover(customer)" 
+                @mouseout="handleRowHover(null)" :class="{ 'row-highlighted': customer === hoveredCustomer, 'row-selected': customer === selectedCustomer }">
+                  <td>{{ customer.name }}</td>
+                  <td>{{ customer.email }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="error">{{ gettingAllCustomerErrorMsg }}</p>
+          </div>
+          <div class="col-md-6">
+            <div class="card" v-if="selectedCustomer">
+              <div class="card-header">Selected Customer</div>
+              <div class="card-body">
+                <div>
+                <p>Name: {{ selectedCustomer.name }}</p>
+                <p>Email: {{ selectedCustomer.email }}</p>
+              </div>
+              
+
+              <button class="btn btn-secondary dropdown-toggle" @click="togglePasses()">
+                Show Passe(s)
+              </button>
+              <button class="btn btn-secondary dropdown-toggle" @click="toggleAppointment()">
+                Show Service Appointment(s)
+              </button>
+              <div v-if="showPasses">
+                <p>Passes:</p>
+                <table class="table table-hover" v-if="!gettingPassErrorMsg">
+                  <thead>
+                    <tr>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Floor Number</th>
+                      <th>Spot Number</th>
+                      <th>Large Spot</th>
+                      <th>License Plate</th>
+                    </tr>
+                  </thead>
+                  <tbody class="row-selectable">
+                    <tr v-for="(pass, index) in selectedCustomer.passes" :key="index">
+                      <td>{{ pass.startDate }}</td>
+                      <td>{{ pass.endDate }}</td>
+                      <td>{{ pass.floorNumber }}</td>
+                      <td>{{ pass.spotNumber }}</td>
+                      <td>{{ pass.large }}</td>
+                      <td>{{ pass.licensePlate }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p class="error" v-if="gettingPassErrorMsg">{{ gettingPassErrorMsg }}</p>
+              </div>
+
+              
+              <div v-if="showAppointments">
+                <p>Appointments:</p>
+                <table class="table table-hover" v-if="!gettingAppointmentsErrorMsg">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Start Time</th>
+                      <th>End Time</th>
+                      <th>Customer Email</th>
+                      <th>Employee Email</th>
+                      <th>Service Name</th>
+                    </tr>
+                  </thead>
+                  <tbody class="row-selectable">
+                    <tr v-for="(appointment, index) in selectedCustomer.appointments" :key="index">
+                      <td>{{ appointment.date }}</td>
+                      <td>{{ appointment.startTime }}</td>
+                      <td>{{ appointment.endTime }}</td>
+                      <td>{{ appointment.customerEmail }}</td>
+                      <td>{{ appointment.employeeEmail }}</td>
+                      <td>{{ appointment.serviceName }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p class="error" v-if="gettingAppointmentsErrorMsg">{{ gettingAppointmentsErrorMsg }}</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
-      <p class="error">{{ gettingPassErrorMsg }}</p>
+      <div v-if="selectedCustomer">
+      
+        
+        
+      </div>
+      
     </div>
-  </template>
-  
+  </div>
+  </div>
+</template>
 <script>
 import axios from 'axios';
 const config = require('../../../config');
@@ -78,8 +157,11 @@ export default {
             gettingCustomerErrorMsg: '',
             gettingAllCustomerErrorMsg: '',
             gettingPassErrorMsg: '',
+            gettingAppointmentsErrorMsg: '',
             hoveredCustomer: null,
-            selectedCustomer: null
+            selectedCustomer: null,
+            showPasses: false,
+            showAppointments: false
         };
     },
     created() {
@@ -108,12 +190,19 @@ export default {
         async updateSelectedMonthlyCustomer(monthlyCustomer){
           try {
             this.selectedCustomer = monthlyCustomer;
-            const response = await axiosClient.get(`/monthlypass/customer/${monthlyCustomer.email}`);
-            this.selectedCustomer.passes = response.data;
+            const responsePass = await axiosClient.get(`/monthlypass/customer/${monthlyCustomer.email}`);
+            this.selectedCustomer.passes = responsePass.data;
             this.gettingPassErrorMsg = '';
           }catch (error) {
             console.log(error);
             this.gettingPassErrorMsg = error.response.data;
+          }
+          try {
+            const responseAppointment = await axiosClient.get(`/serviceAppointment/customer/${monthlyCustomer.email}`);
+            this.selectedCustomer.appointments = responseAppointment.data;
+            this.gettingAppointmentsErrorMsg = '';
+          }catch (error) {
+            this.gettingAppointmentsErrorMsg = error.response.data;
           }
         },
         searchCustomer() {
@@ -124,6 +213,14 @@ export default {
         },
         handleRowHover(customer) {
           this.hoveredCustomer = customer;
+        },
+        togglePasses() {
+          this.showPasses = !this.showPasses;
+          this.showAppointments = false;
+        },
+        toggleAppointment(){
+          this.showAppointments = !this.showAppointments;
+          this.showPasses = false;
         }
     }
 };
@@ -138,5 +235,9 @@ export default {
 }
 .error{
   color: red;
+}
+
+.row-selectable{
+  cursor: pointer;
 }
 </style>

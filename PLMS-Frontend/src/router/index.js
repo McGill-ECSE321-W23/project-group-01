@@ -9,6 +9,7 @@ import OwnerViewAppointments from "@/components/OwnerViewAppointments"
 import OwnerViewServices from "@/components/OwnerViewServices"
 import ParkingLotSettings from '@/components/ParkingLotSettings'
 import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
+import OwnerHome from '@/components/owner/OwnerHome'
 import MonthlyCustomerHome from "../components/MonthlyCustomerHome"
 
 Vue.use(Router)
@@ -24,6 +25,11 @@ export default new Router({
       path: '/createGuestPass',
       name: 'GeneralCreateGuestPass',
       component: GeneralCreateGuestPass
+    },
+    {
+      path: '/owner/home',
+      name: 'OwnerHome',
+      component: OwnerHome
     },
     {
       path: '/owner/customers',
