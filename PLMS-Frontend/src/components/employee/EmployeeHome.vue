@@ -69,25 +69,14 @@
       }
     },
     created() {
-      // axiosClient.get("/customer?email="+this.email)
-      //   .then(response => {
-      //     this.name = response.data.name
-      //     this.password = response.data.password
-      //   })
-      //   .catch(error => {
-      //     alert(error.data)
-      //   })
-      // axiosClient.get("/monthlypass/customer/"+this.email)
-      //   .then(response => {
-      //     this.passes = response.data
-      //   })
-      //   .catch(error => {
-      //     alert(error.data)
-      //   })
-      // axiosClient.get("/serviceAppointment/customer/"+this.email)
-      //   .then(response => {
-      //     this.appointments = response.data
-      //   })
+      axiosClient.get("/employee?email="+this.email)
+        .then(response => {
+          this.name = response.data.name
+          this.password = response.data.password
+        })
+        .catch(error => {
+          alert(error.data)
+        })
     }
   }
   </script>

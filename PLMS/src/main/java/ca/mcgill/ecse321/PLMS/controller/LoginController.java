@@ -1,19 +1,15 @@
 package ca.mcgill.ecse321.PLMS.controller;
 
 
-import ca.mcgill.ecse321.PLMS.dto.AccountRequestDto;
 import ca.mcgill.ecse321.PLMS.dto.EmployeeResponseDto;
 import ca.mcgill.ecse321.PLMS.dto.MonthlyCustomerResponseDto;
 import ca.mcgill.ecse321.PLMS.dto.OwnerResponseDto;
-import ca.mcgill.ecse321.PLMS.model.Account;
-import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.service.EmployeeService;
 import ca.mcgill.ecse321.PLMS.service.MonthlyCustomerService;
 import ca.mcgill.ecse321.PLMS.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.*;
 

@@ -33,9 +33,11 @@ export default new Router({
       component: OwnerHome
     },
     {
-      path: '/employee/home',
+      path: '/employee/:email',
       name: 'EmployeeHome',
-      component: EmployeeHome
+      component: EmployeeHome,
+      props: true
+
     },
     {
       path: '/owner/customers',
