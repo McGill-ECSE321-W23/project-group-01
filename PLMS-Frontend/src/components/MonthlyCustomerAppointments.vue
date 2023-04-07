@@ -133,6 +133,7 @@ export default {
           this.errorMsg = `Failed to create: ${err.response.data}`
           alert(this.errorMsg)
         })
+      await this.sleep(2000)
       await this.RouteHome()
 
     },

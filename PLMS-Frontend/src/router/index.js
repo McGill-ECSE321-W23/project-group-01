@@ -12,6 +12,7 @@ import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
 import MonthlyCustomerHome from "@/components/MonthlyCustomerHome"
 import MonthlyCustomerPasses from "@/components/MonthlyCustomerPasses";
 import MonthlyCustomerAppointments from "@/components/MonthlyCustomerAppointments";
+import MonthlyCustomerManageAccount from "@/components/MonthlyCustomerManageAccount";
 Vue.use(Router)
 
 export default new Router({
@@ -75,6 +76,12 @@ export default new Router({
       path: 'customer/appointment:email',
       name: 'MonthlyCustomerAppointments',
       component: MonthlyCustomerAppointments,
+      props: true
+    },
+    {
+      path: 'customer/manage:email',
+      name: 'MonthlyCustomerManageAccount',
+      component: MonthlyCustomerManageAccount,
       props: true
     },
 
