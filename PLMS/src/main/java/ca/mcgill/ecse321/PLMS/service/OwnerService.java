@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Owner;
+import ca.mcgill.ecse321.PLMS.repository.EmployeeRepository;
+import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
 import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
 import java.util.Iterator;
 
@@ -18,6 +20,10 @@ public class OwnerService {
 
     @Autowired
     OwnerRepository ownerRepository; // Repository from where the owner account objects are persisted
+    @Autowired
+    EmployeeRepository employeeRepository;
+    @Autowired
+    MonthlyCustomerRepository monthlyCustomerRepository;
 
     /**
      * Service method to fetch all existing owners in the database
@@ -81,10 +87,10 @@ public class OwnerService {
     @Transactional
 	public Owner createOwnerAccount(Owner owner) {
         // Register the owner account into database
-        if (ownerRepository.findOwnerByEmail(owner.getEmail()) == null)
+        if ((ownerRepository.findOwnerByEmail(owner.getEmail()) == null) && (employeeRepository.findEmployeeByEmail(owner.getEmail()) == null) && (monthlyCustomerRepository.findMonthlyCustomerByEmail(owner.getEmail()) == null))
 		    return ownerRepository.save(owner);
         else
-            throw new PLMSException(HttpStatus.CONFLICT, "Owner account with this email already exists");
+            throw new PLMSException(HttpStatus.CONFLICT, "Another account with this email already exists");
 
     }
 

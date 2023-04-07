@@ -42,10 +42,5 @@ public class LoginController {
         else
             return new ResponseEntity<MonthlyCustomerResponseDto>(new MonthlyCustomerResponseDto(monthlyCustomerService.getMonthlyCustomerByEmailAndPassword(email, password)), HttpStatus.OK);
 
-
     }
-
-
-
-
 }
