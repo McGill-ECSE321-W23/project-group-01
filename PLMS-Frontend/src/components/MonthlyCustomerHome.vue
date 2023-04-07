@@ -127,14 +127,16 @@ export default {
         this.password = response.data.password
       })
       .catch(error => {
-        alert(error.data)
+        let err = `Error: ${error.response.data}`
+        alert(err)
       })
     axiosClient.get("/monthlypass/customer/"+this.email)
       .then(response => {
         this.passes = response.data
       })
       .catch(error => {
-        alert(error.data)
+        let err = `Error: ${error.response.data}`
+        alert(err)
       })
     axiosClient.get("/serviceAppointment/customer/"+this.email)
       .then(response => {
@@ -154,7 +156,6 @@ export default {
     async RouteManage() {
       await this.$router.push({name: 'MonthlyCustomerManageAccount', params: {email: this.email}})
     }
-
 
   }
 }

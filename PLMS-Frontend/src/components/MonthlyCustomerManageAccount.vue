@@ -38,12 +38,12 @@
               <input class="form-control" id="email" :value="email" readonly>
             </div>
             <div class="form-group">
-            <label>Name</label>
-            <input v-model="name" class="form-control" id="name">
-            </div>
-            <div class="form-group">
               <label>Password</label>
               <input class="form-control" id="password" :value="password" readonly>
+            </div>
+            <div class="form-group">
+            <label>Name</label>
+            <input v-model="name" class="form-control" id="name">
             </div>
 
           </div>
