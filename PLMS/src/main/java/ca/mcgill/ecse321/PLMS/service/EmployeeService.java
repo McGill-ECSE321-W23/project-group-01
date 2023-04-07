@@ -65,7 +65,6 @@ public class EmployeeService {
         if(employee.getHourlyWage() <= 0)
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Hourly wage must be positive.");
         e.setHourlyWage(employee.getHourlyWage());
-        e.setPassword(employee.getPassword());
         e.setJobTitle(employee.getJobTitle());
         e.setName(employee.getName());
         return employeeRepository.save(e);
