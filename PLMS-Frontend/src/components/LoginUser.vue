@@ -80,8 +80,12 @@ export default {
         .then((response) => {
           alert("Success now logged in as " + this.user);
           this.logged_user = response;
-          if (this.user === "Customer")
+          if (this.user === "Customer"){
             this.$router.push({name: 'MonthlyCustomerHome', params: {email: this.email}})
+          }
+          if (this.user === "Owner"){
+            this.$router.push({name: 'OwnerHome'})
+          }
         })
         .catch((err) => {
           this.errorMsg = `Error: ${err.response.data}`;
