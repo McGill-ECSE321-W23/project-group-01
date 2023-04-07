@@ -29,48 +29,42 @@
     </nav>
 
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-      <label style="margin-right: 2%">Select an option</label>
-      <div class="form-group" >
-        <label for="select">Current Monthly Passes</label>
-        <select id="select" class="custom-select col-md-9">
-          <option v-for="pass in passes" :value="pass.id" :key="pass.id">{{pass.id}}</option>
-        </select>
 
         <form id="form-update" >
           <div class="form-row" style="margin-top: 3%">
             <div class="form-group col-md-6">
-              <label >Months</label>
-              <input v-model="this.numberOfMonths" class="form-control" id="months" placeholder="10" >
+              <label>Months</label>
+              <input class="form-control" type="number" placeholder="10" v-model="numberOfMonths">
             </div>
             <div class="form-group col-md-6">
-              <label for="spot">Spot Number</label>
-              <input type="text" v-model="this.spotNumber" class="form-control" id="spot" placeholder="A24">
+              <label>Spot Number</label>
+              <input type="text" class="form-control" id="spot" placeholder="A24" v-model="spotNumber" >
             </div>
           </div>
           <div class="form-group">
-            <label for="confirmationCode">Confirmation Code</label>
-            <input type="text" class="form-control" v-model="this.confirmationCode" id="confirmationCode" placeholder="JK95HO95T3">
+            <label >Confirmation Code</label>
+            <input type="text" class="form-control"  placeholder="JK95HO95T3" v-model="confirmationCode">
           </div>
           <div class="form-group">
-            <label for="licensePlate">License Plate</label>
-            <input type="text" class="form-control" v-model="this.licensePlate" id="licensePlate" placeholder="T3ST41">
+            <label >License Plate</label>
+            <input type="text" class="form-control"   placeholder="T3ST41"  v-model="licensePlate">
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="floor">Floor Number</label>
-              <select id="floor" class="custom-select" required v-model="this.floorNumber">
+              <label >Floor Number</label>
+              <select class="custom-select" required v-model="floorNumber">
                 <option v-for="floor in floors" :key="floor.floorNumber" :value="floor.floorNumber">{{floor.floorNumber}}</option>
               </select>
             </div>
             <div class="form-group col-md-6">
-              <label for="startDate">Start Date</label>
-              <input type="text" class="form-control" v-model="this.startDate" id="startDate" placeholder="2024-05-05">
+              <label>Start Date</label>
+              <input type="text" class="form-control" v-model="startDate"  placeholder="2024-05-05">
             </div>
           </div>
           <div class="form-group">
             <div class="form-check">
-              <input class="form-check-input"  type="checkBox" id="isLarge" v-model="this.isLarge">
-              <label class="form-check-label" for="isLarge">
+              <input class="form-check-input"  type="checkBox" id="isLarge">
+              <label class="form-check-label" >
                 Large Spot
               </label>
             </div>
@@ -80,8 +74,6 @@
         </form>
       </div>
     </div>
-
-  </div>
 </template>
 
 <script>
@@ -104,29 +96,17 @@ export default {
   data() {
     return {
       errorMsg: '',
-      name:'',
-      password: '',
-      passes: [],
       floors: [],
       spotNumber: '',
       confirmationCode: '',
       licensePlate: '',
-      floorNumber: '',
+      floorNumber: 0,
       isLarge: '',
       startDate: '',
-      numberOfMonths:'',
-      selectedPass: ''
-    }
+      numberOfMonths:0,
+    };
   },
   created() {
-    axiosClient.get("/monthlypass/customer/" + this.email)
-      .then(response => {
-        this.passes = response.data
-      })
-      .catch(error => {
-        alert(error.data)
-      })
-
     axiosClient.get("/floor")
       .then(response => {
         this.floors = response.data
@@ -145,10 +125,9 @@ export default {
     createPass() {
       const request = {numberOfMonths: this.numberOfMonths, spotNumber: this.spotNumber, confirmationCode: this.confirmationCode, licensePlate: this.licensePlate,
         floorNumber: this.floorNumber, isLarge: document.getElementById(`isLarge`).checked, startDate: this.startDate, customerEmail: this.email};
-      axiosClient.post("/customer/create", request)
+      axiosClient.post("/monthlypass", request)
         .then((response) => {
           alert("Your pass has been created successfully")
-          this.$router.push({name: 'MonthlyCustomerPasses', params: {email: this.email}})
         })
         .catch((err) => {
           this.errorMsg = `Failed to create: ${err.response.data}`
@@ -158,8 +137,8 @@ export default {
   },
   computed: {
     createUserButtonDisabled() {
-      return !(this.numberOfMonths.trim()) || !this.spotNumber.trim() || !this.confirmationCode.trim() || !this.licensePlate.trim()
-        || !this.floorNumber.trim() || !this.isLarge.trim() || !this.startDate.trim();
+      return !(this.numberOfMonths !== 0)|| !this.spotNumber.trim() || !this.confirmationCode.trim() || !this.licensePlate.trim()
+        ||  !(this.floorNumber !== 0)  || !this.startDate.trim();
     }
   }
 
