@@ -10,6 +10,7 @@ import OwnerViewServices from "@/components/OwnerViewServices"
 import ParkingLotSettings from '@/components/ParkingLotSettings'
 import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
 import OwnerHome from '@/components/owner/OwnerHome'
+import EmployeeHome from '@/components/employee/EmployeeHome'
 import MonthlyCustomerHome from "../components/MonthlyCustomerHome"
 
 Vue.use(Router)
@@ -30,6 +31,11 @@ export default new Router({
       path: '/owner/home',
       name: 'OwnerHome',
       component: OwnerHome
+    },
+    {
+      path: '/employee/home',
+      name: 'EmployeeHome',
+      component: EmployeeHome
     },
     {
       path: '/owner/customers',
