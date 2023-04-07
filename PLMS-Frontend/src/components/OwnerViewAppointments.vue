@@ -1,77 +1,75 @@
 <template>
-  <div>
+  <div class="owner-view-appointments">
+
     <div>
-
+      <h2>Search for Service Appointments on a Date</h2>
       <div>
-        <h2>Search for Service Appointments on a Date</h2>
-        <div>
-          <label for="date">Select Date:</label>
-          <input type="date" id="date" name="date" v-model="selectedDate">
-          <button type="button" @click="getServiceAppointmentsByDate">Get Appointments</button>
-        </div>
-        <table class="center bordered-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Date</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Customer Email</th>
-              <th>Employee Email</th>
-              <th>Service Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="appointment in serviceAppointmentsByDate" :key="appointment.id">
-              <td>{{ appointment.id ? appointment.id : '' }}</td>
-              <td>{{ appointment.date ? appointment.date : '' }}</td>
-              <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
-              <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
-              <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
-              <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
-              <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="error">{{ errorMsgDate }}</p>
+        <label for="date">Select Date:</label>
+        <input type="date" id="date" name="date" v-model="selectedDate">
+        <button type="button" @click="getServiceAppointmentsByDate">Get Appointments</button>
       </div>
+      <table class="center bordered-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Customer Email</th>
+            <th>Employee Email</th>
+            <th>Service Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="appointment in serviceAppointmentsByDate" :key="appointment.id">
+            <td>{{ appointment.id ? appointment.id : '' }}</td>
+            <td>{{ appointment.date ? appointment.date : '' }}</td>
+            <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
+            <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
+            <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
+            <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
+            <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="error">{{ errorMsgDate }}</p>
+    </div>
+    <div>
+      <h2>Search for a Service Appointment by ID</h2>
       <div>
-        <h2>Search for a Service Appointment by ID</h2>
-        <div>
-          <label for="id">Select Appointment ID:</label>
-          <select id="id" name="id" v-model="appointmentId">
-            <option value="">-- Select an ID --</option>
-            <option v-for="id in appointmentIds" :key="id" :value="id">{{ id }}</option>
-          </select>
-          <button type="button" @click="getServiceAppointmentById">Find Appointment</button>
-        </div>
-
-        <table class="center bordered-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Date</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Customer Email</th>
-              <th>Employee Email</th>
-              <th>Service Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ appointment.id ? appointment.id : '' }}</td>
-              <td>{{ appointment.date ? appointment.date : '' }}</td>
-              <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
-              <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
-              <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
-              <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
-              <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="error">{{ errorMsgId }}</p>
+        <label for="id">Select Appointment ID:</label>
+        <select id="id" name="id" v-model="appointmentId">
+          <option value="">-- Select an ID --</option>
+          <option v-for="id in appointmentIds" :key="id" :value="id">{{ id }}</option>
+        </select>
+        <button type="button" @click="getServiceAppointmentById">Find Appointment</button>
       </div>
+
+      <table class="center bordered-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Customer Email</th>
+            <th>Employee Email</th>
+            <th>Service Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ appointment.id ? appointment.id : '' }}</td>
+            <td>{{ appointment.date ? appointment.date : '' }}</td>
+            <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
+            <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
+            <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
+            <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
+            <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="error">{{ errorMsgId }}</p>
     </div>
 
     <div>
@@ -298,19 +296,9 @@ export default {
     }
   },
   created() {
-    axiosClient
-      .get('/serviceAppointment')
-      .then((response) => {
-        this.serviceAppointments = response.data;
-        this.appointmentIds = response.data.map((appointment) => appointment.id);
-        this.errorMsgAll = ''
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        this.errorMsgAll = error.response.data;
-      });
+    this.updateAppointments()
 
-      axiosClient
+    axiosClient
       .get('/employees')
       .then((response) => {
         this.employees = response.data.map((employee) => employee.email);
@@ -320,7 +308,7 @@ export default {
         console.log(error.response.data)
       });
 
-      axiosClient
+    axiosClient
       .get('/customers')
       .then((response) => {
         this.customers = response.data.map((customer) => customer.email);
@@ -330,7 +318,7 @@ export default {
         console.log(error.response.data)
       });
 
-      axiosClient
+    axiosClient
       .get('/service')
       .then((response) => {
         this.serviceNames = response.data.map((service) => service.serviceName);
@@ -339,7 +327,7 @@ export default {
       .catch((error) => {
       });
 
-      
+
 
 
   },
@@ -407,6 +395,7 @@ export default {
         .then(response => {
           this.successMsgEditWithEmployeeEmail = "Appointment updated successfully"
           this.errorMsgEditWithEmployeeEmail = ''
+          this.updateAppointments()
         })
         .catch(error => {
           console.log(error.response.data);
@@ -436,6 +425,7 @@ export default {
           this.editServiceNameInput = '';
           this.disableEditButton = false;
           this.successMsgEdit = "Appointment updated successfully";
+          this.updateAppointments()
         })
         .catch(error => {
           console.log(error.response.data);
@@ -454,11 +444,25 @@ export default {
         .then(response => {
           this.editMsgCancel = '';
           this.successMsgCancel = "Appointment cancelled successfully";
+          this.updateAppointments()
         })
         .catch(error => {
           console.log(error.response.data);
           this.errorMsgCancel = error.response.data;
         })
+    },
+
+    updateAppointments(){
+      axiosClient.get('/serviceAppointment')
+        .then((response) => {
+          this.serviceAppointments = response.data;
+          this.appointmentIds = response.data.map((appointment) => appointment.id);
+          this.errorMsgAll = ''
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+          this.errorMsgAll = error.response.data;
+        });
     }
   },
 
