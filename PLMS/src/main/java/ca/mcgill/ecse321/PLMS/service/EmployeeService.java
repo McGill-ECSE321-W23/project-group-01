@@ -2,8 +2,10 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Employee;
-import ca.mcgill.ecse321.PLMS.model.MonthlyCustomer;
 import ca.mcgill.ecse321.PLMS.repository.EmployeeRepository;
+import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
+import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,12 @@ public class EmployeeService {
 
     @Autowired
     EmployeeRepository employeeRepository; // Repository from where the employee objects are persisted
+    @Autowired
+    MonthlyCustomerRepository monthlyCustomerRepository;
+    @Autowired
+    OwnerRepository ownerRepository;
+
+
     /**
      * Service method to fetch all existing employees in the database
      * @throws PLMSException - if no employees exist in the system
@@ -80,10 +88,10 @@ public class EmployeeService {
     public Employee createEmployeeAccount(Employee employee) {
         if(employee.getHourlyWage() <= 0)
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Hourly wage must be positive.");
-        if (employeeRepository.findEmployeeByEmail(employee.getEmail()) == null)
+        if ((ownerRepository.findOwnerByEmail(employee.getEmail()) == null) && (employeeRepository.findEmployeeByEmail(employee.getEmail()) == null) && (monthlyCustomerRepository.findMonthlyCustomerByEmail(employee.getEmail()) == null))
             return employeeRepository.save(employee);
         else
-            throw new PLMSException(HttpStatus.CONFLICT, "Employee account with this email already exists");
+            throw new PLMSException(HttpStatus.CONFLICT, "Another account with this email already exists");
     }
 
     /**
