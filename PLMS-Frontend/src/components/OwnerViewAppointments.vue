@@ -1,13 +1,8 @@
 <template>
   <div class="owner-view-appointments">
-
     <div>
-      <h2>Search for Service Appointments on a Date</h2>
-      <div>
-        <label for="date">Select Date:</label>
-        <input type="date" id="date" name="date" v-model="selectedDate">
-        <button type="button" @click="getServiceAppointmentsByDate">Get Appointments</button>
-      </div>
+      <h2>All Service Appointments</h2><button type="button" @click="getAllAppointments">Get all appointments in the system</button>
+      <p class="error">{{ errorMsgAll }}</p>
       <table class="center bordered-table">
         <thead>
           <tr>
@@ -21,7 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="appointment in serviceAppointmentsByDate" :key="appointment.id">
+          <tr v-for="appointment in serviceAppointments" :key="appointment.id">
             <td>{{ appointment.id ? appointment.id : '' }}</td>
             <td>{{ appointment.date ? appointment.date : '' }}</td>
             <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
@@ -32,8 +27,15 @@
           </tr>
         </tbody>
       </table>
-      <p class="error">{{ errorMsgDate }}</p>
     </div>
+    <div>
+      <h2>Search for Service Appointments on a Date</h2>
+      <div>
+        <label for="date">Select Date:</label>
+        <input type="date" id="date" name="date" v-model="selectedDate">
+        <button type="button" @click="getServiceAppointmentsByDate">Get Appointments</button>
+      </div>
+      
     <div>
       <h2>Search for a Service Appointment by ID</h2>
       <div>
@@ -44,32 +46,6 @@
         </select>
         <button type="button" @click="getServiceAppointmentById">Find Appointment</button>
       </div>
-
-      <table class="center bordered-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Customer Email</th>
-            <th>Employee Email</th>
-            <th>Service Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{ appointment.id ? appointment.id : '' }}</td>
-            <td>{{ appointment.date ? appointment.date : '' }}</td>
-            <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
-            <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
-            <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
-            <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
-            <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="error">{{ errorMsgId }}</p>
     </div>
 
     <div>
@@ -78,35 +54,10 @@
         <label for="employee">Select Employee:</label>
         <select id="employee" name="employee" v-model="selectedEmployee">
           <option value="">-- Select an employee --</option>
-          <option v-for="employee in employees" :value="employee.email">{{ employee.name }}</option>
+          <option v-for="email in employeeEmails" :value="email">{{ email }}</option>
         </select>
         <button type="button" @click="getServiceAppointmentsByEmployee">Find Appointment</button>
       </div>
-      <table class="center bordered-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Customer Email</th>
-            <th>Employee Email</th>
-            <th>Service Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="appointment in serviceAppointmentsByEmployee" :key="appointment.id">
-            <td>{{ appointment.id ? appointment.id : '' }}</td>
-            <td>{{ appointment.date ? appointment.date : '' }}</td>
-            <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
-            <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
-            <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
-            <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
-            <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="error">{{ errorMsgEmployee }}</p>
     </div>
 
     <div>
@@ -119,31 +70,7 @@
         </select>
         <button type="button" @click="getServiceAppointmentsByCustomer">Find Appointment</button>
       </div>
-      <table class="center bordered-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Customer Email</th>
-            <th>Employee Email</th>
-            <th>Service Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="appointment in serviceAppointmentsByCustomer" :key="appointment.id">
-            <td>{{ appointment.id ? appointment.id : '' }}</td>
-            <td>{{ appointment.date ? appointment.date : '' }}</td>
-            <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
-            <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
-            <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
-            <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
-            <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="error">{{ errorMsgCustomer }}</p>
+      
     </div>
 
 
@@ -160,7 +87,7 @@
         <label for="employee-email">Employee Email:</label>
         <select id="employee-email" name="employee-email" v-model="editByEmployeeEmailInput">
           <option disabled value="">Please select an email</option>
-          <option v-for="email in employees" :key="email" :value="email">{{ email }}</option>
+          <option v-for="email in employeeEmails" :key="email" :value="email">{{ email }}</option>
         </select>
       </div>
       <button type="button" @click="updateServiceAppointmentWithNewEmployee">Update Appointment's Employee</button>
@@ -213,35 +140,8 @@
     </div>
 
 
-    <div>
-      <h2>All Service Appointments</h2>
-      <table class="center bordered-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Customer Email</th>
-            <th>Employee Email</th>
-            <th>Service Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="appointment in serviceAppointments" :key="appointment.id">
-            <td>{{ appointment.id ? appointment.id : '' }}</td>
-            <td>{{ appointment.date ? appointment.date : '' }}</td>
-            <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
-            <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
-            <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
-            <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
-            <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="error">{{ errorMsgAll }}</p>
-    </div>
   </div>
+</div>
 </template>
 
 
@@ -266,7 +166,7 @@ export default {
       appointmentIds: [],
       appointment: {},
       selectedEmployee: '',
-      employees: [],
+      employeeEmails: [],
       customerEmails: [],
       serviceNames: [],
       selectedId: '',
@@ -296,22 +196,24 @@ export default {
     }
   },
   created() {
-    this.updateAppointments()
+    this.getAllAppointments()
 
     axiosClient
-      .get('/employees')
-      .then((response) => {
-        this.employees = response.data.map((employee) => employee.email);
-        this.errorMsgAll = ''
-      })
-      .catch((error) => {
-        console.log(error.response.data)
-      });
+  .get('/employees')
+  .then((response) => {
+    console.log(response.data); // log the response data
+    this.employeeEmails = response.data.map((employee) => employee.email); // log each employee object
+    this.errorMsgAll = '';
+  })
+  .catch((error) => {
+    console.log(error.response.data);
+  });
+
 
     axiosClient
       .get('/customers')
       .then((response) => {
-        this.customers = response.data.map((customer) => customer.email);
+        this.customerEmails = response.data.map((customer) => customer.email);
         this.errorMsgAll = ''
       })
       .catch((error) => {
@@ -325,64 +227,66 @@ export default {
         this.errorMsgAll = ''
       })
       .catch((error) => {
+        console.log(error.response.data)
       });
-
-
-
-
   },
 
   methods: {
 
     getServiceAppointmentsByDate() {
+      this.serviceAppointments = []
       axiosClient.get(`/serviceAppointment/date/${this.selectedDate}`)
         .then(response => {
-          this.serviceAppointmentsByDate = response.data
+          this.serviceAppointments = response.data
           this.errorMsgDate = ''
         })
         .catch(error => {
           console.log(error.response.data);
-          this.errorMsgDate = error.response.data;
+          this.errorMsgAll = error.response.data;
         });
     },
 
     getServiceAppointmentById() {
-      if (Number.isInteger(this.editIdInput)) {
+      if (!/^\d+$/.test(this.appointmentId)) {
         this.errorMsgEdit = "Please enter an integer id"
         return
       }
+      this.serviceAppointments = []
       axiosClient.get(`/serviceAppointment/${this.appointmentId}`)
         .then(response => {
-          this.appointment = response.data
-          this.errorMsgId = ''
+          
+          this.serviceAppointments.push(response.data)
+          this.errorMsgAll = ''
         })
         .catch(error => {
           console.log(error.response.data);
-          this.errorMsgId = error.response.data;
+          this.errorMsgAll = error.response.data;
         });
     },
 
     getServiceAppointmentsByCustomer() {
+      this.serviceAppointments = []
       axiosClient.get(`/serviceAppointment/customer/${this.findByCustomerEmailInput}`)
         .then(response => {
           this.serviceAppointmentsByCustomer = response.data
-          this.errorMsgCustomer = ''
+          this.errorMsgAll = ''
         })
         .catch(error => {
           console.log(error.response.data);
-          this.errorMsgCustomer = error.response.data;
+          this.errorMsgAll = error.response.data;
         })
     },
 
     getServiceAppointmentsByEmployee() {
-      axiosClient.get(`/serviceAppointment/employee/${this.findByEmployeeEmailInput}`)
+      this.serviceAppointments = []
+      axiosClient.get(`/serviceAppointment/employee/${this.selectedEmployee}`)
         .then(response => {
-          this.serviceAppointmentsByEmployee = response.data
-          this.errorMsgEmployee = ''
+          this.serviceAppointments = response.data
+          this.errorMsgAll = ''
         })
         .catch(error => {
           console.log(error.response.data);
-          this.errorMsgEmployee = error.response.data;
+          this.errorMsgAll = error.response.data;
         })
     },
 
@@ -391,15 +295,13 @@ export default {
         this.errorMsgEditWithEmployeeEmail = "Please enter an integer id"
         return
       }
+      console.log(this.editByEmployeeEmailInput)
       axiosClient.put(`/serviceAppointment/employeeEmail/${this.editByEmployeeEmailIdInput}?employeeEmail=${this.editByEmployeeEmailInput}`)
         .then(response => {
-          this.successMsgEditWithEmployeeEmail = "Appointment updated successfully"
-          this.errorMsgEditWithEmployeeEmail = ''
-          this.updateAppointments()
+          this.getAllAppointments()
         })
         .catch(error => {
-          console.log(error.response.data);
-          this.errorMsgEditWithEmployeeEmail = error.response.data;
+          this.errorMsgAll = error.response.data
         })
     },
 
@@ -424,8 +326,7 @@ export default {
           this.editStartTimeInput = '';
           this.editServiceNameInput = '';
           this.disableEditButton = false;
-          this.successMsgEdit = "Appointment updated successfully";
-          this.updateAppointments()
+          this.getAllAppointments()
         })
         .catch(error => {
           console.log(error.response.data);
@@ -444,7 +345,7 @@ export default {
         .then(response => {
           this.editMsgCancel = '';
           this.successMsgCancel = "Appointment cancelled successfully";
-          this.updateAppointments()
+          this.getAllAppointments()
         })
         .catch(error => {
           console.log(error.response.data);
@@ -452,7 +353,7 @@ export default {
         })
     },
 
-    updateAppointments(){
+    getAllAppointments(){
       axiosClient.get('/serviceAppointment')
         .then((response) => {
           this.serviceAppointments = response.data;

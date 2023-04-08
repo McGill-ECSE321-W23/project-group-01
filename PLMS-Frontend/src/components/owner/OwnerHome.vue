@@ -65,7 +65,7 @@
     headers: { 'Access-Control-Allow-Origin': frontendUrl }
   });
   export default {
-    name: "MonthlyCustomerHome",
+    name: "OwnerHome",
     props: {
       email: {
         type: String,
