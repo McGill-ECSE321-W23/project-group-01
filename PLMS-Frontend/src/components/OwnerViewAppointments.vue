@@ -1,6 +1,36 @@
 <template>
   <div>
     <div>
+    <div>
+      <h2>All Service Appointments</h2>
+      <table class="center bordered-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Customer Email</th>
+            <th>Employee Email</th>
+            <th>Service Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="appointment in serviceAppointments" :key="appointment.id">
+            <td>{{ appointment.id ? appointment.id : '' }}</td>
+            <td>{{ appointment.date ? appointment.date : '' }}</td>
+            <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
+            <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
+            <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
+            <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
+            <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="error">{{ errorMsgAll }}</p>
+    </div>
+  </div>
+    <div>
 
       <div>
         <h2>Search for Service Appointments on a Date</h2>
@@ -9,30 +39,6 @@
           <input type="date" id="date" name="date" v-model="selectedDate">
           <button type="button" @click="getServiceAppointmentsByDate">Get Appointments</button>
         </div>
-        <table class="center bordered-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Date</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Customer Email</th>
-              <th>Employee Email</th>
-              <th>Service Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="appointment in serviceAppointmentsByDate" :key="appointment.id">
-              <td>{{ appointment.id ? appointment.id : '' }}</td>
-              <td>{{ appointment.date ? appointment.date : '' }}</td>
-              <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
-              <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
-              <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
-              <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
-              <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
-            </tr>
-          </tbody>
-        </table>
         <p class="error">{{ errorMsgDate }}</p>
       </div>
       <div>
@@ -42,30 +48,6 @@
           <input type="text" id="id" name="id" v-model="appointmentId">
           <button type="button" @click="getServiceAppointmentById">Find Appointment</button>
         </div>
-        <table class="center bordered-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Date</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Customer Email</th>
-              <th>Employee Email</th>
-              <th>Service Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ appointment.id ? appointment.id : '' }}</td>
-              <td>{{ appointment.date ? appointment.date : '' }}</td>
-              <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
-              <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
-              <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
-              <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
-              <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
-            </tr>
-          </tbody>
-        </table>
         <p class="error">{{ errorMsgId }}</p>
       </div>
     </div>
@@ -77,30 +59,6 @@
         <input type="text" id="email" name="email" v-model="findByEmployeeEmailInput">
         <button type="button" @click="getServiceAppointmentsByEmployee">Find Appointment</button>
       </div>
-      <table class="center bordered-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Customer Email</th>
-            <th>Employee Email</th>
-            <th>Service Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="appointment in serviceAppointmentsByEmployee" :key="appointment.id">
-            <td>{{ appointment.id ? appointment.id : '' }}</td>
-            <td>{{ appointment.date ? appointment.date : '' }}</td>
-            <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
-            <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
-            <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
-            <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
-            <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
-          </tr>
-        </tbody>
-      </table>
       <p class="error">{{ errorMsgEmployee }}</p>
     </div>
 
@@ -111,30 +69,6 @@
         <input type="text" id="email" name="email" v-model="findByCustomerEmailInput">
         <button type="button" @click="getServiceAppointmentsByCustomer">Find Appointment</button>
       </div>
-      <table class="center bordered-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Customer Email</th>
-            <th>Employee Email</th>
-            <th>Service Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="appointment in serviceAppointmentsByCustomer" :key="appointment.id">
-            <td>{{ appointment.id ? appointment.id : '' }}</td>
-            <td>{{ appointment.date ? appointment.date : '' }}</td>
-            <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
-            <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
-            <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
-            <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
-            <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
-          </tr>
-        </tbody>
-      </table>
       <p class="error">{{ errorMsgCustomer }}</p>
     </div>
 
@@ -188,37 +122,8 @@
       <p class="success">{{ successMsgCancel }}</p>
       <p class="error">{{ errorMsgCancel }}</p>
     </div>
-
-
-    <div>
-      <h2>All Service Appointments</h2>
-      <table class="center bordered-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Customer Email</th>
-            <th>Employee Email</th>
-            <th>Service Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="appointment in serviceAppointments" :key="appointment.id">
-            <td>{{ appointment.id ? appointment.id : '' }}</td>
-            <td>{{ appointment.date ? appointment.date : '' }}</td>
-            <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
-            <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
-            <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
-            <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
-            <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="error">{{ errorMsgAll }}</p>
-    </div>
   </div>
+
 </template>
 
 
