@@ -133,25 +133,25 @@ export default {
         };
     },
     created() {
-        // Fetch all customers on component mount
+        // Fetch all employees on component mount
         this.fetchEmployees();
     },
     methods: {
-        async fetchCustomers() {
+        fetchEmployees() {
             try {
-                const response = await axiosClient.get('/employees');
+                const response = axiosClient.get('/employees');
                 this.employees = response.data;
-                this.gettingAllEmployeesErrorMsg = '';
+                
             } catch (error) {
-                this.gettingAllEmployeesErrorMsg = error.response.data;
+                alert(error.response.data)
             }
         },
         createEmployee(request) {
             
-            axiosClient.post("/customer/create", request)
+            axiosClient.post("/employee/create", request)
                 .then((response) => {
-                alert("Employee account with email " + this.email + " has been created successfully")
-                this.logged_user = response
+                alert("Employee account with email " + response.data.email + " has been created successfully")
+                // this.logged_user = response
 
                 })
                 .catch((err) => {
@@ -179,7 +179,7 @@ export default {
             jobTitle: this.addEmployeeForm.jobTitle,
             hourlyWage: this.addEmployeeForm.hourlyWage,
         };
-        this.addEmployee(request);
+        this.createEmployee(request);
         this.$refs.addEmployeeModal.hide();
         this.initForm();
         },
