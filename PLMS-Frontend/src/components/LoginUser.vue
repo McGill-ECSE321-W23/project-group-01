@@ -87,7 +87,7 @@ export default {
             this.$router.push({name: 'OwnerHome'})
           }
           if (this.user === "Employee"){
-            this.$router.push({name: 'EmployeeHome'})
+            this.$router.push({name: 'EmployeeHome', params: {email: this.email}})
           }
         })
         .catch((err) => {
