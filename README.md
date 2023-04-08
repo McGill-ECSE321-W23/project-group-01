@@ -53,7 +53,7 @@ To run our integration tests alone, please cd into the PLMS folder and run `./gr
 | Name | Contributions | Total Hours | 
 | --- | --- | --- |
 | Evan Boyd | Floor and ServiceAppointment controller, DTO, and service classes. Unit and integration tests for Floor and ServiceAppointment classes. Domain model attribute edits and documentation. Help with unit tests for Service, GuestPass, and MonthlyPass, and integration tests for Service, GuestPass, and MonthlyPass. Documentation of unit tests and code reviews. | 60 |
-| Samer Abdulkarim |MonthlyCustomer, Employee, Owner and Parking Lot controller, DTO, and service classes. Unit and integration tests for the MonthlyCustomer, Employee, Owner and Parking Lot classes.   | 55 |
+| Samer Abdulkarim |MonthlyCustomer, Employee, Owner and Parking Lot controller, DTO, and service classes. Unit and integration tests for the MonthlyCustomer, Employee, Owner and Parking Lot classes.   | 60 |
 | Emilien Taisne | Floor and ServiceAppointment controller, DTO, and service classes. Unit and integration tests for Floor and ServiceAppointment classes. Restful API documentation. | 60 |
 | Walid Aissa | Service, Monthly Pass GuestPass controller, DTO, and service classes. Unit and integration tests for Service, Monthly Pass and GuestPass classes. |  44 |
 | Karim Al Sabbagh | Service, Monthly Pass GuestPass controller, DTO, and service classes. Unit and integration tests for Service, Monthly Pass and GuestPass classes.  | 44 |
