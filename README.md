@@ -8,7 +8,9 @@ Most Importantly, the system was designed to be adaptable and scalable to accomm
 
 The software system was designed to respond to a set of requirements specified by the client through a description which was translated into a set of 15 system requirements (10 functional and 5 functional) which can be seen through the GitHub issues. 
 
-Our software system can be run by executing, inside the PLMS folder, the "./gradlew bootRun" command. The app is deployed to "http://localhost:8080".
+Our software system's backend can be run by executing, inside the PLMS folder, the "./gradlew bootRun" command. The app is deployed to "http://localhost:8080".
+
+The frontend can be run by executing, inside the PLMS-Frontend, the "npm run dev" command. The frontend is deployed to your default web browser.
 
 ## Our Team
 
