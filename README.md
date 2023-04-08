@@ -31,7 +31,7 @@ To run our integration tests alone, please cd into the PLMS folder and run `./gr
 | Team Member |	Team Roles | Individual efforts - Sprint 1 (in hours) | Individual efforts - Sprint 2 (in hours) |
 | --- | --- | --- | ---- |
 | Evan Boyd | Software Developer  |  20  | 60 |  |
-| Samer Abdulkarim | Project Manager, Software Developer |  16 | 55 |  |
+| Samer Abdulkarim | Project Manager, Software Developer |  16 | 60 |  |
 | Emilien Taisne	| Documentation Manager, Software Developer  | 16 | 60 |  |
 | Walid Aissa	| Software Developer  | 16 | 44 | |  |
 | Karim Al Sabbagh | Testing Lead, Software Developer  | 16  | 44 |  |
