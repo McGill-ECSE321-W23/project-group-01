@@ -27,12 +27,12 @@ The frontend can be run by executing, inside the PLMS-Frontend, the "npm run dev
 
 | Team Member |	Team Roles | Individual efforts - Sprint 1 (in hours) | Individual efforts - Sprint 2 (in hours) |
 | --- | --- | --- | ---- |
-| Evan Boyd | Software Developer  |  20  | 60 |
-| Samer Abdulkarim | Project Manager, Software Developer |  16 | 55 |
-| Emilien Taisne	| Documentation Manager, Software Developer  | 16 | 60 |
-| Walid Aissa	| Software Developer  | 16 | 44 |
-| Karim Al Sabbagh | Testing Lead, Software Developer  | 16  | 44 |
-| Karl Bridi	| Software Developer | 16 | 44 |
+| Evan Boyd | Software Developer  |  20  | 60 |  |
+| Samer Abdulkarim | Project Manager, Software Developer |  16 | 55 |  |
+| Emilien Taisne	| Documentation Manager, Software Developer  | 16 | 60 |  |
+| Walid Aissa	| Software Developer  | 16 | 44 | |  |
+| Karim Al Sabbagh | Testing Lead, Software Developer  | 16  | 44 |  |
+| Karl Bridi	| Software Developer | 16 | 44 |  |
 
 ### Sprint 1 individual efforts: 
 
@@ -55,6 +55,17 @@ The frontend can be run by executing, inside the PLMS-Frontend, the "npm run dev
 | Walid Aissa | Service, Monthly Pass GuestPass controller, DTO, and service classes. Unit and integration tests for Service, Monthly Pass and GuestPass classes. |  44 |
 | Karim Al Sabbagh | Service, Monthly Pass GuestPass controller, DTO, and service classes. Unit and integration tests for Service, Monthly Pass and GuestPass classes.  | 44 |
 | Karl Bridi | MonthlyCustomer, Employee, Owner and Parking Lot controller, DTO, and service classes. Unit and integration tests for the MonthlyCustomer, Employee, Owner and Parking Lot classes. | 44 |
+
+### Sprint 3 individual efforts: 
+
+| Name | Contributions | Total Hours | 
+| --- | --- | --- |
+| Evan Boyd |  |  |
+| Samer Abdulkarim |   |  |
+| Emilien Taisne |  |  |
+| Walid Aissa |  |   |
+| Karim Al Sabbagh |   |  |
+| Karl Bridi |  |  |
 
  
 
