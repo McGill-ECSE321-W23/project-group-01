@@ -14,7 +14,7 @@ import MonthlyCustomerHome from "@/components/MonthlyCustomerHome"
 import MonthlyCustomerPasses from "@/components/MonthlyCustomerPasses";
 import MonthlyCustomerAppointments from "@/components/MonthlyCustomerAppointments";
 import MonthlyCustomerManageAccount from "@/components/MonthlyCustomerManageAccount";
-import OwnerHome from "@/components/owner/OwnerHome";
+import OwnerHome from "@/components/owner/OwnerHome"; //
 
 
 Vue.use(Router)
