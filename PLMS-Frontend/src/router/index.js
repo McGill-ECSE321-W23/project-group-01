@@ -12,7 +12,7 @@ import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
 import OwnerHome from '@/components/owner/OwnerHome'
 import EmployeeHome from '@/components/employee/EmployeeHome'
 import MonthlyCustomerHome from "../components/MonthlyCustomerHome"
-
+import ManageEmployees from "@/components/owner/ManageEmployees"
 Vue.use(Router)
 
 export default new Router({
@@ -31,6 +31,11 @@ export default new Router({
       path: '/owner/home',
       name: 'OwnerHome',
       component: OwnerHome
+    },
+    {
+      path: '/owner/manage-employees',
+      name: 'ManageEmployees',
+      component: ManageEmployees
     },
     {
       path: '/employee/:email',
