@@ -14,6 +14,7 @@ import MonthlyCustomerHome from "@/components/MonthlyCustomerHome"
 import MonthlyCustomerPasses from "@/components/MonthlyCustomerPasses";
 import MonthlyCustomerAppointments from "@/components/MonthlyCustomerAppointments";
 import MonthlyCustomerManageAccount from "@/components/MonthlyCustomerManageAccount";
+import OwnerHome from "../components/owner/OwnerHome";
 
 Vue.use(Router)
 
@@ -91,16 +92,16 @@ export default new Router({
       component: MonthlyCustomerManageAccount,
       props: true
     },
-
-    {
-      path: '/product',
-      redirect: '/home'
-    },
     {
       path: '/owner-view-services',
       name : 'OwnerViewServices',
       component: OwnerViewServices,
     },
+    {
+      path: '/product',
+      redirect: '/home'
+    },
+
     {
       path: '/pricing',
       redirect: '/home'
