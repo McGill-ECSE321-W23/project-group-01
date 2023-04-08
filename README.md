@@ -12,6 +12,9 @@ Our software system's backend can be run by executing, inside the PLMS folder, t
 
 The frontend can be run by executing, inside the PLMS-Frontend, the "npm run dev" command. The frontend is deployed to your default web browser.
 
+To run our unit and integration tests, please cd into the PLMS folder and run `./gradlew clean test`. 
+To run our integration tests alone, please cd into the PLMS folder and run `./gradlew clean integrationTest`.
+
 ## Our Team
 
 | Team Member |	Programs | GitHub |
