@@ -1,119 +1,119 @@
 <template>
   <div class="owner-view-appointments">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../assets/logo-transparent-png.png">
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/product/">
-    <link href="../../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
-
-    <nav class="site-header sticky-top py-1">
-      <div class="container d-flex flex-column flex-md-row justify-content-between">
-        <a class="py-2" href="#product">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box"
-            viewBox="0 0 16 16">
-            <path
-              d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
-          </svg> </a>
-        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner/home">Home</a>
-        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner/customers">Manage Customer
-          Accounts</a>
-        <a class="py-2 d-none d-md-inline-block" href="#">Manage Employee Accounts</a>
-        <a class="py-2 d-none d-md-inline-block" href="#">Manage Passes</a>
-        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner-view-appointments">Manage
-          Appointments</a>
-        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/parking-lot-settings">Manage Parking
-          Lot</a>
-        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner-view-services">Manage Services</a>
-        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
-      </div>
-    </nav>
-
     <div>
-    <button @click="showModal = true">Open Modal</button>
-    <div v-if="showModal" class="modal">
-      <div class="modal-content">
-        <span class="close" @click="showModal = false">&times;</span>
-        <h5>Search for Service Appointments on a Date</h5>
-        <div>
-          <label for="date">Select Date:</label>
-          <input type="date" id="date" name="date" v-model="selectedDate">
-          <button type="button" @click="getServiceAppointmentsByDate">Get Appointments</button>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="../../assets/logo-transparent-png.png">
+      <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/product/">
+      <link href="../../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+      <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
+
+      <nav class="site-header sticky-top py-1">
+        <div class="container d-flex flex-column flex-md-row justify-content-between">
+          <a class="py-2" href="#product">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box"
+              viewBox="0 0 16 16">
+              <path
+                d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
+            </svg> </a>
+          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner/home">Home</a>
+          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner/customers">Manage Customer
+            Accounts</a>
+          <a class="py-2 d-none d-md-inline-block" href="#">Manage Employee Accounts</a>
+          <a class="py-2 d-none d-md-inline-block" href="#">Manage Passes</a>
+          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner-view-appointments">Manage
+            Appointments</a>
+          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/parking-lot-settings">Manage Parking
+            Lot</a>
+          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner-view-services">Manage Services</a>
+          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
+        </div>
+      </nav>
+      <div>
+        <button @click="showByDateModal = true">Search for service appointments on a date</button>
+        <div v-if="showByDateModal" class="modal">
+          <div class="modal-content">
+            <span class="close" @click="showByDateModal = false">&times;</span>
+            <h5>Search for Service Appointments on a Date</h5>
+            <div>
+              <label for="date">Select Date:</label>
+              <input type="date" id="date" name="date" v-model="selectedDate">
+              <button type="button" @click="getServiceAppointmentsByDate">Get Appointments</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button @click="showEmployeeModal = true">Search for Service Appointments Assigned to an Employee</button>
+        <div v-if="showEmployeeModal" class="modal">
+          <div class="modal-content">
+            <span class="close" @click="showEmployeeModal = false">&times;</span>
+            <h5>Search for Service Appointments Assigned to an Employee</h5>
+            <div>
+              <label for="employee">Select Employee:</label>
+              <select id="employee" name="employee" v-model="selectedEmployee">
+                <option value="">-- Select an employee --</option>
+                <option v-for="email in employeeEmails" :value="email">{{ email }}</option>
+              </select>
+              <button type="button" @click="getServiceAppointmentsByEmployee">Get Appointments</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button @click="showCustomerModal = true">Search for Service Appointments by Customer Email</button>
+        <div v-if="showCustomerModal" class="modal">
+          <div class="modal-content">
+            <span class="close" @click="showCustomerModal = false">&times;</span>
+            <h5>Search for Service Appointments by Customer Email</h5>
+            <div>
+              <label for="email">Select Customer Email:</label>
+              <select id="email" name="email" v-model="findByCustomerEmailInput">
+                <option disabled value="">Please select an email</option>
+                <option v-for="email in customerEmails" :key="email" :value="email">{{ email }}</option>
+              </select>
+              <button type="button" @click="getServiceAppointmentsByCustomer">Find Appointment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div>
+        <button @click="showUpdateEmployeeModal = true">Assign an Employee to an Appointment</button>
+        <div v-if="showUpdateEmployeeModal" class="modal">
+          <div class="modal-content">
+            <span class="close" @click="showUpdateEmployeeModal = false">&times;</span>
+            <h5>Assign an Employee to an Appointment</h5>
+            <div>
+              <label for="appointment-id">Appointment ID:</label>
+              <select id="appointment-id" name="appointment-id" v-model="editByEmployeeEmailIdInput">
+                <option disabled value="">Please select an ID</option>
+                <option v-for="id in appointmentIds" :key="id" :value="id">{{ id }}</option>
+              </select>
+            </div>
+            <div>
+              <label for="employee-email">Employee Email:</label>
+              <select id="employee-email" name="employee-email" v-model="editByEmployeeEmailInput">
+                <option disabled value="">Please select an email</option>
+                <option v-for="email in employeeEmails" :key="email" :value="email">{{ email }}</option>
+              </select>
+            </div>
+            <button type="button" @click="updateServiceAppointmentWithNewEmployee">Update Appointment's Employee</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-    <div style="white-space: wrap;">
-      <div style="display: inline-block;">
-        <h5>Search for Service Appointments on a Date</h5>
-        <div>
-          <label for="date">Select Date:</label>
-          <input type="date" id="date" name="date" v-model="selectedDate">
-          <button type="button" @click="getServiceAppointmentsByDate">Get Appointments</button>
-        </div>
 
-        <div style="display: inline-block;">
-          <h5>Search for a Service Appointment by ID</h5>
-          <div>
-            <label for="id">Select Appointment ID:</label>
-            <select id="id" name="id" v-model="appointmentId">
-              <option value="">-- Select an ID --</option>
-              <option v-for="id in appointmentIds" :key="id" :value="id">{{ id }}</option>
-            </select>
-            <button type="button" @click="getServiceAppointmentById">Find Appointment</button>
-          </div>
-        </div>
-
-        <div style="display: inline-block;">
-          <h5>Search for Service Appointments Assigned to an Employee</h5>
-          <div>
-            <label for="employee">Select Employee:</label>
-            <select id="employee" name="employee" v-model="selectedEmployee">
-              <option value="">-- Select an employee --</option>
-              <option v-for="email in employeeEmails" :value="email">{{ email }}</option>
-            </select>
-            <button type="button" @click="getServiceAppointmentsByEmployee">Find Appointment</button>
-          </div>
-        </div>
-
-        <div style="display: inline-block;">
-          <h5>Search for Service Appointments by Customer Email</h5>
-          <div>
-            <label for="email">Select Customer Email:</label>
-            <select id="email" name="email" v-model="findByCustomerEmailInput">
-              <option disabled value="">Please select an email</option>
-              <option v-for="email in customerEmails" :key="email" :value="email">{{ email }}</option>
-            </select>
-            <button type="button" @click="getServiceAppointmentsByCustomer">Find Appointment</button>
-          </div>
-
-        </div>
-
-
-        <div style="display: inline-block;">
-          <h5>Assign an Employee to an Appointment</h5>
-          <div>
-            <label for="appointment-id">Appointment ID:</label>
-            <select id="appointment-id" name="appointment-id" v-model="editByEmployeeEmailIdInput">
-              <option disabled value="">Please select an ID</option>
-              <option v-for="id in appointmentIds" :key="id" :value="id">{{ id }}</option>
-            </select>
-          </div>
-          <div>
-            <label for="employee-email">Employee Email:</label>
-            <select id="employee-email" name="employee-email" v-model="editByEmployeeEmailInput">
-              <option disabled value="">Please select an email</option>
-              <option v-for="email in employeeEmails" :key="email" :value="email">{{ email }}</option>
-            </select>
-          </div>
-          <button type="button" @click="updateServiceAppointmentWithNewEmployee">Update Appointment's Employee</button>
-          <p class="success">{{ successMsgEditWithEmployeeEmail }}</p>
-          <p class="error">{{ errorMsgEditWithEmployeeEmail }}</p>
-        </div>
-
-        <div style="display: inline-block;">
+    <div>
+      <button @click="showEditModal = true">Update an Existing Service Appointment's details</button>
+      <div v-if="showEditModal" class="modal">
+        <div class="modal-content">
+          <span class="close" @click="showEditModal = false">&times;</span>
           <h5>Update an Existing Service Appointment's details</h5>
           <div>
             <div>
@@ -142,53 +142,60 @@
           <p class="success">{{ successMsgEdit }}</p>
           <p class="error">{{ errorMsgEdit }}</p>
         </div>
+      </div>
+    </div>
 
 
-        <div style="display: inline-block;">
+    <div>
+      <button @click="showCancelModal = true">Cancel a Service Appointment</button>
+      <div v-if="showCancelModal" class="modal">
+        <div class="modal-content">
+          <span class="close" @click="showCancelModal = false">&times;</span>
           <h5>Cancel a Service Appointment</h5>
           <div>
             <label for="cancelId">Appointment ID:</label>
             <select id="cancelId" v-model="cancelIdInput">
-              <option v-for="id in appointmentIds" :value="id">{{ id }}</option>
+              <option disabled value="">Please select an ID</option>
+              <option v-for="id in appointmentIds" :key="id" :value="id">{{ id }}</option>
             </select>
           </div>
           <button type="button" :disabled="!cancelIdInput" @click="cancelServiceAppointment">Cancel Appointment</button>
           <p class="success">{{ successMsgCancel }}</p>
           <p class="error">{{ errorMsgCancel }}</p>
         </div>
-
-
       </div>
     </div>
-    <div>
-      <h2>Service Appointments</h2><button type="button" @click="getAllAppointments">Get all appointments in the
-        system</button>
-      <p class="error">{{ errorMsgAll }}</p>
-      <table class="center bordered-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Customer Email</th>
-            <th>Employee Email</th>
-            <th>Service Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="appointment in serviceAppointments" :key="appointment.id">
-            <td>{{ appointment.id ? appointment.id : '' }}</td>
-            <td>{{ appointment.date ? appointment.date : '' }}</td>
-            <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
-            <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
-            <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
-            <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
-            <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+
+
+  <div>
+    <h2>Service Appointments</h2><button type="button" @click="getAllAppointments">Get all appointments in the
+      system</button>
+    <p class="error">{{ errorMsgAll }}</p>
+    <table class="center bordered-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Customer Email</th>
+          <th>Employee Email</th>
+          <th>Service Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="appointment in serviceAppointments" :key="appointment.id">
+          <td>{{ appointment.id ? appointment.id : '' }}</td>
+          <td>{{ appointment.date ? appointment.date : '' }}</td>
+          <td>{{ appointment.startTime ? appointment.startTime : '' }}</td>
+          <td>{{ appointment.endTime ? appointment.endTime : '' }}</td>
+          <td>{{ appointment.customerEmail ? appointment.customerEmail : '' }}</td>
+          <td>{{ appointment.employeeEmail ? appointment.employeeEmail : '' }}</td>
+          <td>{{ appointment.serviceName ? appointment.serviceName : '' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   </div>
 </template>
 
@@ -212,7 +219,12 @@ export default {
       serviceAppointmentsByEmployee: [],
       serviceAppointmentsByCustomer: [],
       appointmentIds: [],
-      showModal: false,
+      showByDateModal: false,
+      showEmployeeModal: false,
+      showCustomerModal: false,
+      showUpdateEmployeeModal: false,
+      showEditModal: false,
+      showCancelModal: false,
       selectedDate: null,
       appointment: {},
       selectedEmployee: '',
@@ -290,37 +302,19 @@ export default {
 
   methods: {
 
-    onSubmit(evt) {
-      evt.preventDefault();
-      this.$refs.addEmployeeModal.hide();
-      const request = {
-        name: this.addEmployeeForm.name,
-        email: this.addEmployeeForm.email,
-        password: this.addEmployeeForm.password,
-        jobTitle: this.addEmployeeForm.jobTitle,
-        hourlyWage: this.addEmployeeForm.hourlyWage,
-      };
-      this.createEmployee(request);
-      this.$refs.addEmployeeModal.hide();
-      this.initForm();
-    },
-    onReset(evt) {
-      evt.preventDefault();
-      this.$refs.addEmployeeModal.hide();
-      this.initForm();
-    },
 
     getServiceAppointmentsByDate() {
       this.serviceAppointments = []
       axiosClient.get(`/serviceAppointment/date/${this.selectedDate}`)
         .then(response => {
           this.serviceAppointments = response.data
-          this.errorMsgDate = ''
+          this.errorMsgAll = ''
         })
         .catch(error => {
           console.log(error.response.data);
           this.errorMsgAll = error.response.data;
         });
+      this.showByDateModal = false;
     },
 
     getServiceAppointmentById() {
@@ -352,6 +346,7 @@ export default {
           console.log(error.response.data);
           this.errorMsgAll = error.response.data;
         })
+      this.showCustomerModal = false
     },
 
     getServiceAppointmentsByEmployee() {
@@ -365,21 +360,25 @@ export default {
           console.log(error.response.data);
           this.errorMsgAll = error.response.data;
         })
+
+      this.showEmployeeModal = false;
     },
 
     updateServiceAppointmentWithNewEmployee() {
       if (!/^\d+$/.test(this.editByEmployeeEmailIdInput)) {
-        this.errorMsgEditWithEmployeeEmail = "Please enter an integer id"
+        this.errorMsgAll = "Please enter an integer id"
         return
       }
       console.log(this.editByEmployeeEmailInput)
       axiosClient.put(`/serviceAppointment/employeeEmail/${this.editByEmployeeEmailIdInput}?employeeEmail=${this.editByEmployeeEmailInput}`)
         .then(response => {
           this.getAllAppointments()
+          this.errorMsgAll = ''
         })
         .catch(error => {
           this.errorMsgAll = error.response.data
         })
+      this.showUpdateEmployeeModal = false
     },
 
     editServiceAppointment() {
@@ -398,6 +397,7 @@ export default {
       };
       axiosClient.put(`/serviceAppointment/${this.editIdInput}`, requestBody)
         .then(response => {
+          this.errorMsgAll = ''
           this.editIdInput = '';
           this.editDateInput = '';
           this.editStartTimeInput = '';
@@ -407,9 +407,10 @@ export default {
         })
         .catch(error => {
           console.log(error.response.data);
-          this.errorMsgEdit = error.response.data;
+          this.errorMsgAll = error.response.data;
           this.disableEditButton = false;
         })
+      this.showEditModal = false
     },
 
     cancelServiceAppointment() {
@@ -420,14 +421,14 @@ export default {
 
       axiosClient.delete(`/serviceAppointment/${this.cancelIdInput}`)
         .then(response => {
-          this.editMsgCancel = '';
-          this.successMsgCancel = "Appointment cancelled successfully";
+          this.errorMsgAll = "Appointment cancelled successfully";
           this.getAllAppointments()
         })
         .catch(error => {
           console.log(error.response.data);
-          this.errorMsgCancel = error.response.data;
+          this.errorMsgAll = error.response.data;
         })
+      this.showCancelModal = false
     },
 
     getAllAppointments() {
@@ -441,7 +442,10 @@ export default {
           console.log(error.response.data);
           this.errorMsgAll = error.response.data;
         });
-    }
+    },
+
+
+
   },
 
   computed: {
@@ -457,9 +461,10 @@ export default {
 <style scoped>
 .container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+}
+
+.button-container {
+  margin-right: 10px;
 }
 
 table.center,
@@ -480,6 +485,7 @@ a {
   border: 1px solid black;
   padding: 8px;
 }
+
 .modal {
   padding-top: 100px;
   display: block;
@@ -516,5 +522,4 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
-
 </style>
