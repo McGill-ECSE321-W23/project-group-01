@@ -124,6 +124,21 @@ export default {
     })
   },
   methods: {
+    async Home() {
+      await this.$router.push({name: 'OwnerHome'})
+    },
+    async Appointments() {
+      await this.$router.push({name: 'OwnerViewAppointments'})
+    },
+    async ParkingLot() {
+      await this.$router.push({name: 'ParkingLotSettings'})
+    },
+    async Services(){
+      await this.$router.push({name: 'OwnerViewServices'})
+    },
+    async Customers(){
+      await this.$router.push({name: 'ViewMonthlyCustomer'})
+    },
     createOrUpdateParkingLot() {
       const request = {openingTime: this.newOpeningTime, closingTime: this.newClosingTime, largeSpotFee: this.newLargeSpotFee, smallSpotFee: this.newSmallSpotFee, smallSpotMonthlyFlatFee: this.newSmallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee: this.newLargeSpotMonthlyFlatFee};
       axiosClient.put('/parkingLot/update', request)
