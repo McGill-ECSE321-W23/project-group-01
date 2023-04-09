@@ -9,6 +9,7 @@
     <link href="../../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
     <nav class="site-header sticky-top py-1">
+
         <div class="container d-flex flex-column flex-md-row justify-content-between">
           <a class="py-2" href="#product">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
@@ -24,6 +25,7 @@
           <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
         </div>
       </nav>
+
       <div>
       <h1>Customer Information</h1>
   
