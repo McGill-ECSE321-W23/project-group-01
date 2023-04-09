@@ -30,8 +30,8 @@
         <hr><br><br>
         <button type="button" class="btn btn-success btn-sm" v-b-modal.employee-modal>Create</button>
         <button type="button" class="btn btn-success btn-sm" v-b-modal.edit-employee-modal :disabled="selectedEmployee=== null" >Update</button>
-        <button type="button" class="btn btn-success btn-sm" :disabled="selectedEmployee=== null" @click="onViewSchedule(selectedEmployee) "> View Schedule</button>
-        <button type="button" class="btn btn-danger btn-sm" v-b-modal.serviceAppointments-modal :disabled="selectedEmployee=== null" @click="onDeleteEmployee(selectedEmployee) "> Delete </button>
+        <button type="button" class="btn btn-success btn-sm" v-b-modal.serviceAppointments-modal :disabled="selectedEmployee=== null" @click="onViewSchedule(selectedEmployee) "> View Schedule</button>
+        <button type="button" class="btn btn-danger btn-sm"  :disabled="selectedEmployee=== null" @click="onDeleteEmployee(selectedEmployee) "> Delete </button>
         
         <br><br>
         <table class="table table-hover">
