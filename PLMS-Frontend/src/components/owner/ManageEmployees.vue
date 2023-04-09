@@ -175,7 +175,7 @@
 <b-modal ref="ServiceAppointmentModal"
          id="serviceAppointments-modal"
          title="Employee Scheduled Appointments"
-         hide-footer> >
+         hide-footer> 
       <table>
         <thead>
           <tr>
@@ -190,6 +190,7 @@
           <tr v-for="(serviceAppointment, index) in serviceAppointments" :key="index">
             <td>{{ serviceAppointment.id }}</td>
             <td>{{ serviceAppointment.serviceName }}</td>
+            <td>{{ serviceAppointment.date }}</td>
             <td>{{ serviceAppointment.startTime }}</td>
             <td>{{ serviceAppointment.endTime }}</td>
           </tr>
@@ -343,7 +344,7 @@ export default {
         onViewSchedule(selectedEmployee){
             axiosClient.get("/serviceAppointment/employee/" + selectedEmployee.email)
             .then((response) => {
-                alert("Service Appointments linked to Employee account with email " + response.data.email + " has been retrieved successfully")
+                alert("Service Appointments linked to Employee account with email " + selectedEmployee.email + " has been retrieved successfully")
                 this.serviceAppointments = response.data
                 this.$bvModal.show('serviceAppointments-modal')
             }).catch((err) => {
