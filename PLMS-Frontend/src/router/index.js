@@ -9,13 +9,14 @@ import OwnerViewAppointments from "@/components/OwnerViewAppointments"
 import OwnerViewServices from "@/components/OwnerViewServices"
 import ParkingLotSettings from '@/components/ParkingLotSettings'
 import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
+import ManageEmployees from "@/components/owner/ManageEmployees"
+
 
 import MonthlyCustomerHome from "@/components/MonthlyCustomerHome"
 import MonthlyCustomerPasses from "@/components/MonthlyCustomerPasses";
 import MonthlyCustomerAppointments from "@/components/MonthlyCustomerAppointments";
 import MonthlyCustomerManageAccount from "@/components/MonthlyCustomerManageAccount";
 import OwnerHome from "@/components/owner/OwnerHome"; //
-
 
 Vue.use(Router)
 
@@ -35,6 +36,18 @@ export default new Router({
       path: '/owner/home',
       name: 'OwnerHome',
       component: OwnerHome
+    },
+    {
+      path: '/owner/manage-employees',
+      name: 'ManageEmployees',
+      component: ManageEmployees
+    },
+    {
+      path: '/employee/:email',
+      name: 'EmployeeHome',
+      component: EmployeeHome,
+      props: true
+
     },
     {
       path: '/owner/customers',
