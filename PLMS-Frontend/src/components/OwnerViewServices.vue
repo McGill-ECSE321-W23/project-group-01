@@ -48,9 +48,12 @@
       <div>
         <h2>Edit a Service</h2>
         <div>
-        <label for="serviceNameEdit">Service name:</label>
-          <input type="text" id="serviceNameEdit" name="serviceNameEdit" v-model="editServiceNameInput">
-        </div>
+    <label for="serviceNameEdit">Service name:</label>
+    <select id="serviceNameEdit" name="serviceNameEdit" v-model="editServiceNameInput">
+      <option value="">Select a service</option>
+      <option v-for="name in serviceNames" :value="name">{{ name }}</option>
+    </select>
+  </div>
         <div>
           <label for="costEdit">Cost:</label>
           <input type="text" id="costEdit" name="costEdit" v-model="editCostInput">
@@ -69,9 +72,12 @@
       <div>
         <h2>Delete a Service </h2>
         <div>
-          <label for="serviceNameDelete">Service name:</label>
-          <input type="text" id="serviceNameDelete" name="serviceNameDelete" v-model="deleteServiceInput">
-        </div>
+    <label for="serviceNameDelete">Service name:</label>
+    <select id="serviceNameDelete" name="serviceNameDelete" v-model="deleteServiceInput">
+      <option value="">Select a service</option>
+      <option v-for="name in serviceNames" :value="name">{{ name }}</option>
+    </select>
+  </div>
         <button type="button" :disabled="!deleteServiceInput" @click="deleteService()">Delete Service</button>
 
         <p class="error">{{ errorMsgDelete }}</p>
@@ -117,6 +123,7 @@
     data() {
       return {
         services: [],
+        serviceNames: [],
 
         createServiceNameInput: '',
         createCostInput: '',
@@ -136,15 +143,7 @@
       };
     },
     created() {
-      axiosClient.get('/service')
-        .then((response) => {
-          this.services = response.data;
-          this.errorMsgAll = '';
-        })
-        .catch((error) => {
-          console.log(error.response.data);
-          this.errorMsgAll = error.response.data;
-        });
+      this.getAllServices()
     },
 
     methods: {
@@ -162,6 +161,7 @@
                 this.createLengthInput = '';
                 this.services.push(response.data)
                 this.errorMsgCreate = "Service created successfully";
+                this.getAllServices()
             })
             .catch(error => {
                 console.log(error.response.data);
@@ -182,6 +182,7 @@
                 this.editLengthInput = '';
                 window.location.reload();
                 this.errorMsgEdit = "Service updated successfully";
+                this.getAllServices()
             })
             .catch((error) => {
                 console.log(error.response.data);
@@ -194,11 +195,25 @@
             .then((response) => {
                 window.location.reload();
                 this.errorMsgDelete = "Service deleted successfully";
+                this.getAllServices()
             })
             .catch((error) => {
                 console.log(error.response.data);
                 this.errorMsgDelete = error.response.data;
             })
+        },
+        
+        getAllServices(){
+          axiosClient.get('/service')
+        .then((response) => {
+          this.services = response.data;
+          this.serviceNames = response.data.map((service) => service.serviceName)
+          this.errorMsgAll = '';
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+          this.errorMsgAll = error.response.data;
+        });
         }
         
     },

@@ -1,32 +1,168 @@
 <template>
   <div class="owner-view-appointments">
     <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <meta name="description" content="">
-      <meta name="author" content="">
-      <link rel="icon" href="../../assets/logo-transparent-png.png">
-      <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/product/">
-      <link href="../../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-      <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
-  
-      <nav class="site-header sticky-top py-1">
-        <div class="container d-flex flex-column flex-md-row justify-content-between">
-          <a class="py-2" href="#product">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
-              <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
-            </svg>      </a>
-            <a class="py-2 d-none d-md-inline-block"  href="http://localhost:8087/#/owner/home">Home</a>
-            <a class="py-2 d-none d-md-inline-block"  href="http://localhost:8087/#/owner/customers">Manage Customer Accounts</a>
-          <a class="py-2 d-none d-md-inline-block"  href="#">Manage Employee Accounts</a>
-          <a class="py-2 d-none d-md-inline-block"  href="#">Manage Passes</a>
-          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner-view-appointments">Manage Appointments</a>
-          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/parking-lot-settings">Manage Parking Lot</a>
-          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner-view-services">Manage Services</a>
-          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
-        </div>
-      </nav>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../assets/logo-transparent-png.png">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/product/">
+    <link href="../../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
+
+    <nav class="site-header sticky-top py-1">
+      <div class="container d-flex flex-column flex-md-row justify-content-between">
+        <a class="py-2" href="#product">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box"
+            viewBox="0 0 16 16">
+            <path
+              d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
+          </svg> </a>
+        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner/home">Home</a>
+        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner/customers">Manage Customer
+          Accounts</a>
+        <a class="py-2 d-none d-md-inline-block" href="#">Manage Employee Accounts</a>
+        <a class="py-2 d-none d-md-inline-block" href="#">Manage Passes</a>
+        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner-view-appointments">Manage
+          Appointments</a>
+        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/parking-lot-settings">Manage Parking
+          Lot</a>
+        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/owner-view-services">Manage Services</a>
+        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
+      </div>
+    </nav>
+
     <div>
-      <h2>All Service Appointments</h2><button type="button" @click="getAllAppointments">Get all appointments in the system</button>
+    <button @click="showModal = true">Open Modal</button>
+    <div v-if="showModal" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="showModal = false">&times;</span>
+        <h5>Search for Service Appointments on a Date</h5>
+        <div>
+          <label for="date">Select Date:</label>
+          <input type="date" id="date" name="date" v-model="selectedDate">
+          <button type="button" @click="getServiceAppointmentsByDate">Get Appointments</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div style="white-space: wrap;">
+      <div style="display: inline-block;">
+        <h5>Search for Service Appointments on a Date</h5>
+        <div>
+          <label for="date">Select Date:</label>
+          <input type="date" id="date" name="date" v-model="selectedDate">
+          <button type="button" @click="getServiceAppointmentsByDate">Get Appointments</button>
+        </div>
+
+        <div style="display: inline-block;">
+          <h5>Search for a Service Appointment by ID</h5>
+          <div>
+            <label for="id">Select Appointment ID:</label>
+            <select id="id" name="id" v-model="appointmentId">
+              <option value="">-- Select an ID --</option>
+              <option v-for="id in appointmentIds" :key="id" :value="id">{{ id }}</option>
+            </select>
+            <button type="button" @click="getServiceAppointmentById">Find Appointment</button>
+          </div>
+        </div>
+
+        <div style="display: inline-block;">
+          <h5>Search for Service Appointments Assigned to an Employee</h5>
+          <div>
+            <label for="employee">Select Employee:</label>
+            <select id="employee" name="employee" v-model="selectedEmployee">
+              <option value="">-- Select an employee --</option>
+              <option v-for="email in employeeEmails" :value="email">{{ email }}</option>
+            </select>
+            <button type="button" @click="getServiceAppointmentsByEmployee">Find Appointment</button>
+          </div>
+        </div>
+
+        <div style="display: inline-block;">
+          <h5>Search for Service Appointments by Customer Email</h5>
+          <div>
+            <label for="email">Select Customer Email:</label>
+            <select id="email" name="email" v-model="findByCustomerEmailInput">
+              <option disabled value="">Please select an email</option>
+              <option v-for="email in customerEmails" :key="email" :value="email">{{ email }}</option>
+            </select>
+            <button type="button" @click="getServiceAppointmentsByCustomer">Find Appointment</button>
+          </div>
+
+        </div>
+
+
+        <div style="display: inline-block;">
+          <h5>Assign an Employee to an Appointment</h5>
+          <div>
+            <label for="appointment-id">Appointment ID:</label>
+            <select id="appointment-id" name="appointment-id" v-model="editByEmployeeEmailIdInput">
+              <option disabled value="">Please select an ID</option>
+              <option v-for="id in appointmentIds" :key="id" :value="id">{{ id }}</option>
+            </select>
+          </div>
+          <div>
+            <label for="employee-email">Employee Email:</label>
+            <select id="employee-email" name="employee-email" v-model="editByEmployeeEmailInput">
+              <option disabled value="">Please select an email</option>
+              <option v-for="email in employeeEmails" :key="email" :value="email">{{ email }}</option>
+            </select>
+          </div>
+          <button type="button" @click="updateServiceAppointmentWithNewEmployee">Update Appointment's Employee</button>
+          <p class="success">{{ successMsgEditWithEmployeeEmail }}</p>
+          <p class="error">{{ errorMsgEditWithEmployeeEmail }}</p>
+        </div>
+
+        <div style="display: inline-block;">
+          <h5>Update an Existing Service Appointment's details</h5>
+          <div>
+            <div>
+              <label for="id">Appointment ID:</label>
+              <select id="id" v-model="editIdInput">
+                <option v-for="id in appointmentIds" :value="id">{{ id }}</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" v-model="editDateInput">
+          </div>
+          <div>
+            <label for="startTime">Start Time:</label>
+            <input type="time" id="startTime" name="startTime" v-model="editStartTimeInput">
+          </div>
+          <div>
+            <label for="serviceName">Service Name:</label>
+            <select id="serviceName" name="serviceName" v-model="editServiceNameInput">
+              <option v-for="service in serviceNames" :key="service" :value="service">{{ service }}</option>
+            </select>
+          </div>
+          <button type="button" :disabled="!editIdInput || !editDateInput || !editStartTimeInput || !editServiceNameInput"
+            @click="editServiceAppointment">Edit Appointment</button>
+          <p class="success">{{ successMsgEdit }}</p>
+          <p class="error">{{ errorMsgEdit }}</p>
+        </div>
+
+
+        <div style="display: inline-block;">
+          <h5>Cancel a Service Appointment</h5>
+          <div>
+            <label for="cancelId">Appointment ID:</label>
+            <select id="cancelId" v-model="cancelIdInput">
+              <option v-for="id in appointmentIds" :value="id">{{ id }}</option>
+            </select>
+          </div>
+          <button type="button" :disabled="!cancelIdInput" @click="cancelServiceAppointment">Cancel Appointment</button>
+          <p class="success">{{ successMsgCancel }}</p>
+          <p class="error">{{ errorMsgCancel }}</p>
+        </div>
+
+
+      </div>
+    </div>
+    <div>
+      <h2>Service Appointments</h2><button type="button" @click="getAllAppointments">Get all appointments in the
+        system</button>
       <p class="error">{{ errorMsgAll }}</p>
       <table class="center bordered-table">
         <thead>
@@ -53,120 +189,7 @@
         </tbody>
       </table>
     </div>
-    <div>
-      <h2>Search for Service Appointments on a Date</h2>
-      <div>
-        <label for="date">Select Date:</label>
-        <input type="date" id="date" name="date" v-model="selectedDate">
-        <button type="button" @click="getServiceAppointmentsByDate">Get Appointments</button>
-      </div>
-      
-    <div>
-      <h2>Search for a Service Appointment by ID</h2>
-      <div>
-        <label for="id">Select Appointment ID:</label>
-        <select id="id" name="id" v-model="appointmentId">
-          <option value="">-- Select an ID --</option>
-          <option v-for="id in appointmentIds" :key="id" :value="id">{{ id }}</option>
-        </select>
-        <button type="button" @click="getServiceAppointmentById">Find Appointment</button>
-      </div>
-    </div>
-
-    <div>
-      <h2>Search for Service Appointments Assigned to an Employee</h2>
-      <div>
-        <label for="employee">Select Employee:</label>
-        <select id="employee" name="employee" v-model="selectedEmployee">
-          <option value="">-- Select an employee --</option>
-          <option v-for="email in employeeEmails" :value="email">{{ email }}</option>
-        </select>
-        <button type="button" @click="getServiceAppointmentsByEmployee">Find Appointment</button>
-      </div>
-    </div>
-
-    <div>
-      <h2>Search for Service Appointments by Customer Email</h2>
-      <div>
-        <label for="email">Select Customer Email:</label>
-        <select id="email" name="email" v-model="findByCustomerEmailInput">
-          <option disabled value="">Please select an email</option>
-          <option v-for="email in customerEmails" :key="email" :value="email">{{ email }}</option>
-        </select>
-        <button type="button" @click="getServiceAppointmentsByCustomer">Find Appointment</button>
-      </div>
-      
-    </div>
-
-
-    <div>
-      <h2>Assign an Employee to an Appointment</h2>
-      <div>
-        <label for="appointment-id">Appointment ID:</label>
-        <select id="appointment-id" name="appointment-id" v-model="editByEmployeeEmailIdInput">
-          <option disabled value="">Please select an ID</option>
-          <option v-for="id in appointmentIds" :key="id" :value="id">{{ id }}</option>
-        </select>
-      </div>
-      <div>
-        <label for="employee-email">Employee Email:</label>
-        <select id="employee-email" name="employee-email" v-model="editByEmployeeEmailInput">
-          <option disabled value="">Please select an email</option>
-          <option v-for="email in employeeEmails" :key="email" :value="email">{{ email }}</option>
-        </select>
-      </div>
-      <button type="button" @click="updateServiceAppointmentWithNewEmployee">Update Appointment's Employee</button>
-      <p class="success">{{ successMsgEditWithEmployeeEmail }}</p>
-      <p class="error">{{ errorMsgEditWithEmployeeEmail }}</p>
-    </div>
-
-    <div>
-      <h2>Update an Existing Service Appointment's details</h2>
-      <div>
-        <div>
-          <label for="id">Appointment ID:</label>
-          <select id="id" v-model="editIdInput">
-            <option v-for="id in appointmentIds" :value="id">{{ id }}</option>
-          </select>
-        </div>
-      </div>
-      <div>
-        <label for="date">Date:</label>
-        <input type="date" id="date" name="date" v-model="editDateInput">
-      </div>
-      <div>
-        <label for="startTime">Start Time:</label>
-        <input type="time" id="startTime" name="startTime" v-model="editStartTimeInput">
-      </div>
-      <div>
-        <label for="serviceName">Service Name:</label>
-        <select id="serviceName" name="serviceName" v-model="editServiceNameInput">
-          <option v-for="service in serviceNames" :key="service" :value="service">{{ service }}</option>
-        </select>
-      </div>
-      <button type="button" :disabled="!editIdInput || !editDateInput || !editStartTimeInput || !editServiceNameInput"
-        @click="editServiceAppointment">Edit Appointment</button>
-      <p class="success">{{ successMsgEdit }}</p>
-      <p class="error">{{ errorMsgEdit }}</p>
-    </div>
-
-
-    <div>
-      <h2>Cancel a Service Appointment</h2>
-      <div>
-        <label for="cancelId">Appointment ID:</label>
-        <select id="cancelId" v-model="cancelIdInput">
-          <option v-for="id in appointmentIds" :value="id">{{ id }}</option>
-        </select>
-      </div>
-      <button type="button" :disabled="!cancelIdInput" @click="cancelServiceAppointment">Cancel Appointment</button>
-      <p class="success">{{ successMsgCancel }}</p>
-      <p class="error">{{ errorMsgCancel }}</p>
-    </div>
-
-
   </div>
-</div>
 </template>
 
 
@@ -189,6 +212,8 @@ export default {
       serviceAppointmentsByEmployee: [],
       serviceAppointmentsByCustomer: [],
       appointmentIds: [],
+      showModal: false,
+      selectedDate: null,
       appointment: {},
       selectedEmployee: '',
       employeeEmails: [],
@@ -217,22 +242,29 @@ export default {
       successMsgEditWithEmployeeEmail: '',
       errorMsgEditWithEmployeeEmail: '',
       editByEmployeeEmailInput: '',
-      editByEmployeeEmailIdInput: ''
+      editByEmployeeEmailIdInput: '',
+      addEmployeeForm: {
+        name: '',
+        email: '',
+        password: '',
+        jobTitle: '',
+        hourlyWage: '',
+      }
     }
   },
   created() {
     this.getAllAppointments()
 
     axiosClient
-  .get('/employees')
-  .then((response) => {
-    console.log(response.data); // log the response data
-    this.employeeEmails = response.data.map((employee) => employee.email); // log each employee object
-    this.errorMsgAll = '';
-  })
-  .catch((error) => {
-    console.log(error.response.data);
-  });
+      .get('/employees')
+      .then((response) => {
+        console.log(response.data); // log the response data
+        this.employeeEmails = response.data.map((employee) => employee.email); // log each employee object
+        this.errorMsgAll = '';
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
 
 
     axiosClient
@@ -258,8 +290,24 @@ export default {
 
   methods: {
 
-    async RouteManage() {
-      await this.$router.push({name: 'MonthlyCustomerManageAccount', params: {email: this.email}})
+    onSubmit(evt) {
+      evt.preventDefault();
+      this.$refs.addEmployeeModal.hide();
+      const request = {
+        name: this.addEmployeeForm.name,
+        email: this.addEmployeeForm.email,
+        password: this.addEmployeeForm.password,
+        jobTitle: this.addEmployeeForm.jobTitle,
+        hourlyWage: this.addEmployeeForm.hourlyWage,
+      };
+      this.createEmployee(request);
+      this.$refs.addEmployeeModal.hide();
+      this.initForm();
+    },
+    onReset(evt) {
+      evt.preventDefault();
+      this.$refs.addEmployeeModal.hide();
+      this.initForm();
     },
 
     getServiceAppointmentsByDate() {
@@ -283,7 +331,7 @@ export default {
       this.serviceAppointments = []
       axiosClient.get(`/serviceAppointment/${this.appointmentId}`)
         .then(response => {
-          
+
           this.serviceAppointments.push(response.data)
           this.errorMsgAll = ''
         })
@@ -382,7 +430,7 @@ export default {
         })
     },
 
-    getAllAppointments(){
+    getAllAppointments() {
       axiosClient.get('/serviceAppointment')
         .then((response) => {
           this.serviceAppointments = response.data;
@@ -423,7 +471,7 @@ table {
   padding: 20px;
 }
 
-label {
+a {
   padding: 20px;
 }
 
@@ -432,4 +480,41 @@ label {
   border: 1px solid black;
   padding: 8px;
 }
+.modal {
+  padding-top: 100px;
+  display: block;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 </style>
