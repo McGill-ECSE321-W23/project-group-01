@@ -10,7 +10,7 @@ public class MonthlyCustomerRequestDto {
     @Schema(example= "user@email.com", description = "Email linked to the account of the customer", requiredMode = Schema.RequiredMode.REQUIRED)
     private String email;
 
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$%^&+=]).+$", message = "Password contains at least one uppercase, lowercase and special character [!@#$%^&+=]")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$%^+=]).+$", message = "Password contains at least one uppercase, lowercase and special character [!@#$%^+=]")
     @Size(min = 5, max = 13, message = "Password must have 5-13 character" )
     @NotBlank(message = "Password cannot be blank.")
     @Schema(example= "Password1!", description = "Password linked to the account of the customer", requiredMode = Schema.RequiredMode.REQUIRED)

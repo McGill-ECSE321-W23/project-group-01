@@ -38,7 +38,7 @@
             <a @click="Customers" class="btn btn-primary btn-lg btn-block big-high">Manage Customer Accounts</a>
             </div>
             <div class="col-md-6 mb-4">
-            <a href="/manage-employees" class="btn btn-primary btn-lg btn-block big-high">Manage Employee Accounts</a>
+            <a href="#/owner/manage-employees" class="btn btn-primary btn-lg btn-block big-high">Manage Employee Accounts</a>
             </div>
             <div class="col-md-6 mb-4">
             <a href="/manage-passes" class="btn btn-primary btn-lg btn-block big-high">Manage Passes</a>

@@ -86,6 +86,9 @@ export default {
           if (this.user === "Owner"){
             this.$router.push({name: 'OwnerHome'})
           }
+          if (this.user === "Employee"){
+            this.$router.push({name: 'EmployeeHome', params: {email: this.email}})
+          }
         })
         .catch((err) => {
           this.errorMsg = `Error: ${err.response.data}`;
