@@ -64,7 +64,7 @@
 import OwnerViewAppointments from '@/components/owner/OwnerViewAppointments.vue'
 import ParkingLotSettings from '@/components/owner/ParkingLotSettings.vue'
 import OwnerViewServices from '@/components/owner/OwnerViewServices.vue'
-import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
+import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer.vue'
   import axios from 'axios';
   const config = require('../../../config');
   const frontendUrl = config.dev.host + ':' + config.dev.port;
