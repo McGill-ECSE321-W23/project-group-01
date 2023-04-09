@@ -30,7 +30,9 @@
         <hr><br><br>
         <button type="button" class="btn btn-success btn-sm" v-b-modal.employee-modal>Create</button>
         <button type="button" class="btn btn-success btn-sm" v-b-modal.edit-employee-modal :disabled="selectedEmployee=== null" >Update</button>
-        <button type="button" class="btn btn-danger btn-sm" :disabled="selectedEmployee=== null" @click="onDeleteEmployee(selectedEmployee) "> Delete </button>
+        <button type="button" class="btn btn-success btn-sm" :disabled="selectedEmployee=== null" @click="onViewSchedule(selectedEmployee) "> View Schedule</button>
+        <button type="button" class="btn btn-danger btn-sm" v-b-modal.serviceAppointments-modal :disabled="selectedEmployee=== null" @click="onDeleteEmployee(selectedEmployee) "> Delete </button>
+        
         <br><br>
         <table class="table table-hover">
           <thead>
@@ -170,6 +172,30 @@
     <b-button type="reset" variant="danger">Reset</b-button>
   </b-form>
 </b-modal>
+<b-modal ref="ServiceAppointmentModal"
+         id="serviceAppointments-modal"
+         title="Employee Scheduled Appointments"
+         hide-footer> >
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Service Name</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(serviceAppointment, index) in serviceAppointments" :key="index">
+            <td>{{ serviceAppointment.id }}</td>
+            <td>{{ serviceAppointment.serviceName }}</td>
+            <td>{{ serviceAppointment.startTime }}</td>
+            <td>{{ serviceAppointment.endTime }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </b-modal>
 
   </div>
   </div>
@@ -189,7 +215,7 @@ export default {
         return {
             employees: [],
             selectedEmployee: null,
-            selectedEmployeePassword: 'whyyy',
+            selectedEmployeePassword: '',
             selectedEmployeeJobTitle: '',
             selectedEmployeeHourlyWage: 0,
             selectedEmployeeName: '',
@@ -202,14 +228,13 @@ export default {
                 jobTitle: '',
                 hourlyWage: '',
             },
-            // createdEmployeeError: false,
-
             editEmployeeForm: {
                 name: '',
                 password: '',
                 jobTitle: '',
                 hourlyWage: ''
             },
+            serviceAppointments: [],
             
         };
     },
@@ -313,6 +338,16 @@ export default {
                     alert(this.errorMsg)
                     });
             });
+        },
+
+        onViewSchedule(selectedEmployee){
+            axiosClient.get("/serviceAppointment/employee/" + selectedEmployee.email)
+            .then((response) => {
+                alert("Service Appointments linked to Employee account with email " + response.data.email + " has been retrieved successfully")
+                this.serviceAppointments = response.data
+            }).catch((err) => {
+                alert(err.response.data)
+           });
         },
 
         initForm() {
