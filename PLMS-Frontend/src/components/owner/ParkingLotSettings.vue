@@ -76,7 +76,7 @@
 
 <script>
 import axios from 'axios';
-import config from '../../config';
+import config from '../../../config';
 const axiosClient = axios.create({
   // Note the baseURL, not baseUrl
   baseURL: config.dev.backendBaseUrl
@@ -227,4 +227,8 @@ label {
         width: 150px;
         text-align: right;
       }
+
+      a {
+  padding: 20px;
+}
 </style>

@@ -110,7 +110,7 @@
   
   <script>
   import axios from 'axios';
-  const config = require('../../config');
+  const config = require('../../../config');
   const frontendUrl = config.dev.host + ':' + config.dev.port;
   const axiosClient = axios.create({
     // Note the baseURL, not baseUrl
@@ -249,4 +249,8 @@
     border: 1px solid black;
     padding: 8px;
   }
+
+  a {
+  padding: 20px;
+}
   </style>

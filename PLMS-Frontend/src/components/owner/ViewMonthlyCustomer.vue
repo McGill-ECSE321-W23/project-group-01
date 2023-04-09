@@ -243,4 +243,8 @@ export default {
 .row-selectable{
   cursor: pointer;
 }
+
+a {
+  padding: 20px;
+}
 </style>
