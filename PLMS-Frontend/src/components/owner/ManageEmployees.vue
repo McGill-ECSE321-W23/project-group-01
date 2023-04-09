@@ -7,6 +7,7 @@
         <hr><br><br>
         <button type="button" class="btn btn-success btn-sm" v-b-modal.employee-modal>Create</button>
         <button type="button" class="btn btn-success btn-sm" v-b-modal.edit-employee-modal :disabled="selectedEmployee=== null" >Update</button>
+        <button type="button" class="btn btn-danger btn-sm" :disabled="selectedEmployee=== null" @click="onDeleteEmployee(selectedEmployee) "> Delete </button>
         <br><br>
         <table class="table table-hover">
           <thead>
@@ -15,7 +16,7 @@
               <th scope="col">Email</th>
               <th scope="col">JobTitle</th>
               <th scope="col">Hourly Wage</th>
-              <th></th>
+              
             </tr>
           </thead>
           <tbody>
@@ -28,12 +29,12 @@
                 <td>{{employee.email}}</td>
                 <td>{{employee.jobTitle}}</td>
                 <td>{{employee.hourlyWage}}</td>
-                <td>
+                <!-- <td>
                 <div class="btn-group" role="group">
-                 <!-- <button type="button" class="btn btn-warning btn-sm" :disabled="selectedEmployee=== null" v-b-modal.edit-employee-modal>Update</button>
-                  <button type="button" class="btn btn-danger btn-sm">Delete</button> -->
+                  <button type="button" class="btn btn-warning btn-sm" :disabled="selectedEmployee=== null" v-b-modal.edit-employee-modal>Update</button>
+                  <button type="button" class="btn btn-danger btn-sm">Delete</button> 
                 </div>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -270,7 +271,25 @@ export default {
                     });
             });
         },
-    
+        onDeleteEmployee(employee) {
+            // Promise is used to prevent the form from hiding if request was wrong
+            return new Promise((resolve, reject) => {
+                this.selectedEmployeeEmail = employee != null ? employee.email : '';
+                axiosClient.delete('/employee/delete/' + this.selectedEmployeeEmail)
+                .then((response) => {
+                    alert("Employee account with email " + response.data.email + " has been deleted successfully")
+                    this.fetchEmployees();
+                    this.selectedEmployee = null;
+                    this.selectedEmployeeEmail = '';
+                    resolve();
+                })
+                .catch((err) => {
+                    this.errorMsg = `Failed to delete Employee: ${err.response.data}`
+                    reject(err);
+                    alert(this.errorMsg)
+                    });
+            });
+        },
 
         initForm() {
         this.addEmployeeForm.name = '';
@@ -344,4 +363,12 @@ export default {
 }
 
 </script>
+
+<style>
+  .container-fluid{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
 
