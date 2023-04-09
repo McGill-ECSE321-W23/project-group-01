@@ -67,8 +67,8 @@
           <td :id="`${f.floorNumber} 2`">{{ f.smallSpotCapacity }}</td>
           <td :id="`${f.floorNumber} 3`">{{ f.largeSpotCapacity }}</td>
           <td :id="`${f.floorNumber} 4`">{{ f.isMemberOnly ? 'Yes' : 'No' }}</td>
-          <td><button class="btn btn-primary" id="deletefloor" @click="deletefloor(f.floorNumber)">Delete</button></td>
-          <td><button class="btn btn-primary" :id="`editfloor ${f.floorNumber}`"
+          <td><button class="btn btn-danger" id="deletefloor" @click="deletefloor(f.floorNumber)">Delete</button></td>
+          <td><button class="btn btn-success" :id="`editfloor ${f.floorNumber}`"
               @click="editfloor(f.floorNumber)">Edit</button></td>
         </tr>
         <tr>
@@ -79,9 +79,8 @@
         </tr>
         <button class="btn btn-primary" id="addfloor" @click="addFloor()">Add Floor</button>
       </table>
-      <p class="error">{{ errorMsg }}</p>
     </div>
-
+    <p class="error">{{ errorMsg }}</p>
 
 
   </div>

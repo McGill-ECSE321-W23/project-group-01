@@ -40,7 +40,7 @@
               <div>
                 <label for="date">Select Date:</label>
                 <input type="date" id="date" name="date" v-model="selectedDate">
-                <button type="button" @click="getServiceAppointmentsByDate">Get Appointments</button>
+                <button type="button"  class="btn btn-success" @click="getServiceAppointmentsByDate">Get Appointments</button>
               </div>
             </div>
           </div>
@@ -57,7 +57,7 @@
                   <option value="">-- Select an employee --</option>
                   <option v-for="email in employeeEmails" :value="email">{{ email }}</option>
                 </select>
-                <button type="button" @click="getServiceAppointmentsByEmployee">Get Appointments</button>
+                <button type="button" class="btn btn-success" @click="getServiceAppointmentsByEmployee">Get Appointments</button>
               </div>
             </div>
           </div>
@@ -74,7 +74,7 @@
                   <option disabled value="">Please select an email</option>
                   <option v-for="email in customerEmails" :key="email" :value="email">{{ email }}</option>
                 </select>
-                <button type="button" @click="getServiceAppointmentsByCustomer">Find Appointment</button>
+                <button type="button" class="btn btn-success" @click="getServiceAppointmentsByCustomer">Find Appointment</button>
               </div>
             </div>
           </div>
@@ -101,7 +101,7 @@
                   <option v-for="email in employeeEmails" :key="email" :value="email">{{ email }}</option>
                 </select>
               </div>
-              <button type="button" @click="updateServiceAppointmentWithNewEmployee">Update Appointment's
+              <button type="button" class="btn btn-success" @click="updateServiceAppointmentWithNewEmployee">Update Appointment's
                 Employee</button>
             </div>
           </div>
@@ -134,7 +134,7 @@
                   <option v-for="service in serviceNames" :key="service" :value="service">{{ service }}</option>
                 </select>
               </div>
-              <button type="button"
+              <button type="button" class="btn btn-success"
                 :disabled="!editIdInput || !editDateInput || !editStartTimeInput || !editServiceNameInput"
                 @click="editServiceAppointment">Edit Appointment</button>
               <p class="success">{{ successMsgEdit }}</p>
@@ -156,7 +156,7 @@
                   <option v-for="id in appointmentIds" :key="id" :value="id">{{ id }}</option>
                 </select>
               </div>
-              <button type="button" :disabled="!cancelIdInput" @click="cancelServiceAppointment">Cancel
+              <button type="button" class="btn btn-danger" :disabled="!cancelIdInput" @click="cancelServiceAppointment">Cancel
                 Appointment</button>
               <p class="success">{{ successMsgCancel }}</p>
               <p class="error">{{ errorMsgCancel }}</p>
@@ -168,7 +168,7 @@
 
 
     <div style="padding: 0 215px;">
-      <button type="button" class="btn btn-primary" @click="getAllAppointments">Get all
+      <button type="button" class="btn btn-secondary" @click="getAllAppointments">Get all
         appointments in the
         system</button>
       <p class="error">{{ errorMsgAll }}</p>
@@ -511,8 +511,8 @@ a {
   position: fixed;
   z-index: 1;
   margin-top: 100px;
-  width: 100%;
-  height: 100%;
+  width: 50%;
+  height: 90%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
   top: 50%;

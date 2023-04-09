@@ -39,7 +39,7 @@
           <label for="lengthInHoursCreation">Length in hours:</label>
           <input type="text" id="lengthInHoursCreation" name="lengthInHoursCreation" v-model="createLengthInput">
         </div>
-        <button type="button" :disabled="!createServiceNameInput || !createCostInput || !createLengthInput"
+        <button type="button" class="btn btn-primary" :disabled="!createServiceNameInput || !createCostInput || !createLengthInput"
           @click="createService()">Create Service</button>
 
         <p class="error">{{ errorMsgCreate }}</p>
@@ -63,7 +63,7 @@
           <input type="text" id="lengthInHoursEdit" name="lengthInHoursEdit" v-model="editLengthInput">
         </div>
 
-        <button type="button" :disabled="!editServiceNameInput || !editCostInput || !editLengthInput"
+        <button type="button" class="btn btn-primary" :disabled="!editServiceNameInput || !editCostInput || !editLengthInput"
           @click="editService()">Edit Service</button>
 
         <p class="error">{{ errorMsgEdit }}</p>
@@ -78,15 +78,15 @@
       <option v-for="name in serviceNames" :value="name">{{ name }}</option>
     </select>
   </div>
-        <button type="button" :disabled="!deleteServiceInput" @click="deleteService()">Delete Service</button>
+        <button type="button" :disabled="!deleteServiceInput" class="btn btn-danger" @click="deleteService()">Delete Service</button>
 
         <p class="error">{{ errorMsgDelete }}</p>
       </div>
   
   
-      <div>
+      <div style="padding: 0 550px;">
         <h2>All Services</h2>
-        <table class="center bordered-table">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>Service Name</th>
@@ -259,11 +259,6 @@
     padding: 20px;
   }
   
-  .bordered-table th,
-  .bordered-table td {
-    border: 1px solid black;
-    padding: 8px;
-  }
 
   a {
   padding: 20px;
