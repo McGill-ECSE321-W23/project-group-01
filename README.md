@@ -8,7 +8,12 @@ Most Importantly, the system was designed to be adaptable and scalable to accomm
 
 The software system was designed to respond to a set of requirements specified by the client through a description which was translated into a set of 15 system requirements (10 functional and 5 functional) which can be seen through the GitHub issues. 
 
-Our software system can be run by executing, inside the PLMS folder, the "./gradlew bootRun" command. The app is deployed to "http://localhost:8080".
+Our software system's backend can be run by executing, inside the PLMS folder, the "./gradlew bootRun" command. The app is deployed to "http://localhost:8080".
+
+The frontend can be run by executing, inside the PLMS-Frontend, the "npm run dev" command. The frontend is deployed to your default web browser.
+
+To run our unit and integration tests, please cd into the PLMS folder and run `./gradlew clean test`. 
+To run our integration tests alone, please cd into the PLMS folder and run `./gradlew clean integrationTest`.
 
 ## Our Team
 
@@ -25,12 +30,12 @@ Our software system can be run by executing, inside the PLMS folder, the "./grad
 
 | Team Member |	Team Roles | Individual efforts - Sprint 1 (in hours) | Individual efforts - Sprint 2 (in hours) |
 | --- | --- | --- | ---- |
-| Evan Boyd | Software Developer  |  20  | 60 |
-| Samer Abdulkarim | Project Manager, Software Developer |  16 | 55 |
-| Emilien Taisne	| Documentation Manager, Software Developer  | 16 | 60 |
-| Walid Aissa	| Software Developer  | 16 | 44 |
-| Karim Al Sabbagh | Testing Lead, Software Developer  | 16  | 44 |
-| Karl Bridi	| Software Developer | 16 | 44 |
+| Evan Boyd | Software Developer  |  20  | 60 |  |
+| Samer Abdulkarim | Project Manager, Software Developer |  16 | 60 |  |
+| Emilien Taisne	| Documentation Manager, Software Developer  | 16 | 60 |  |
+| Walid Aissa	| Software Developer  | 16 | 44 | |  |
+| Karim Al Sabbagh | Testing Lead, Software Developer  | 16  | 44 |  |
+| Karl Bridi	| Software Developer | 16 | 44 |  |
 
 ### Sprint 1 individual efforts: 
 
@@ -48,11 +53,22 @@ Our software system can be run by executing, inside the PLMS folder, the "./grad
 | Name | Contributions | Total Hours | 
 | --- | --- | --- |
 | Evan Boyd | Floor and ServiceAppointment controller, DTO, and service classes. Unit and integration tests for Floor and ServiceAppointment classes. Domain model attribute edits and documentation. Help with unit tests for Service, GuestPass, and MonthlyPass, and integration tests for Service, GuestPass, and MonthlyPass. Documentation of unit tests and code reviews. | 60 |
-| Samer Abdulkarim |MonthlyCustomer, Employee, Owner and Parking Lot controller, DTO, and service classes. Unit and integration tests for the MonthlyCustomer, Employee, Owner and Parking Lot classes.   | 55 |
+| Samer Abdulkarim |MonthlyCustomer, Employee, Owner and Parking Lot controller, DTO, and service classes. Unit and integration tests for the MonthlyCustomer, Employee, Owner and Parking Lot classes.   | 60 |
 | Emilien Taisne | Floor and ServiceAppointment controller, DTO, and service classes. Unit and integration tests for Floor and ServiceAppointment classes. Restful API documentation. | 60 |
 | Walid Aissa | Service, Monthly Pass GuestPass controller, DTO, and service classes. Unit and integration tests for Service, Monthly Pass and GuestPass classes. |  44 |
 | Karim Al Sabbagh | Service, Monthly Pass GuestPass controller, DTO, and service classes. Unit and integration tests for Service, Monthly Pass and GuestPass classes.  | 44 |
 | Karl Bridi | MonthlyCustomer, Employee, Owner and Parking Lot controller, DTO, and service classes. Unit and integration tests for the MonthlyCustomer, Employee, Owner and Parking Lot classes. | 44 |
+
+### Sprint 3 individual efforts: 
+
+| Name | Contributions | Total Hours | 
+| --- | --- | --- |
+| Evan Boyd |  |  |
+| Samer Abdulkarim |   |  |
+| Emilien Taisne |  |  |
+| Walid Aissa |  |   |
+| Karim Al Sabbagh |   |  |
+| Karl Bridi |  |  |
 
  
 

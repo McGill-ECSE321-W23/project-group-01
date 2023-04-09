@@ -9,10 +9,15 @@ import OwnerViewAppointments from "@/components/OwnerViewAppointments"
 import OwnerViewServices from "@/components/OwnerViewServices"
 import ParkingLotSettings from '@/components/ParkingLotSettings'
 import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
-import OwnerHome from '@/components/owner/OwnerHome'
-import EmployeeHome from '@/components/employee/EmployeeHome'
-import MonthlyCustomerHome from "../components/MonthlyCustomerHome"
 import ManageEmployees from "@/components/owner/ManageEmployees"
+
+
+import MonthlyCustomerHome from "@/components/MonthlyCustomerHome"
+import MonthlyCustomerPasses from "@/components/MonthlyCustomerPasses";
+import MonthlyCustomerAppointments from "@/components/MonthlyCustomerAppointments";
+import MonthlyCustomerManageAccount from "@/components/MonthlyCustomerManageAccount";
+import OwnerHome from "@/components/owner/OwnerHome"; //
+
 Vue.use(Router)
 
 export default new Router({
@@ -79,19 +84,38 @@ export default new Router({
     {
       path: 'customer/:email',
       name: 'MonthlyCustomerHome',
-      component: MonthlyCustomerHome, //
+      component: MonthlyCustomerHome,
       props: true
 
     },
     {
-      path: '/product',
-      redirect: '/home'
+      path: 'customer/pass:email',
+      name: 'MonthlyCustomerPasses',
+      component: MonthlyCustomerPasses,
+      props: true
+    },
+    {
+      path: 'customer/appointment:email',
+      name: 'MonthlyCustomerAppointments',
+      component: MonthlyCustomerAppointments,
+      props: true
+    },
+    {
+      path: 'customer/manage:email',
+      name: 'MonthlyCustomerManageAccount',
+      component: MonthlyCustomerManageAccount,
+      props: true
     },
     {
       path: '/owner-view-services',
       name : 'OwnerViewServices',
       component: OwnerViewServices,
     },
+    {
+      path: '/product',
+      redirect: '/home'
+    },
+
     {
       path: '/pricing',
       redirect: '/home'
