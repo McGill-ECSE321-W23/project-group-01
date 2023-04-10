@@ -32,7 +32,7 @@
         <button type="button" class="btn btn-success btn-sm" v-b-modal.edit-employee-modal :disabled="selectedEmployee=== null" >Update</button>
         <button type="button" class="btn btn-success btn-sm" :disabled="selectedEmployee=== null" @click="onViewSchedule(selectedEmployee) "> View Schedule</button>
         <button type="button" class="btn btn-danger btn-sm"  :disabled="selectedEmployee=== null" @click="onDeleteEmployee(selectedEmployee) "> Delete </button> -->
-        
+        <button type="button" class="btn btn-success btn-sm" @click="fetchGuestPasses() "> Clear Filters</button>
         <br><br>
         <table class="table table-hover">
           <thead>
@@ -54,11 +54,12 @@
 
                 <td></td>
                 <td><select id="floor" v-model="editFloorInput" @change="handleFloorSelect($event.target.value)">
-                    <option value="" disabled selected>Select a floor</option>
+                    <option value="" disabled selected>Search by floor</option>
                     <option value="all" >All</option>
                     <option v-for="(floor, index) in floorNumbers.sort((a, b) => a - b)" :key="index">{{ floor }} </option>
                   </select></td>
-                <td><input type="date" id="date" name="date" v-model="selectedDate"></td>
+                <td>
+                    <input type="date" id="date" name="date" v-model="selectedDate" @change="handleDateSelect($event.target.value)" placeholder="Search by Date"></td>
                 <td></td>
                 <td></td>
             </tr>      
@@ -112,6 +113,12 @@ export default {
     },
    
     methods: {
+        
+        clearInputs(){
+            this.IDTextInput = ""
+            this.selectedDate = null
+            this.editFloorInput = ""
+        },
 
         handleOptionSelected(option) {
             // handle option selected event
@@ -134,9 +141,18 @@ export default {
            
         },
 
+        handleDateSelect(date){
+            axiosClient.get("/guestPass/date/" + date).then((response) => {
+                this.guestPasses = response.data
+                
+           }).catch((err) => {
+            alert(err.response.data)
+           });
+        },
 
         fetchGuestPasses() {
-           axiosClient.get("/guestPass/").then((response) => {
+            this.clearInputs()
+            axiosClient.get("/guestPass/").then((response) => {
             this.guestPasses = response.data
             this.guestPassIDs = response.data.map((guestPasses) => guestPasses.id);
            }).catch((err) => {
@@ -172,18 +188,18 @@ export default {
             
         },
         
-        handleRowClick(employee) {
-          this.selectedEmployee = employee;
-          console.log('selected new employee');
-        },
-        handleRowHover(employee) {
-          this.hoveredEmployee = employee;
-        },
-        onReset(evt) {
-        evt.preventDefault();
-        // this.$refs.addEmployeeModal.hide();
-        this.initForm();
-        },
+        // handleRowClick(employee) {
+        //   this.selectedEmployee = employee;
+        //   console.log('selected new employee');
+        // },
+        // handleRowHover(employee) {
+        //   this.hoveredEmployee = employee;
+        // },
+        // onReset(evt) {
+        // evt.preventDefault();
+        // // this.$refs.addEmployeeModal.hide();
+        // this.initForm();
+        // },
 
     }
 }
