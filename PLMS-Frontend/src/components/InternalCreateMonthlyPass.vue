@@ -1,6 +1,6 @@
 <template>
   <div class="internalCreatePage">
-    
+
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
 
         <form id="form-update" >
@@ -14,8 +14,11 @@
               <input class="form-control" type="number" placeholder="10" v-model="numberOfMonths">
             </div>
             <div class="form-group col-md-6">
-              <label>Spot Number</label>
-              <input type="text" class="form-control" id="spot" placeholder="A24" v-model="spotNumber" >
+              <label >Floor Number</label>
+              <select class="custom-select" required v-model="floorNumber"  @change="createSpotNumbers()">
+                <!-- <option v-for="floor in floors" :key="floor.floorNumber" :value="floor.floorNumber">{{floor.floorNumber}}</option> -->
+                <option v-for="(floorNumber, index) in floorNumbers.sort((a, b) => a - b)" :key="index">{{ floorNumber }}</option>
+              </select>
             </div>
           </div>
           <div class="form-group">
@@ -28,11 +31,14 @@
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label >Floor Number</label>
-              <select class="custom-select" required v-model="floorNumber">
-                <option v-for="floor in floors" :key="floor.floorNumber" :value="floor.floorNumber">{{floor.floorNumber}}</option>
+              <label>Spot Number</label>
+              <!-- <input type="text" class="form-control" id="spot" placeholder="A24" v-model="spotNumber" > -->
+              <select v-model="spotNumber" class="form-control" :disabled="isSelectDisabled" @click="createSpotNumbers()">
+                <option value="" disabled>Select a spot</option>
+                <option v-for="(spot,index) in spotNumbers" :key="index">{{ spot }}</option>
               </select>
             </div>
+            
             <div class="form-group col-md-6">
               <label>Start Date</label>
               <input type="date" class="form-control" v-model="startDate">
@@ -40,7 +46,7 @@
           </div>
           <div class="form-group">
             <div class="form-check">
-              <input class="form-check-input"  type="checkBox" id="isLarge">
+              <input class="form-check-input"  type="checkBox" id="isLarge" :disabled="isSelectDisabled" @change="onIsLargeChange">
               <label class="form-check-label" >
                 Large Spot
               </label>
@@ -75,20 +81,30 @@ export default {
     return {
       errorMsg: '',
       floors: [],
+      floorNumbers: [],
       spotNumber: '',
       confirmationCode: '',
       licensePlate: '',
-      floorNumber: 0,
-      isLarge: '',
+      floorNumber: '',
+      isLarge: false,
       startDate: '',
       numberOfMonths:0,
       customerEmail: '',
+      spotNumbers: []
     };
   },
   created() {
     axiosClient.get("/floor")
       .then(response => {
         this.floors = response.data
+        // this.floorNumbers = response.data.map((floor) => floor.floorNumber)
+        this.floorNumbers = []
+        for (const floor of this.floors) {
+          if (floor.memberOnly){
+            this.floorNumbers.push(floor.floorNumber)
+          }
+          console.log(floor)
+        }
       })
       .catch(error => {
         alert(error.data)
@@ -115,22 +131,51 @@ export default {
         floorNumber: this.floorNumber, isLarge: document.getElementById(`isLarge`).checked, startDate: this.startDate, customerEmail: this.customerEmail};
       axiosClient.post("/monthlypass", request)
         .then((response) => {
-          console.log('wait what now')
           alert("Your pass has been created successfully")
         })
         .catch((err) => {
-          console.log('good')
           this.errorMsg = `Failed to create: ${err.response.data}`
           alert(this.errorMsg)
         })
       // await this.RouteHome()
     },
+    onIsLargeChange() {
+      this.isLarge = !this.isLarge;
+      this.createSpotNumbers();
+    },
+    createSpotNumbers(){
+      const isLarge = this.isLarge
+      this.spotNumber = ''
+      this.spotNumbers  = []
+      const floor = null
+
+      console.log(isLarge)
+      
+      axiosClient.get("/floor/" + this.floorNumber).then((response) => {
+                    const numSpots = isLarge ? response.data.largeSpotCapacity : response.data.smallSpotCapacity;
+                    const spotType = isLarge ? 'L' : 'S';
+                    for (let i = 1; i <= numSpots; i++) {
+                      this.spotNumbers.push(`${this.floorNumber}${spotType}${i}`);
+                    }
+                    console.log(this.spotNumbers)
+
+                }).catch((err) => {
+                
+                alert(err.response.data)
+                })
+    },
   },
+
+  
+
   computed: {
     createUserButtonDisabled() {
       return !(this.numberOfMonths !== 0)|| !this.spotNumber.trim() || !this.confirmationCode.trim() || !this.licensePlate.trim()
         ||  !(this.floorNumber !== 0)  || !this.startDate.trim();
-    }
+    },
+    isSelectDisabled(){
+    return (this.floorNumber == '')
+    },
   }
 
 }
