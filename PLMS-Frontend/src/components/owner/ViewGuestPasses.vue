@@ -38,11 +38,15 @@
           <thead>
             <tr>
               <th scope="col">ID</th>
+              <th scope="col">Confirmation Code</th>
               <th scope="col">License Plate</th>
+              <th scope="col">Spot Number</th>
+              <th scope="col">Size</th>
               <th scope="col">Floor Number</th>
               <th scope="col">Date</th>
               <th scope="col">Start Time</th>
               <th scope="col">End Time</th>
+              <th scope="col">Cost</th>
               
             </tr>
           </thead>
@@ -51,7 +55,10 @@
                 <td>
                     <input type="text" v-model="IDTextInput" @keyup.enter="handleIDInput" placeholder="Search by ID" @focus="clearIDTextField()"/>
                 </td>
+                <td></td>
 
+                <td></td>
+                <td></td>
                 <td></td>
                 <td><select id="floor" v-model="editFloorInput" @change="handleFloorSelect($event.target.value)">
                     <option value="" disabled selected>Search by floor</option>
@@ -62,15 +69,20 @@
                     <input type="date" id="date" name="date" v-model="selectedDate" @change="handleDateSelect($event.target.value)" placeholder="Search by Date"></td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>      
             <tr  v-for="(guestPass, index) in guestPasses" :key="index"   @click="handleRowClick(guestPass)" 
             :class="{}"> 
                 <td>{{guestPass.id}}</td>
+                <td>{{guestPass.confirmationCode}}</td>
                 <td>{{guestPass.licensePlate}}</td>
+                <td>{{guestPass.spotNumber}}</td>
+                <td>{{guestPass.isLarge ? 'Large' : 'Small'}}</td>
                 <td>{{guestPass.floorNumber}}</td>
                 <td>{{guestPass.date}}</td>
                 <td>{{guestPass.startTime}}</td>
                 <td>{{guestPass.endTime}}</td>
+                <td>{{guestPass.fee}}</td>
             </tr>
           </tbody>
         </table>

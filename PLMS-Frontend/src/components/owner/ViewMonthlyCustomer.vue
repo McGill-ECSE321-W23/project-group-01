@@ -72,7 +72,7 @@
               <button class="btn btn-secondary dropdown-toggle" @click="togglePasses()">
                 Show Passe(s)
               </button>
-              <button class="btn btn-secondary dropdown-toggle" @click="toggleAppointment()">
+              <button  class="btn btn-secondary dropdown-toggle" @click="toggleAppointment()">
                 Show Service Appointment(s)
               </button>
               <div v-if="showPasses">
