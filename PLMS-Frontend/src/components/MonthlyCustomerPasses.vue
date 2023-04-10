@@ -37,8 +37,11 @@
               <input class="form-control" type="number" placeholder="10" v-model="numberOfMonths">
             </div>
             <div class="form-group col-md-6">
-              <label>Spot Number</label>
-              <input type="text" class="form-control" id="spot" placeholder="A24" v-model="spotNumber" >
+              <label >Floor Number</label>
+              <select class="custom-select" required v-model="floorNumber">
+                <!-- <option v-for="floor in floors" :key="floor.floorNumber" :value="floor.floorNumber">{{floor.floorNumber}}</option> -->
+                <option v-for="(floorNumber, index) in floorNumbers.sort((a, b) => a - b)" :key="index">{{ floorNumber }}</option>
+              </select>
             </div>
           </div>
           <div class="form-group">
@@ -50,10 +53,12 @@
             <input type="text" class="form-control"   placeholder="T3ST41"  v-model="licensePlate">
           </div>
           <div class="form-row">
+            
             <div class="form-group col-md-6">
-              <label >Floor Number</label>
-              <select class="custom-select" required v-model="floorNumber">
-                <option v-for="floor in floors" :key="floor.floorNumber" :value="floor.floorNumber">{{floor.floorNumber}}</option>
+              <label>Spot Number</label>
+              <select v-model="spotNumber" class="form-control" :disabled="isSelectDisabled" @click="createSpotNumbers()">
+                <option value="" disabled>Select a spot</option>
+                <option v-for="(spot,index) in spotNumbers" :key="index">{{ spot }}</option>
               </select>
             </div>
             <div class="form-group col-md-6">
@@ -97,11 +102,13 @@ export default {
     return {
       errorMsg: '',
       floors: [],
+      floorNumbers: [],
+      spotNumbers: [],
       spotNumber: '',
       confirmationCode: '',
       licensePlate: '',
       floorNumber: 0,
-      isLarge: '',
+      isLarge: false,
       startDate: '',
       numberOfMonths:0,
     };
@@ -110,6 +117,14 @@ export default {
     axiosClient.get("/floor")
       .then(response => {
         this.floors = response.data
+        // this.floorNumbers = response.data.map((floor) => floor.floorNumber)
+        this.floorNumbers = []
+        for (const floor of this.floors) {
+          if (floor.memberOnly){
+            this.floorNumbers.push(floor.floorNumber)
+          }
+          console.log(floor)
+        }
       })
       .catch(error => {
         alert(error.data)
@@ -130,7 +145,7 @@ export default {
     },
     async createPass() {
       const request = {numberOfMonths: this.numberOfMonths, spotNumber: this.spotNumber, confirmationCode: this.confirmationCode, licensePlate: this.licensePlate,
-        floorNumber: this.floorNumber, isLarge: document.getElementById(`isLarge`).checked, startDate: this.startDate, customerEmail: this.email};
+        floorNumber: this.floorNumber, isLarge: this.isLarge, startDate: this.startDate, customerEmail: this.email};
       axiosClient.post("/monthlypass", request)
         .then((response) => {
           alert("Your pass has been created successfully")
@@ -141,13 +156,43 @@ export default {
         })
       await this.RouteHome()
     },
+    onIsLargeChange() {
+      this.isLarge = !this.isLarge;
+      this.createSpotNumbers();
+    },
+
+    createSpotNumbers(){
+      const isLarge = this.isLarge
+      this.spotNumber = ''
+      this.spotNumbers  = []
+      const floor = null
+
+      console.log(isLarge)
+      
+      axiosClient.get("/floor/" + this.floorNumber).then((response) => {
+                    const numSpots = isLarge ? response.data.largeSpotCapacity : response.data.smallSpotCapacity;
+                    const spotType = isLarge ? 'L' : 'S';
+                    for (let i = 1; i <= numSpots; i++) {
+                      this.spotNumbers.push(`${this.floorNumber}${spotType}${i}`);
+                    }
+                    console.log(this.spotNumbers)
+
+                }).catch((err) => {
+                
+                alert(err.response.data)
+                })
+    },
   },
   computed: {
     createUserButtonDisabled() {
       return !(this.numberOfMonths !== 0)|| !this.spotNumber.trim() || !this.confirmationCode.trim() || !this.licensePlate.trim()
         ||  !(this.floorNumber !== 0)  || !this.startDate.trim();
-    }
+    },
+    isSelectDisabled(){
+    return (this.floorNumber == '')
+    },
   }
+
 
 }
 </script>
