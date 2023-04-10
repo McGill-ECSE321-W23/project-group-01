@@ -243,6 +243,9 @@ export default {
 </script>
 
 <style>
+a {
+  padding: 20px;
+}
   .container-fluid{
     display: flex;
     justify-content: center;
