@@ -70,7 +70,7 @@ const axiosClient = axios.create({
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
 });
 export default {
-  name: "MonthlyCustomerPasses",
+  name: 'InternalCreateMonthlyPass',
   props: {
     // email: {
     //   type: String,
