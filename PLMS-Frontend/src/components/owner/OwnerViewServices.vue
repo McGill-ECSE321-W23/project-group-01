@@ -17,8 +17,8 @@
             </svg>      </a>
             <a class="py-2 d-none d-md-inline-block"  @click="Home">Home</a>
             <a class="py-2 d-none d-md-inline-block"  @click="Customers">Manage Customer Accounts</a>
-          <a class="py-2 d-none d-md-inline-block"  href="#">Manage Employee Accounts</a>
-          <a class="py-2 d-none d-md-inline-block"  href="#">Manage Passes</a>
+          <a class="py-2 d-none d-md-inline-block"  @click="Employees">Manage Employee Accounts</a>
+          <a class="py-2 d-none d-md-inline-block"  @click="Passes">Manage Passes</a>
           <a class="py-2 d-none d-md-inline-block" @click="Appointments">Manage Appointments</a>
           <a class="py-2 d-none d-md-inline-block" @click="ParkingLot">Manage Parking Lot</a>
           <a class="py-2 d-none d-md-inline-block" @click="Services">Manage Services</a>
@@ -161,6 +161,12 @@
     },
     async Customers(){
       await this.$router.push({name: 'ViewMonthlyCustomer'})
+    },
+    async Employees(){
+      await this.$router.push({name: 'ManageEmployees'})
+    },
+    async Passes(){
+      await this.$router.push({name: 'ViewGuestPasses'})
     },
 
         createService() {
