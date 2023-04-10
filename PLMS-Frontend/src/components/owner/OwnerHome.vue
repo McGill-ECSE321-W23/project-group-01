@@ -38,10 +38,10 @@
             <a @click="Customers" class="btn btn-primary btn-lg btn-block big-high">Manage Customer Accounts</a>
             </div>
             <div class="col-md-6 mb-4">
-            <a href="#/owner/manage-employees" class="btn btn-primary btn-lg btn-block big-high">Manage Employee Accounts</a>
+            <a @click="Employees" class="btn btn-primary btn-lg btn-block big-high">Manage Employee Accounts</a>
             </div>
             <div class="col-md-6 mb-4">
-            <a href="/manage-passes" class="btn btn-primary btn-lg btn-block big-high">Manage Passes</a>
+            <a @click="Passes"  class="btn btn-primary btn-lg btn-block big-high">Manage Passes</a>
             </div>
             <div class="col-md-6 mb-4">
             <a @click="Appointments" class="btn btn-primary btn-lg btn-block big-high">Manage Appointments</a>
