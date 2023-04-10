@@ -17,8 +17,8 @@
             </svg>      </a>
             <a class="py-2 d-none d-md-inline-block"  @click="Home">Home</a>
             <a class="py-2 d-none d-md-inline-block"  @click="Customers">Manage Customer Accounts</a>
-          <a class="py-2 d-none d-md-inline-block"  href="#">Manage Employee Accounts</a>
-          <a class="py-2 d-none d-md-inline-block"  href="#">Manage Passes</a>
+          <a class="py-2 d-none d-md-inline-block"  @click="Employees">Manage Employee Accounts</a>
+          <a class="py-2 d-none d-md-inline-block"  @click="Passes">Manage Passes</a>
           <a class="py-2 d-none d-md-inline-block" @click="Appointments">Manage Appointments</a>
           <a class="py-2 d-none d-md-inline-block" @click="ParkingLot">Manage Parking Lot</a>
           <a class="py-2 d-none d-md-inline-block" @click="Services">Manage Services</a>
@@ -38,10 +38,10 @@
             <a @click="Customers" class="btn btn-primary btn-lg btn-block big-high">Manage Customer Accounts</a>
             </div>
             <div class="col-md-6 mb-4">
-            <a href="#/owner/manage-employees" class="btn btn-primary btn-lg btn-block big-high">Manage Employee Accounts</a>
+            <a @click="Employees" class="btn btn-primary btn-lg btn-block big-high">Manage Employee Accounts</a>
             </div>
             <div class="col-md-6 mb-4">
-            <a href="/manage-passes" class="btn btn-primary btn-lg btn-block big-high">Manage Passes</a>
+            <a @click="Passes"  class="btn btn-primary btn-lg btn-block big-high">Manage Passes</a>
             </div>
             <div class="col-md-6 mb-4">
             <a @click="Appointments" class="btn btn-primary btn-lg btn-block big-high">Manage Appointments</a>
@@ -64,7 +64,7 @@
 import OwnerViewAppointments from '@/components/owner/OwnerViewAppointments.vue'
 import ParkingLotSettings from '@/components/owner/ParkingLotSettings.vue'
 import OwnerViewServices from '@/components/owner/OwnerViewServices.vue'
-import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
+import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer.vue'
   import axios from 'axios';
   const config = require('../../../config');
   const frontendUrl = config.dev.host + ':' + config.dev.port;
@@ -127,6 +127,12 @@ import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
     },
     async Customers(){
       await this.$router.push({name: 'ViewMonthlyCustomer'})
+    },
+    async Employees(){
+      await this.$router.push({name: 'ManageEmployees'})
+    },
+    async Passes(){
+      await this.$router.push({name: 'ViewGuestPasses'})
     }
     }
   }
