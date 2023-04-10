@@ -26,6 +26,7 @@
     <div>
       <label for="serviceName">Service Name:</label>
       <select id="serviceName" v-model="serviceName">
+        <option value="">-- Select an service name --</option>
         <option v-for="service in servicesDropDown" :value="service">{{ service }}</option>
       </select>
     </div>
@@ -44,6 +45,42 @@
     </div>
     <p class="success">{{ successMsg }}</p>
     <p class="error">{{ errorMsg }}</p>
+  </div>
+
+  <div>
+    <h2>Update your Service Appointment Details</h2>
+    <div>
+      <label for="id">Appointment ID:</label>
+      <input type="text" id="id" name="id" v-model="idUpdate">
+    </div>
+    <div>
+      <label for="serviceName">Service Name:</label>
+      <select id="serviceName" v-model="serviceNameUpdate">
+        <option value="">-- Select an service name --</option>
+        <option v-for="service in servicesDropDown" :value="service">{{ service }}</option>
+      </select>
+    </div>
+    <div>
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" v-model="dateUpdate">
+    </div>
+    <div>
+      <label for="startTime">Start Time:</label>
+      <input type="time" id="startTime" name="startTime" v-model="startTimeUpdate">
+    </div>
+    <button type="button" :disabled="!serviceNameUpdate || !dateUpdate || !startTimeUpdate" @click="updateServiceAppointment">Update Service Appointment Details</button>
+    <p class="success">{{ successMsgUpdate }}</p>
+    <p class="error">{{ errorMsgUpdate }}</p>
+  </div>
+  <div>
+    <h2>Cancel Service Appointment</h2>
+    <div>
+      <label for="id">Appointment ID:</label>
+      <input type="text" id="id" name="id" v-model="idDelete">
+    </div>
+    <button type="button" :disabled="!idDelete" @click="deleteAppointment">Cancel Service Appointment</button>
+    <p class="success">{{ successMsgCancel }}</p>
+    <p class="error">{{ errorMsgCancel }}</p>
   </div>
 </div>
 </template>
@@ -68,7 +105,16 @@ export default {
       startTime: '',
       successMsg: '',
       errorMsg: '',
-      parkingLotHours: ''
+      parkingLotHours: '',
+      serviceNameUpdate: '',
+      dateUpdate: '',
+      startTimeUpdate: '',
+      successMsgUpdate: '',
+      errorMsgUpdate: '',
+      idDelete: '',
+      idUpdate: '',
+      successMsgCancel: '',
+      errorMsgCancel: ''
     };
   },
 
@@ -128,16 +174,73 @@ export default {
       console.log(formattedTime)
       axiosClient.post('/serviceAppointment', requestBody)
         .then(response => {
-          this.date = '';
-          this.startTime = '';
-          this.serviceName = '';
-          this.successMsg = '';
-          this.successMsg = "Appointment booked successfully. Your appointment ID number is: " + response.data.id;
+          this.resetInputs()
+          this.successMsg = `Appointment booked successfully. Your appointment details: ID: ${response.data.id}, Service: ${response.data.serviceName}, Date: ${response.data.date}, Start time: ${response.data.startTime}`;
         })
         .catch(error => {
           console.log(error.response.data);
           this.errorMsg = error.response.data;
         })
+    },
+
+    updateServiceAppointment(){
+      const formattedTime = this.startTimeUpdate + ":00"
+      if (!/^\d+$/.test(this.idUpdate)){
+        this.errorMsgUpdate = "Please enter a valid integer ID"
+        return
+      }
+      const requestBody = {
+        date: this.dateUpdate,
+        startTime: formattedTime,
+        customerEmail: null, // Replace with customer email if applicable
+        serviceName: this.serviceNameUpdate
+      };
+      console.log(this.date)
+      console.log(this.serviceName)
+      console.log(formattedTime)
+      axiosClient.put(`/serviceAppointment/${this.idUpdate}`, requestBody)
+        .then(response => {
+          this.resetInputs()
+          this.successMsgUpdate = `Appointment updated successfully. Your appointment details: ID: ${response.data.id}, Service: ${response.data.serviceName}, Date: ${response.data.date}, Start time: ${response.data.startTime}`;
+        })
+        .catch(error => {
+          console.log(error.response.data);
+          this.errorMsgUpdate = error.response.data;
+        })
+    },
+
+    deleteAppointment(){
+      if (!/^\d+$/.test(this.idDelete)){
+        this.errorMsgCancel = "Please enter a valid integer ID"
+        return
+      }
+      axiosClient.delete(`/serviceAppointment/${this.idDelete}`)
+      .then(response =>{
+        this.resetInputs()
+        this.successMsgCancel = 'Appointment Cancelled Successfully'
+      }).catch(error =>{
+        this.resetInputs()
+        console.log(error.response.data)
+        this.errorMsgCancel = error.response.data
+      })
+    },
+
+    resetInputs(){
+      this.serviceName = ''
+      this.date = ''
+      this.startTime = ''
+      this.successMsg = ''
+      this.errorMsg = ''
+      this.idUpdate = ''
+      this.parkingLotHours = ''
+      this.serviceNameUpdate = ''
+      this.dateUpdate = ''
+      this.startTimeUpdate = ''
+      this.successMsgUpdate = ''
+      this.errorMsgUpdate = ''
+      this.idDelete = ''
+      this.successMsgCancel = ''
+      this.errorMsgCancel = ''
     }
   }
 };

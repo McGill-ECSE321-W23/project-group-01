@@ -32,7 +32,7 @@
       <form @submit.prevent="searchCustomer">
         <label for="email">Email:</label>
           <input type="email" id="email" v-model="searchEmail">
-        <button type="submit">Search</button>
+        <button class="btn btn-primary" type="submit">Search</button>
       </form>
       <p class="error">{{ gettingCustomerErrorMsg }}</p>
       
@@ -41,7 +41,7 @@
         <div class="row">
           <div class="col-md-6">
             <h2>All Customers</h2>
-            <table class="table">
+            <table class="table table-striped">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -77,7 +77,7 @@
               </button>
               <div v-if="showPasses">
                 <p>Passes:</p>
-                <table class="table table-hover" v-if="!gettingPassErrorMsg">
+                <table class="table table-striped" v-if="!gettingPassErrorMsg">
                   <thead>
                     <tr>
                       <th>Start Date</th>
@@ -105,7 +105,7 @@
               
               <div v-if="showAppointments">
                 <p>Appointments:</p>
-                <table class="table table-hover" v-if="!gettingAppointmentsErrorMsg">
+                <table class="table table-striped" v-if="!gettingAppointmentsErrorMsg">
                   <thead>
                     <tr>
                       <th>Date</th>

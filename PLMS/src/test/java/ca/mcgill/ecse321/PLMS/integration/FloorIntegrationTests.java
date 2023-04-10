@@ -115,7 +115,7 @@ public class FloorIntegrationTests {
         assertNotNull(response.getBody());
         
         assertEquals(FixedValidFloor.floorNumber, response.getBody().getFloorNumber());
-        assertEquals(FixedValidFloor.isMemberOnly, response.getBody().getMemberOnly());
+        assertEquals(FixedValidFloor.isMemberOnly, response.getBody().getIsMemberOnly());
         assertEquals(FixedValidFloor.largeSpotCapacity, response.getBody().getLargeSpotCapacity());
         assertEquals(FixedValidFloor.smallSpotCapacity, response.getBody().getSmallSpotCapacity());
     }
@@ -131,7 +131,7 @@ public class FloorIntegrationTests {
         assertNotNull(response.getBody());
 
         assertEquals(FixedValidFloor.floorNumber, response.getBody().getFloorNumber());
-        assertEquals(FixedValidFloor.isMemberOnly, response.getBody().getMemberOnly());
+        assertEquals(FixedValidFloor.isMemberOnly, response.getBody().getIsMemberOnly());
         assertEquals(FixedValidFloor.largeSpotCapacity, response.getBody().getLargeSpotCapacity());
         assertEquals(FixedValidFloor.smallSpotCapacity, response.getBody().getSmallSpotCapacity());
     }
@@ -202,7 +202,7 @@ public class FloorIntegrationTests {
         assertNotNull(response.getBody());
         
         assertEquals(FixedValidFloor.floorNumber, response.getBody().getFloorNumber());
-        assertEquals(FixedValidFloor.isMemberOnlyUpdated, response.getBody().getMemberOnly());
+        assertEquals(FixedValidFloor.isMemberOnlyUpdated, response.getBody().getIsMemberOnly());
         assertEquals(FixedValidFloor.largeSpotCapacityUpdated, response.getBody().getLargeSpotCapacity());
         assertEquals(FixedValidFloor.smallSpotCapacityUpdated, response.getBody().getSmallSpotCapacity());
     }
@@ -218,7 +218,7 @@ public class FloorIntegrationTests {
         assertNotNull(response.getBody());
 
         assertEquals(FixedValidFloor.floorNumber, response.getBody().getFloorNumber());
-        assertEquals(FixedValidFloor.isMemberOnlyUpdated, response.getBody().getMemberOnly());
+        assertEquals(FixedValidFloor.isMemberOnlyUpdated, response.getBody().getIsMemberOnly());
         assertEquals(FixedValidFloor.largeSpotCapacityUpdated, response.getBody().getLargeSpotCapacity());
         assertEquals(FixedValidFloor.smallSpotCapacityUpdated, response.getBody().getSmallSpotCapacity());
     }
@@ -272,7 +272,7 @@ public class FloorIntegrationTests {
         assertNotNull(response.getBody());
         
         assertEquals(FixedValidFloor.secondFloorNumber, response.getBody().getFloorNumber());
-        assertEquals(FixedValidFloor.isMemberOnly, response.getBody().getMemberOnly());
+        assertEquals(FixedValidFloor.isMemberOnly, response.getBody().getIsMemberOnly());
         assertEquals(FixedValidFloor.largeSpotCapacity, response.getBody().getLargeSpotCapacity());
         assertEquals(FixedValidFloor.smallSpotCapacity, response.getBody().getSmallSpotCapacity());
     }
