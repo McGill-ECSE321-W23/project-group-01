@@ -31,7 +31,7 @@
         <button type="button" class="btn btn-success btn-sm" v-b-modal.employee-modal>Create</button>
         <button type="button" class="btn btn-success btn-sm" v-b-modal.edit-employee-modal :disabled="selectedEmployee=== null" >Update</button>
         <button type="button" class="btn btn-success btn-sm" :disabled="selectedEmployee=== null" @click="onViewSchedule(selectedEmployee) "> View Schedule</button>
-        <button type="button" class="btn btn-danger btn-sm" v-b-modal.serviceAppointments-modal :disabled="selectedEmployee=== null" @click="onDeleteEmployee(selectedEmployee) "> Delete </button>
+        <button type="button" class="btn btn-danger btn-sm"  :disabled="selectedEmployee=== null" @click="onDeleteEmployee(selectedEmployee) "> Delete </button>
         
         <br><br>
         <table class="table table-hover">
@@ -175,7 +175,7 @@
 <b-modal ref="ServiceAppointmentModal"
          id="serviceAppointments-modal"
          title="Employee Scheduled Appointments"
-         hide-footer> >
+         hide-footer> 
       <table>
         <thead>
           <tr>
@@ -190,6 +190,7 @@
           <tr v-for="(serviceAppointment, index) in serviceAppointments" :key="index">
             <td>{{ serviceAppointment.id }}</td>
             <td>{{ serviceAppointment.serviceName }}</td>
+            <td>{{ serviceAppointment.date }}</td>
             <td>{{ serviceAppointment.startTime }}</td>
             <td>{{ serviceAppointment.endTime }}</td>
           </tr>
@@ -343,8 +344,9 @@ export default {
         onViewSchedule(selectedEmployee){
             axiosClient.get("/serviceAppointment/employee/" + selectedEmployee.email)
             .then((response) => {
-                alert("Service Appointments linked to Employee account with email " + response.data.email + " has been retrieved successfully")
+                alert("Service Appointments linked to Employee account with email " + selectedEmployee.email + " has been retrieved successfully")
                 this.serviceAppointments = response.data
+                this.$bvModal.show('serviceAppointments-modal')
             }).catch((err) => {
                 alert(err.response.data)
            });
