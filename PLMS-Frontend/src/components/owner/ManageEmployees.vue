@@ -24,7 +24,7 @@
           <a class="py-2 d-none d-md-inline-block" @click="Services">Manage Services</a>
           <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
         </div>
-      </nav> 
+      </nav>
 
   <div class="container-fluid">
     <div class="row">
@@ -35,7 +35,7 @@
         <button type="button" class="btn btn-success btn-sm" v-b-modal.edit-employee-modal :disabled="selectedEmployee=== null" >Update</button>
         <button type="button" class="btn btn-success btn-sm" :disabled="selectedEmployee=== null" @click="onViewSchedule(selectedEmployee) "> View Schedule</button>
         <button type="button" class="btn btn-danger btn-sm"  :disabled="selectedEmployee=== null" @click="onDeleteEmployee(selectedEmployee) "> Delete </button>
-        
+
         <br><br>
         <table class="table table-hover">
           <thead>
@@ -44,15 +44,15 @@
               <th scope="col">Email</th>
               <th scope="col">JobTitle</th>
               <th scope="col">Hourly Wage</th>
-              
+
             </tr>
           </thead>
           <tbody>
-            <tr  v-for="(employee, index) in employees" :key="index"   @click="handleRowClick(employee)" 
-            @mouseover="handleRowHover(employee)" 
-            @mouseout="handleRowHover(null)" 
-            :class="{ 'row-highlighted': employee === hoveredEmployee, 
-            'row-selected': employee === selectedEmployee }"> 
+            <tr  v-for="(employee, index) in employees" :key="index"   @click="handleRowClick(employee)"
+            @mouseover="handleRowHover(employee)"
+            @mouseout="handleRowHover(null)"
+            :class="{ 'row-highlighted': employee === hoveredEmployee,
+            'row-selected': employee === selectedEmployee }">
                 <td>{{employee.name}}</td>
                 <td>{{employee.email}}</td>
                 <td>{{employee.jobTitle}}</td>
@@ -60,7 +60,7 @@
                 <!-- <td>
                 <div class="btn-group" role="group">
                   <button type="button" class="btn btn-warning btn-sm" :disabled="selectedEmployee=== null" v-b-modal.edit-employee-modal>Update</button>
-                  <button type="button" class="btn btn-danger btn-sm">Delete</button> 
+                  <button type="button" class="btn btn-danger btn-sm">Delete</button>
                 </div>
               </td> -->
             </tr>
@@ -142,7 +142,7 @@
                     :placeholder="selectedEmployee ? selectedEmployee.name : 'Enter Name: '">
       </b-form-input>
     </b-form-group>
-    
+
     <b-form-group id="form-password-group"
                   label="Password:"
                   label-for="form-password-input">
@@ -159,7 +159,7 @@
                     type="text"
                     v-model="editEmployeeForm.jobTitle"
                     :placeholder="selectedEmployee ? selectedEmployee.jobTitle: 'Enter Job Title:' ">
-                    
+
       </b-form-input>
     </b-form-group>
     <b-form-group id="form-hourly-wage-group"
@@ -178,7 +178,7 @@
 <b-modal ref="ServiceAppointmentModal"
          id="serviceAppointments-modal"
          title="Employee Scheduled Appointments"
-         hide-footer> 
+         hide-footer>
       <table>
         <thead>
           <tr>
@@ -239,7 +239,7 @@ export default {
                 hourlyWage: ''
             },
             serviceAppointments: [],
-            
+
         };
     },
     created() {
@@ -261,7 +261,7 @@ export default {
     //     }
     // },
     methods: {
-       
+
 
         fetchEmployees() {
            axiosClient.get("employees").then((response) => {
@@ -297,14 +297,14 @@ export default {
         //         selectedEmployeeEmail = selectedEmployee.email
         //     }
         //     else{
-                
+
         //         selectedEmployeePassword = 'no'
         //         selectedEmployeeJobTitle =''
         //         selectedEmployeeHourlyWage = 0
         //         selectedEmployeeName = ''
         //         selectedEmployeeEmail = ''
         //     };
-            
+
         // },
 
         editEmployee(request) {
@@ -389,13 +389,13 @@ export default {
             .catch(() => {
             // handle error if needed
             });
-            
+
         },
         onSubmitUpdate(evt){
                 const request = {
                     name: this.editEmployeeForm.name || this.selectedEmployee.name,
                     email: this.selectedEmployee.email ,
-                    password: this.editEmployeeForm.password || this.selectedEmployee.password, 
+                    password: this.editEmployeeForm.password || this.selectedEmployee.password,
                     jobTitle: this.editEmployeeForm.jobTitle || this.selectedEmployee.jobTitle ,
                     hourlyWage: this.editEmployeeForm.hourlyWage || this.selectedEmployee.hourlyWage,
                 };
@@ -423,7 +423,7 @@ export default {
         this.initForm();
         },
 
-        async Home() {
+      async Home() {
       await this.$router.push({name: 'OwnerHome'})
     },
     async Appointments() {

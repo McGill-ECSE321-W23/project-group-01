@@ -51,7 +51,12 @@ export default new Router({
       component: ManageEmployees
     },
     {
-      path: '/admin/create/monthly-pass',
+      path: '/employee/create/monthly-pass',
+      name:'InternalMonthlyPassCreation',
+      component: InternalCreateMonthlyPass,
+    },
+    {
+      path: '/owner/create/monthly-pass',
       name:'InternalMonthlyPassCreation',
       component: InternalCreateMonthlyPass,
     },
@@ -63,12 +68,22 @@ export default new Router({
 
     },
     {
-      path: '/admin/customers',
+      path: '/owner/customers',
       name: 'ViewMonthlyCustomer',
       component: ViewMonthlyCustomer
     },
     {
-      path: '/admin/view/guest-passes',
+      path: '/employee/customers',
+      name: 'ViewMonthlyCustomer',
+      component: ViewMonthlyCustomer
+    },
+    {
+      path: '/owner/view/guest-passes',
+      name: 'ViewGuestPasses',
+      component: ViewGuestPasses
+    },
+    {
+      path: '/employee/view/guest-passes',
       name: 'ViewGuestPasses',
       component: ViewGuestPasses
     },
