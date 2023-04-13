@@ -8,7 +8,7 @@ import SignUp from "@/components/shared/SignUp";
 import OwnerViewAppointments from "@/components/owner/OwnerViewAppointments"
 import OwnerViewServices from "@/components/owner/OwnerViewServices"
 import ParkingLotSettings from '@/components/owner/ParkingLotSettings'
-import ViewMonthlyCustomer from '@/components/customer/ViewMonthlyCustomer'
+import ViewMonthlyCustomer from '@/components/employee/ViewMonthlyCustomer'
 import ManageEmployees from "@/components/owner/ManageEmployees"
 import ViewGuestPasses from "@/components/pass/ViewGuestPasses"
 import BookServiceAppointmentGuest from "@/components/appointments/BookServiceAppointmentGuest"
@@ -73,7 +73,12 @@ export default new Router({
       component: ViewGuestPasses
     },
     {
-      path: '/admin/view/monthly-passes',
+      path: '/employee/view/monthly-passes',
+      name: 'ViewMonthlyPasses',
+      component: ViewMonthlyPasses
+    },
+    {
+      path: '/owner/view/monthly-passes',
       name: 'ViewMonthlyPasses',
       component: ViewMonthlyPasses
     },
