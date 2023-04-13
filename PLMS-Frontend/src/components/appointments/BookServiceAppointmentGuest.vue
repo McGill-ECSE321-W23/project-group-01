@@ -1,5 +1,14 @@
 <template>
   <div>
+    <nav class="site-header sticky-top py-1">
+    <div class="container d-flex flex-column flex-md-row justify-content-between">
+      <a class="py-2" href="#product">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
+          <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+        </svg>      </a>
+      <a class="py-2 d-none d-md-inline-block" @click="Home">Return to Home Page</a>
+    </div>
+  </nav>
   <div>
     <div>
         <h2>All Services</h2>
@@ -22,7 +31,7 @@
       </div>
     </div>
   <div>
-    <h2>Book a Service Appointment</h2>
+    <h2>Book a Service Appointment as a Guest</h2>
     <div>
       <label for="serviceName">Service Name:</label>
       <select id="serviceName" v-model="serviceName">
@@ -38,7 +47,7 @@
       <label for="startTime">Start Time:</label>
       <input type="time" id="startTime" name="startTime" v-model="startTime">
     </div>
-    <button type="button" :disabled="!serviceName || !date || !startTime" @click="bookServiceAppointment">Book
+    <button class="btn btn-primary" type="button" :disabled="!serviceName || !date || !startTime" @click="bookServiceAppointment">Book
       Appointment</button>
     <div>
       <p class="parkingLotHours"> {{ parkingLotHours }}</p>
@@ -68,7 +77,7 @@
       <label for="startTime">Start Time:</label>
       <input type="time" id="startTime" name="startTime" v-model="startTimeUpdate">
     </div>
-    <button type="button" :disabled="!serviceNameUpdate || !dateUpdate || !startTimeUpdate" @click="updateServiceAppointment">Update Service Appointment Details</button>
+    <button class="btn btn-success" type="button" :disabled="!serviceNameUpdate || !dateUpdate || !startTimeUpdate" @click="updateServiceAppointment">Update Service Appointment Details</button>
     <p class="success">{{ successMsgUpdate }}</p>
     <p class="error">{{ errorMsgUpdate }}</p>
   </div>
@@ -78,7 +87,7 @@
       <label for="id">Appointment ID:</label>
       <input type="text" id="id" name="id" v-model="idDelete">
     </div>
-    <button type="button" :disabled="!idDelete" @click="deleteAppointment">Cancel Service Appointment</button>
+    <button class="btn btn-danger" type="button" :disabled="!idDelete" @click="deleteAppointment">Cancel Service Appointment</button>
     <p class="success">{{ successMsgCancel }}</p>
     <p class="error">{{ errorMsgCancel }}</p>
   </div>
@@ -241,6 +250,9 @@ export default {
       this.idDelete = ''
       this.successMsgCancel = ''
       this.errorMsgCancel = ''
+    },
+    async Home(){
+      await this.$router.push({name: 'Home'})
     }
   }
 };
@@ -249,10 +261,10 @@ export default {
 <style>
   .container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
+
 
   table.center,
   div.center {

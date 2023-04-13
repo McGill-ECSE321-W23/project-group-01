@@ -21,6 +21,7 @@
         <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
       </div>
     </nav>
+  </div>
 </template>
 
 <script>
