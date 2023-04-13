@@ -27,7 +27,7 @@
     <button v-bind:disabled="createUserButtonDisabled" style="width: 50%; margin-top: 1%; margin-left: 25%" @click="createUser()" type="button" class="btn btn-primary btn-block mb-4"> Sign up </button>
 
     <div class="text-center">
-      <p>Already have an account? <a href="http://localhost:8087/#/login-user">Login</a></p>
+      <p>Already have an account? <a @click="Login">Login</a></p>
     </div>
 
   </div>
@@ -36,7 +36,7 @@
 
 <script>
 import axios from 'axios';
-const config = require('../../config');
+const config = require('../../../config');
 const frontendUrl = config.dev.host + ':' + config.dev.port;
 const axiosClient = axios.create({
   // Note the baseURL, not baseUrl
@@ -65,14 +65,16 @@ export default {
         .then((response) => {
           alert("Your account with email " + this.email + " has been created successfully")
           this.logged_user = response
-          window.location.href = "http://localhost:8087/#/login-user";
-
         })
         .catch((err) => {
           this.errorMsg = `Failed to create: ${err.response.data}`
           alert(this.errorMsg)
 
         })
+      this.$router.push({name: 'LoginUser'})
+    },
+    async Login() {
+      await this.$router.push({name: 'LoginUser'})
     }
 
   },

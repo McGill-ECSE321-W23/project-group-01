@@ -8,7 +8,7 @@
       <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/product/">
       <link href="../../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
       <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
-  
+
       <nav class="site-header sticky-top py-1">
         <div class="container d-flex flex-column flex-md-row justify-content-between">
           <a class="py-2" href="#product">
@@ -22,10 +22,10 @@
           <a class="py-2 d-none d-md-inline-block" @click="Appointments">Manage Appointments</a>
           <a class="py-2 d-none d-md-inline-block" @click="ParkingLot">Manage Parking Lot</a>
           <a class="py-2 d-none d-md-inline-block" @click="Services">Manage Services</a>
-          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
+          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/user/login">Sign Out</a>
         </div>
       </nav>
-  
+
       <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
         <img width="30%" src="../../assets/user.png.png" style="margin-bottom: -5%">
         <div class="col-md-5 p-lg-5 mx-auto my-5">
@@ -55,16 +55,16 @@
         </div>
       </div>
       </div>
-      
-  
+
+
     </div>
   </template>
-  
+
   <script>
 import OwnerViewAppointments from '@/components/owner/OwnerViewAppointments.vue'
 import ParkingLotSettings from '@/components/owner/ParkingLotSettings.vue'
 import OwnerViewServices from '@/components/owner/OwnerViewServices.vue'
-import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer.vue'
+import ViewMonthlyCustomer from '@/components/employee/ViewMonthlyCustomer.vue'
   import axios from 'axios';
   const config = require('../../../config');
   const frontendUrl = config.dev.host + ':' + config.dev.port;
@@ -81,7 +81,7 @@ import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer.vue'
     OwnerViewServices,
     ViewMonthlyCustomer
     },
-    
+
     data() {
       return {
         errorMsg: '',
@@ -137,7 +137,7 @@ import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer.vue'
     }
   }
   </script>
-  
+
   <style scoped>
   .big-high{
     line-height: 100px;
@@ -147,4 +147,4 @@ import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer.vue'
   a {
   padding: 20px;
 }
-  </style>  
+  </style>

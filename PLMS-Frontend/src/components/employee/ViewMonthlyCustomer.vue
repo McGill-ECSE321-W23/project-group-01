@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../assets/logo-transparent-png.png">
+    <link rel="icon" href="src/assets/logo-transparent-png.png">
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/product/">
     <link href="../../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
@@ -21,22 +21,22 @@
           <a class="py-2 d-none d-md-inline-block" @click="Appointments">Manage Appointments</a>
           <a class="py-2 d-none d-md-inline-block" @click="ParkingLot">Manage Parking Lot</a>
           <a class="py-2 d-none d-md-inline-block" @click="Services">Manage Services</a>
-          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
+          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/user/login">Sign Out</a>
         </div>
       </nav>
 
       <div>
       <h1>Customer Information</h1>
-  
+
       <form @submit.prevent="searchCustomer">
         <label for="email">Email:</label>
           <input type="email" id="email" v-model="searchEmail">
         <button class="btn btn-primary" type="submit">Search</button>
       </form>
       <p class="error">{{ gettingCustomerErrorMsg }}</p>
-      
 
-      <div class="container-fluid">
+
+      <div style="margin-top: 2%" class="container-fluid">
         <div class="row">
           <div class="col-md-6">
             <h2>All Customers</h2>
@@ -48,8 +48,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(customer, index) in customers" :key="index" 
-                @click="handleRowClick(customer)" @mouseover="handleRowHover(customer)" 
+                <tr v-for="(customer, index) in customers" :key="index"
+                @click="handleRowClick(customer)" @mouseover="handleRowHover(customer)"
                 @mouseout="handleRowHover(null)" :class="{ 'row-highlighted': customer === hoveredCustomer, 'row-selected': customer === selectedCustomer }">
                   <td>{{ customer.name }}</td>
                   <td>{{ customer.email }}</td>
@@ -66,7 +66,7 @@
                 <p>Name: {{ selectedCustomer.name }}</p>
                 <p>Email: {{ selectedCustomer.email }}</p>
               </div>
-              
+
 
               <button class="btn btn-secondary dropdown-toggle" @click="togglePasses()">
                 Show Passe(s)
@@ -101,7 +101,7 @@
                 <p class="error" v-if="gettingPassErrorMsg">{{ gettingPassErrorMsg }}</p>
               </div>
 
-              
+
               <div v-if="showAppointments">
                 <p>Appointments:</p>
                 <table class="table table-striped" v-if="!gettingAppointmentsErrorMsg">
@@ -134,11 +134,11 @@
         </div>
       </div>
       <div v-if="selectedCustomer">
-      
-        
-        
+
+
+
       </div>
-      
+
     </div>
   </div>
   </div>
@@ -154,6 +154,7 @@ const axiosClient = axios.create({
 });
 
 export default {
+  name: 'ViewMonthlyCustomer',
     data() {
         return {
             customers: [],

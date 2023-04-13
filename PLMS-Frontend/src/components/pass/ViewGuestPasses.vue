@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../assets/logo-transparent-png.png">
+    <link rel="icon" href="src/assets/logo-transparent-png.png">
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/product/">
     <link href="../../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
@@ -55,7 +55,7 @@
               <th scope="col">Start Time</th>
               <th scope="col">End Time</th>
               <th scope="col">Fee</th>
-              
+
             </tr>
           </thead>
           <tbody>
@@ -78,9 +78,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
-            </tr>      
-            <tr  v-for="(guestPass, index) in guestPasses" :key="index"   @click="handleRowClick(guestPass)" 
-            :class="{}"> 
+            </tr>
+            <tr  v-for="(guestPass, index) in guestPasses" :key="index"   @click="handleRowClick(guestPass)"
+            :class="{}">
                 <td>{{guestPass.id}}</td>
                 <td>{{guestPass.confirmationCode}}</td>
                 <td>{{guestPass.licensePlate}}</td>
@@ -95,7 +95,7 @@
           </tbody>
         </table>
 
-        
+
       </div>
     </div>
   </div>
@@ -104,7 +104,7 @@
 
 <script>
 import axios from 'axios';
-import GeneralCreateGuestPass from '@/components/GeneralCreateGuestPass'
+import GeneralCreateGuestPass from '@/components/pass/GeneralCreateGuestPass'
 
 const config = require('../../../config');
 const frontendUrl = config.dev.host + ':' + config.dev.port;
@@ -118,7 +118,7 @@ export default {
    components: {
         GeneralCreateGuestPass
     },
-    
+
     data() {
         return {
             guestPasses: [],
@@ -137,11 +137,11 @@ export default {
         // Fetch all employees on component mount
         this.fetchGuestPasses();
         this.fetchFloors();
-        
+
     },
-   
+
     methods: {
-        
+
         clearForm() {
         this.modalContent = null;
         },
@@ -168,20 +168,20 @@ export default {
             }
             else{
                 axiosClient.get("/guestPass/" + this.IDTextInput).then((response) => {
-                
+
                     this.guestPasses.push(response.data)
                 }).catch((err) => {
                 alert(err.response.data)
                 });
             }
-            
-           
+
+
         },
 
         handleDateSelect(date){
             axiosClient.get("/guestPass/date/" + date).then((response) => {
                 this.guestPasses = response.data
-                
+
            }).catch((err) => {
             alert(err.response.data)
            });
@@ -222,9 +222,9 @@ export default {
                 alert(err.response.data)
            });
             }
-            
+
         },
-        
+
         // handleRowClick(employee) {
         //   this.selectedEmployee = employee;
         //   console.log('selected new employee');

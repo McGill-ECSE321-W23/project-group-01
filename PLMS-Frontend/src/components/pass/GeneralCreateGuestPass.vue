@@ -13,12 +13,12 @@
               <input type="text" placeholder="floor number" id="floor" v-model="floorNumber">
           </td>
           <td>
-              
+
               <input type="checkBox" id="isLarge" v-model="isLarge">
           </td>
           <td>
               <input type="text" placeholder="spot number" id="spot" v-model="spotNumber" v-bind:disabled="createGuestPassButtonDisabled">
-              
+
           </td>
         </tr>
         <tr>
@@ -121,7 +121,7 @@
       </table>
 
     <br>
-    
+
     <p>
       <button v-bind:disabled="findGuestPassButtonDisabled" @click="findGuestPass()">Find Pass</button>
     </p>
@@ -136,7 +136,7 @@
 
 <script>
 import axios from 'axios'
-var config = require('../../config')
+var config = require('../../../config')
 const frontendUrl = config.dev.host + ':' + config.dev.port;
 
 const AXIOS = axios.create({
@@ -145,7 +145,7 @@ const AXIOS = axios.create({
 })
 
 export default {
-  name: 'GuestPassCreationAndSearch',
+  name: 'GuestCreateGuestPass',
   data(){
     return{
       floors: [],
@@ -181,10 +181,10 @@ export default {
         this.floors = response.data
         // this.floorNumbers = response.data.map((floor) => floor.floorNumber)
         this.floorNumbers = []
-      
-       // Get all floors and subsequent floor numbers 
+
+       // Get all floors and subsequent floor numbers
        for (const floor of this.floors) {
-        
+
         if (!floor.memberOnly) {
           const floorNumber = floor.floorNumber;
           const largeSpotCapacity = floor.largeSpotCapacity;
@@ -213,7 +213,7 @@ export default {
       console.log('spotnumbermap', this.spotNumbersMap)
       })
       .catch(error => {
-        
+
         alert(error.data)
       })
   },
@@ -243,7 +243,7 @@ export default {
         else{
           console.error("The confirmation code entered is incorrect")
         }
-        
+
       })
       .catch((err) => {
         this.errorMsgIdentification = `Failed to find pass: ${err.response.data}`;
@@ -271,15 +271,15 @@ export default {
     console.log('test')
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let code = '';
-    
+
     // Generate the first two letters
     for (let i = 0; i < 2; i++) {
       code += letters.charAt(Math.floor(Math.random() * letters.length));
     }
-    
+
     // Add the underscore
     code += '_';
-    
+
     // Generate the six numbers
     for (let i = 0; i < 6; i++) {
       code += Math.floor(Math.random() * 10);
@@ -300,9 +300,9 @@ export default {
     selectSpotDisabled(){
     return (this.floorNumber == '')
     },
-  
+
   }
-  
+
 }
 
 
