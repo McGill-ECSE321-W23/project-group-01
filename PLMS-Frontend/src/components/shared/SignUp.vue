@@ -65,14 +65,13 @@ export default {
         .then((response) => {
           alert("Your account with email " + this.email + " has been created successfully")
           this.logged_user = response
-          this.$router.push({name: 'LoginUser'})
-
         })
         .catch((err) => {
           this.errorMsg = `Failed to create: ${err.response.data}`
           alert(this.errorMsg)
 
         })
+      this.$router.push({name: 'LoginUser'})
     },
     async Login() {
       await this.$router.push({name: 'LoginUser'})
