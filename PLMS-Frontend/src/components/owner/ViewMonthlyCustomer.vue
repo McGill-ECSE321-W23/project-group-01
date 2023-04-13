@@ -9,7 +9,6 @@
     <link href="../../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
     <nav class="site-header sticky-top py-1">
-
         <div class="container d-flex flex-column flex-md-row justify-content-between">
           <a class="py-2" href="#product">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
@@ -17,8 +16,8 @@
             </svg>      </a>
             <a class="py-2 d-none d-md-inline-block"  @click="Home">Home</a>
             <a class="py-2 d-none d-md-inline-block"  @click="Customers">Manage Customer Accounts</a>
-          <a class="py-2 d-none d-md-inline-block"  href="#">Manage Employee Accounts</a>
-          <a class="py-2 d-none d-md-inline-block"  href="#">Manage Passes</a>
+          <a class="py-2 d-none d-md-inline-block"  @click="Employees">Manage Employee Accounts</a>
+          <a class="py-2 d-none d-md-inline-block"  @click="Passes">Manage Passes</a>
           <a class="py-2 d-none d-md-inline-block" @click="Appointments">Manage Appointments</a>
           <a class="py-2 d-none d-md-inline-block" @click="ParkingLot">Manage Parking Lot</a>
           <a class="py-2 d-none d-md-inline-block" @click="Services">Manage Services</a>
@@ -32,7 +31,7 @@
       <form @submit.prevent="searchCustomer">
         <label for="email">Email:</label>
           <input type="email" id="email" v-model="searchEmail">
-        <button type="submit">Search</button>
+        <button class="btn btn-primary" type="submit">Search</button>
       </form>
       <p class="error">{{ gettingCustomerErrorMsg }}</p>
       
@@ -41,7 +40,7 @@
         <div class="row">
           <div class="col-md-6">
             <h2>All Customers</h2>
-            <table class="table">
+            <table class="table table-striped">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -77,7 +76,7 @@
               </button>
               <div v-if="showPasses">
                 <p>Passes:</p>
-                <table class="table table-hover" v-if="!gettingPassErrorMsg">
+                <table class="table table-striped" v-if="!gettingPassErrorMsg">
                   <thead>
                     <tr>
                       <th>Start Date</th>
@@ -105,7 +104,7 @@
               
               <div v-if="showAppointments">
                 <p>Appointments:</p>
-                <table class="table table-hover" v-if="!gettingAppointmentsErrorMsg">
+                <table class="table table-striped" v-if="!gettingAppointmentsErrorMsg">
                   <thead>
                     <tr>
                       <th>Date</th>
@@ -188,6 +187,12 @@ export default {
     },
     async Customers(){
       await this.$router.push({name: 'ViewMonthlyCustomer'})
+    },
+    async Employees(){
+      await this.$router.push({name: 'ManageEmployees'})
+    },
+    async Passes(){
+      await this.$router.push({name: 'ViewGuestPasses'})
     },
         async fetchCustomers() {
             try {

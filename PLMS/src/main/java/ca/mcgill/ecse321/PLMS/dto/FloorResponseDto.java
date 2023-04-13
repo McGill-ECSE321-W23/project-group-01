@@ -37,7 +37,7 @@ public class FloorResponseDto {
     return this.floorNumber;
   }
 
-  public boolean getMemberOnly(){
+  public boolean getIsMemberOnly(){
     return this.isMemberOnly;
   }
 
@@ -56,7 +56,7 @@ public class FloorResponseDto {
     this.floorNumber = floorNumber;
   }
 
-  public void setMemberOnly(boolean isMemberOnly) {
+  public void setIsMemberOnly(boolean isMemberOnly) {
       this.isMemberOnly = isMemberOnly;
   }
 

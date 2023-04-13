@@ -8,10 +8,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import ca.mcgill.ecse321.PLMS.model.Floor;
 import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
 import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
-import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
+import ca.mcgill.ecse321.PLMS.service.FloorService;
+import ca.mcgill.ecse321.PLMS.service.OwnerService;
+import ca.mcgill.ecse321.PLMS.service.ParkingLotService;
 
 /**
  * Main Application class for the PLMS software system
@@ -21,13 +24,22 @@ import ca.mcgill.ecse321.PLMS.repository.ParkingLotRepository;
 @SpringBootApplication
 public class PlmsApplication {
 
+	//Initialization of the parkingLot if it is the first time it is used
 	@Bean
-    CommandLineRunner initDatabase(@Autowired OwnerRepository ownerRepository,@Autowired ParkingLotRepository parkingLotRepository) {
-         
+    CommandLineRunner initDatabase(@Autowired OwnerService ownerService,@Autowired OwnerRepository ownerRepository,@Autowired ParkingLotService parkingLotService, @Autowired FloorService floorService) {
         return args -> {
 			if (ownerRepository.count() == 0){
-				ownerRepository.save(new Owner("admin@mail.com", "MyParking1ot$", "Admin"));
-				parkingLotRepository.save(new ParkingLot(new Time(8, 0, 0), new Time(17, 0, 0), 20, 10, 30, 50));
+				ownerService.createOwnerAccount(new Owner("admin@mail.com", "MyParking1ot$", "Admin"));
+				parkingLotService.createParkingLot(new ParkingLot(new Time(8, 0, 0), new Time(17, 0, 0), 20, 10, 30, 50));
+				floorService.createFloor(new Floor(1, 20, 50, false));
+				for (int i=2; i<6; i++){
+					if (i == 2 || i == 3){
+						floorService.createFloor(new Floor(i, 0, 100, true));
+					}
+					else {
+						floorService.createFloor(new Floor(i, 0, 100, false));
+					}
+				}
 			}
         };
     }
