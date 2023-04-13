@@ -9,7 +9,7 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/product/">
     <link href="../../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
-    <nav class="site-header sticky-top py-1">
+    <!-- <nav class="site-header sticky-top py-1">
         <div class="container d-flex flex-column flex-md-row justify-content-between">
           <a class="py-2" href="#product">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
@@ -24,13 +24,13 @@
           <a class="py-2 d-none d-md-inline-block" @click="Services">Manage Services</a>
           <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
         </div>
-      </nav>
+      </nav> -->
 
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-10">
-        <h1>Passes</h1>
-        <hr><br><br>
+        <!-- <h1>Passes</h1> -->
+        <!-- <hr><br><br> -->
         <!-- <button type="button" class="btn btn-success btn-sm" v-b-modal.employee-modal>Create</button>
         <button type="button" class="btn btn-success btn-sm" v-b-modal.edit-employee-modal :disabled="selectedEmployee=== null" >Update</button>
         <button type="button" class="btn btn-success btn-sm" :disabled="selectedEmployee=== null" @click="onViewSchedule(selectedEmployee) "> View Schedule</button>
@@ -242,7 +242,7 @@ export default {
 
         clearIDTextField() {
             this.IDTextInput == ""
-            tMonthly()
+            // fetchMonthly()
         },
 
         handleFloorSelect(floorNumber){
