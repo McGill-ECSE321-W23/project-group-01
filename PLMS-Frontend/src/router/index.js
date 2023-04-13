@@ -51,6 +51,11 @@ export default new Router({
       component: ManageEmployees
     },
     {
+      path: 'owner/manage/employees',
+      name: 'ViewMonthlyCustomer',
+      component: ViewMonthlyCustomer
+    },
+    {
       path: '/employee/home/:email',
       name: 'EmployeeHome',
       component: EmployeeHome,
