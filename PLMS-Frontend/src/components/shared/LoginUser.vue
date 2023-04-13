@@ -42,7 +42,9 @@
       <p>Don't have an account? </p>
     </div>
     <button style="background-color:lightskyblue; width: 20%; margin-top: 1%; margin-left: 40%;"  type="button" class="btn btn-primary btn-block mb-4" @click="SignUp">Sign up</button>
-    <button style="background-color:lightskyblue; width: 20%; margin-top: 1%; margin-left: 40%;"  type="button" class="btn btn-primary btn-block mb-4" @click="Guest">Continue as Guest</button>
+    <a @click="SignUp">
+      <button style="background-color:lightskyblue; width: 20%; margin-top: 1%; margin-left: 40%;"  type="button" class="btn btn-primary btn-block mb-4" @click="Guest">Continue as Guest</button>
+    </a>
 
   </div>
 </template>
