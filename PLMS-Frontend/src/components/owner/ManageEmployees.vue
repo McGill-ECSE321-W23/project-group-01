@@ -37,7 +37,7 @@
         <button type="button" class="btn btn-danger btn-sm"  :disabled="selectedEmployee=== null" @click="onDeleteEmployee(selectedEmployee) "> Delete </button>
         
         <br><br>
-        <table class="table table-hover">
+        <table class="table">
           <thead>
             <tr>
               <th scope="col">Name</th>
@@ -459,5 +459,13 @@ a {
     justify-content: center;
     align-items: center;
   }
+    .row-highlighted {
+    background-color: #cbcbcb;
+    cursor: pointer;
+    }
+    .row-selected{
+    background-color: #8e8e8e;
+    }
+
 </style>
 
