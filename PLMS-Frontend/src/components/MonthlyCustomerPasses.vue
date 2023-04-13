@@ -28,7 +28,7 @@
       </div>
     </nav>
     <!-- Used this button to debug, needs to be removed -->
-    <!-- <button type="button" class="btn btn-success btn-sm" @click="getSpotNumbers">Create</button> -->
+    <!-- <button type="button" class="btn btn-success btn-sm" @click="generateConfirmationCode()">Create</button> -->
 
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
 
@@ -46,10 +46,10 @@
               </select>
             </div>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label >Confirmation Code</label>
             <input type="text" class="form-control"  placeholder="JK95HO95T3" v-model="confirmationCode">
-          </div>
+          </div> -->
           <div class="form-group">
             <label >License Plate</label>
             <input type="text" class="form-control"   placeholder="T3ST41"  v-model="licensePlate">
@@ -107,7 +107,7 @@ export default {
       floorNumbers: [],
       spotNumbers: [],
       spotNumber: '',
-      confirmationCode: '',
+      // confirmationCode: '',
       licensePlate: '',
       floorNumber: 0,
       isLarge: false,
@@ -173,14 +173,15 @@ export default {
       await this.$router.push({name: 'MonthlyCustomerManageAccount', params: {email: this.email}})
     },
     async createPass() {
+      this.confirmationCode = this.generateConfirmationCode()
       const request = {numberOfMonths: this.numberOfMonths, spotNumber: this.spotNumber, confirmationCode: this.confirmationCode, licensePlate: this.licensePlate,
         floorNumber: this.floorNumber, isLarge: this.isLarge, startDate: this.startDate, customerEmail: this.email};
       axiosClient.post("/monthlypass", request)
         .then((response) => {
-          alert("Your pass has been created successfully")
+          alert(`Your pass has been created successfully, \n Confirmation code: ${response.data.confirmationCode}`)
         })
         .catch((err) => {
-          this.errorMsg = `Failed to create: ${err.response.data}`
+          this.errorMsg = `Failed to create: ${err.response.data.confirmationCode}`
           alert(this.errorMsg)
         })
       await this.RouteHome()
@@ -202,10 +203,33 @@ export default {
         console.log(`Spot numbers not found for floor ${floorNumber} and spot type ${spotType}.`)
       }
     },
+    generateConfirmationCode() {
+    console.log('test')
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let code = '';
+    
+    // Generate the first two letters
+    for (let i = 0; i < 2; i++) {
+      code += letters.charAt(Math.floor(Math.random() * letters.length));
+    }
+    
+    // Add the underscore
+    code += '_';
+    
+    // Generate the six numbers
+    for (let i = 0; i < 6; i++) {
+      code += Math.floor(Math.random() * 10);
+    }
+    console.log(code)
+    return code;
   },
+
+  },
+  
+  
   computed: {
     createUserButtonDisabled() {
-      return !(this.numberOfMonths !== 0)|| !this.spotNumber.trim() || !this.confirmationCode.trim() || !this.licensePlate.trim()
+      return !(this.numberOfMonths !== 0)|| !this.spotNumber.trim() || !this.licensePlate.trim()
         ||  !(this.floorNumber !== 0)  || !this.startDate.trim();
     },
     isSelectDisabled(){
