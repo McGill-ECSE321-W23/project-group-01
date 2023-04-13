@@ -31,7 +31,6 @@
 <script>
 export default {
   name: "CustomerNavBar"
-  //f
 }
 </script>
 

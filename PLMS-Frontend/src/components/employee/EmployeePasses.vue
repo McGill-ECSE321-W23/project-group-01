@@ -30,16 +30,7 @@
 </template>
 
 <script>
-// import axios from 'axios';
 import ViewPasses from '@/components/ViewPasses'
-
-// const config = require('../../../config');
-// const frontendUrl = config.dev.host + ':' + config.dev.port;
-// const axiosClient = axios.create({
-//   // Note the baseURL, not baseUrl
-//   baseURL: config.dev.backendBaseUrl,
-//   headers: { 'Access-Control-Allow-Origin': frontendUrl }
-// });
 
 export default{
     components: {

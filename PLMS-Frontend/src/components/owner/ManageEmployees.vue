@@ -246,20 +246,6 @@ export default {
         // Fetch all employees on component mount
         this.fetchEmployees();
     },
-    // computed: {
-    //     selectedEmployeePassword() {
-    //         this.selectedEmployeePassword = this.selectedEmployee != null ? this.selectedEmployee.password : '';
-    //     },
-    //     selectedEmployeeJobTitle() {
-    //     return this.selectedEmployee != null ? this.selectedEmployee.jobTitle : '';
-    //     },
-    //     selectedEmployeeName(){
-    //     return this.selectedEmployee  != null ? this.selectedEmployee.name : '';
-    //     },
-    //     selectedEmployeeHourlyWage(){
-
-    //     }
-    // },
     methods: {
 
 
@@ -287,25 +273,6 @@ export default {
                     });
             });
         },
-
-        // assignEmployeeValues(selectedEmployee){
-        //     if (selectedEmployee != null){
-        //         selectedEmployeePassword = selectedEmployee.password
-        //         selectedEmployeeJobTitle = selectedEmployee.jobTitle
-        //         selectedEmployeeHourlyWage =  selectedEmployee.hourlyWage
-        //         selectedEmployeeName = selectedEmployee.name
-        //         selectedEmployeeEmail = selectedEmployee.email
-        //     }
-        //     else{
-
-        //         selectedEmployeePassword = 'no'
-        //         selectedEmployeeJobTitle =''
-        //         selectedEmployeeHourlyWage = 0
-        //         selectedEmployeeName = ''
-        //         selectedEmployeeEmail = ''
-        //     };
-
-        // },
 
         editEmployee(request) {
             // Promise is used to prevent the form from hiding if request was wrong

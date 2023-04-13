@@ -107,7 +107,6 @@ export default {
       floorNumbers: [],
       spotNumbers: [],
       spotNumber: '',
-      // confirmationCode: '',
       licensePlate: '',
       floorNumber: 0,
       isLarge: false,
@@ -117,21 +116,16 @@ export default {
     };
   },
   created() {
-    axiosClient.get("/floor")
+    axiosClient.get("/floor") // Get floors to display the available spots
       .then(response => {
         this.floors = response.data
         this.floorNumbers = []
-
-       // Get all floors and subsequent floor numbers
        for (const floor of this.floors) {
-        // add if member only
         console.log(floor.memberOnly)
         if (floor.memberOnly) {
           const floorNumber = floor.floorNumber;
           const largeSpotCapacity = floor.largeSpotCapacity;
           const smallSpotCapacity = floor.smallSpotCapacity;
-
-          // Generate spot numbers for large and for small spots
           const largeSpots = [];
           for (let i = 1; i <= largeSpotCapacity; i++) {
             largeSpots.push(`${floorNumber}L${i}`);
@@ -143,8 +137,6 @@ export default {
           }
 
           this.floorNumbers.push(floorNumber);
-
-          // Add the spot numbers to the hashmap
           this.spotNumbersMap[floorNumber] = {
             large: largeSpots,
             small: smallSpots
@@ -159,6 +151,7 @@ export default {
       })
   },
   methods: {
+    //Redirection to pages
     async RouteStart() {
       await this.$router.push({name: 'Home'})
     },
@@ -174,7 +167,7 @@ export default {
     async RouteManage() {
       await this.$router.push({name: 'MonthlyCustomerManageAccount', params: {email: this.email}})
     },
-    async createPass() {
+    async createPass() { // Method to create a new monthly pass
       this.confirmationCode = this.generateConfirmationCode()
       const request = {numberOfMonths: this.numberOfMonths, spotNumber: this.spotNumber, confirmationCode: this.confirmationCode, licensePlate: this.licensePlate,
         floorNumber: this.floorNumber, isLarge: this.isLarge, startDate: this.startDate, customerEmail: this.email};
@@ -188,13 +181,13 @@ export default {
         })
       await this.RouteHome()
     },
-    onIsLargeChange() {
+    onIsLargeChange() { // Toggle monthly pass to large spot monthly passes
       this.isLarge = !this.isLarge;
       console.log('changed', this.isLarge)
       this.getSpotNumbers();
     },
 
-    getSpotNumbers(){
+    getSpotNumbers(){ // Method to format the spot number of a particular spot
       this.spotNumber = ''
       const floorNumber = this.floorNumber.toString()
       const spotType = this.isLarge? "large" : "small"
@@ -205,7 +198,8 @@ export default {
         console.log(`Spot numbers not found for floor ${floorNumber} and spot type ${spotType}.`)
       }
     },
-    generateConfirmationCode() {
+
+    generateConfirmationCode() { // Create a random confirmation code
     console.log('test')
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let code = '';

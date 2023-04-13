@@ -134,11 +134,7 @@
         </div>
       </div>
       <div v-if="selectedCustomer">
-
-
-
       </div>
-
     </div>
   </div>
   </div>
@@ -174,6 +170,7 @@ export default {
         this.fetchCustomers();
     },
     methods: {
+      // Redirection to pages
       async Home() {
       await this.$router.push({name: 'OwnerHome'})
     },
@@ -204,7 +201,7 @@ export default {
                 this.gettingAllCustomerErrorMsg = error.response.data;
             }
         },
-        async fetchMonthlyCustomer(email) {
+        async fetchMonthlyCustomer(email) { //Fetch the information of specifically specified customers
           try {
             const response = await axiosClient.get(`/customer?email=${email}`);
             this.updateSelectedMonthlyCustomer(response.data);
@@ -213,7 +210,7 @@ export default {
             this.gettingCustomerErrorMsg = error.response.data;
           }
         },
-        async updateSelectedMonthlyCustomer(monthlyCustomer){
+        async updateSelectedMonthlyCustomer(monthlyCustomer){ // Method to update the account of a designated customer
           try {
             this.selectedCustomer = monthlyCustomer;
             const responsePass = await axiosClient.get(`/monthlypass/customer/${monthlyCustomer.email}`);
@@ -234,7 +231,7 @@ export default {
         searchCustomer() {
           this.fetchMonthlyCustomer(this.searchEmail);
         },
-        handleRowClick(customer) {
+        handleRowClick(customer) { // When row is clicked, update a customer
           this.updateSelectedMonthlyCustomer(customer);
         },
         handleRowHover(customer) {

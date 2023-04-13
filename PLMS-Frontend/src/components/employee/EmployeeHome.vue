@@ -78,7 +78,7 @@ const axiosClient = axios.create({
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
 });
 export default {
-  name: "EmployeeHome",
+  name: "EmployeeHome", // Employee home page
   props: {
     email: {
       type: String,
@@ -96,7 +96,7 @@ export default {
     }
   },
   created() {
-    axiosClient.get("/employee?email=" + this.email)
+    axiosClient.get("/employee?email=" + this.email) // Fetch name and password of the employee logged in
       .then(response => {
         this.name = response.data.name
         this.password = response.data.password
@@ -107,14 +107,14 @@ export default {
       })
 
     console.log(this.email)
-    axiosClient.get(`/serviceAppointment/employee/${this.email}`).then(response => {
+    axiosClient.get(`/serviceAppointment/employee/${this.email}`).then(response => { // Fetch the service appointments which the logged in employee is appointed to
       this.appointments = response.data
     }).catch(error => {
       console.log(error.response.data)
     })
   },
   methods : {
-    async Passes() {
+    async Passes() { // Redirect to the employee pass page
       await this.$router.push({name: 'EmployeePasses'})
     },
   }
