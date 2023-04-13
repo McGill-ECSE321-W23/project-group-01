@@ -33,6 +33,12 @@
         <button type="button" class="btn btn-success btn-sm" :disabled="selectedEmployee=== null" @click="onViewSchedule(selectedEmployee) "> View Schedule</button>
         <button type="button" class="btn btn-danger btn-sm"  :disabled="selectedEmployee=== null" @click="onDeleteEmployee(selectedEmployee) "> Delete </button> -->
         <button type="button" class="btn btn-success btn-sm" @click="fetchGuestPasses() "> Clear Filters</button>
+        <b-button type="button" class="btn btn-success btn-sm" @click="openCreateModal"> Create New Pass</b-button>
+        <b-modal v-if='showModal' v-model="showModal" title ="Create">
+            <component :is="modalContent"></component>
+        </b-modal>
+        <br><br>
+
         <br><br>
         <table class="table table-hover">
           <thead>
@@ -96,6 +102,7 @@
 
 <script>
 import axios from 'axios';
+import GeneralCreateGuestPass from '@/components/GeneralCreateGuestPass'
 
 const config = require('../../../config');
 const frontendUrl = config.dev.host + ':' + config.dev.port;
@@ -105,6 +112,10 @@ const axiosClient = axios.create({
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
 });
 export default {
+
+   components: {
+        GeneralCreateGuestPass
+    },
     
     data() {
         return {
@@ -115,6 +126,9 @@ export default {
             editFloorInput: '',
             IDTextInput: '',
             selectedDate: null,
+
+            showModal: false,
+            modalContent: null,
         };
     },
     created() {
@@ -126,6 +140,15 @@ export default {
    
     methods: {
         
+        clearForm() {
+        this.modalContent = null;
+        },
+
+        openCreateModal() {
+            this.modalContent = GeneralCreateGuestPass;
+            this.showModal = true;
+        },
+
         clearInputs(){
             this.IDTextInput = ""
             this.selectedDate = null

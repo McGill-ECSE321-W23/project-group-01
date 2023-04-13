@@ -28,7 +28,7 @@
       </div>
     </nav>
     <!-- Used this button to debug, needs to be removed -->
-    <button type="button" class="btn btn-success btn-sm" @click="generateConfirmationCode()">Create</button>
+    <!-- <button type="button" class="btn btn-success btn-sm" @click="generateConfirmationCode()">Create</button> -->
 
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
 
