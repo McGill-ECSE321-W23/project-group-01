@@ -125,7 +125,7 @@ export default {
     }
   },
   created() {
-    axiosClient.get("/customer?email="+this.email)
+    axiosClient.get("/customer?email="+this.email) // Retrieve the name and password of the monthly customer from the path URL
       .then(response => {
         this.name = response.data.name
         this.password = response.data.password
@@ -134,7 +134,7 @@ export default {
         let err = `Error: ${error.response.data}`
         alert(err)
       })
-    axiosClient.get("/monthlypass/customer/"+this.email)
+    axiosClient.get("/monthlypass/customer/"+this.email) // Fetch the monthly passes of the customer logged in
       .then(response => {
         this.passes = response.data
       })
@@ -142,12 +142,13 @@ export default {
         let err = `Error: ${error.response.data}`
         alert(err)
       })
-    axiosClient.get("/serviceAppointment/customer/"+this.email)
+    axiosClient.get("/serviceAppointment/customer/"+this.email) // Fetch the service appointments of the customer logged in
       .then(response => {
         this.appointments = response.data
       })
   },
   methods: {
+    //Redirection to other pages
     async RouteStart() {
       await this.$router.push({name: 'Home'})
     },

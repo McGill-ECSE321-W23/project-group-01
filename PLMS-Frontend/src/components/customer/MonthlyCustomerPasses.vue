@@ -93,7 +93,7 @@ const axiosClient = axios.create({
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
 });
 export default {
-  name: "MonthlyCustomerPasses",
+  name: "MonthlyCustomerPasses", // Page to book monthly customer passes
   props: {
     email: {
       type: String,
@@ -120,7 +120,6 @@ export default {
     axiosClient.get("/floor")
       .then(response => {
         this.floors = response.data
-        // this.floorNumbers = response.data.map((floor) => floor.floorNumber)
         this.floorNumbers = []
 
        // Get all floors and subsequent floor numbers

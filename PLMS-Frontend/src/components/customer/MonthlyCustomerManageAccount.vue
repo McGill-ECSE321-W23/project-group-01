@@ -67,7 +67,7 @@ const axiosClient = axios.create({
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
 });
 export default {
-  name: "MonthlyCustomerManageAccount",
+  name: "MonthlyCustomerManageAccount", // Page for the customer to manage his account
   props: {
     email: {
       type: String,
@@ -82,7 +82,7 @@ export default {
     }
   },
   created() {
-    axiosClient.get("/customer?email="+this.email)
+    axiosClient.get("/customer?email="+this.email) // Fetch the name and password of the logged in customer
       .then(response => {
         this.name = response.data.name
         this.password = response.data.password
@@ -96,6 +96,7 @@ export default {
     document.getElementById("password").value = this.password
   },
   methods: {
+    // Redirection to other pages
     async RouteStart() {
       await this.$router.push({name: 'Home'})
     },
@@ -111,7 +112,7 @@ export default {
     async RouteApp() {
       await this.$router.push({name: 'MonthlyCustomerAppointments', params: {email: this.email}})
     },
-    async updateAcc() {
+    async updateAcc() { // Method to update accounts
       const request = {email: this.email, password: this.password, name: this.name}
       axiosClient.put("/customer/update", request)
         .then((response) => {

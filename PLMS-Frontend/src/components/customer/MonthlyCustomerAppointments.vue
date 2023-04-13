@@ -77,7 +77,7 @@ const axiosClient = axios.create({
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
 });
 export default {
-  name: "MonthlyCustomerAppointments",
+  name: "MonthlyCustomerAppointments", // Component name
   props: {
     email: {
       type: String,
@@ -96,7 +96,7 @@ export default {
     }
   },
   created() {
-    axiosClient.get("/serviceAppointment/customer/" + this.email)
+    axiosClient.get("/serviceAppointment/customer/" + this.email) // Fetch the service appointments of the logged in customer to display them
       .then(response => {
         this.appointments = response.data
       })
@@ -104,7 +104,7 @@ export default {
         let err = `Error: ${error.response.data}`
         alert(err)
       })
-    axiosClient.get("/service")
+    axiosClient.get("/service") // Fetch available service for the customer to chose from
       .then(response => {
         this.services= response.data
       })
@@ -114,6 +114,7 @@ export default {
       })
   },
   methods: {
+    //Redirection to other pages
     async RouteStart() {
       await this.$router.push({name: 'Home'})
     },
@@ -129,7 +130,7 @@ export default {
     async RouteManage() {
       await this.$router.push({name: 'MonthlyCustomerManageAccount', params: {email: this.email}})
     },
-    async createApp() {
+    async createApp() { // Method to create an appointment to the customer
       const request = {date: this.date, startTime: this.startTime, serviceName: this.serviceName, userEmail: this.email}
       axiosClient.post("/serviceAppointment", request)
         .then((response) => {
@@ -142,7 +143,7 @@ export default {
       await this.RouteHome()
 
     },
-    async setValues() {
+    async setValues() { // Method that maps the values in the input fields to be used to create the new appointment
       document.getElementById("form-update").style.display = ""
       if (document.getElementById("select").value !== "Create an appointment") {
         this.selectedApp = document.getElementById("select").value
@@ -157,7 +158,7 @@ export default {
       else
         document.getElementById("create").style.display = ""
     },
-    async deleteApp() {
+    async deleteApp() {  // Method to delete an appointment
       axiosClient.delete("/serviceAppointment/"+ this.selectedApp)
         .catch((err) => {
           this.errorMsg = `Failed to create: ${err.response.data}`
@@ -165,7 +166,7 @@ export default {
         })
       await this.RouteHome()
     },
-    async updateApp() {
+    async updateApp() { // Method to update an existing appointment
       const request = {date: this.date, startTime: this.startTime, serviceName: this.serviceName, userEmail: this.email}
       axiosClient.put("/serviceAppointment/"+ this.selectedApp, request)
         .then((response) => {
