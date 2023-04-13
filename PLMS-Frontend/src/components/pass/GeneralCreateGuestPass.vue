@@ -15,13 +15,13 @@
       <td style="border: none;"></td>
       <td style="border: none;">
         <!-- <input type="number" placeholder="floor number" id="floor" v-model="floorNumber"> -->
-        <select class="custom-select" required v-model="floorNumber" @change="getSpotNumbers()">
+        <select class="custom-select" required v-model="floorNumber">
                 <!-- <option v-for="floor in floors" :key="floor.floorNumber" :value="floor.floorNumber">{{floor.floorNumber}}</option> -->
                 <option v-for="(floorNumber, index) in floorNumbers.sort((a, b) => a - b)" :key="index" >{{ floorNumber }}</option>
         </select>
       </td>
       <td style="border: none;">
-        <input type="checkBox" id="isLarge" v-model="isLarge" @click="onIsLargeChange()">
+        <input type="checkBox" id="isLarge" @click="onIsLargeChange">
       </td>
       <td style="border: none;">
         <!-- <input type="text" placeholder="spot number" id="spot" v-model="spotNumber" v-bind:disabled="createGuestPassButtonDisabled"> -->
@@ -186,14 +186,14 @@ export default {
       this.confirmationCode = this.generateConfirmationCode()
       const request = {spotNumber: this.spotNumber, confirmationCode: this.confirmationCodeCreation, licensePlate: this.licensePlate,
       floorNumber: this.floorNumber, numberOfFifteenMinuteIncrements: this.numberOfFifteenMinuteIncrements,
-    isLarge: document.getElementById(`isLarge`).checked};
-    AXIOS.post('/guestPass', request)
-    .then((response) => {
-      this.errorMsgCreation = `Guest Pass Booked!  \t ID: ${response.data.id}  \n Confirmation Code: ${this.confirmationCode} `
-    })
-    .catch((err) => {
-      this.errorMsgCreation = `Failed to book pass: ${err.response.data}`;
-    })
+      isLarge: document.getElementById(`isLarge`).checked};
+      AXIOS.post('/guestPass', request)
+      .then((response) => {
+        this.errorMsgCreation = `Guest Pass Booked!  \t ID: ${response.data.id}  \n Confirmation Code: ${this.confirmationCode} `
+      })
+      .catch((err) => {
+        this.errorMsgCreation = `Failed to book pass: ${err.response.data}`;
+      })
     },
 
     findGuestPass(){
@@ -217,12 +217,18 @@ export default {
     onIsLargeChange() {
       this.isLarge = !this.isLarge;
       console.log('changed', this.isLarge)
-      this.getSpotNumbers();
+      // this.getSpotNumbers();
     },
+
     getSpotNumbers(){
+      console.log(this.floorNumber);
+      console.log(this.floorNumbers);
       this.spotNumber = ''
       const floorNumber = this.floorNumber.toString()
-      const spotType = this.isLarge? "large" : "small"
+      let spotType = ''
+      if(this.isLarge) spotType = "large"
+      else spotType = "small"
+      console.log(spotType);
       if (this.spotNumbersMap[floorNumber] && this.spotNumbersMap[floorNumber][spotType]) {
         this.spotNumbers = this.spotNumbersMap[floorNumber][spotType]
         console.log(this.spotNumbers)
@@ -231,25 +237,25 @@ export default {
       }
     },
     generateConfirmationCode() {
-    console.log('test')
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let code = '';
+      console.log('test')
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      let code = '';
 
-    // Generate the first two letters
-    for (let i = 0; i < 2; i++) {
-      code += letters.charAt(Math.floor(Math.random() * letters.length));
-    }
+      // Generate the first two letters
+      for (let i = 0; i < 2; i++) {
+        code += letters.charAt(Math.floor(Math.random() * letters.length));
+      }
 
-    // Add the underscore
-    code += '_';
+      // Add the underscore
+      code += '_';
 
-    // Generate the six numbers
-    for (let i = 0; i < 6; i++) {
-      code += Math.floor(Math.random() * 10);
-    }
-    console.log(code)
-    return code;
-  },
+      // Generate the six numbers
+      for (let i = 0; i < 6; i++) {
+        code += Math.floor(Math.random() * 10);
+      }
+      console.log(code)
+      return code;
+    },
   },
 
   computed: {
