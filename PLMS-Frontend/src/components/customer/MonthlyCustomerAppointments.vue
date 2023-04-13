@@ -130,6 +130,7 @@ export default {
     async RouteManage() {
       await this.$router.push({name: 'MonthlyCustomerManageAccount', params: {email: this.email}})
     },
+
     async createApp() { // Method to create an appointment to the customer
       const request = {date: this.date, startTime: this.startTime, serviceName: this.serviceName, userEmail: this.email}
       axiosClient.post("/serviceAppointment", request)
