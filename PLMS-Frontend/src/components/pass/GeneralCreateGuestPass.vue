@@ -1,43 +1,8 @@
 <template>
   <div id="guestpass_creation_search">
-    <!-- <div id="guestpasscreation">
-      <h2>Create a Guest Pass</h2>
-      <table align = center>
-        <tr>
-          <td>Floor number</td>
-          <td>Large</td>
-          <td>License plate</td>
-        </tr>
-        <tr>
-          <td>
-              <input type="text" placeholder="floor number" id="floor" v-model="floorNumber">
-          </td>
-          <td>
-
-              <input type="checkBox" id="isLarge" v-model="isLarge">
-          </td>
-          <td>
-              <input type="text" placeholder="spot number" id="spot" v-model="spotNumber" v-bind:disabled="createGuestPassButtonDisabled">
-
-          </td>
-        </tr>
-        <tr>
-          <td>License Plate</td>
-          <td>15 minute increments</td>
-        </tr>
-        <tr>
-          <td>
-              <input type="text" placeholder="license plate" id="plate" v-model="licensePlate">
-          </td>
-          <td>
-              <input type="text" placeholder="15 minute increments" id="increments" v-model="numberOfFifteenMinuteIncrements">
-          </td>
-        </tr>
-      </table>
-    </div> -->
 
       <div id="guestpasscreation">
-  <h2>Create a Guest Pass</h2>
+  <h2>Book a Guest Pass</h2>
   <table align="center" style="border-collapse: collapse;">
     <tr>
       <td style="border: none;"></td>
@@ -98,7 +63,7 @@
     <br>
 
     <p>
-      <button v-bind:disabled="createGuestPassButtonDisabled" @click="createGuestPass()">Create Pass</button><br>
+      <button class="btn btn-primary" v-bind:disabled="createGuestPassButtonDisabled" @click="createGuestPass()">Book a Guest Pass</button><br>
     </p>
 
     <p class="error">{{ errorMsgCreation }}</p>
@@ -123,7 +88,7 @@
     <br>
 
     <p>
-      <button v-bind:disabled="findGuestPassButtonDisabled" @click="findGuestPass()">Find Pass</button>
+      <button class="btn btn-primary" v-bind:disabled="findGuestPassButtonDisabled" @click="findGuestPass()">Find Pass</button>
     </p>
 
     <p class="error">{{ errorMsgIdentification }}</p>
@@ -224,10 +189,10 @@ export default {
     isLarge: document.getElementById(`isLarge`).checked};
     AXIOS.post('/guestPass', request)
     .then((response) => {
-      this.errorMsgCreation = `Guest Pass Created!  \t ID: ${response.data.id}  \n Confirmation Code: ${this.confirmationCode} `
+      this.errorMsgCreation = `Guest Pass Booked!  \t ID: ${response.data.id}  \n Confirmation Code: ${this.confirmationCode} `
     })
     .catch((err) => {
-      this.errorMsgCreation = `Failed to create pass: ${err.response.data}`;
+      this.errorMsgCreation = `Failed to book pass: ${err.response.data}`;
     })
     },
 
