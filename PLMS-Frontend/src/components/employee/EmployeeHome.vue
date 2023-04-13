@@ -17,8 +17,8 @@
             <path
               d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
           </svg> </a>
-        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/manage_passes">Manage Passes</a>
-        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
+        <a class="py-2 d-none d-md-inline-block" @click="Passes">Manage Passes</a>
+        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/user/login">Sign Out</a>
       </div>
     </nav>
 
@@ -30,7 +30,7 @@
       <div class="container my-7">
   <div class="row">
     <div class="col-md-6 mb-4 mx-auto">
-      <a href="http://localhost:8087/#/employee/service_appointments" class="btn btn-primary btn-lg btn-block big-high">Your service appointments</a>
+      <a class="btn btn-primary btn-lg btn-block big-high">Your service appointments</a>
     </div>
   </div>
 </div>
@@ -78,7 +78,7 @@ const axiosClient = axios.create({
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
 });
 export default {
-  name: "EmployeeHome",
+  name: "EmployeeHome", // Employee home page
   props: {
     email: {
       type: String,
@@ -96,7 +96,7 @@ export default {
     }
   },
   created() {
-    axiosClient.get("/employee?email=" + this.email)
+    axiosClient.get("/employee?email=" + this.email) // Fetch name and password of the employee logged in
       .then(response => {
         this.name = response.data.name
         this.password = response.data.password
@@ -107,12 +107,16 @@ export default {
       })
 
     console.log(this.email)
-    axiosClient.get(`/serviceAppointment/employee/${this.email}`).then(response => {
-      console.log("made it here")
+    axiosClient.get(`/serviceAppointment/employee/${this.email}`).then(response => { // Fetch the service appointments which the logged in employee is appointed to
       this.appointments = response.data
     }).catch(error => {
       console.log(error.response.data)
     })
+  },
+  methods : {
+    async Passes() { // Redirect to the employee pass page
+      await this.$router.push({name: 'EmployeePasses'})
+    },
   }
 }
 </script>

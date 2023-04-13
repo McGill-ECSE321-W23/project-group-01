@@ -11,10 +11,12 @@ import org.springframework.context.annotation.Bean;
 import ca.mcgill.ecse321.PLMS.model.Floor;
 import ca.mcgill.ecse321.PLMS.model.Owner;
 import ca.mcgill.ecse321.PLMS.model.ParkingLot;
+import ca.mcgill.ecse321.PLMS.model.Service;
 import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
 import ca.mcgill.ecse321.PLMS.service.FloorService;
 import ca.mcgill.ecse321.PLMS.service.OwnerService;
 import ca.mcgill.ecse321.PLMS.service.ParkingLotService;
+import ca.mcgill.ecse321.PLMS.service.ServiceService;
 
 /**
  * Main Application class for the PLMS software system
@@ -26,7 +28,7 @@ public class PlmsApplication {
 
 	//Initialization of the parkingLot if it is the first time it is used
 	@Bean
-    CommandLineRunner initDatabase(@Autowired OwnerService ownerService,@Autowired OwnerRepository ownerRepository,@Autowired ParkingLotService parkingLotService, @Autowired FloorService floorService) {
+    CommandLineRunner initDatabase(@Autowired OwnerService ownerService,@Autowired OwnerRepository ownerRepository,@Autowired ParkingLotService parkingLotService, @Autowired FloorService floorService, @Autowired ServiceService serviceService) {
         return args -> {
 			if (ownerRepository.count() == 0){
 				ownerService.createOwnerAccount(new Owner("admin@mail.com", "MyParking1ot$", "Admin"));
@@ -40,6 +42,9 @@ public class PlmsApplication {
 						floorService.createFloor(new Floor(i, 0, 100, false));
 					}
 				}
+				serviceService.createService(new Service("Winter Tire Change",30 ,1 ));
+				serviceService.createService(new Service("Car Cleaning",20 ,1.5 ));
+				serviceService.createService(new Service("Oil Change",30 ,0.5 ));
 			}
         };
     }

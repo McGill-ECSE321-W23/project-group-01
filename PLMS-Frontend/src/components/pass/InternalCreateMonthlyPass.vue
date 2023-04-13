@@ -38,7 +38,7 @@
                 <option v-for="(spot,index) in spotNumbers" :key="index">{{ spot }}</option>
               </select>
             </div>
-            
+
             <div class="form-group col-md-6">
               <label>Start Date</label>
               <input type="date" class="form-control" v-model="startDate">
@@ -52,7 +52,7 @@
               </label>
             </div>
           </div>
-          
+
           <button id="create" type="submit" v-bind:disabled="createUserButtonDisabled" @click="createPass()" class="btn btn-primary">Create Pass</button>
 
         </form>
@@ -62,7 +62,7 @@
 
 <script>
 import axios from 'axios';
-const config = require('../../config');
+const config = require('../../../config');
 const frontendUrl = config.dev.host + ':' + config.dev.port;
 const axiosClient = axios.create({
   // Note the baseURL, not baseUrl
@@ -149,7 +149,7 @@ export default {
       const floor = null
 
       console.log(isLarge)
-      
+
       axiosClient.get("/floor/" + this.floorNumber).then((response) => {
                     const numSpots = isLarge ? response.data.largeSpotCapacity : response.data.smallSpotCapacity;
                     const spotType = isLarge ? 'L' : 'S';
@@ -159,13 +159,13 @@ export default {
                     console.log(this.spotNumbers)
 
                 }).catch((err) => {
-                
+
                 alert(err.response.data)
                 })
     },
   },
 
-  
+
 
   computed: {
     createUserButtonDisabled() {

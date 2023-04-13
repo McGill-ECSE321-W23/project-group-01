@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../assets/logo-transparent-png.png">
+    <link rel="icon" href="src/assets/logo-transparent-png.png">
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/product/">
     <link href="../../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
-    <nav class="site-header sticky-top py-1">
+    <!-- <nav class="site-header sticky-top py-1">
         <div class="container d-flex flex-column flex-md-row justify-content-between">
           <a class="py-2" href="#product">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
@@ -24,13 +24,13 @@
           <a class="py-2 d-none d-md-inline-block" @click="Services">Manage Services</a>
           <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
         </div>
-      </nav>
+      </nav> -->
 
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-10">
-        <h1>Passes</h1>
-        <hr><br><br>
+        <!-- <h1>Passes</h1> -->
+        <!-- <hr><br><br> -->
         <!-- <button type="button" class="btn btn-success btn-sm" v-b-modal.employee-modal>Create</button>
         <button type="button" class="btn btn-success btn-sm" v-b-modal.edit-employee-modal :disabled="selectedEmployee=== null" >Update</button>
         <button type="button" class="btn btn-success btn-sm" :disabled="selectedEmployee=== null" @click="onViewSchedule(selectedEmployee) "> View Schedule</button>
@@ -78,10 +78,10 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                
-            </tr>      
-            <tr  v-for="(monthlyPass, index) in monthlyPasses" :key="index"   @click="handleRowClick(monthlyPass)" 
-            :class="{}"> 
+
+            </tr>
+            <tr  v-for="(monthlyPass, index) in monthlyPasses" :key="index"   @click="handleRowClick(monthlyPass)"
+            :class="{}">
                 <td>{{monthlyPass.id}}</td>
                 <td>{{monthlyPass.customerEmail}}</td>
                 <td>{{monthlyPass.licensePlate}}</td>
@@ -95,7 +95,7 @@
           </tbody>
         </table>
 
-        
+
       </div>
     </div>
   </div>
@@ -104,7 +104,7 @@
 
 <script>
 import axios from 'axios';
-import InternalCreateMonthlyPass from '@/components/InternalCreateMonthlyPass.vue';
+import InternalCreateMonthlyPass from '@/components/pass/InternalCreateMonthlyPass.vue';
 
 const config = require('../../../config');
 const frontendUrl = config.dev.host + ':' + config.dev.port;
@@ -136,7 +136,7 @@ export default {
         // Fetch all employees on component mount
         this.fetchMonthlyPasses();
         this.fetchFloors();
-        
+
     },
 
 
@@ -171,7 +171,7 @@ export default {
     async Passes(){
       await this.$router.push({name: 'ViewGuestPasses'})
     },
-        
+
         clearInputs(){
             this.IDTextInput = ""
             this.customerEmailTextInput = ""
@@ -189,14 +189,14 @@ export default {
             }
             else{
                 axiosClient.get("/monthlypass/" + this.IDTextInput).then((response) => {
-                
+
                     this.monthlyPasses.push(response.data)
                 }).catch((err) => {
                 alert(err.response.data)
                 });
             }
-            
-           
+
+
         },
 
         handleEmailInput(){
@@ -216,7 +216,7 @@ export default {
         // handleDateSelect(date){
         //     axiosClient.get("/monthlypass/date/" + date).then((response) => {
         //         this.monthlyPasses = response.data
-                
+
         //    }).catch((err) => {
         //     alert(err.response.data)
         //    });
@@ -242,7 +242,7 @@ export default {
 
         clearIDTextField() {
             this.IDTextInput == ""
-            tMonthly()
+            // fetchMonthly()
         },
 
         handleFloorSelect(floorNumber){
@@ -258,9 +258,9 @@ export default {
                 alert(err.response.data)
            });
             }
-            
+
         },
-        
+
 
     }
 }

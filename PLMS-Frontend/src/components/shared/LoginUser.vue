@@ -40,11 +40,10 @@
 
     <div class="text-center">
       <p>Don't have an account? </p>
-    </div> <a href="http://localhost:8087/#/create-customer">
-    <button style="background-color:lightskyblue; width: 20%; margin-top: 1%; margin-left: 40%;"  type="button" class="btn btn-primary btn-block mb-4">Sign up</button>
-  </a>
-    <a href="http://localhost:8087/#/">
-      <button style="background-color:lightskyblue; width: 20%; margin-top: 1%; margin-left: 40%;"  type="button" class="btn btn-primary btn-block mb-4">Continue as Guest</button>
+    </div>
+    <button style="background-color:lightskyblue; width: 20%; margin-top: 1%; margin-left: 40%;"  type="button" class="btn btn-primary btn-block mb-4" @click="SignUp">Sign up</button>
+    <a @click="SignUp">
+      <button style="background-color:lightskyblue; width: 20%; margin-top: 1%; margin-left: 40%;"  type="button" class="btn btn-primary btn-block mb-4" @click="Guest">Continue as Guest</button>
     </a>
 
   </div>
@@ -53,7 +52,7 @@
 
 <script>
 import axios from 'axios';
-const config = require('../../config');
+const config = require('../../../config');
 const frontendUrl = config.dev.host + ':' + config.dev.port;
 const axiosClient = axios.create({
   // Note the baseURL, not baseUrl
@@ -94,6 +93,12 @@ export default {
           this.errorMsg = `Error: ${err.response.data}`;
           alert(this.errorMsg)
         })
+    },
+    async SignUp() {
+      await this.$router.push({name: 'SignUp'})
+    },
+    async Guest() {
+      await this.$router.push({name: 'GeneralCreateGuestPass'})
     }
 
   },

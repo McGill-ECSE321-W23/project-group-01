@@ -22,7 +22,7 @@
           <a class="py-2 d-none d-md-inline-block" @click="Appointments">Manage Appointments</a>
           <a class="py-2 d-none d-md-inline-block" @click="ParkingLot">Manage Parking Lot</a>
           <a class="py-2 d-none d-md-inline-block" @click="Services">Manage Services</a>
-          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
+          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/user/login">Sign Out</a>
         </div>
       </nav>
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
@@ -151,7 +151,7 @@ export default {
       await this.$router.push({name: 'ManageEmployees'})
     },
     async Passes(){
-      await this.$router.push({name: 'ViewGuestPasses'})
+      await this.$router.push({name: 'OwnerPasses'})
     },
     createOrUpdateParkingLot() {
       console.log(this.newOpeningTime)
