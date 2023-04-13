@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../assets/logo-transparent-png.png">
+    <link rel="icon" href="src/assets/logo-transparent-png.png">
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/product/">
-    <link href="../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
+    <link href="bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
 
     <nav class="site-header sticky-top py-1">
       <div class="container d-flex flex-column flex-md-row justify-content-between">
@@ -55,7 +55,7 @@
             <input type="text" class="form-control"   placeholder="T3ST41"  v-model="licensePlate">
           </div>
           <div class="form-row">
-            
+
             <div class="form-group col-md-6">
               <label>Spot Number</label>
               <select v-model="spotNumber" class="form-control" :disabled="isSelectDisabled"  @click="getSpotNumbers">
@@ -85,7 +85,7 @@
 
 <script>
 import axios from 'axios';
-const config = require('../../config');
+const config = require('../../../config');
 const frontendUrl = config.dev.host + ':' + config.dev.port;
 const axiosClient = axios.create({
   // Note the baseURL, not baseUrl
@@ -122,10 +122,10 @@ export default {
         this.floors = response.data
         // this.floorNumbers = response.data.map((floor) => floor.floorNumber)
         this.floorNumbers = []
-      
-       // Get all floors and subsequent floor numbers 
+
+       // Get all floors and subsequent floor numbers
        for (const floor of this.floors) {
-        // add if member only 
+        // add if member only
         console.log(floor.memberOnly)
         if (floor.memberOnly) {
           const floorNumber = floor.floorNumber;
@@ -155,7 +155,7 @@ export default {
       console.log('spotnumbermap', this.spotNumbersMap)
       })
       .catch(error => {
-        
+
         alert(error.data)
       })
   },
@@ -207,15 +207,15 @@ export default {
     console.log('test')
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let code = '';
-    
+
     // Generate the first two letters
     for (let i = 0; i < 2; i++) {
       code += letters.charAt(Math.floor(Math.random() * letters.length));
     }
-    
+
     // Add the underscore
     code += '_';
-    
+
     // Generate the six numbers
     for (let i = 0; i < 6; i++) {
       code += Math.floor(Math.random() * 10);
@@ -225,8 +225,8 @@ export default {
   },
 
   },
-  
-  
+
+
   computed: {
     createUserButtonDisabled() {
       return !(this.numberOfMonths !== 0)|| !this.spotNumber.trim() || !this.licensePlate.trim()

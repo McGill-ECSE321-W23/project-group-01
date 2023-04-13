@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../assets/logo-transparent-png.png">
+    <link rel="icon" href="src/assets/logo-transparent-png.png">
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/product/">
-    <link href="../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
+    <link href="bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
 
     <nav class="site-header sticky-top py-1">
       <div class="container d-flex flex-column flex-md-row justify-content-between">
@@ -69,7 +69,7 @@
 
 <script>
 import axios from 'axios';
-const config = require('../../config');
+const config = require('../../../config');
 const frontendUrl = config.dev.host + ':' + config.dev.port;
 const axiosClient = axios.create({
   // Note the baseURL, not baseUrl
@@ -136,7 +136,6 @@ export default {
           this.errorMsg = `Failed to create: ${err.response.data}`
           alert(this.errorMsg)
         })
-      await this.sleep(2000)
       await this.RouteHome()
 
     },
