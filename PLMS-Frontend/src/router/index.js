@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
 import GeneralCreateGuestPass from '@/components/GeneralCreateGuestPass'
 import InternalCreateMonthlyPass from '@/components/InternalCreateMonthlyPass'
 import Home from '@/components/Home'
@@ -27,8 +26,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'Home',
+      component: Home
     },
     {
       path: '/createGuestPass',
@@ -82,8 +81,8 @@ export default new Router({
       name: 'Home',
       component: Home
     },
-
     {
+
       path: '/login-user',
       name: 'LoginUser',
       component: LoginUser
