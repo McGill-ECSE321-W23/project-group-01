@@ -51,51 +51,11 @@ export default new Router({
       component: ManageEmployees
     },
     {
-      path: '/employee/create/monthly-pass',
-      name:'InternalMonthlyPassCreation',
-      component: InternalCreateMonthlyPass,
-    },
-    {
-      path: '/owner/create/monthly-pass',
-      name:'InternalMonthlyPassCreation',
-      component: InternalCreateMonthlyPass,
-    },
-    {
       path: '/employee/home/:email',
       name: 'EmployeeHome',
       component: EmployeeHome,
       props: true
 
-    },
-    {
-      path: '/owner/customers',
-      name: 'ViewMonthlyCustomer',
-      component: ViewMonthlyCustomer
-    },
-    {
-      path: '/employee/customers',
-      name: 'ViewMonthlyCustomer',
-      component: ViewMonthlyCustomer
-    },
-    {
-      path: '/owner/view/guest-passes',
-      name: 'ViewGuestPasses',
-      component: ViewGuestPasses
-    },
-    {
-      path: '/employee/view/guest-passes',
-      name: 'ViewGuestPasses',
-      component: ViewGuestPasses
-    },
-    {
-      path: '/employee/view/monthly-passes',
-      name: 'ViewMonthlyPasses',
-      component: ViewMonthlyPasses
-    },
-    {
-      path: '/owner/view/monthly-passes',
-      name: 'ViewMonthlyPasses',
-      component: ViewMonthlyPasses
     },
     {
       path: '/user/login',

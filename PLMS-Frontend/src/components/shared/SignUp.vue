@@ -65,7 +65,7 @@ export default {
         .then((response) => {
           alert("Your account with email " + this.email + " has been created successfully")
           this.logged_user = response
-          this.Login();
+          this.$router.push({name: 'LoginUser'})
 
         })
         .catch((err) => {
