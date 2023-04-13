@@ -36,14 +36,14 @@ All the mentioned default items can be updated (except for the email of the owne
 
 ## Overview Table
 
-| Team Member |	Team Roles | Individual efforts - Sprint 1 (in hours) | Individual efforts - Sprint 2 (in hours) |
-| --- | --- | --- | ---- |
-| Evan Boyd | Software Developer  |  20  | 60 |  |
-| Samer Abdulkarim | Project Manager, Software Developer |  16 | 60 |  |
-| Emilien Taisne	| Documentation Manager, Software Developer  | 16 | 60 |  |
-| Walid Aissa	| Software Developer  | 16 | 44 | |  |
-| Karim Al Sabbagh | Testing Lead, Software Developer  | 16  | 44 |  |
-| Karl Bridi	| Software Developer | 16 | 44 |  |
+| Team Member |	Team Roles | Individual efforts - Sprint 1 (in hours) | Individual efforts - Sprint 2 (in hours) | Individual efforts - Sprint 3 (in hours) |
+| --- | --- | --- | ---- | --- |
+| Evan Boyd | Software Developer  |  20  | 60 | 20  |
+| Samer Abdulkarim | Project Manager, Software Developer |  16 | 60 | 30  |
+| Emilien Taisne	| Documentation Manager, Software Developer  | 16 | 60 | 17 |
+| Walid Aissa	| Software Developer  | 16 | 44 | 17 |
+| Karim Al Sabbagh | Testing Lead, Software Developer  | 16  | 44 | 30 |
+| Karl Bridi	| Software Developer | 16 | 44 | 17 |
 
 ### Sprint 1 individual efforts: 
 
