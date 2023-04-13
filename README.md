@@ -68,7 +68,7 @@ To run our integration tests alone, please cd into the PLMS folder and run `./gr
 | Emilien Taisne |  |  |
 | Walid Aissa |  |   |
 | Karim Al Sabbagh |   |  |
-| Karl Bridi |  |  |
+| Karl Bridi | Architecture diagram, Key component description of the architecture diagram, parking lot frontend page, employee homepage | 17 |
 
  
 
