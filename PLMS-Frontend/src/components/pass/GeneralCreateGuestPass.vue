@@ -25,7 +25,7 @@
       </td>
       <td style="border: none;">
         <!-- <input type="text" placeholder="spot number" id="spot" v-model="spotNumber" v-bind:disabled="createGuestPassButtonDisabled"> -->
-        <select v-model="spotNumber" class="form-control" :disabled="selectSpotDisabled"  @click="getSpotNumbers">
+        <select v-model="spotNumber" class="form-control" :disabled="selectSpotDisabled"  @click="getSpotNumbers()">
                 <option value="" disabled>Select a spot</option>
                 <option v-for="(spot,index) in spotNumbers" :key="index">{{ spot }}</option>
         </select>
@@ -223,6 +223,7 @@ export default {
       this.spotNumber = ''
       const floorNumber = this.floorNumber.toString()
       const spotType = this.isLarge? "large" : "small"
+      console.log(spotType)
       if (this.spotNumbersMap[floorNumber] && this.spotNumbersMap[floorNumber][spotType]) {
         this.spotNumbers = this.spotNumbersMap[floorNumber][spotType]
         console.log(this.spotNumbers)
