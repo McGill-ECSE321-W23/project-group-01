@@ -27,6 +27,8 @@
         </a>
       </div>
     </nav>
+    <!-- Used this button to debug, needs to be removed -->
+    <!-- <button type="button" class="btn btn-success btn-sm" @click="generateConfirmationCode()">Create</button> -->
 
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
 
@@ -37,23 +39,28 @@
               <input class="form-control" type="number" placeholder="10" v-model="numberOfMonths">
             </div>
             <div class="form-group col-md-6">
-              <label>Spot Number</label>
-              <input type="text" class="form-control" id="spot" placeholder="A24" v-model="spotNumber" >
+              <label >Floor Number</label>
+              <select class="custom-select" required v-model="floorNumber" @change="getSpotNumbers()">
+                <!-- <option v-for="floor in floors" :key="floor.floorNumber" :value="floor.floorNumber">{{floor.floorNumber}}</option> -->
+                <option v-for="(floorNumber, index) in floorNumbers.sort((a, b) => a - b)" :key="index" >{{ floorNumber }}</option>
+              </select>
             </div>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label >Confirmation Code</label>
             <input type="text" class="form-control"  placeholder="JK95HO95T3" v-model="confirmationCode">
-          </div>
+          </div> -->
           <div class="form-group">
             <label >License Plate</label>
             <input type="text" class="form-control"   placeholder="T3ST41"  v-model="licensePlate">
           </div>
           <div class="form-row">
+            
             <div class="form-group col-md-6">
-              <label >Floor Number</label>
-              <select class="custom-select" required v-model="floorNumber">
-                <option v-for="floor in floors" :key="floor.floorNumber" :value="floor.floorNumber">{{floor.floorNumber}}</option>
+              <label>Spot Number</label>
+              <select v-model="spotNumber" class="form-control" :disabled="isSelectDisabled"  @click="getSpotNumbers">
+                <option value="" disabled>Select a spot</option>
+                <option v-for="(spot,index) in spotNumbers" :key="index">{{ spot }}</option>
               </select>
             </div>
             <div class="form-group col-md-6">
@@ -63,7 +70,7 @@
           </div>
           <div class="form-group">
             <div class="form-check">
-              <input class="form-check-input"  type="checkBox" id="isLarge">
+              <input class="form-check-input"  type="checkBox" id="isLarge" @click="onIsLargeChange()">
               <label class="form-check-label" >
                 Large Spot
               </label>
@@ -97,21 +104,58 @@ export default {
     return {
       errorMsg: '',
       floors: [],
+      floorNumbers: [],
+      spotNumbers: [],
       spotNumber: '',
-      confirmationCode: '',
+      // confirmationCode: '',
       licensePlate: '',
       floorNumber: 0,
-      isLarge: '',
+      isLarge: false,
       startDate: '',
       numberOfMonths:0,
+      spotNumbersMap: {},
     };
   },
   created() {
     axiosClient.get("/floor")
       .then(response => {
         this.floors = response.data
+        // this.floorNumbers = response.data.map((floor) => floor.floorNumber)
+        this.floorNumbers = []
+      
+       // Get all floors and subsequent floor numbers 
+       for (const floor of this.floors) {
+        // add if member only 
+        console.log(floor.memberOnly)
+        if (floor.memberOnly) {
+          const floorNumber = floor.floorNumber;
+          const largeSpotCapacity = floor.largeSpotCapacity;
+          const smallSpotCapacity = floor.smallSpotCapacity;
+
+          // Generate spot numbers for large and for small spots
+          const largeSpots = [];
+          for (let i = 1; i <= largeSpotCapacity; i++) {
+            largeSpots.push(`${floorNumber}L${i}`);
+          }
+
+          const smallSpots = [];
+          for (let i = 1; i <= smallSpotCapacity; i++) {
+            smallSpots.push(`${floorNumber}S${i}`);
+          }
+
+          this.floorNumbers.push(floorNumber);
+
+          // Add the spot numbers to the hashmap
+          this.spotNumbersMap[floorNumber] = {
+            large: largeSpots,
+            small: smallSpots
+          };
+        }
+      }
+      console.log('spotnumbermap', this.spotNumbersMap)
       })
       .catch(error => {
+        
         alert(error.data)
       })
   },
@@ -129,25 +173,70 @@ export default {
       await this.$router.push({name: 'MonthlyCustomerManageAccount', params: {email: this.email}})
     },
     async createPass() {
+      this.confirmationCode = this.generateConfirmationCode()
       const request = {numberOfMonths: this.numberOfMonths, spotNumber: this.spotNumber, confirmationCode: this.confirmationCode, licensePlate: this.licensePlate,
-        floorNumber: this.floorNumber, isLarge: document.getElementById(`isLarge`).checked, startDate: this.startDate, customerEmail: this.email};
+        floorNumber: this.floorNumber, isLarge: this.isLarge, startDate: this.startDate, customerEmail: this.email};
       axiosClient.post("/monthlypass", request)
         .then((response) => {
-          alert("Your pass has been created successfully")
+          alert(`Your pass has been created successfully, \n Confirmation code: ${response.data.confirmationCode}`)
         })
         .catch((err) => {
-          this.errorMsg = `Failed to create: ${err.response.data}`
+          this.errorMsg = `Failed to create: ${err.response.data.confirmationCode}`
           alert(this.errorMsg)
         })
       await this.RouteHome()
     },
+    onIsLargeChange() {
+      this.isLarge = !this.isLarge;
+      console.log('changed', this.isLarge)
+      this.getSpotNumbers();
+    },
+
+    getSpotNumbers(){
+      this.spotNumber = ''
+      const floorNumber = this.floorNumber.toString()
+      const spotType = this.isLarge? "large" : "small"
+      if (this.spotNumbersMap[floorNumber] && this.spotNumbersMap[floorNumber][spotType]) {
+        this.spotNumbers = this.spotNumbersMap[floorNumber][spotType]
+        console.log(this.spotNumbers)
+      } else {
+        console.log(`Spot numbers not found for floor ${floorNumber} and spot type ${spotType}.`)
+      }
+    },
+    generateConfirmationCode() {
+    console.log('test')
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let code = '';
+    
+    // Generate the first two letters
+    for (let i = 0; i < 2; i++) {
+      code += letters.charAt(Math.floor(Math.random() * letters.length));
+    }
+    
+    // Add the underscore
+    code += '_';
+    
+    // Generate the six numbers
+    for (let i = 0; i < 6; i++) {
+      code += Math.floor(Math.random() * 10);
+    }
+    console.log(code)
+    return code;
   },
+
+  },
+  
+  
   computed: {
     createUserButtonDisabled() {
-      return !(this.numberOfMonths !== 0)|| !this.spotNumber.trim() || !this.confirmationCode.trim() || !this.licensePlate.trim()
+      return !(this.numberOfMonths !== 0)|| !this.spotNumber.trim() || !this.licensePlate.trim()
         ||  !(this.floorNumber !== 0)  || !this.startDate.trim();
-    }
+    },
+    isSelectDisabled(){
+    return (this.floorNumber == '')
+    },
   }
+
 
 }
 </script>

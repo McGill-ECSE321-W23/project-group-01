@@ -49,6 +49,7 @@
               <th scope="col">Date</th>
               <th scope="col">Start</th>
               <th scope="col">End</th>
+              <th scope="col">ID</th>
             </tr>
             </thead>
             <tbody>
@@ -57,6 +58,7 @@
                 <td>{{ appointment.date }}</td>
                 <td>{{ appointment.startTime }}</td>
                 <td>{{ appointment.endTime }}</td>
+                <td>{{ appointment.id }}</td>
               </tr>
             </tbody>
           </table>
@@ -75,6 +77,7 @@
               <th scope="col">Floor</th>
               <th scope="col">Spot</th>
               <th scope="col">Plate</th>
+              <th scope="col">Confirmation Code</th>
             </tr>
             </thead>
             <tbody>
@@ -84,6 +87,7 @@
               <td>{{ pass.floorNumber }}</td>
               <td>{{ pass.spotNumber }}</td>
               <td>{{ pass.licensePlate }}</td>
+              <td>{{ pass.confirmationCode}}</td>
             </tr>
             </tbody>
           </table>

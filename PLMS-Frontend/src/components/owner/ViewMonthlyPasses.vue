@@ -35,28 +35,27 @@
         <button type="button" class="btn btn-success btn-sm" v-b-modal.edit-employee-modal :disabled="selectedEmployee=== null" >Update</button>
         <button type="button" class="btn btn-success btn-sm" :disabled="selectedEmployee=== null" @click="onViewSchedule(selectedEmployee) "> View Schedule</button>
         <button type="button" class="btn btn-danger btn-sm"  :disabled="selectedEmployee=== null" @click="onDeleteEmployee(selectedEmployee) "> Delete </button> -->
-        <button type="button" class="btn btn-success btn-sm" @click="fetchGuestPasses() "> Clear Filters</button>
+        <button type="button" class="btn btn-success btn-sm" @click="fetchMonthlyPasses()"> Clear Filters</button>
         <b-button type="button" class="btn btn-success btn-sm" @click="openCreateModal"> Create New Pass</b-button>
         <b-modal v-if='showModal' v-model="showModal" title ="Create">
             <component :is="modalContent"></component>
+            <!-- <div>
+             <internal-create-monthly-pass />
+            </div> -->
         </b-modal>
-        <br><br>
-
         <br><br>
         <table class="table table-hover">
           <thead>
             <tr>
               <th scope="col">ID</th>
-              <th scope="col">Confirmation Code</th>
+              <th scope="col">Customer Email</th>
               <th scope="col">License Plate</th>
               <th scope="col">Spot Number</th>
-              <th scope="col">Size</th>
+              <th scope="col">Large</th>
               <th scope="col">Floor Number</th>
-              <th scope="col">Date</th>
-              <th scope="col">Start Time</th>
-              <th scope="col">End Time</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">End Date</th>
               <th scope="col">Fee</th>
-              
             </tr>
           </thead>
           <tbody>
@@ -64,8 +63,10 @@
                 <td>
                     <input type="text" v-model="IDTextInput" @keyup.enter="handleIDInput" placeholder="Search by ID" @focus="clearIDTextField()"/>
                 </td>
-                <td></td>
 
+                <td>
+                    <input type="text" v-model="customerEmailTextInput" @keyup.enter="handleEmailInput" placeholder="Search by Customer Email"/>
+                </td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -74,24 +75,22 @@
                     <option value="all" >All</option>
                     <option v-for="(floor, index) in floorNumbers.sort((a, b) => a - b)" :key="index">{{ floor }} </option>
                   </select></td>
-                <td>
-                    <input type="date" id="date" name="date" v-model="selectedDate" @change="handleDateSelect($event.target.value)" placeholder="Search by Date"></td>
                 <td></td>
                 <td></td>
                 <td></td>
+                
             </tr>      
-            <tr  v-for="(guestPass, index) in guestPasses" :key="index"   @click="handleRowClick(guestPass)" 
+            <tr  v-for="(monthlyPass, index) in monthlyPasses" :key="index"   @click="handleRowClick(monthlyPass)" 
             :class="{}"> 
-                <td>{{guestPass.id}}</td>
-                <td>{{guestPass.confirmationCode}}</td>
-                <td>{{guestPass.licensePlate}}</td>
-                <td>{{guestPass.spotNumber}}</td>
-                <td>{{guestPass.isLarge ? 'Large' : 'Small'}}</td>
-                <td>{{guestPass.floorNumber}}</td>
-                <td>{{guestPass.date}}</td>
-                <td>{{guestPass.startTime}}</td>
-                <td>{{guestPass.endTime}}</td>
-                <td>{{guestPass.fee}}</td>
+                <td>{{monthlyPass.id}}</td>
+                <td>{{monthlyPass.customerEmail}}</td>
+                <td>{{monthlyPass.licensePlate}}</td>
+                <td>{{monthlyPass.spotNumber}}</td>
+                <td>{{monthlyPass.isLarge ? 'Large' : 'Small'}}</td>
+                <td>{{monthlyPass.floorNumber}}</td>
+                <td>{{monthlyPass.startDate}}</td>
+                <td>{{monthlyPass.endDate}}</td>
+                <td>{{monthlyPass.fee}}</td>
             </tr>
           </tbody>
         </table>
@@ -105,7 +104,7 @@
 
 <script>
 import axios from 'axios';
-import GeneralCreateGuestPass from '@/components/GeneralCreateGuestPass'
+import InternalCreateMonthlyPass from '@/components/InternalCreateMonthlyPass.vue';
 
 const config = require('../../../config');
 const frontendUrl = config.dev.host + ':' + config.dev.port;
@@ -115,130 +114,43 @@ const axiosClient = axios.create({
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
 });
 export default {
-
-   components: {
-        GeneralCreateGuestPass
+    components: {
+        InternalCreateMonthlyPass
     },
-    
+
     data() {
         return {
-            guestPasses: [],
-            guestPassIDs: [],
+            monthlyPasses: [],
+            monthlyPassIDs: [],
             floorNumbers: [],
             editIdInput: '',
             editFloorInput: '',
             IDTextInput: '',
-            selectedDate: null,
-
+            customerEmailTextInput: '',
+            // selectedDate: null,
             showModal: false,
             modalContent: null,
         };
     },
     created() {
         // Fetch all employees on component mount
-        this.fetchGuestPasses();
+        this.fetchMonthlyPasses();
         this.fetchFloors();
         
     },
-   
+
+
     methods: {
-        
+
         clearForm() {
         this.modalContent = null;
         },
 
         openCreateModal() {
-            this.modalContent = GeneralCreateGuestPass;
+            this.modalContent = InternalCreateMonthlyPass;
             this.showModal = true;
         },
-
-        clearInputs(){
-            this.IDTextInput = ""
-            this.selectedDate = null
-            this.editFloorInput = ""
-        },
-
-        handleOptionSelected(option) {
-            // handle option selected event
-        },
-
-        handleIDInput() {
-            this.guestPasses = []
-            if (this.IDTextInput == ""){
-                this.fetchGuestPasses();
-            }
-            else{
-                axiosClient.get("/guestPass/" + this.IDTextInput).then((response) => {
-                
-                    this.guestPasses.push(response.data)
-                }).catch((err) => {
-                alert(err.response.data)
-                });
-            }
-            
-           
-        },
-
-        handleDateSelect(date){
-            axiosClient.get("/guestPass/date/" + date).then((response) => {
-                this.guestPasses = response.data
-                
-           }).catch((err) => {
-            alert(err.response.data)
-           });
-        },
-
-        fetchGuestPasses() {
-            this.clearInputs()
-            axiosClient.get("/guestPass/").then((response) => {
-            this.guestPasses = response.data
-            this.guestPassIDs = response.data.map((guestPasses) => guestPasses.id);
-           }).catch((err) => {
-            alert(err.response.data)
-           });
-        },
-
-        fetchFloors(){
-            axiosClient.get("/floor").then((response) => {
-                this.floorNumbers = response.data.map((floor) => floor.floorNumber);
-           }).catch((err) => {
-            alert(err.response.data)
-           });
-        },
-
-        clearIDTextField() {
-            this.IDTextInput == ""
-            this.fetchGuestPasses()
-        },
-
-        handleFloorSelect(floorNumber){
-            if (floorNumber == 'all'){
-                this.fetchGuestPasses()
-            }
-            else{
-                axiosClient.get("/guestPass/floor/" + floorNumber).then((response) => {
-                    this.guestPasses = response.data;
-                    console.log('Selected floor:', floorNumber);
-                }).catch((err) => {
-                alert(err.response.data)
-           });
-            }
-            
-        },
-        
-        // handleRowClick(employee) {
-        //   this.selectedEmployee = employee;
-        //   console.log('selected new employee');
-        // },
-        // handleRowHover(employee) {
-        //   this.hoveredEmployee = employee;
-        // },
-        // onReset(evt) {
-        // evt.preventDefault();
-        // // this.$refs.addEmployeeModal.hide();
-        // this.initForm();
-        // },
-        async Home() {
+      async Home() {
       await this.$router.push({name: 'OwnerHome'})
     },
     async Appointments() {
@@ -258,7 +170,97 @@ export default {
     },
     async Passes(){
       await this.$router.push({name: 'ViewGuestPasses'})
-    }
+    },
+        
+        clearInputs(){
+            this.IDTextInput = ""
+            this.customerEmailTextInput = ""
+            this.editFloorInput = ""
+        },
+
+        handleOptionSelected(option) {
+            // handle option selected event
+        },
+
+        handleIDInput() {
+            this.monthlyPasses = []
+            if (this.IDTextInput == ""){
+                fetchMonthlyPasses();
+            }
+            else{
+                axiosClient.get("/monthlypass/" + this.IDTextInput).then((response) => {
+                
+                    this.monthlyPasses.push(response.data)
+                }).catch((err) => {
+                alert(err.response.data)
+                });
+            }
+            
+           
+        },
+
+        handleEmailInput(){
+            this.monthlyPasses = []
+            if (this.customerEmailTextInput == ""){
+                fetchMonthlyPasses();
+            }
+            else{
+                axiosClient.get("/monthlypass/customer/" + this.customerEmailTextInput).then((response) => {
+                    this.monthlyPasses = response.data
+                }).catch((err) => {
+                alert(err.response.data)
+                });
+            }
+        },
+
+        // handleDateSelect(date){
+        //     axiosClient.get("/monthlypass/date/" + date).then((response) => {
+        //         this.monthlyPasses = response.data
+                
+        //    }).catch((err) => {
+        //     alert(err.response.data)
+        //    });
+        // },
+
+        fetchMonthlyPasses() {
+            this.clearInputs()
+            axiosClient.get("/pass").then((response) => {
+            this.monthlyPasses = response.data
+            this.monthlyPassIDs = response.data.map((monthlyPasses) => monthlyPasses.id);
+           }).catch((err) => {
+            alert(err.response.data)
+           });
+        },
+
+        fetchFloors(){
+            axiosClient.get("/floor").then((response) => {
+                this.floorNumbers = response.data.map((floor) => floor.floorNumber);
+           }).catch((err) => {
+            alert(err.response.data)
+           });
+        },
+
+        clearIDTextField() {
+            this.IDTextInput == ""
+            tMonthly()
+        },
+
+        handleFloorSelect(floorNumber){
+            this.monthlyPasses = ''
+            if (floorNumber == 'all'){
+                this.fetchMonthlyPasses()
+            }
+            else{
+                axiosClient.get("/monthlypass/floor/" + floorNumber).then((response) => {
+                    this.monthlyPasses = response.data;
+                    console.log('Selected floor:', floorNumber);
+                }).catch((err) => {
+                alert(err.response.data)
+           });
+            }
+            
+        },
+        
 
     }
 }

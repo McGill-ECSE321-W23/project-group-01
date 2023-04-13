@@ -1,42 +1,99 @@
 <template>
   <div id="guestpass_creation_search">
-    <div id="guestpasscreation">
+    <!-- <div id="guestpasscreation">
       <h2>Create a Guest Pass</h2>
       <table align = center>
         <tr>
-          <td>Spot number</td>
-          <td>Confirmation code</td>
-          <td>License plate</td>
-        </tr>
-        <tr>
-          <td>
-              <input type="text" placeholder="spot number" id="spot" v-model="spotNumber">
-          </td>
-          <td>
-              <input type="text" placeholder="confirmation code" id="code" v-model="confirmationCodeCreation">
-          </td>
-          <td>
-              <input type="text" placeholder="license plate" id="plate" v-model="licensePlate">
-          </td>
-        </tr>
-        <tr>
           <td>Floor number</td>
-          <td>15 minute increments</td>
           <td>Large</td>
+          <td>License plate</td>
         </tr>
         <tr>
           <td>
               <input type="text" placeholder="floor number" id="floor" v-model="floorNumber">
           </td>
           <td>
-              <input type="text" placeholder="15 minute increments" id="increments" v-model="numberOfFifteenMinuteIncrements">
+              
+              <input type="checkBox" id="isLarge" v-model="isLarge">
           </td>
           <td>
-              <input type="checkBox" id="isLarge" v-model="isLarge">
+              <input type="text" placeholder="spot number" id="spot" v-model="spotNumber" v-bind:disabled="createGuestPassButtonDisabled">
+              
+          </td>
+        </tr>
+        <tr>
+          <td>License Plate</td>
+          <td>15 minute increments</td>
+        </tr>
+        <tr>
+          <td>
+              <input type="text" placeholder="license plate" id="plate" v-model="licensePlate">
+          </td>
+          <td>
+              <input type="text" placeholder="15 minute increments" id="increments" v-model="numberOfFifteenMinuteIncrements">
           </td>
         </tr>
       </table>
-    </div>
+    </div> -->
+
+      <div id="guestpasscreation">
+  <h2>Create a Guest Pass</h2>
+  <table align="center" style="border-collapse: collapse;">
+    <tr>
+      <td style="border: none;"></td>
+      <td style="border: none;">Floor number</td>
+      <td style="border: none;">Large</td>
+      <td style="border: none;">License plate</td>
+      <td style="border: none;"></td>
+    </tr>
+    <tr>
+      <td style="border: none;"></td>
+      <td style="border: none;">
+        <!-- <input type="number" placeholder="floor number" id="floor" v-model="floorNumber"> -->
+        <select class="custom-select" required v-model="floorNumber" @change="getSpotNumbers()">
+                <!-- <option v-for="floor in floors" :key="floor.floorNumber" :value="floor.floorNumber">{{floor.floorNumber}}</option> -->
+                <option v-for="(floorNumber, index) in floorNumbers.sort((a, b) => a - b)" :key="index" >{{ floorNumber }}</option>
+        </select>
+      </td>
+      <td style="border: none;">
+        <input type="checkBox" id="isLarge" v-model="isLarge" @click="onIsLargeChange()">
+      </td>
+      <td style="border: none;">
+        <!-- <input type="text" placeholder="spot number" id="spot" v-model="spotNumber" v-bind:disabled="createGuestPassButtonDisabled"> -->
+        <select v-model="spotNumber" class="form-control" :disabled="selectSpotDisabled"  @click="getSpotNumbers">
+                <option value="" disabled>Select a spot</option>
+                <option v-for="(spot,index) in spotNumbers" :key="index">{{ spot }}</option>
+        </select>
+      </td>
+      <td style="border: none;"></td>
+    </tr>
+    <tr>
+      <td style="border: none;"></td>
+      <td style="border: none;">License Plate</td>
+      <td colspan="2" style="border: none;">15 minute increments</td>
+      <td style="border: none;"></td>
+    </tr>
+    <tr>
+      <td style="border: none;"></td>
+      <td style="border: none;">
+        <input type="text" placeholder="license plate" id="plate" v-model="licensePlate">
+      </td>
+      <td style="border: none;" colspan="2">
+        <input type="number" placeholder="15 minute increments" id="increments" v-model="numberOfFifteenMinuteIncrements">
+      </td>
+      <td style="border: none;"></td>
+    </tr>
+    <tr>
+      <td style="border: none;"></td>
+      <td style="border: none;"></td>
+      <td style="border: none;"></td>
+      <td style="border: none;"></td>
+      <td style="border: none;"></td>
+    </tr>
+  </table>
+</div>
+
+
 
     <br>
 
@@ -50,7 +107,7 @@
       <h2>Find Guest Pass</h2>
       <table align = center>
         <tr>
-          <td>Guest Pass id</td>
+          <td>Guest Pass ID</td>
           <td>Confirmation code</td>
         </tr>
         <tr>
@@ -80,15 +137,19 @@
 <script>
 import axios from 'axios'
 var config = require('../../config')
+const frontendUrl = config.dev.host + ':' + config.dev.port;
 
 const AXIOS = axios.create({
-  baseURL: config.dev.backendBaseUrl
+  baseURL: config.dev.backendBaseUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl },
 })
 
 export default {
   name: 'GuestPassCreationAndSearch',
   data(){
     return{
+      floors: [],
+      floorNumbers: [],
       spotNumber: '',
       confirmationCodeCreation: '',
       licensePlate: '',
@@ -96,9 +157,12 @@ export default {
       numberOfFifteenMinuteIncrements: '',
       errorMsgCreation: '',
       errorMsgIdentification: '',
-
+      isLarge : false,
       confirmationCodeIdentification: '',
       id: '',
+
+      spotNumbersMap:{},
+      spotNumbers:[]
 
     };
   },
@@ -112,16 +176,57 @@ export default {
       console.log(err);
     });
 
+    AXIOS.get("/floor")
+      .then(response => {
+        this.floors = response.data
+        // this.floorNumbers = response.data.map((floor) => floor.floorNumber)
+        this.floorNumbers = []
+      
+       // Get all floors and subsequent floor numbers 
+       for (const floor of this.floors) {
+        
+        if (!floor.memberOnly) {
+          const floorNumber = floor.floorNumber;
+          const largeSpotCapacity = floor.largeSpotCapacity;
+          const smallSpotCapacity = floor.smallSpotCapacity;
+
+          // Generate spot numbers for large and for small spots
+          const largeSpots = [];
+          for (let i = 1; i <= largeSpotCapacity; i++) {
+            largeSpots.push(`${floorNumber}L${i}`);
+          }
+
+          const smallSpots = [];
+          for (let i = 1; i <= smallSpotCapacity; i++) {
+            smallSpots.push(`${floorNumber}S${i}`);
+          }
+
+          this.floorNumbers.push(floorNumber);
+
+          // Add the spot numbers to the hashmap
+          this.spotNumbersMap[floorNumber] = {
+            large: largeSpots,
+            small: smallSpots
+          };
+        }
+      }
+      console.log('spotnumbermap', this.spotNumbersMap)
+      })
+      .catch(error => {
+        
+        alert(error.data)
+      })
   },
 
   methods: {
     createGuestPass(){
+      this.confirmationCode = this.generateConfirmationCode()
       const request = {spotNumber: this.spotNumber, confirmationCode: this.confirmationCodeCreation, licensePlate: this.licensePlate,
       floorNumber: this.floorNumber, numberOfFifteenMinuteIncrements: this.numberOfFifteenMinuteIncrements,
     isLarge: document.getElementById(`isLarge`).checked};
     AXIOS.post('/guestPass', request)
     .then((response) => {
-      this.errorMsgCreation = "Guest Pass created!"
+      this.errorMsgCreation = `Guest Pass Created!  \t ID: ${response.data.id}  \n Confirmation Code: ${this.confirmationCode} `
     })
     .catch((err) => {
       this.errorMsgCreation = `Failed to create pass: ${err.response.data}`;
@@ -144,17 +249,57 @@ export default {
         this.errorMsgIdentification = `Failed to find pass: ${err.response.data}`;
       })
 
+    },
+
+    onIsLargeChange() {
+      this.isLarge = !this.isLarge;
+      console.log('changed', this.isLarge)
+      this.getSpotNumbers();
+    },
+    getSpotNumbers(){
+      this.spotNumber = ''
+      const floorNumber = this.floorNumber.toString()
+      const spotType = this.isLarge? "large" : "small"
+      if (this.spotNumbersMap[floorNumber] && this.spotNumbersMap[floorNumber][spotType]) {
+        this.spotNumbers = this.spotNumbersMap[floorNumber][spotType]
+        console.log(this.spotNumbers)
+      } else {
+        console.log(`Spot numbers not found for floor ${floorNumber} and spot type ${spotType}.`)
+      }
+    },
+    generateConfirmationCode() {
+    console.log('test')
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let code = '';
+    
+    // Generate the first two letters
+    for (let i = 0; i < 2; i++) {
+      code += letters.charAt(Math.floor(Math.random() * letters.length));
     }
+    
+    // Add the underscore
+    code += '_';
+    
+    // Generate the six numbers
+    for (let i = 0; i < 6; i++) {
+      code += Math.floor(Math.random() * 10);
+    }
+    console.log(code)
+    return code;
+  },
   },
 
   computed: {
     createGuestPassButtonDisabled() {
-      return !this.spotNumber.trim() || !this.confirmationCodeCreation.trim() || !this.licensePlate.trim() || !this.floorNumber.trim() || !this.numberOfFifteenMinuteIncrements.trim();
+      return !this.spotNumber.trim() || !this.licensePlate.trim() || !this.floorNumber.trim() || !this.numberOfFifteenMinuteIncrements.trim();
     },
 
     findGuestPassButtonDisabled(){
       return !this.id.trim() || !this.confirmationCodeIdentification.trim();
-    }
+    },
+    selectSpotDisabled(){
+    return (this.floorNumber == '')
+    },
   
   }
   

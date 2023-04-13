@@ -12,7 +12,7 @@ import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
 import ManageEmployees from "@/components/owner/ManageEmployees"
 import ViewGuestPasses from "@/components/owner/ViewGuestPasses"
 import BookServiceAppointmentGuest from "@/components/BookServiceAppointmentGuest"
-
+import ViewMonthlyPasses from '@/components/owner/ViewMonthlyPasses'
 
 import MonthlyCustomerHome from "@/components/MonthlyCustomerHome"
 import MonthlyCustomerPasses from "@/components/MonthlyCustomerPasses";
@@ -72,6 +72,17 @@ export default new Router({
       component: ViewGuestPasses
     },
     {
+      path: '/owner/monthly-passes',
+      name: 'ViewMonthlyPasses',
+      component: ViewMonthlyPasses
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home
+    },
+    {
+
       path: '/login-user',
       name: 'LoginUser',
       component: LoginUser
