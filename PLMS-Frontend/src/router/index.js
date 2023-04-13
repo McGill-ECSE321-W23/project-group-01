@@ -13,7 +13,7 @@ import ManageEmployees from "@/components/owner/ManageEmployees"
 import ViewGuestPasses from "@/components/owner/ViewGuestPasses"
 import BookServiceAppointmentGuest from "@/components/BookServiceAppointmentGuest"
 import ViewMonthlyPasses from '@/components/owner/ViewMonthlyPasses'
-
+import EmployeeHome from '@/components/employee/EmployeeHome'
 import MonthlyCustomerHome from "@/components/MonthlyCustomerHome"
 import MonthlyCustomerPasses from "@/components/MonthlyCustomerPasses";
 import MonthlyCustomerAppointments from "@/components/MonthlyCustomerAppointments";
@@ -54,13 +54,13 @@ export default new Router({
       name:'InternalMonthlyPassCreation',
       component: InternalCreateMonthlyPass,
     },
-    // {
-    //   path: '/employee/:email',
-    //   name: 'EmployeeHome',
-    //   component: EmployeeHome,
-    //   props: true
+    {
+      path: '/employee/:email',
+      name: 'EmployeeHome',
+      component: EmployeeHome,
+      props: true
 
-    // },
+    },
     {
       path: '/owner/customers',
       name: 'ViewMonthlyCustomer',
