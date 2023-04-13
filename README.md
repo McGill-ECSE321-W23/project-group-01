@@ -71,11 +71,11 @@ All the mentioned default items can be updated (except for the email of the owne
 
 | Name | Contributions | Total Hours | 
 | --- | --- | --- |
-| Evan Boyd | Architecture Diagram, owner pages, backend fixes, presentation |  |
-| Samer Abdulkarim |  |  |
-| Emilien Taisne |  |  |
-| Walid Aissa |  |   |
-| Karim Al Sabbagh |   |  |
+| Evan Boyd | Architecture Diagram. Owner pages. Backend fixes. In-class presentation | 20 |
+| Samer Abdulkarim | All Monthly Customer Pages. Create home page for all users. Sign up. Log in page. Backend checks for duplicate emails. Log in fuctionalities. Bug fixes | 30 |
+| Emilien Taisne | View monthly customers. Home page of owner. Major bug fixes with front end. Integration tests of log in controller. Documentation. In-class demo. | 17 |
+| Walid Aissa | Guest Pass booking page. Management of Services for owner. In-class presentation. | 17  |
+| Karim Al Sabbagh | Management of parking lot personnel. View passes. Internal booking of guest and monthly passes. Revamping of CSS styling. Monthly Pass/Guest Pass creation for customers.  | 30 |
 | Karl Bridi | Architecture diagram, Key component description of the architecture diagram, parking lot frontend page, employee homepage | 17 |
 
  
