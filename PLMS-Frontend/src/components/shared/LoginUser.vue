@@ -40,12 +40,9 @@
 
     <div class="text-center">
       <p>Don't have an account? </p>
-    </div> <a href="http://localhost:8087/#/create-customer">
-    <button style="background-color:lightskyblue; width: 20%; margin-top: 1%; margin-left: 40%;"  type="button" class="btn btn-primary btn-block mb-4">Sign up</button>
-  </a>
-    <a href="http://localhost:8087/#/">
-      <button style="background-color:lightskyblue; width: 20%; margin-top: 1%; margin-left: 40%;"  type="button" class="btn btn-primary btn-block mb-4">Continue as Guest</button>
-    </a>
+    </div>
+    <button style="background-color:lightskyblue; width: 20%; margin-top: 1%; margin-left: 40%;"  type="button" class="btn btn-primary btn-block mb-4" @click="SignUp">Sign up</button>
+    <button style="background-color:lightskyblue; width: 20%; margin-top: 1%; margin-left: 40%;"  type="button" class="btn btn-primary btn-block mb-4" @click="Guest">Continue as Guest</button>
 
   </div>
 </template>
@@ -94,6 +91,12 @@ export default {
           this.errorMsg = `Error: ${err.response.data}`;
           alert(this.errorMsg)
         })
+    },
+    async SignUp() {
+      await this.$router.push({name: 'SignUp'})
+    },
+    async Guest() {
+      await this.$router.push({name: 'GeneralCreateGuestPass'})
     }
 
   },

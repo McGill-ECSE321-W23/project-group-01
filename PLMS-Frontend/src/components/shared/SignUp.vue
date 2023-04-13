@@ -27,7 +27,7 @@
     <button v-bind:disabled="createUserButtonDisabled" style="width: 50%; margin-top: 1%; margin-left: 25%" @click="createUser()" type="button" class="btn btn-primary btn-block mb-4"> Sign up </button>
 
     <div class="text-center">
-      <p>Already have an account? <a href="http://localhost:8087/#/login-user">Login</a></p>
+      <p>Already have an account? <a @click="Login">Login</a></p>
     </div>
 
   </div>
@@ -65,7 +65,7 @@ export default {
         .then((response) => {
           alert("Your account with email " + this.email + " has been created successfully")
           this.logged_user = response
-          window.location.href = "http://localhost:8087/#/login-user";
+          this.Login();
 
         })
         .catch((err) => {
@@ -73,6 +73,9 @@ export default {
           alert(this.errorMsg)
 
         })
+    },
+    async Login() {
+      await this.$router.push({name: 'LoginUser'})
     }
 
   },

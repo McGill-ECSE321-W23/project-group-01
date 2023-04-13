@@ -145,7 +145,7 @@ const AXIOS = axios.create({
 })
 
 export default {
-  name: 'GuestPassCreationAndSearch',
+  name: 'GuestCreateGuestPass',
   data(){
     return{
       floors: [],

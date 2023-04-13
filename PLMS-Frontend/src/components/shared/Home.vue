@@ -23,8 +23,8 @@
         </svg>      </a>
       <a class="py-2 d-none d-md-inline-block"  href="#product">Product</a>
       <a class="py-2 d-none d-md-inline-block"  href="#pricing">Pricing</a>
-      <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Login</a>
-      <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/create-customer">Signup</a>
+      <a class="py-2 d-none d-md-inline-block" @click="Login">Login</a>
+      <a class="py-2 d-none d-md-inline-block" @click="SignUp">Signup</a>
     </div>
   </nav>
 
@@ -64,6 +64,14 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Home Page'
+    }
+  },
+  methods : {
+    async Login() {
+      await this.$router.push({name: 'LoginUser'})
+    },
+    async SignUp() {
+      await this.$router.push({name: 'SignUp'})
     }
   }
 }

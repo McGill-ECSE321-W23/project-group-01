@@ -105,7 +105,7 @@
 
 <script>
 import axios from 'axios';
-import GeneralCreateGuestPass from '@/components/GeneralCreateGuestPass'
+import GeneralCreateGuestPass from '@/components/pass/GeneralCreateGuestPass'
 
 const config = require('../../../config');
 const frontendUrl = config.dev.host + ':' + config.dev.port;

@@ -154,6 +154,7 @@ const axiosClient = axios.create({
 });
 
 export default {
+  name: 'ViewMonthlyCustomer',
     data() {
         return {
             customers: [],

@@ -104,7 +104,7 @@
 
 <script>
 import axios from 'axios';
-import InternalCreateMonthlyPass from '@/components/InternalCreateMonthlyPass.vue';
+import InternalCreateMonthlyPass from '@/components/pass/InternalCreateMonthlyPass.vue';
 
 const config = require('../../../config');
 const frontendUrl = config.dev.host + ':' + config.dev.port;
