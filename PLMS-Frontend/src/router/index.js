@@ -19,6 +19,10 @@ import MonthlyCustomerPasses from "@/components/MonthlyCustomerPasses";
 import MonthlyCustomerAppointments from "@/components/MonthlyCustomerAppointments";
 import MonthlyCustomerManageAccount from "@/components/MonthlyCustomerManageAccount";
 import OwnerHome from "@/components/owner/OwnerHome"; 
+import ViewPasses from "@/components/ViewPasses";
+import OwnerPasses from "@/components/owner/OwnerPasses";
+import EmployeePasses from "@/components/employee/EmployeePasses";
+
 
 Vue.use(Router)
 
@@ -28,6 +32,11 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/passes',
+      name: 'Pass',
+      component: ViewPasses
     },
     {
       path: '/createGuestPass',
@@ -43,6 +52,16 @@ export default new Router({
       path: '/owner/home',
       name: 'OwnerHome',
       component: OwnerHome
+    },
+    {
+      path: '/owner/pass',
+      name: 'OwnerPasses',
+      component: OwnerPasses,
+    },
+    {
+      path: '/employee/pass',
+      name: 'EmployeePasses',
+      component: EmployeePasses,
     },
     {
       path: '/owner/manage-employees',
