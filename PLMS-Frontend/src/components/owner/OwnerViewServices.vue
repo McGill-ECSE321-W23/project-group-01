@@ -1,5 +1,30 @@
 <template>
     <div>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="../../assets/logo-transparent-png.png">
+      <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/product/">
+      <link href="../../../bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+      <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
+  
+      <nav class="site-header sticky-top py-1">
+        <div class="container d-flex flex-column flex-md-row justify-content-between">
+          <a class="py-2" href="#product">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
+              <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+            </svg>      </a>
+            <a class="py-2 d-none d-md-inline-block"  @click="Home">Home</a>
+            <a class="py-2 d-none d-md-inline-block"  @click="Customers">Manage Customer Accounts</a>
+          <a class="py-2 d-none d-md-inline-block"  href="#">Manage Employee Accounts</a>
+          <a class="py-2 d-none d-md-inline-block"  href="#">Manage Passes</a>
+          <a class="py-2 d-none d-md-inline-block" @click="Appointments">Manage Appointments</a>
+          <a class="py-2 d-none d-md-inline-block" @click="ParkingLot">Manage Parking Lot</a>
+          <a class="py-2 d-none d-md-inline-block" @click="Services">Manage Services</a>
+          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
+        </div>
+      </nav>
       <div>
         <h2>Create a Service</h2>
         <div>
@@ -23,9 +48,12 @@
       <div>
         <h2>Edit a Service</h2>
         <div>
-        <label for="serviceNameEdit">Service name:</label>
-          <input type="text" id="serviceNameEdit" name="serviceNameEdit" v-model="editServiceNameInput">
-        </div>
+    <label for="serviceNameEdit">Service name:</label>
+    <select id="serviceNameEdit" name="serviceNameEdit" v-model="editServiceNameInput">
+      <option value="">Select a service</option>
+      <option v-for="name in serviceNames" :value="name">{{ name }}</option>
+    </select>
+  </div>
         <div>
           <label for="costEdit">Cost:</label>
           <input type="text" id="costEdit" name="costEdit" v-model="editCostInput">
@@ -44,9 +72,12 @@
       <div>
         <h2>Delete a Service </h2>
         <div>
-          <label for="serviceNameDelete">Service name:</label>
-          <input type="text" id="serviceNameDelete" name="serviceNameDelete" v-model="deleteServiceInput">
-        </div>
+    <label for="serviceNameDelete">Service name:</label>
+    <select id="serviceNameDelete" name="serviceNameDelete" v-model="deleteServiceInput">
+      <option value="">Select a service</option>
+      <option v-for="name in serviceNames" :value="name">{{ name }}</option>
+    </select>
+  </div>
         <button type="button" :disabled="!deleteServiceInput" @click="deleteService()">Delete Service</button>
 
         <p class="error">{{ errorMsgDelete }}</p>
@@ -79,7 +110,7 @@
   
   <script>
   import axios from 'axios';
-  const config = require('../../config');
+  const config = require('../../../config');
   const frontendUrl = config.dev.host + ':' + config.dev.port;
   const axiosClient = axios.create({
     // Note the baseURL, not baseUrl
@@ -92,6 +123,7 @@
     data() {
       return {
         services: [],
+        serviceNames: [],
 
         createServiceNameInput: '',
         createCostInput: '',
@@ -111,18 +143,25 @@
       };
     },
     created() {
-      axiosClient.get('/service')
-        .then((response) => {
-          this.services = response.data;
-          this.errorMsgAll = '';
-        })
-        .catch((error) => {
-          console.log(error.response.data);
-          this.errorMsgAll = error.response.data;
-        });
+      this.getAllServices()
     },
 
     methods: {
+      async Home() {
+      await this.$router.push({name: 'OwnerHome'})
+    },
+    async Appointments() {
+      await this.$router.push({name: 'OwnerViewAppointments'})
+    },
+    async ParkingLot() {
+      await this.$router.push({name: 'ParkingLotSettings'})
+    },
+    async Services(){
+      await this.$router.push({name: 'OwnerViewServices'})
+    },
+    async Customers(){
+      await this.$router.push({name: 'ViewMonthlyCustomer'})
+    },
 
         createService() {
             const request = {
@@ -137,6 +176,7 @@
                 this.createLengthInput = '';
                 this.services.push(response.data)
                 this.errorMsgCreate = "Service created successfully";
+                this.getAllServices()
             })
             .catch(error => {
                 console.log(error.response.data);
@@ -157,6 +197,7 @@
                 this.editLengthInput = '';
                 window.location.reload();
                 this.errorMsgEdit = "Service updated successfully";
+                this.getAllServices()
             })
             .catch((error) => {
                 console.log(error.response.data);
@@ -169,11 +210,25 @@
             .then((response) => {
                 window.location.reload();
                 this.errorMsgDelete = "Service deleted successfully";
+                this.getAllServices()
             })
             .catch((error) => {
                 console.log(error.response.data);
                 this.errorMsgDelete = error.response.data;
             })
+        },
+        
+        getAllServices(){
+          axiosClient.get('/service')
+        .then((response) => {
+          this.services = response.data;
+          this.serviceNames = response.data.map((service) => service.serviceName)
+          this.errorMsgAll = '';
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+          this.errorMsgAll = error.response.data;
+        });
         }
         
     },
@@ -209,4 +264,8 @@
     border: 1px solid black;
     padding: 8px;
   }
+
+  a {
+  padding: 20px;
+}
   </style>

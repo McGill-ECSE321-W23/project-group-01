@@ -241,11 +241,9 @@ public class ServiceAppointmentService {
     if (updatedAppointment == null){
       throw new PLMSException(HttpStatus.NOT_FOUND, "Service appointment is not found.");
     }
-
-    updatedAppointment.setEmployee(employee);
-
+    
     // we randomly assign employees, if there are any.
-    if (employee != null) updatedAppointment.setEmployee(checkForConflictInEmployeeScheedule(updatedAppointment));
+    if (employee != null) updatedAppointment.setEmployee(checkForConflictInEmployeeScheedule(updatedAppointment, employee.getEmail(), employee));
     ServiceAppointment appointment = serviceAppointmentRepo.save(updatedAppointment);
     return appointment;
   }
@@ -255,21 +253,25 @@ public class ServiceAppointmentService {
    * @param appointment appointment that is compared with the rest for overlapping checking
    * @return
    */
-  public Employee checkForConflictInEmployeeScheedule(ServiceAppointment appointment){
+  public Employee checkForConflictInEmployeeScheedule(ServiceAppointment appointment, String employeeEmail, Employee employee){
     
     ArrayList<ServiceAppointment> allAppts = (ArrayList<ServiceAppointment>) serviceAppointmentRepo.findAll();
     
     // get all the appointments for the current employee
-    ArrayList<ServiceAppointment> appointmentsForEmployee = new ArrayList<>();
+    ArrayList<ServiceAppointment> appointmentsForEmployee = new ArrayList<ServiceAppointment>();
     for(ServiceAppointment appt : allAppts){
-      if(appt.getEmployee() != null && appt.getEmployee().getEmail().equals(appointment.getEmployee().getEmail())) appointmentsForEmployee.add(appt);
+      if(appt.getEmployee() != null && appt.getEmployee().getEmail().equals(employeeEmail) && appt.getId() != appointment.getId()) appointmentsForEmployee.add(appt);
     }
+
+    if(appointmentsForEmployee.isEmpty()) {
+      return employee;
+  }
     // now check for scheduling conflicts in all of their appointments
     boolean hasConflictingAppointment = false;
     for(ServiceAppointment appt : appointmentsForEmployee){
       hasConflictingAppointment = isConflicting(appointment, appt);
     }
-    if (!hasConflictingAppointment) return appointment.getEmployee();
+    if (!hasConflictingAppointment) return employee;
     throw new PLMSException(HttpStatus.BAD_REQUEST, "Cannot change the employee because requested employee already has an appointment during the time frame of this appointment.");
   }
 

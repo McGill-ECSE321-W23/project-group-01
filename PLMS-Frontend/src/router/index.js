@@ -1,17 +1,24 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
 import GeneralCreateGuestPass from '@/components/GeneralCreateGuestPass'
+import InternalCreateMonthlyPass from '@/components/InternalCreateMonthlyPass'
 import Home from '@/components/Home'
 import LoginUser from "@/components/LoginUser";
 import SignUp from "@/components/SignUp";
-import OwnerViewAppointments from "@/components/OwnerViewAppointments"
-import OwnerViewServices from "@/components/OwnerViewServices"
-import ParkingLotSettings from '@/components/ParkingLotSettings'
+import OwnerViewAppointments from "@/components/owner/OwnerViewAppointments"
+import OwnerViewServices from "@/components/owner/OwnerViewServices"
+import ParkingLotSettings from '@/components/owner/ParkingLotSettings'
 import ViewMonthlyCustomer from '@/components/owner/ViewMonthlyCustomer'
-import OwnerHome from '@/components/owner/OwnerHome'
-import EmployeeHome from '@/components/employee/EmployeeHome'
-import MonthlyCustomerHome from "../components/MonthlyCustomerHome"
+import ManageEmployees from "@/components/owner/ManageEmployees"
+import ViewGuestPasses from "@/components/owner/ViewGuestPasses"
+import BookServiceAppointmentGuest from "@/components/BookServiceAppointmentGuest"
+
+
+import MonthlyCustomerHome from "@/components/MonthlyCustomerHome"
+import MonthlyCustomerPasses from "@/components/MonthlyCustomerPasses";
+import MonthlyCustomerAppointments from "@/components/MonthlyCustomerAppointments";
+import MonthlyCustomerManageAccount from "@/components/MonthlyCustomerManageAccount";
+import OwnerHome from "@/components/owner/OwnerHome"; 
 
 Vue.use(Router)
 
@@ -19,8 +26,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'Home',
+      component: Home
     },
     {
       path: '/createGuestPass',
@@ -28,28 +35,42 @@ export default new Router({
       component: GeneralCreateGuestPass
     },
     {
+      path: '/book-service-appointment',
+      name: 'BookServiceAppointmentGuest',
+      component: BookServiceAppointmentGuest
+    },
+    {
       path: '/owner/home',
       name: 'OwnerHome',
       component: OwnerHome
     },
     {
-      path: '/employee/:email',
-      name: 'EmployeeHome',
-      component: EmployeeHome,
-      props: true
-
+      path: '/owner/manage-employees',
+      name: 'ManageEmployees',
+      component: ManageEmployees
     },
+    {
+      path: '/employee/create-monthly-pass',
+      name:'InternalMonthlyPassCreation',
+      component: InternalCreateMonthlyPass,
+    },
+    // {
+    //   path: '/employee/:email',
+    //   name: 'EmployeeHome',
+    //   component: EmployeeHome,
+    //   props: true
+
+    // },
     {
       path: '/owner/customers',
       name: 'ViewMonthlyCustomer',
       component: ViewMonthlyCustomer
     },
     {
-      path: '/home',
-      name: 'Home',
-      component: Home
+      path: '/owner/guest-passes',
+      name: 'ViewGuestPasses',
+      component: ViewGuestPasses
     },
-
     {
       path: '/login-user',
       name: 'LoginUser',
@@ -74,19 +95,38 @@ export default new Router({
     {
       path: 'customer/:email',
       name: 'MonthlyCustomerHome',
-      component: MonthlyCustomerHome, //
+      component: MonthlyCustomerHome,
       props: true
 
     },
     {
-      path: '/product',
-      redirect: '/home'
+      path: 'customer/pass:email',
+      name: 'MonthlyCustomerPasses',
+      component: MonthlyCustomerPasses,
+      props: true
+    },
+    {
+      path: 'customer/appointment:email',
+      name: 'MonthlyCustomerAppointments',
+      component: MonthlyCustomerAppointments,
+      props: true
+    },
+    {
+      path: 'customer/manage:email',
+      name: 'MonthlyCustomerManageAccount',
+      component: MonthlyCustomerManageAccount,
+      props: true
     },
     {
       path: '/owner-view-services',
       name : 'OwnerViewServices',
       component: OwnerViewServices,
     },
+    {
+      path: '/product',
+      redirect: '/home'
+    },
+
     {
       path: '/pricing',
       redirect: '/home'
