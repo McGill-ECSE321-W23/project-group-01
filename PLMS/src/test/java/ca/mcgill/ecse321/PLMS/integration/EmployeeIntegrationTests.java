@@ -150,7 +150,7 @@ public class EmployeeIntegrationTests {
         ResponseEntity<String> response =  client.postForEntity("/employee/create", request, String.class);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertContains("Email must follow this format xxx@email.address", response.getBody());
-        assertContains("Password contains at least one uppercase, lowercase and special character [!@#$%^&+=]", response.getBody());
+        assertContains("Password contains at least one uppercase, lowercase and special character [!@#$%^+=]", response.getBody());
         assertContains("Password must have 5-13 character", response.getBody());
         assertContains("Name can only have letters", response.getBody());
         assertContains("Job title can only have letters", response.getBody());
@@ -169,11 +169,11 @@ public class EmployeeIntegrationTests {
         ResponseEntity<EmployeeResponseDto> response = client.exchange("/employee/update", HttpMethod.PUT, requestEntity , EmployeeResponseDto.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(response.getBody().getName(), "Jane");
-        assertEquals(response.getBody().getEmail(), employeeFixture.email);
-        assertEquals(response.getBody().getPassword(),"John!Doe");
-        assertEquals(response.getBody().getJobTitle(), "Cashier");
-        assertEquals(response.getBody().getHourlyWage(), 13);
+        assertEquals("Jane", response.getBody().getName());
+        assertEquals(employeeFixture.email, response.getBody().getEmail());
+        assertEquals("John!Doe", response.getBody().getPassword());
+        assertEquals("Cashier", response.getBody().getJobTitle());
+        assertEquals(13, response.getBody().getHourlyWage());
     }
 
     @Test
@@ -189,7 +189,7 @@ public class EmployeeIntegrationTests {
         HttpEntity<EmployeeRequestDto> requestEntity = new HttpEntity<>(request);
         ResponseEntity<String> response = client.exchange("/employee/update", HttpMethod.PUT, requestEntity , String.class);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertContains("Password contains at least one uppercase, lowercase and special character [!@#$%^&+=]", response.getBody());
+        assertContains("Password contains at least one uppercase, lowercase and special character [!@#$%^+=]", response.getBody());
         assertContains("Password must have 5-13 character", response.getBody());
         assertContains("Name can only have letters", response.getBody());
         assertContains("Job title can only have letters", response.getBody());
@@ -224,7 +224,7 @@ public class EmployeeIntegrationTests {
         HttpEntity<EmployeeRequestDto> requestEntity = new HttpEntity<>(request);
         ResponseEntity<String> response = client.exchange("/employee/update", HttpMethod.PUT, requestEntity , String.class);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals(response.getBody(), "Employee not found.");
+        assertEquals("Employee not found.", response.getBody());
     }
 
 
@@ -236,7 +236,7 @@ public class EmployeeIntegrationTests {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         ResponseEntity<String> response2 =  client.getForEntity("/employee?email=" + employeeFixture.email, String.class);
         assertEquals(HttpStatus.NOT_FOUND, response2.getStatusCode());
-        assertEquals(response2.getBody(), "Employee not found.");
+        assertEquals("Employee not found.", response2.getBody());
     }
 
     @Test
@@ -245,7 +245,7 @@ public class EmployeeIntegrationTests {
         HttpEntity<String> requestEntity = new HttpEntity<>(null);
         ResponseEntity<String> response = client.exchange("/employee/delete/" + employeeFixture.email, HttpMethod.DELETE, requestEntity, String.class);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals(response.getBody(), "Employee not found.");
+        assertEquals("Employee not found.", response.getBody());
     }
 
     @Test
@@ -253,7 +253,7 @@ public class EmployeeIntegrationTests {
     public void testGetAllEmptyEmployees() {
         ResponseEntity<String> response3 = client.getForEntity("/employees", String.class);
         assertEquals(HttpStatus.NOT_FOUND, response3.getStatusCode());
-        assertEquals(response3.getBody(),   "There are no employees in the system");
+        assertEquals("There are no employees in the system", response3.getBody());
     }
 
     @Test
@@ -304,7 +304,7 @@ public class EmployeeIntegrationTests {
         request.setJobTitle(employeeFixture.jobTitle);
         ResponseEntity<String> response =  client.postForEntity("/employee/create", request, String.class);
         assertEquals(response.getStatusCode(), HttpStatus.CONFLICT);
-        assertEquals(response.getBody(), "Employee account with this email already exists");
+        assertEquals(response.getBody(), "Another account with this email already exists");
 
 
     }

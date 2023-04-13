@@ -70,8 +70,10 @@ public class EmployeeService {
     public Employee updateEmployee(Employee employee)
     {
         Employee e = getEmployeeByEmail(employee.getEmail());
-        if(employee.getHourlyWage() <= 0)
+        if(employee.getHourlyWage() <= 0){
             throw new PLMSException(HttpStatus.BAD_REQUEST, "Hourly wage must be positive.");
+        }
+        e.setPassword(employee.getPassword());
         e.setHourlyWage(employee.getHourlyWage());
         e.setJobTitle(employee.getJobTitle());
         e.setName(employee.getName());

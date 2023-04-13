@@ -130,7 +130,7 @@ public class OwnerIntegrationTests {
         ResponseEntity<String> response =  client.postForEntity("/owner/create", request, String.class);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertContains("Email must follow this format xxx@email.address", response.getBody());
-        assertContains("Password contains at least one uppercase, lowercase and special character [!@#$%^&+=]", response.getBody());
+        assertContains("Password contains at least one uppercase, lowercase and special character [!@#$%^+=]", response.getBody());
         assertContains("Password must have 5-13 character", response.getBody());
         assertContains("Name can only have letters", response.getBody());
     }
@@ -165,7 +165,7 @@ public class OwnerIntegrationTests {
         HttpEntity<OwnerRequestDto> requestEntity = new HttpEntity<>(request);
         ResponseEntity<String> response = client.exchange("/owner/update", HttpMethod.PUT, requestEntity , String.class);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertContains("Password contains at least one uppercase, lowercase and special character [!@#$%^&+=]", response.getBody());
+        assertContains("Password contains at least one uppercase, lowercase and special character [!@#$%^+=]", response.getBody());
         assertContains("Password must have 5-13 character", response.getBody());
         assertContains("Name can only have letters", response.getBody());
     }
@@ -220,7 +220,7 @@ public class OwnerIntegrationTests {
         request2.setEmail("jane.doe@mcgill.ca");
         ResponseEntity<String> response2 = client.postForEntity("/owner/create", request2, String.class);
         assertEquals(response2.getStatusCode(), HttpStatus.CONFLICT);
-        assertEquals(response2.getBody(), "Owner account with this email already exists");
+        assertEquals(response2.getBody(), "Another account with this email already exists");
     }
 
 

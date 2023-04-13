@@ -2,6 +2,8 @@ package ca.mcgill.ecse321.PLMS.service;
 
 import ca.mcgill.ecse321.PLMS.exception.PLMSException;
 import ca.mcgill.ecse321.PLMS.model.Owner;
+import ca.mcgill.ecse321.PLMS.repository.EmployeeRepository;
+import ca.mcgill.ecse321.PLMS.repository.MonthlyCustomerRepository;
 import ca.mcgill.ecse321.PLMS.repository.OwnerRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,6 +22,10 @@ public class OwnerServiceTests {
 
     @Mock
     private OwnerRepository ownerRepository;
+    @Mock
+    private MonthlyCustomerRepository monthlyCustomerRepository;
+    @Mock
+    private EmployeeRepository employeeRepository;
 
     @InjectMocks
     private OwnerService ownerService;
@@ -134,7 +140,7 @@ public class OwnerServiceTests {
         final Owner jane = new Owner(email, password2, name2);
         PLMSException e = assertThrows(PLMSException.class, () -> ownerService.createOwnerAccount(jane));
         assertEquals(e.getStatus(), HttpStatus.CONFLICT);
-        assertEquals(e.getMessage(), "Owner account with this email already exists");
+        assertEquals(e.getMessage(), "Another account with this email already exists");
 
 
     }
