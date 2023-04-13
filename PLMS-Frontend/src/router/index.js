@@ -54,13 +54,6 @@ export default new Router({
       name:'InternalMonthlyPassCreation',
       component: InternalCreateMonthlyPass,
     },
-    // {
-    //   path: '/employee/:email',
-    //   name: 'EmployeeHome',
-    //   component: EmployeeHome,
-    //   props: true
-
-    // },
     {
       path: '/owner/customers',
       name: 'ViewMonthlyCustomer',
