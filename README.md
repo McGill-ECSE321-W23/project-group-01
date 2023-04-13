@@ -15,6 +15,14 @@ The frontend can be run by executing, inside the PLMS-Frontend, the "npm run dev
 To run our unit and integration tests, please cd into the PLMS folder and run `./gradlew clean test`. 
 To run our integration tests alone, please cd into the PLMS folder and run `./gradlew clean integrationTest`.
 
+If the backend is run for the first time on a new database (or if the database was reset) then the parking lot is reinitialized as follows. 
+- The default email for the owner is admin@mail.com with password MyParking1ot.
+- The default parking lot has opening hours from 8a.m. to 5p.m. and rates of 20$ (large spot fees), 10$ (small spot fees), 100$ (large spot monthly flat fee), 50$ (small spot monthly flat fee).
+- There are 5 default floors to the parking lot: first floor contains 20 large spots and 50 small spots, the other four floors (floors 2, 3, 4 and 5) have 100 small spots. Only floors 2 and 3 are reserved to monthly customers, the other floors can be used by guest customers.
+- There are also three default services: Winter Tire Change, Car cleaning, and Oil Change.
+
+All the mentioned default items can be updated (except for the email of the owner) and deleted (except for the parking lot and owner account).
+
 ## Our Team
 
 | Team Member |	Programs | GitHub |

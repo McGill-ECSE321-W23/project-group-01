@@ -166,7 +166,7 @@
       await this.$router.push({name: 'ManageEmployees'})
     },
     async Passes(){
-      await this.$router.push({name: 'ViewPasses'})
+      await this.$router.push({name: 'OwnerPasses'})
     },
 
         createService() {

@@ -442,7 +442,7 @@ export default {
       await this.$router.push({name: 'ManageEmployees'})
     },
     async Passes(){
-      await this.$router.push({name: 'ViewGuestPasses'})
+      await this.$router.push({name: 'OwnerPasses'})
     }
 
     }

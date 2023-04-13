@@ -13,13 +13,14 @@ import ManageEmployees from "@/components/owner/ManageEmployees"
 import ViewGuestPasses from "@/components/pass/ViewGuestPasses"
 import BookServiceAppointmentGuest from "@/components/appointments/BookServiceAppointmentGuest"
 import ViewMonthlyPasses from '@/components/pass/ViewMonthlyPasses'
-
+import OwnerPasses from '@/components/owner/OwnerPasses'
 import MonthlyCustomerHome from "@/components/customer/MonthlyCustomerHome"
 import MonthlyCustomerPasses from "@/components/customer/MonthlyCustomerPasses";
 import MonthlyCustomerAppointments from "@/components/customer/MonthlyCustomerAppointments";
 import MonthlyCustomerManageAccount from "@/components/customer/MonthlyCustomerManageAccount";
 import OwnerHome from "@/components/owner/OwnerHome";
 import EmployeeHome from "@/components/employee/EmployeeHome";
+import EmployeePasses from '@/components/employee/EmployeePasses'
 
 Vue.use(Router)
 
@@ -54,6 +55,11 @@ export default new Router({
       path: 'owner/manage/employees',
       name: 'ViewMonthlyCustomer',
       component: ViewMonthlyCustomer
+    },
+    {
+      path: 'owner/manage/passes',
+      name: 'OwnerPasses',
+      component: OwnerPasses
     },
     {
       path: '/employee/home/:email',
@@ -116,6 +122,22 @@ export default new Router({
     {
       path: '/product',
       redirect: '/home'
+    },
+    {
+      path: 'pass/view/guestpasses',
+      name: 'ViewGuestPasses',
+      component: ViewGuestPasses
+    },
+    {
+      path: 'employee/viewpasses',
+      name: 'EmployeePasses',
+      component: EmployeePasses
+    },
+
+    {
+      path: 'pass/view/monthlypasses',
+      name: 'ViewMonthlyPasses',
+      component: ViewMonthlyPasses
     },
 
     {

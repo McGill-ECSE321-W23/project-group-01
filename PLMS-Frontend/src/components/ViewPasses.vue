@@ -15,8 +15,8 @@
 
 <script>
 import axios from 'axios';
-import ViewGuestPasses from '@/components/owner/ViewGuestPasses'
-import ViewMonthlyPasses from '@/components/owner/ViewMonthlyPasses';
+import ViewGuestPasses from '@/components/pass/ViewGuestPasses'
+import ViewMonthlyPasses from '@/components/pass/ViewMonthlyPasses';
 
 // const config = require('../../../config');
 // const frontendUrl = config.dev.host + ':' + config.dev.port;

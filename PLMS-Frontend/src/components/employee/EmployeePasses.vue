@@ -52,27 +52,9 @@ export default{
       },
 
     methods: {
-    // async Home() {
-    //   await this.$router.push({name: 'OwnerHome'})
-    // },
-    // async Appointments() {
-    //   await this.$router.push({name: 'OwnerViewAppointments'})
-    // },
-    // async ParkingLot() {
-    //   await this.$router.push({name: 'ParkingLotSettings'})
-    // },
-    // async Services(){
-    //   await this.$router.push({name: 'OwnerViewServices'})
-    // },
-    // async Customers(){
-    //   await this.$router.push({name: 'ViewMonthlyCustomer'})
-    // },
-    // async Employees(){
-    //   await this.$router.push({name: 'ManageEmployees'})
-    // },
-    // async Passes(){
-    //   await this.$router.push({name: 'ViewPasses'})
-    // }
+    async Passes(){
+      await this.$router.push({name: 'ViewPasses'})
+    }
 
 }
 
