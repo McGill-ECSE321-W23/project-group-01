@@ -30,7 +30,7 @@
       <div class="container my-7">
   <div class="row">
     <div class="col-md-6 mb-4 mx-auto">
-      <a href="http://localhost:8087/#/employee/service_appointments" class="btn btn-primary btn-lg btn-block big-high">Your service appointments</a>
+      <a class="btn btn-primary btn-lg btn-block big-high">Your service appointments</a>
     </div>
   </div>
 </div>
