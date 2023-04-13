@@ -100,7 +100,7 @@ export default {
         // this.floorNumbers = response.data.map((floor) => floor.floorNumber)
         this.floorNumbers = []
         for (const floor of this.floors) {
-          if (floor.memberOnly){
+          if (floor.isMemberOnly){
             this.floorNumbers.push(floor.floorNumber)
           }
         }

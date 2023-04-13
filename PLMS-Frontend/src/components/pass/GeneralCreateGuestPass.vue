@@ -150,7 +150,7 @@ export default {
        // Get all floors and subsequent floor numbers
        for (const floor of this.floors) {
 
-        if (!floor.memberOnly) {
+        if (!floor.isMemberOnly) {
           const floorNumber = floor.floorNumber;
           const largeSpotCapacity = floor.largeSpotCapacity;
           const smallSpotCapacity = floor.smallSpotCapacity;

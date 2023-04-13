@@ -122,7 +122,7 @@ export default {
         this.floorNumbers = []
        for (const floor of this.floors) {
         console.log(floor.memberOnly)
-        if (floor.memberOnly) {
+        if (floor.isMemberOnly) {
           const floorNumber = floor.floorNumber;
           const largeSpotCapacity = floor.largeSpotCapacity;
           const smallSpotCapacity = floor.smallSpotCapacity;
@@ -184,13 +184,15 @@ export default {
     onIsLargeChange() { // Toggle monthly pass to large spot monthly passes
       this.isLarge = !this.isLarge;
       console.log('changed', this.isLarge)
-      this.getSpotNumbers();
+      // this.getSpotNumbers();
     },
 
     getSpotNumbers(){ // Method to format the spot number of a particular spot
       this.spotNumber = ''
       const floorNumber = this.floorNumber.toString()
-      const spotType = this.isLarge? "large" : "small"
+      let spotType = ''
+      if(this.isLarge) spotType = "large"
+      else spotType = "small"
       if (this.spotNumbersMap[floorNumber] && this.spotNumbersMap[floorNumber][spotType]) {
         this.spotNumbers = this.spotNumbersMap[floorNumber][spotType]
         console.log(this.spotNumbers)
