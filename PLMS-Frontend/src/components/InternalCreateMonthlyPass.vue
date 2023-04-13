@@ -90,7 +90,7 @@ export default {
       startDate: '',
       numberOfMonths:0,
       customerEmail: '',
-      spotNumbers: []
+      spotNumbers: [],
     };
   },
   created() {
@@ -103,7 +103,6 @@ export default {
           if (floor.memberOnly){
             this.floorNumbers.push(floor.floorNumber)
           }
-          console.log(floor)
         }
       })
       .catch(error => {
