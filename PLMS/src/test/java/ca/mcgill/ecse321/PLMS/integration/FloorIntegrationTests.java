@@ -291,12 +291,12 @@ public class FloorIntegrationTests {
         assertEquals(2, responseBody.size());
         
         assertEquals(FixedValidFloor.floorNumber, responseBody.get(0).get("floorNumber"));
-        assertEquals(FixedValidFloor.isMemberOnlyUpdated, responseBody.get(0).get("memberOnly"));
+        assertEquals(FixedValidFloor.isMemberOnlyUpdated, responseBody.get(0).get("isMemberOnly"));
         assertEquals(FixedValidFloor.largeSpotCapacityUpdated, responseBody.get(0).get("largeSpotCapacity"));
         assertEquals(FixedValidFloor.smallSpotCapacityUpdated, responseBody.get(0).get("smallSpotCapacity"));
 
         assertEquals(FixedValidFloor.secondFloorNumber, responseBody.get(1).get("floorNumber"));
-        assertEquals(FixedValidFloor.isMemberOnly, responseBody.get(1).get("memberOnly"));
+        assertEquals(FixedValidFloor.isMemberOnly, responseBody.get(1).get("isMemberOnly"));
         assertEquals(FixedValidFloor.largeSpotCapacity, responseBody.get(1).get("largeSpotCapacity"));
         assertEquals(FixedValidFloor.smallSpotCapacity, responseBody.get(1).get("smallSpotCapacity"));
     }
