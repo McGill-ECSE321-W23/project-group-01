@@ -213,8 +213,6 @@ export default {
       console.log('spotnumbermap', this.spotNumbersMap)
       })
       .catch(error => {
-
-        alert(error.data)
       })
   },
 

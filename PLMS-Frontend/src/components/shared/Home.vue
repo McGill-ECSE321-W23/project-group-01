@@ -24,7 +24,7 @@
       <a class="py-2 d-none d-md-inline-block"  href="#product">Product</a>
       <a class="py-2 d-none d-md-inline-block"  href="#pricing">Pricing</a>
       <a class="py-2 d-none d-md-inline-block" @click="Login">Login</a>
-      <a class="py-2 d-none d-md-inline-block" @click="SignUp">Signup</a>
+      <a class="py-2 d-none d-md-inline-block" @click="SignUp">Sign up</a>
     </div>
   </nav>
 
@@ -45,14 +45,14 @@
         <h2 class="display-5" style="margin-top: -10%; margin-bottom: 5%">Guest Pass</h2>
         <p class="lead">Introducing our new Guest Parking Pass - Where we service your temporary parking needs! The perfect solution for those who need a temporary parking solution for their guests! Whether it's for a dinner party, a weekend gathering, or a family reunion, our Guest Parking Pass ensures that your guests have a safe and convenient place to park without the worry of getting ticketed or towed - Only for 10$/hr</p>
       </div >
-      <a style="margin-top: -10%" class="btn btn-outline-secondary" href="#pricing">Buy now ></a>
+      <a style="margin-top: -10%" class="btn btn-outline-secondary" @click="Guest">Buy now ></a>
     </div>
     <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
       <div class="my-3 py-3">
         <h2 class="display-5" style="margin-top: -10%; margin-bottom: 5%">Monthly Pass</h2>
         <p class="lead">Introducing our Monthly Parking Pass - the ultimate parking solution for those who need a reliable and convenient parking spot on a regular basis. With our pass, you can enjoy unlimited access to our parking lot for a whole month, without the hassle of having to find and pay for parking every time.With our pass, you can park in any available spot within our parking lot, 24/7, for the entire month. - Only for 300$/mo </p>
       </div >
-      <a style="margin-top: -10%" class="btn btn-outline-secondary" href="http://localhost:8087/#/create-customer">Sign up ></a>
+      <a style="margin-top: -10%" class="btn btn-outline-secondary" @click="SignUp">Sign up ></a>
     </div>
   </div>
   </div>
@@ -72,6 +72,9 @@ export default {
     },
     async SignUp() {
       await this.$router.push({name: 'SignUp'})
+    },
+    async Guest() {
+      await this.$router.push({name: 'GeneralCreateGuestPass'})
     }
   }
 }
