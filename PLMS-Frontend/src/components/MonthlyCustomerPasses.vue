@@ -27,6 +27,8 @@
         </a>
       </div>
     </nav>
+    <!-- Used this button to debug, needs to be removed -->
+    <!-- <button type="button" class="btn btn-success btn-sm" @click="getSpotNumbers">Create</button> -->
 
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
 
@@ -38,9 +40,9 @@
             </div>
             <div class="form-group col-md-6">
               <label >Floor Number</label>
-              <select class="custom-select" required v-model="floorNumber">
+              <select class="custom-select" required v-model="floorNumber" @change="getSpotNumbers()">
                 <!-- <option v-for="floor in floors" :key="floor.floorNumber" :value="floor.floorNumber">{{floor.floorNumber}}</option> -->
-                <option v-for="(floorNumber, index) in floorNumbers.sort((a, b) => a - b)" :key="index">{{ floorNumber }}</option>
+                <option v-for="(floorNumber, index) in floorNumbers.sort((a, b) => a - b)" :key="index" >{{ floorNumber }}</option>
               </select>
             </div>
           </div>
@@ -56,7 +58,7 @@
             
             <div class="form-group col-md-6">
               <label>Spot Number</label>
-              <select v-model="spotNumber" class="form-control" :disabled="isSelectDisabled" @click="createSpotNumbers()">
+              <select v-model="spotNumber" class="form-control" :disabled="isSelectDisabled"  @click="getSpotNumbers">
                 <option value="" disabled>Select a spot</option>
                 <option v-for="(spot,index) in spotNumbers" :key="index">{{ spot }}</option>
               </select>
@@ -68,7 +70,7 @@
           </div>
           <div class="form-group">
             <div class="form-check">
-              <input class="form-check-input"  type="checkBox" id="isLarge">
+              <input class="form-check-input"  type="checkBox" id="isLarge" @click="onIsLargeChange()">
               <label class="form-check-label" >
                 Large Spot
               </label>
@@ -111,6 +113,7 @@ export default {
       isLarge: false,
       startDate: '',
       numberOfMonths:0,
+      spotNumbersMap: {},
     };
   },
   created() {
@@ -119,14 +122,40 @@ export default {
         this.floors = response.data
         // this.floorNumbers = response.data.map((floor) => floor.floorNumber)
         this.floorNumbers = []
-        for (const floor of this.floors) {
-          if (floor.memberOnly){
-            this.floorNumbers.push(floor.floorNumber)
+      
+       // Get all floors and subsequent floor numbers 
+       for (const floor of this.floors) {
+        // add if member only 
+        console.log(floor.memberOnly)
+        if (floor.memberOnly) {
+          const floorNumber = floor.floorNumber;
+          const largeSpotCapacity = floor.largeSpotCapacity;
+          const smallSpotCapacity = floor.smallSpotCapacity;
+
+          // Generate spot numbers for large and for small spots
+          const largeSpots = [];
+          for (let i = 1; i <= largeSpotCapacity; i++) {
+            largeSpots.push(`${floorNumber}L${i}`);
           }
-          console.log(floor)
+
+          const smallSpots = [];
+          for (let i = 1; i <= smallSpotCapacity; i++) {
+            smallSpots.push(`${floorNumber}S${i}`);
+          }
+
+          this.floorNumbers.push(floorNumber);
+
+          // Add the spot numbers to the hashmap
+          this.spotNumbersMap[floorNumber] = {
+            large: largeSpots,
+            small: smallSpots
+          };
         }
+      }
+      console.log('spotnumbermap', this.spotNumbersMap)
       })
       .catch(error => {
+        
         alert(error.data)
       })
   },
@@ -158,29 +187,20 @@ export default {
     },
     onIsLargeChange() {
       this.isLarge = !this.isLarge;
-      this.createSpotNumbers();
+      console.log('changed', this.isLarge)
+      this.getSpotNumbers();
     },
 
-    createSpotNumbers(){
-      const isLarge = this.isLarge
+    getSpotNumbers(){
       this.spotNumber = ''
-      this.spotNumbers  = []
-      const floor = null
-
-      console.log(isLarge)
-      
-      axiosClient.get("/floor/" + this.floorNumber).then((response) => {
-                    const numSpots = isLarge ? response.data.largeSpotCapacity : response.data.smallSpotCapacity;
-                    const spotType = isLarge ? 'L' : 'S';
-                    for (let i = 1; i <= numSpots; i++) {
-                      this.spotNumbers.push(`${this.floorNumber}${spotType}${i}`);
-                    }
-                    console.log(this.spotNumbers)
-
-                }).catch((err) => {
-                
-                alert(err.response.data)
-                })
+      const floorNumber = this.floorNumber.toString()
+      const spotType = this.isLarge? "large" : "small"
+      if (this.spotNumbersMap[floorNumber] && this.spotNumbersMap[floorNumber][spotType]) {
+        this.spotNumbers = this.spotNumbersMap[floorNumber][spotType]
+        console.log(this.spotNumbers)
+      } else {
+        console.log(`Spot numbers not found for floor ${floorNumber} and spot type ${spotType}.`)
+      }
     },
   },
   computed: {

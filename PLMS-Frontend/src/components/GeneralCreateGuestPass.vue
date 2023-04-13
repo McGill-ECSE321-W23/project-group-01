@@ -144,7 +144,33 @@ export default {
         this.errorMsgIdentification = `Failed to find pass: ${err.response.data}`;
       })
 
-    }
+    },
+
+    onIsLargeChange() {
+      this.isLarge = !this.isLarge;
+      this.createSpotNumbers();
+    },
+    createSpotNumbers(){
+      const isLarge = this.isLarge
+      this.spotNumber = ''
+      this.spotNumbers  = []
+      const floor = null
+
+      console.log(isLarge)
+      
+      axiosClient.get("/floor/" + this.floorNumber).then((response) => {
+                    const numSpots = isLarge ? response.data.largeSpotCapacity : response.data.smallSpotCapacity;
+                    const spotType = isLarge ? 'L' : 'S';
+                    for (let i = 1; i <= numSpots; i++) {
+                      this.spotNumbers.push(`${this.floorNumber}${spotType}${i}`);
+                    }
+                    console.log(this.spotNumbers)
+
+                }).catch((err) => {
+                
+                alert(err.response.data)
+                })
+    },
   },
 
   computed: {
