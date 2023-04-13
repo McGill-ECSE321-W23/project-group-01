@@ -56,6 +56,7 @@ export default {
     };
   },
   methods: {
+    // create the monthly customer account based on the input fields
     createUser() {
       this.email = document.getElementById("email").value;
       this.password = document.getElementById("password").value;

@@ -81,12 +81,15 @@ export default {
           alert("Success now logged in as " + this.user);
           this.logged_user = response;
           if (this.user === "Customer"){
+            // if logging in as a customer, send to the monthly customer's home page
             this.$router.push({name: 'MonthlyCustomerHome', params: {email: this.email}})
           }
           if (this.user === "Owner"){
+            // if logging in as an owner, send to the owner home page
             this.$router.push({name: 'OwnerHome'})
           }
           if (this.user === "Employee"){
+            // if logging in as employee, send to the employee's home page
             this.$router.push({name: 'EmployeeHome', params: {email: this.email}})
           }
         })

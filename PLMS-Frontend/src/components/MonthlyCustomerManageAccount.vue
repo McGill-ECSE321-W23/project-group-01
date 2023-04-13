@@ -96,6 +96,9 @@ export default {
     document.getElementById("password").value = this.password
   },
   methods: {
+    /**
+     * LINKS TO OTHER CUSTOMER PAGES
+     */
     async RouteHome() {
       await this.$router.push({name: 'MonthlyCustomerHome', params: {email: this.email}})
     },
@@ -108,6 +111,7 @@ export default {
     async RouteApp() {
       await this.$router.push({name: 'MonthlyCustomerAppointments', params: {email: this.email}})
     },
+    // update the account details for a customer
     async updateAcc() {
       const request = {email: this.email, password: this.password, name: this.name}
       axiosClient.put("/customer/update", request)

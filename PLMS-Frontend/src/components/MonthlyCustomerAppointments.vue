@@ -96,6 +96,7 @@ export default {
     }
   },
   created() {
+    // get all the service appointments for a monthly customer
     axiosClient.get("/serviceAppointment/customer/" + this.email)
       .then(response => {
         this.appointments = response.data
@@ -104,6 +105,8 @@ export default {
         let err = `Error: ${error.response.data}`
         alert(err)
       })
+
+      // get all the services in the system
     axiosClient.get("/service")
       .then(response => {
         this.services= response.data
@@ -114,6 +117,9 @@ export default {
       })
   },
   methods: {
+    /**
+     * LINKS TO OTHER CUSTOMER PAGES
+     */
     async RouteHome() {
       await this.$router.push({name: 'MonthlyCustomerHome', params: {email: this.email}})
     },
@@ -126,6 +132,8 @@ export default {
     async RouteManage() {
       await this.$router.push({name: 'MonthlyCustomerManageAccount', params: {email: this.email}})
     },
+
+    // booking an appointment
     async createApp() {
       const request = {date: this.date, startTime: this.startTime, serviceName: this.serviceName, userEmail: this.email}
       axiosClient.post("/serviceAppointment", request)
@@ -140,6 +148,8 @@ export default {
       await this.RouteHome()
 
     },
+
+    // setting up the values for booking service appointments
     async setValues() {
       document.getElementById("form-update").style.display = ""
       if (document.getElementById("select").value !== "Create an appointment") {
@@ -155,14 +165,18 @@ export default {
       else
         document.getElementById("create").style.display = ""
     },
+
+    // cancel an appointment
     async deleteApp() {
       axiosClient.delete("/serviceAppointment/"+ this.selectedApp)
         .catch((err) => {
-          this.errorMsg = `Failed to create: ${err.response.data}`
+          this.errorMsg = `Failed to cancel: ${err.response.data}`
           alert(this.errorMsg)
         })
       await this.RouteHome()
     },
+
+    // update a selected appointment
     async updateApp() {
       const request = {date: this.date, startTime: this.startTime, serviceName: this.serviceName, userEmail: this.email}
       axiosClient.put("/serviceAppointment/"+ this.selectedApp, request)

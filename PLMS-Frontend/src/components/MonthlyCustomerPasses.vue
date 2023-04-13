@@ -160,6 +160,9 @@ export default {
       })
   },
   methods: {
+    /**
+     * LINKS TO OTHER CUSTOMER PAGES
+     */
     async RouteHome() {
       await this.$router.push({name: 'MonthlyCustomerHome', params: {email: this.email}})
     },
@@ -172,6 +175,8 @@ export default {
     async RouteManage() {
       await this.$router.push({name: 'MonthlyCustomerManageAccount', params: {email: this.email}})
     },
+
+    // booking a monthly pass
     async createPass() {
       this.confirmationCode = this.generateConfirmationCode()
       const request = {numberOfMonths: this.numberOfMonths, spotNumber: this.spotNumber, confirmationCode: this.confirmationCode, licensePlate: this.licensePlate,
@@ -186,12 +191,15 @@ export default {
         })
       await this.RouteHome()
     },
+
+    // load new spot numbers
     onIsLargeChange() {
       this.isLarge = !this.isLarge;
       console.log('changed', this.isLarge)
       this.getSpotNumbers();
     },
 
+    // get the spot numbers given a floor
     getSpotNumbers(){
       this.spotNumber = ''
       const floorNumber = this.floorNumber.toString()
@@ -203,6 +211,8 @@ export default {
         console.log(`Spot numbers not found for floor ${floorNumber} and spot type ${spotType}.`)
       }
     },
+
+    // generate a randomized confirmation code
     generateConfirmationCode() {
     console.log('test')
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

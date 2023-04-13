@@ -10,75 +10,77 @@
     <link href="../../../bootstrap-4.0.0/docs/4.0/examples/product/product.css" rel="stylesheet">
 
     <nav class="site-header sticky-top py-1">
-        <div class="container d-flex flex-column flex-md-row justify-content-between">
-          <a class="py-2" href="#product">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
-              <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
-            </svg>      </a>
-            <a class="py-2 d-none d-md-inline-block"  @click="Home">Home</a>
-            <a class="py-2 d-none d-md-inline-block"  @click="Customers">Manage Customer Accounts</a>
-          <a class="py-2 d-none d-md-inline-block"  @click="Employees">Manage Employee Accounts</a>
-          <a class="py-2 d-none d-md-inline-block"  @click="Passes">Manage Passes</a>
-          <a class="py-2 d-none d-md-inline-block" @click="Appointments">Manage Appointments</a>
-          <a class="py-2 d-none d-md-inline-block" @click="ParkingLot">Manage Parking Lot</a>
-          <a class="py-2 d-none d-md-inline-block" @click="Services">Manage Services</a>
-          <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
-        </div>
-      </nav>
+      <div class="container d-flex flex-column flex-md-row justify-content-between">
+        <a class="py-2" href="#product">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box"
+            viewBox="0 0 16 16">
+            <path
+              d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
+          </svg> </a>
+        <a class="py-2 d-none d-md-inline-block" @click="Home">Home</a>
+        <a class="py-2 d-none d-md-inline-block" @click="Customers">Manage Customer Accounts</a>
+        <a class="py-2 d-none d-md-inline-block" @click="Employees">Manage Employee Accounts</a>
+        <a class="py-2 d-none d-md-inline-block" @click="Passes">Manage Passes</a>
+        <a class="py-2 d-none d-md-inline-block" @click="Appointments">Manage Appointments</a>
+        <a class="py-2 d-none d-md-inline-block" @click="ParkingLot">Manage Parking Lot</a>
+        <a class="py-2 d-none d-md-inline-block" @click="Services">Manage Services</a>
+        <a class="py-2 d-none d-md-inline-block" href="http://localhost:8087/#/login-user">Sign Out</a>
+      </div>
+    </nav>
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-    <div id="parkinglot_settings">
-      <h2 class="parkinglot section title">Parking Lot Settings</h2>
-      <form>
-        <label for="opening">Opening Hours</label>
-        <input type="time" id="opening" v-model="newOpeningTime"> <br>
-        <label for="closing">Closing Hours</label>
-        <input type="time" id="closing" v-model="newClosingTime"> <br>
-        <label for="smallspot">Small spot Fee</label>
-        <input type="number" id="smallspot" v-model="newSmallSpotFee"> <br>
-        <label for="largespot">Large spot Fee</label>
-        <input type="number" id="largespot" v-model="newLargeSpotFee"> <br>
-        <label for="smallmonthly">Small spot monthly flat fee</label>
-        <input type="number" id="smallmonthly" v-model="newSmallSpotMonthlyFlatFee"> <br>
-        <label for="largemonthly">Large spot monthly flat fee</label>
-        <input type="number" id="largemonthly" v-model="newLargeSpotMonthlyFlatFee"> <br>
-      </form>
-      <button class="btn btn-primary" v-bind:disabled="createParkingButtonDisabled"
-        @click="createOrUpdateParkingLot()">Confirm</button><br>
+      <div id="parkinglot_settings">
+        <h2 class="parkinglot section title">Parking Lot Settings</h2>
+        <form>
+          <label for="opening">Opening Hours</label>
+          <input type="time" id="opening" v-model="newOpeningTime"> <br>
+          <label for="closing">Closing Hours</label>
+          <input type="time" id="closing" v-model="newClosingTime"> <br>
+          <label for="smallspot">Small spot Fee</label>
+          <input type="number" id="smallspot" v-model="newSmallSpotFee"> <br>
+          <label for="largespot">Large spot Fee</label>
+          <input type="number" id="largespot" v-model="newLargeSpotFee"> <br>
+          <label for="smallmonthly">Small spot monthly flat fee</label>
+          <input type="number" id="smallmonthly" v-model="newSmallSpotMonthlyFlatFee"> <br>
+          <label for="largemonthly">Large spot monthly flat fee</label>
+          <input type="number" id="largemonthly" v-model="newLargeSpotMonthlyFlatFee"> <br>
+        </form>
+        <button class="btn btn-primary" v-bind:disabled="createParkingButtonDisabled"
+          @click="createOrUpdateParkingLot()">Confirm</button><br>
+      </div>
     </div>
-  </div>
 
-  <div>
-    <h2 class="floor section title">Floor Settings</h2>
-    <div id="floor_settings" style="display: flex; justify-content: center; align-items: center;">
-      <table>
-        <tr>
-          <th>Floor number</th>
-          <th>Small spot capacity</th>
-          <th>Large spot capacity</th>
-          <th>Member only</th>
-        </tr>
-        <tr v-for="f in floors">
-          <td :id="f.floorNumber">{{ f.floorNumber }}</td>
-          <td :id="`${f.floorNumber} 2`">{{ f.smallSpotCapacity }}</td>
-          <td :id="`${f.floorNumber} 3`">{{ f.largeSpotCapacity }}</td>
-          <td :id="`${f.floorNumber} 4`">{{ f.isMemberOnly ? 'Yes' : 'No' }}</td>
-          <td><button class="btn btn-danger" id="deletefloor" @click="deletefloor(f.floorNumber)">Delete</button></td>
-          <td><button class="btn btn-success" :id="`editfloor ${f.floorNumber}`"
-              @click="editfloor(f.floorNumber)">Edit</button></td>
-        </tr>
-        <tr>
-          <td><input type="text" id="floornumber" v-model="newFloorNumber"></td>
-          <td><input type="text" id="smallcapacity" v-model="newSmallSpotCapacity"></td>
-          <td><input type="text" id="largecapacity" v-model="newLargeSpotCapacity"></td>
-          <td><input type="checkbox" id="memberonly" v-model="newMemberOnly" v-bind:value="true"></td>
-        </tr>
-        <button class="btn btn-primary" id="addfloor" @click="addFloor()">Add Floor</button>
-      </table>
+    <div>
+      <h2 class="floor section title">Floor Settings</h2>
+      <div id="floor_settings" style="display: flex; justify-content: center; align-items: center;">
+        <table>
+          <tr>
+            <th>Floor number</th>
+            <th>Small spot capacity</th>
+            <th>Large spot capacity</th>
+            <th>Member only</th>
+          </tr>
+          <tr v-for="f in floors">
+            <td :id="f.floorNumber">{{ f.floorNumber }}</td>
+            <td :id="`${f.floorNumber} 2`">{{ f.smallSpotCapacity }}</td>
+            <td :id="`${f.floorNumber} 3`">{{ f.largeSpotCapacity }}</td>
+            <td :id="`${f.floorNumber} 4`">{{ f.isMemberOnly ? 'Yes' : 'No' }}</td>
+            <td><button class="btn btn-danger" id="deletefloor" @click="deletefloor(f.floorNumber)">Delete</button></td>
+            <td><button class="btn btn-success" :id="`editfloor ${f.floorNumber}`"
+                @click="editfloor(f.floorNumber)">Edit</button></td>
+          </tr>
+          <tr>
+            <td><input type="text" id="floornumber" v-model="newFloorNumber"></td>
+            <td><input type="text" id="smallcapacity" v-model="newSmallSpotCapacity"></td>
+            <td><input type="text" id="largecapacity" v-model="newLargeSpotCapacity"></td>
+            <td><input type="checkbox" id="memberonly" v-model="newMemberOnly" v-bind:value="true"></td>
+          </tr>
+          <button class="btn btn-primary" id="addfloor" @click="addFloor()">Add Floor</button>
+        </table>
+      </div>
+      <p class="error">{{ errorMsg }}</p>
+
+
     </div>
-    <p class="error">{{ errorMsg }}</p>
-
-
-  </div>
   </div>
 </template>
 
@@ -109,14 +111,17 @@ export default {
     };
   },
   created() {
+    // get all the floors from the database
     axiosClient.get('/floor')
       .then((response) => {
         this.floors = response.data;
         console.log(this.floors);
       })
       .catch((err) => {
-        // this.errorMsg = err;
+        // no need to print error when there are no floors
       })
+
+    // get the details of the parking lot on creation
     axiosClient.get('/parkingLot')
       .then((response) => {
         this.parkinglot = response.data;
@@ -132,58 +137,69 @@ export default {
       })
   },
   methods: {
+    /**
+     * LINKS TO OTHER OWNER PAGES
+     */
     async Home() {
-      await this.$router.push({name: 'OwnerHome'})
+      await this.$router.push({ name: 'OwnerHome' })
     },
     async Appointments() {
-      await this.$router.push({name: 'OwnerViewAppointments'})
+      await this.$router.push({ name: 'OwnerViewAppointments' })
     },
     async ParkingLot() {
-      await this.$router.push({name: 'ParkingLotSettings'})
+      await this.$router.push({ name: 'ParkingLotSettings' })
     },
-    async Services(){
-      await this.$router.push({name: 'OwnerViewServices'})
+    async Services() {
+      await this.$router.push({ name: 'OwnerViewServices' })
     },
-    async Customers(){
-      await this.$router.push({name: 'ViewMonthlyCustomer'})
+    async Customers() {
+      await this.$router.push({ name: 'ViewMonthlyCustomer' })
     },
-    async Employees(){
-      await this.$router.push({name: 'ManageEmployees'})
+    async Employees() {
+      await this.$router.push({ name: 'ManageEmployees' })
     },
-    async Passes(){
-      await this.$router.push({name: 'ViewGuestPasses'})
+    async Passes() {
+      await this.$router.push({ name: 'ViewGuestPasses' })
     },
+
+    // creating or updating the business details of the parking lot
     createOrUpdateParkingLot() {
       console.log(this.newOpeningTime)
       console.log(this.newClosingTime)
 
       let formattedOpeningTime = ""
       let formattedClosingTime = ""
+      // there were issues with the time inputs, so we make sure they're the correct (HH:mm:ss)
       if (this.newOpeningTime.length == 5) {
         formattedOpeningTime = this.newOpeningTime + ":00"
       }
       if (this.newClosingTime == 5) {
         formattedClosingTime = this.newClosingTime + ":00"
-
+      }
         const request = { openingTime: formattedOpeningTime, closingTime: formattedClosingTime, largeSpotFee: this.newLargeSpotFee, smallSpotFee: this.newSmallSpotFee, smallSpotMonthlyFlatFee: this.newSmallSpotMonthlyFlatFee, largeSpotMonthlyFlatFee: this.newLargeSpotMonthlyFlatFee };
         axiosClient.put('/parkingLot/update', request)
           .then((response) => {
+            // succesful update of details
             const parkingLot = response.data;
             this.errorMsg = 'Parking lot updated sucessfully';
           })
           .catch((err) => {
+            // if parking lot doesn't already exist in DB, create it
             if (err.response.data === "Parking Lot not found.") {
               this.createParkingLot(request);
             } else if (typeof (err.response.data) === 'string') {
+              // display other error messages
               this.errorMsg = `${err.response.data}`;
             } else {
-              console.log(formattedOpeningTime)
-              console.log(formattedClosingTime)
+              // there were issues with formatting of time
+              // if it isn't entered by the user, it needs to be entered or they will get an incoherent error msg
               this.errorMsg = `Please enter a new time.`;
             }
           })
-      }
+      
     },
+    
+    // creates the parking lot in the DB
     createParkingLot(request) {
       axiosClient.post('/parkingLot/creation', request)
         .then((response) => {
@@ -194,6 +210,8 @@ export default {
           this.errorMsg = `Failed to create: ${err.response.data}`;
         })
     },
+
+    // adds a new floor to the database
     addFloor() {
       const request = { floorNumber: this.newFloorNumber, smallSpotCapacity: this.newSmallSpotCapacity, largeSpotCapacity: this.newLargeSpotCapacity, isMemberOnly: this.newMemberOnly };
       axiosClient.post('/floor', request)
@@ -210,6 +228,8 @@ export default {
           this.errorMsg = `Failed to create: ${err.response.data}`;
         })
     },
+
+    // deletes a floor from the database
     deletefloor(floorNumber) {
       axiosClient.delete(`/floor/${floorNumber}`)
         .then((response) => {
@@ -220,7 +240,10 @@ export default {
           this.errorMsg = `Failed to delete: ${err.response.data}`;
         })
     },
+
+    // edit the details of a floor
     editfloor(floorNumber) {
+      // get all the details from the html table if the edit button is pressed
       if (document.getElementById(`editfloor ${floorNumber}`).innerHTML === "Edit") {
         document.getElementById(`editfloor ${floorNumber}`).innerHTML = "Save";
         document.getElementById(`${floorNumber} 2`).innerHTML = `<input type="text" id="2 ${floorNumber}">`;
@@ -228,7 +251,7 @@ export default {
         document.getElementById(`${floorNumber} 4`).innerHTML = `<input type="checkbox" id="4 ${floorNumber}">`;
 
       } else {
-
+        // update the details of a floor on success
         const request = { floorNumber: `${floorNumber}`, smallSpotCapacity: document.getElementById(`2 ${floorNumber}`).value, largeSpotCapacity: document.getElementById(`3 ${floorNumber}`).value, isMemberOnly: document.getElementById(`4 ${floorNumber}`).checked };
         axiosClient.put('/floor', request)
           .then((response) => {

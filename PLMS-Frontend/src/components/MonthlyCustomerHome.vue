@@ -125,6 +125,7 @@ export default {
     }
   },
   created() {
+    // get the email and password to confirm successful login
     axiosClient.get("/customer?email="+this.email)
       .then(response => {
         this.name = response.data.name
@@ -134,6 +135,8 @@ export default {
         let err = `Error: ${error.response.data}`
         alert(err)
       })
+
+      // get the passes with this customer
     axiosClient.get("/monthlypass/customer/"+this.email)
       .then(response => {
         this.passes = response.data
@@ -142,12 +145,18 @@ export default {
         let err = `Error: ${error.response.data}`
         alert(err)
       })
+
+      // get the appointments with this customer
     axiosClient.get("/serviceAppointment/customer/"+this.email)
       .then(response => {
         this.appointments = response.data
       })
   },
   methods: {
+
+    /**
+     * LINKS TO OTHER CUSTOMER PAGES
+     */
     async RoutePass() {
       await this.$router.push({name: 'MonthlyCustomerPasses', params: {email: this.email}})
     },

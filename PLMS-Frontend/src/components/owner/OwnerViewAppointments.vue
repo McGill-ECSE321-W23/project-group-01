@@ -272,30 +272,25 @@ export default {
       errorMsgEditWithEmployeeEmail: '',
       editByEmployeeEmailInput: '',
       editByEmployeeEmailIdInput: '',
-      addEmployeeForm: {
-        name: '',
-        email: '',
-        password: '',
-        jobTitle: '',
-        hourlyWage: '',
-      }
     }
   },
   created() {
+    // get all the employees of the bat
     this.getAllAppointments()
 
+    // get the email pks of the employees (used later for assigning the employees to appointments)
+    // no need for error if there aren't any employees, there just will be an empty list
     axiosClient
       .get('/employees')
       .then((response) => {
-        console.log(response.data); // log the response data
         this.employeeEmails = response.data.map((employee) => employee.email); // log each employee object
         this.errorMsgAll = '';
       })
       .catch((error) => {
-        console.log(error.response.data);
       });
 
-
+    
+    // get the list of customer emails pks from the back end (there will just be empty list if there are none)
     axiosClient
       .get('/customers')
       .then((response) => {
@@ -303,9 +298,9 @@ export default {
         this.errorMsgAll = ''
       })
       .catch((error) => {
-        console.log(error.response.data)
       });
 
+    // get the names of all the services from the back end
     axiosClient
       .get('/service')
       .then((response) => {
@@ -313,11 +308,13 @@ export default {
         this.errorMsgAll = ''
       })
       .catch((error) => {
-        console.log(error.response.data)
       });
   },
 
   methods: {
+    /**
+     * LINKS TO OTHER OWNER PAGES
+     */
     async Home() {
       await this.$router.push({ name: 'OwnerHome' })
     },
@@ -340,6 +337,7 @@ export default {
       await this.$router.push({ name: 'ViewGuestPasses' })
     },
 
+    // retrieve all the appointments on a given date
     getServiceAppointmentsByDate() {
       this.serviceAppointments = []
       axiosClient.get(`/serviceAppointment/date/${this.selectedDate}`)
@@ -348,12 +346,12 @@ export default {
           this.errorMsgAll = ''
         })
         .catch(error => {
-          console.log(error.response.data);
           this.errorMsgAll = error.response.data;
         });
       this.showByDateModal = false;
     },
 
+    // get a particular appointment by its ID
     getServiceAppointmentById() {
       if (!/^\d+$/.test(this.searchAppointmentId)) {
         this.errorMsgEdit = "Please enter an integer id"
@@ -367,12 +365,12 @@ export default {
           this.errorMsgAll = ''
         })
         .catch(error => {
-          console.log(error.response.data);
           this.errorMsgAll = error.response.data;
         });
         this.showSearchAppointmentModal = false;
     },
 
+    // get all the service appointments associated with a monthly customer
     getServiceAppointmentsByCustomer() {
       this.serviceAppointments = []
       axiosClient.get(`/serviceAppointment/customer/${this.findByCustomerEmailInput}`)
@@ -387,6 +385,7 @@ export default {
       this.showCustomerModal = false
     },
 
+    // get all the service appointments assigned to an employee
     getServiceAppointmentsByEmployee() {
       this.serviceAppointments = []
       axiosClient.get(`/serviceAppointment/employee/${this.selectedEmployee}`)
@@ -402,7 +401,9 @@ export default {
       this.showEmployeeModal = false;
     },
 
+    // this is used for assigning an employee to a new service appointment
     updateServiceAppointmentWithNewEmployee() {
+      // extra check (non int id entry was causing problems)
       if (!/^\d+$/.test(this.editByEmployeeEmailIdInput)) {
         this.errorMsgAll = "Please enter an integer id"
         return
@@ -419,6 +420,7 @@ export default {
       this.showUpdateEmployeeModal = false
     },
 
+    // edit all of the details of a service appointment 
     editServiceAppointment() {
       // Format the time as HH:mm:ss
       const formattedTime = this.editStartTimeInput + ":00";
@@ -451,6 +453,7 @@ export default {
       this.showEditModal = false
     },
 
+    // cancel a service appointment by entering its ID
     cancelServiceAppointment() {
       if (!/^\d+$/.test(this.cancelIdInput)) {
         this.errorMsgCancel = "Please enter an integer id"
@@ -469,6 +472,7 @@ export default {
       this.showCancelModal = false
     },
 
+    // get all the service appointments in the DB. Used on creation and when we want to remove filters
     getAllAppointments() {
       axiosClient.get('/serviceAppointment')
         .then((response) => {
@@ -484,12 +488,6 @@ export default {
 
 
 
-  },
-
-  computed: {
-    createUserButtonDisabled() {
-      return !this.email.trim() || !this.password.trim() || !this.name.trim()
-    }
   }
 }
 

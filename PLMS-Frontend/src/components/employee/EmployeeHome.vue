@@ -96,6 +96,7 @@ export default {
     }
   },
   created() {
+    // find the employee with this email to ensure the login is valid
     axiosClient.get("/employee?email=" + this.email)
       .then(response => {
         this.name = response.data.name
@@ -106,9 +107,8 @@ export default {
         alert(error.data)
       })
 
-    console.log(this.email)
+      // find all of the service appointments for this employee to display on their home page
     axiosClient.get(`/serviceAppointment/employee/${this.email}`).then(response => {
-      console.log("made it here")
       this.appointments = response.data
     }).catch(error => {
       console.log(error.response.data)
