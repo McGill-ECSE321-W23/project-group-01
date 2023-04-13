@@ -52,12 +52,12 @@ export default new Router({
       component: ManageEmployees
     },
     {
-      path: 'owner/manage/employees',
+      path: '/owner/manage/employees',
       name: 'ViewMonthlyCustomer',
       component: ViewMonthlyCustomer
     },
     {
-      path: 'owner/manage/passes',
+      path: '/owner/manage/passes',
       name: 'OwnerPasses',
       component: OwnerPasses
     },
@@ -90,26 +90,26 @@ export default new Router({
     },
 
     {
-      path: 'customer/home/:email',
+      path: '/customer/home/:email',
       name: 'MonthlyCustomerHome',
       component: MonthlyCustomerHome,
       props: true
 
     },
     {
-      path: 'customer/pass/:email',
+      path: '/customer/pass/:email',
       name: 'MonthlyCustomerPasses',
       component: MonthlyCustomerPasses,
       props: true
     },
     {
-      path: 'customer/appointment/:email',
+      path: '/customer/appointment/:email',
       name: 'MonthlyCustomerAppointments',
       component: MonthlyCustomerAppointments,
       props: true
     },
     {
-      path: 'customer/manage/:email',
+      path: '/customer/manage/:email',
       name: 'MonthlyCustomerManageAccount',
       component: MonthlyCustomerManageAccount,
       props: true
@@ -124,18 +124,18 @@ export default new Router({
       redirect: '/home'
     },
     {
-      path: 'pass/view/guestpasses',
+      path: '/pass/view/guestpasses',
       name: 'ViewGuestPasses',
       component: ViewGuestPasses
     },
     {
-      path: 'employee/viewpasses',
+      path: '/employee/viewpasses',
       name: 'EmployeePasses',
       component: EmployeePasses
     },
 
     {
-      path: 'pass/view/monthlypasses',
+      path: '/pass/view/monthlypasses',
       name: 'ViewMonthlyPasses',
       component: ViewMonthlyPasses
     },
