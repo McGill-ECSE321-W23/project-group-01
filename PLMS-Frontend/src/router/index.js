@@ -13,12 +13,16 @@ import ManageEmployees from "@/components/owner/ManageEmployees"
 import ViewGuestPasses from "@/components/owner/ViewGuestPasses"
 import BookServiceAppointmentGuest from "@/components/BookServiceAppointmentGuest"
 import ViewMonthlyPasses from '@/components/owner/ViewMonthlyPasses'
-
+import EmployeeHome from '@/components/employee/EmployeeHome'
 import MonthlyCustomerHome from "@/components/MonthlyCustomerHome"
 import MonthlyCustomerPasses from "@/components/MonthlyCustomerPasses";
 import MonthlyCustomerAppointments from "@/components/MonthlyCustomerAppointments";
 import MonthlyCustomerManageAccount from "@/components/MonthlyCustomerManageAccount";
 import OwnerHome from "@/components/owner/OwnerHome"; 
+import ViewPasses from "@/components/ViewPasses";
+import OwnerPasses from "@/components/owner/OwnerPasses";
+import EmployeePasses from "@/components/employee/EmployeePasses";
+
 
 Vue.use(Router)
 
@@ -28,6 +32,11 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/passes',
+      name: 'Pass',
+      component: ViewPasses
     },
     {
       path: '/createGuestPass',
@@ -45,6 +54,16 @@ export default new Router({
       component: OwnerHome
     },
     {
+      path: '/owner/pass',
+      name: 'OwnerPasses',
+      component: OwnerPasses,
+    },
+    {
+      path: '/employee/pass',
+      name: 'EmployeePasses',
+      component: EmployeePasses,
+    },
+    {
       path: '/owner/manage-employees',
       name: 'ManageEmployees',
       component: ManageEmployees
@@ -53,6 +72,13 @@ export default new Router({
       path: '/employee/create-monthly-pass',
       name:'InternalMonthlyPassCreation',
       component: InternalCreateMonthlyPass,
+    },
+    {
+      path: '/employee/:email',
+      name: 'EmployeeHome',
+      component: EmployeeHome,
+      props: true
+
     },
     {
       path: '/owner/customers',
