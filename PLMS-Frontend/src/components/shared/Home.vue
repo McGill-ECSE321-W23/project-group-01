@@ -23,6 +23,7 @@
         </svg>      </a>
       <a class="py-2 d-none d-md-inline-block"  href="#product">Product</a>
       <a class="py-2 d-none d-md-inline-block"  href="#pricing">Pricing</a>
+      <a class="py-2 d-none d-md-inline-block"  @click="Appointments">Appointments</a>
       <a class="py-2 d-none d-md-inline-block" @click="Login">Login</a>
       <a class="py-2 d-none d-md-inline-block" @click="SignUp">Sign up</a>
     </div>
@@ -75,6 +76,9 @@ export default {
     },
     async Guest() {
       await this.$router.push({name: 'GeneralCreateGuestPass'})
+    },
+    async Appointments() {
+      await this.$router.push({name: 'BookServiceAppointmentGuest'})
     }
   }
 }
