@@ -71,8 +71,8 @@ All the mentioned default items can be updated (except for the email of the owne
 
 | Name | Contributions | Total Hours | 
 | --- | --- | --- |
-| Evan Boyd |  |  |
-| Samer Abdulkarim |   |  |
+| Evan Boyd | Architecture Diagram, owner pages, backend fixes, presentation |  |
+| Samer Abdulkarim |  |  |
 | Emilien Taisne |  |  |
 | Walid Aissa |  |   |
 | Karim Al Sabbagh |   |  |
