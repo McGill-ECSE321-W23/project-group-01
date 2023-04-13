@@ -87,7 +87,7 @@
 
 <script>
 import axios from 'axios';
-const config = require('../../config');
+const config = require('../../../config');
 const frontendUrl = config.dev.host + ':' + config.dev.port;
 const axiosClient = axios.create({
   // Note the baseURL, not baseUrl
@@ -253,20 +253,20 @@ export default {
     align-items: center;
     justify-content: center;
   }
-  
+
   table.center,
   div.center {
     margin: 0 auto;
   }
-  
+
   table {
     padding: 20px;
   }
-  
+
   label {
     padding: 20px;
   }
-  
+
   .bordered-table th,
   .bordered-table td {
     border: 1px solid black;
