@@ -17,7 +17,7 @@ To run our integration tests alone, please cd into the PLMS folder and run `./gr
 
 If the backend is run for the first time on a new database (or if the database was reset) then the parking lot is reinitialized as follows. 
 - The default email for the owner is admin@mail.com with password MyParking1ot$ .
-- The default parking lot has opening hours from 8a.m. to 5p.m. and rates of 20$ (large spot fees), 10$ (small spot fees), 100$ (large spot monthly flat fee), 50$ (small spot monthly flat fee).
+- The default parking lot has opening hours from 12:00a.m. to 11:59p.m. and rates of 20$ (large spot fees), 10$ (small spot fees), 100$ (large spot monthly flat fee), 50$ (small spot monthly flat fee).
 - There are 5 default floors to the parking lot: first floor contains 20 large spots and 50 small spots, the other four floors (floors 2, 3, 4 and 5) have 100 small spots. Only floors 2 and 3 are reserved to monthly customers, the other floors can be used by guest customers.
 - There are also three default services: Winter Tire Change, Car cleaning, and Oil Change.
 
@@ -71,12 +71,12 @@ All the mentioned default items can be updated (except for the email of the owne
 
 | Name | Contributions | Total Hours | 
 | --- | --- | --- |
-| Evan Boyd | Architecture Diagram. Owner pages. Backend fixes. In-class presentation | 20 |
-| Samer Abdulkarim | All Monthly Customer Pages. Create home page for all users. Sign up. Log in page. Backend checks for duplicate emails. Log in fuctionalities. Bug fixes | 30 |
-| Emilien Taisne | View monthly customers. Home page of owner. Major bug fixes with front end. Integration tests of log in controller. Documentation. In-class demo. | 17 |
+| Evan Boyd | Architecture Diagram. Owner pages. Backend fixes. In-class presentation | 24 |
+| Samer Abdulkarim | All Monthly Customer Pages. Create home page for all users. Sign up. Log in page. Backend checks for duplicate emails. Log in fuctionalities. Bug fixes | 21 |
+| Emilien Taisne | View monthly customers. Home page of owner. Major bug fixes with front end. Integration tests of log in controller. Documentation. In-class demo. | 21 |
 | Walid Aissa | Guest Pass booking page. Management of Services for owner. In-class presentation. | 17  |
-| Karim Al Sabbagh | Management of parking lot personnel. View passes. Internal booking of guest and monthly passes. Revamping of CSS styling. Monthly Pass/Guest Pass creation for customers.  | 30 |
-| Karl Bridi | Architecture diagram, Key component description of the architecture diagram, parking lot frontend page, employee homepage | 17 |
+| Karim Al Sabbagh | Management of parking lot personnel. View passes. Internal booking of guest and monthly passes. Revamping of CSS styling. Monthly Pass/Guest Pass creation for customers.  | 25 |
+| Karl Bridi | Architecture diagram, Key component description of the architecture diagram, parking lot frontend page, employee homepage | 20 |
 
  
 
