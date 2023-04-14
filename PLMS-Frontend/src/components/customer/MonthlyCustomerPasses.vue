@@ -176,19 +176,17 @@ export default {
           alert(`Your pass has been created successfully, \n Confirmation code: ${response.data.confirmationCode}`)
         })
         .catch((err) => {
-          this.errorMsg = `Failed to create: ${err.response.data.confirmationCode}`
+          this.errorMsg = `Failed to create: ${err.response.data}`
           alert(this.errorMsg)
         })
       await this.RouteHome()
     },
     onIsLargeChange() { // Toggle monthly pass to large spot monthly passes
       this.isLarge = !this.isLarge;
-      console.log('changed', this.isLarge)
-      // this.getSpotNumbers();
+      this.spotNumber = ''
     },
 
     getSpotNumbers(){ // Method to format the spot number of a particular spot
-      this.spotNumber = ''
       const floorNumber = this.floorNumber.toString()
       let spotType = ''
       if(this.isLarge) spotType = "large"

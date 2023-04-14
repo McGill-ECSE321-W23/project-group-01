@@ -201,10 +201,10 @@ export default {
       .then((response) => {
         const pass = response.data
         if(pass.confirmationCode === this.confirmationCodeIdentification){
-          this.errorMsgIdentification = `Guest Pass found!: ${response.data.spotNumber}`
+          this.errorMsgIdentification = `Guest Pass found!: \n fee: ${response.data.id}, Spot number: ${response.data.spotNumber}, License plate: ${response.data.licensePlate}, Is large: ${response.data.isLarge}, Date: ${response.data.date}, Start Time: ${response.data.startTime}, End Time: ${response.data.endTime}, Floor number: ${response.data.floorNumber}`
         }
         else{
-          console.error("The confirmation code entered is incorrect")
+          this.errorMsgIdentification = "The confirmation code entered is incorrect"
         }
 
       })
@@ -216,7 +216,7 @@ export default {
 
     onIsLargeChange() {
       this.isLarge = !this.isLarge;
-      console.log('changed', this.isLarge)
+      this.spotNumber = ''
       // this.getSpotNumbers();
     },
 
