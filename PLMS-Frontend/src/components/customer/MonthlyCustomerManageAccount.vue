@@ -39,7 +39,7 @@
             </div>
             <div class="form-group">
               <label>Password</label>
-              <input class="form-control" id="password" :value="password" readonly>
+              <input v-model="password" class="form-control" id="password">
             </div>
             <div class="form-group">
             <label>Name</label>
