@@ -61,7 +61,7 @@
 
 <script>
 export default {
-  name: 'home',
+  name: 'Home',
   data () {
     return {
       msg: 'Welcome to Your Home Page'

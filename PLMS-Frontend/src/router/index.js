@@ -121,7 +121,7 @@ export default new Router({
     },
     {
       path: '/product',
-      redirect: '/home'
+      redirect: '/'
     },
     {
       path: '/pass/view/guestpasses',
@@ -142,7 +142,7 @@ export default new Router({
 
     {
       path: '/pricing',
-      redirect: '/home'
+      redirect: '/'
     }
 
   ]
