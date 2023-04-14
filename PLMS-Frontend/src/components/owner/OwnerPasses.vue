@@ -77,10 +77,7 @@ export default{
       await this.$router.push({name: 'OwnerPasses'})
     },
     async SignOut(){
-      await this.$router.push({name: 'LoginUser'})
-    },
-    async SignOut(){
-      await this.$router.push({name: 'LoginUser'})
+      await this.$router.push({name: 'Home'})
     }
 
 }

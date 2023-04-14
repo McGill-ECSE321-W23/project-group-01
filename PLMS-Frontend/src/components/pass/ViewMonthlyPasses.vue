@@ -213,22 +213,12 @@ export default {
             }
         },
 
-        // handleDateSelect(date){
-        //     axiosClient.get("/monthlypass/date/" + date).then((response) => {
-        //         this.monthlyPasses = response.data
-
-        //    }).catch((err) => {
-        //     alert(err.response.data)
-        //    });
-        // },
-
         fetchMonthlyPasses() {
             this.clearInputs()
             axiosClient.get("/pass").then((response) => {
             this.monthlyPasses = response.data
             this.monthlyPassIDs = response.data.map((monthlyPasses) => monthlyPasses.id);
            }).catch((err) => {
-            alert(err.response.data)
            });
         },
 

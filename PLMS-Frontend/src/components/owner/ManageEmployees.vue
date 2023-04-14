@@ -253,7 +253,6 @@ export default {
            axiosClient.get("employees").then((response) => {
             this.employees = response.data
            }).catch((err) => {
-            alert(err.response.data)
            });
         },
 
@@ -297,11 +296,11 @@ export default {
                 this.selectedEmployeeEmail = employee != null ? employee.email : '';
                 axiosClient.delete('/employee/delete/' + this.selectedEmployeeEmail)
                 .then((response) => {
-                    alert("Employee account with email " + response.data.email + " has been deleted successfully")
                     this.fetchEmployees();
                     this.selectedEmployee = null;
                     this.selectedEmployeeEmail = '';
                     resolve();
+                    window.location.reload();
                 })
                 .catch((err) => {
                     this.errorMsg = `Failed to delete Employee: ${err.response.data}`
@@ -411,7 +410,7 @@ export default {
       await this.$router.push({name: 'OwnerPasses'})
     },
     async SignOut(){
-      await this.$router.push({name: 'LoginUser'})
+      await this.$router.push({name: 'Home'})
     }
 
     }

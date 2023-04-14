@@ -140,6 +140,7 @@ export default {
     },
     onIsLargeChange() {
       this.isLarge = !this.isLarge;
+      this.spotNumber = ''
     },
     createSpotNumbers(){
       const isLarge = this.isLarge

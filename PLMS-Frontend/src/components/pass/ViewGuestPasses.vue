@@ -193,7 +193,6 @@ export default {
             this.guestPasses = response.data
             this.guestPassIDs = response.data.map((guestPasses) => guestPasses.id);
            }).catch((err) => {
-            alert(err.response.data)
            });
         },
 
@@ -224,19 +223,6 @@ export default {
             }
 
         },
-
-        // handleRowClick(employee) {
-        //   this.selectedEmployee = employee;
-        //   console.log('selected new employee');
-        // },
-        // handleRowHover(employee) {
-        //   this.hoveredEmployee = employee;
-        // },
-        // onReset(evt) {
-        // evt.preventDefault();
-        // // this.$refs.addEmployeeModal.hide();
-        // this.initForm();
-        // },
         async Home() {
       await this.$router.push({name: 'OwnerHome'})
     },
