@@ -183,8 +183,8 @@ export default {
 
   methods: {
     createGuestPass(){
-      const confirmationCodeCreation = this.generateConfirmationCode()
-      const request = {spotNumber: this.spotNumber, confirmationCode: confirmationCodeCreation, licensePlate: this.licensePlate,
+      this.confirmationCode = this.generateConfirmationCode()
+      const request = {spotNumber: this.spotNumber, confirmationCode: this.confirmationCode, licensePlate: this.licensePlate,
       floorNumber: this.floorNumber, numberOfFifteenMinuteIncrements: this.numberOfFifteenMinuteIncrements,
       isLarge: document.getElementById(`isLarge`).checked};
       AXIOS.post('/guestPass', request)
@@ -201,7 +201,7 @@ export default {
       .then((response) => {
         const pass = response.data
         if(pass.confirmationCode === this.confirmationCodeIdentification){
-          this.errorMsgIdentification = `Guest Pass found!: ${pass}`
+          this.errorMsgIdentification = `Guest Pass found!: ${response.data.spotNumber}`
         }
         else{
           console.error("The confirmation code entered is incorrect")

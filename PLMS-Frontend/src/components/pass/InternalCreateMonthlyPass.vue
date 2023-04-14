@@ -140,11 +140,9 @@ export default {
     },
     onIsLargeChange() {
       this.isLarge = !this.isLarge;
-      this.createSpotNumbers();
     },
     createSpotNumbers(){
       const isLarge = this.isLarge
-      this.spotNumber = ''
       this.spotNumbers  = []
       const floor = null
 
