@@ -314,7 +314,6 @@ export default {
         onViewSchedule(selectedEmployee){
             axiosClient.get("/serviceAppointment/employee/" + selectedEmployee.email)
             .then((response) => {
-                alert("Service Appointments linked to Employee account with email " + selectedEmployee.email + " has been retrieved successfully")
                 this.serviceAppointments = response.data
                 this.$bvModal.show('serviceAppointments-modal')
             }).catch((err) => {

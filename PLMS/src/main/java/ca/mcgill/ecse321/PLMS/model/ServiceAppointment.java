@@ -34,6 +34,7 @@ public class ServiceAppointment
 
   //ServiceAppointment Associations
   @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Employee employee;
   @ManyToOne
   private MonthlyCustomer customer;
