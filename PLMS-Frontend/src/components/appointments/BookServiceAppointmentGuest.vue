@@ -2,7 +2,7 @@
   <div>
     <nav class="site-header sticky-top py-1">
     <div class="container d-flex flex-column flex-md-row justify-content-between">
-      <a class="py-2" href="#product">
+      <a class="py-2" @click="Home">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
           <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
         </svg>      </a>
@@ -11,7 +11,7 @@
   </nav>
   <div>
     <div>
-        <h2>All Services</h2>
+        <h2 style="margin-top: 1%">All Services</h2>
         <table class="center bordered-table">
           <thead>
             <tr>
@@ -30,7 +30,7 @@
         </table>
       </div>
     </div>
-  <div>
+  <div style="margin-top: 2%">
     <h2>Book a Service Appointment as a Guest</h2>
     <div>
       <label for="serviceName">Service Name:</label>
@@ -50,13 +50,13 @@
     <button class="btn btn-primary" type="button" :disabled="!serviceName || !date || !startTime" @click="bookServiceAppointment">Book
       Appointment</button>
     <div>
-      <p class="parkingLotHours"> {{ parkingLotHours }}</p>
+      <p style="margin-top: 1%" class="parkingLotHours"> {{ parkingLotHours }}</p>
     </div>
     <p class="success">{{ successMsg }}</p>
     <p class="error">{{ errorMsg }}</p>
   </div>
 
-  <div>
+  <div style="margin-top: 2%">
     <h2>Update your Service Appointment Details</h2>
     <div>
       <label for="id">Appointment ID:</label>
@@ -81,7 +81,7 @@
     <p class="success">{{ successMsgUpdate }}</p>
     <p class="error">{{ errorMsgUpdate }}</p>
   </div>
-  <div>
+  <div style="margin-top: 1%">
     <h2>Cancel Service Appointment</h2>
     <div>
       <label for="id">Appointment ID:</label>
