@@ -183,8 +183,8 @@ export default {
 
   methods: {
     createGuestPass(){
-      this.confirmationCode = this.generateConfirmationCode()
-      const request = {spotNumber: this.spotNumber, confirmationCode: this.confirmationCodeCreation, licensePlate: this.licensePlate,
+      const confirmationCodeCreation = this.generateConfirmationCode()
+      const request = {spotNumber: this.spotNumber, confirmationCode: confirmationCodeCreation, licensePlate: this.licensePlate,
       floorNumber: this.floorNumber, numberOfFifteenMinuteIncrements: this.numberOfFifteenMinuteIncrements,
       isLarge: document.getElementById(`isLarge`).checked};
       AXIOS.post('/guestPass', request)
@@ -223,11 +223,10 @@ export default {
     getSpotNumbers(){
       console.log(this.floorNumber);
       console.log(this.floorNumbers);
-      this.spotNumber = ''
-      const floorNumber = this.floorNumber.toString()
-      let spotType = ''
-      if(this.isLarge) spotType = "large"
-      else spotType = "small"
+      const floorNumber = this.floorNumber.toString();
+      let spotType = '';
+      if(this.isLarge) {spotType = "large"}
+      else {spotType = "small"}
       console.log(spotType);
       if (this.spotNumbersMap[floorNumber] && this.spotNumbersMap[floorNumber][spotType]) {
         this.spotNumbers = this.spotNumbersMap[floorNumber][spotType]

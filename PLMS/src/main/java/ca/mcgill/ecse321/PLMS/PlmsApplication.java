@@ -32,7 +32,7 @@ public class PlmsApplication {
         return args -> {
 			if (ownerRepository.count() == 0){
 				ownerService.createOwnerAccount(new Owner("admin@mail.com", "MyParking1ot$", "Admin"));
-				parkingLotService.createParkingLot(new ParkingLot(new Time(8, 0, 0), new Time(17, 0, 0), 20, 10, 30, 50));
+				parkingLotService.createParkingLot(new ParkingLot(new Time(0, 0, 0), new Time(23, 59, 59), 20, 10, 30, 50));
 				floorService.createFloor(new Floor(1, 20, 50, false));
 				for (int i=2; i<6; i++){
 					if (i == 2 || i == 3){
