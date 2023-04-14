@@ -44,11 +44,11 @@
           <div class="form-row" style="margin-top: 3%">
             <div class="form-group col-md-6">
               <label>Date</label>
-              <input v-model="date" class="form-control" id="date" placeholder="2024-05-05" >
+              <input v-model="date" class="form-control" type="date" placeholder="2024-05-05" >
             </div>
             <div class="form-group col-md-6">
               <label for="start">Start Time</label>
-              <input type="text" v-model="startTime" class="form-control" id="start" placeholder="15:00:00">
+              <input type="time" v-model="startTime" class="form-control" id="start" placeholder="15:00:00">
             </div>
           </div>
           <div class="form-group">
@@ -102,7 +102,6 @@ export default {
       })
       .catch(error => {
         let err = `Error: ${error.response.data}`
-        alert(err)
       })
     axiosClient.get("/service") // Fetch available service for the customer to chose from
       .then(response => {
@@ -110,7 +109,6 @@ export default {
       })
       .catch(error => {
         let err = `Error: ${error.response.data}`
-        alert(err)
       })
   },
   methods: {
@@ -132,14 +130,16 @@ export default {
     },
 
     async createApp() { // Method to create an appointment to the customer
-      const request = {date: this.date, startTime: this.startTime, serviceName: this.serviceName, userEmail: this.email}
+      const formatedTime = this.startTime+":00"
+      const request = {date: this.date, startTime: formatedTime, serviceName: this.serviceName, userEmail: this.email}
       axiosClient.post("/serviceAppointment", request)
         .then((response) => {
           alert("Your appointment has been created successfully")
         })
         .catch((err) => {
+          console.log(err.response)
           this.errorMsg = `Failed to create: ${err.response.data}`
-          alert(this.errorMsg)
+          alert(err.response.data)
         })
       await this.RouteHome()
 
@@ -168,7 +168,8 @@ export default {
       await this.RouteHome()
     },
     async updateApp() { // Method to update an existing appointment
-      const request = {date: this.date, startTime: this.startTime, serviceName: this.serviceName, userEmail: this.email}
+      const formatedTime = this.startTime+":00"
+      const request = {date: this.date, startTime: formatedTime, serviceName: this.serviceName, userEmail: this.email}
       axiosClient.put("/serviceAppointment/"+ this.selectedApp, request)
         .then((response) => {
           alert("Your appointment has been updated successfully")
